@@ -18,19 +18,20 @@ import wuxian.me.lagouspider.util.FileUtil;
 
 /**
  * Created by wuxian on 30/3/2017.
+ *
+ * 抓取杭州所有的区信息,保存到@distinct.txt,area.txt
  * <p>
- * Todo: integrate logging
  */
-public class LagouSpider {
+public class HangzhouAreasSpider {
     private static final String URL_LAGOU_HANGZHOU_JAVA = "https://www.lagou.com/jobs/list_Java?px=default";
-    private static final String CUT = ";";
-    private static final String SEPRATE = ":";
+    public static final String CUT = ";";
+    public static final String SEPRATE = ":";
 
     private final OkHttpClient client = new OkHttpClient();
 
     private Headers distinctsHeaders;
 
-    public LagouSpider() {
+    public HangzhouAreasSpider() {
         Headers.Builder disinctsBuilder = new Headers.Builder();
         disinctsBuilder.add("Connection", "keep_alive");
         disinctsBuilder.add("Host", "www.lagou.com");
@@ -48,8 +49,6 @@ public class LagouSpider {
         if (!areaFileValid()) {
             getAreas();
         }
-
-        //Todo: 拿到所有的区 街道信息了
     }
 
     private void getAreas() {
@@ -152,7 +151,7 @@ public class LagouSpider {
         return distincts;
     }
 
-    private boolean areaFileValid() {
+    public static boolean areaFileValid() {
         return FileUtil.checkFileExist(FileUtil.getAreaFilePath());
     }
 
@@ -227,6 +226,4 @@ public class LagouSpider {
         }
         return distincts;
     }
-
-
 }
