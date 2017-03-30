@@ -19,7 +19,13 @@ import java.util.List;
 public class FileUtil {
     private static final String DISTINTC_POST = "/conf/distinct.txt";
 
+    private static final String AREA_POST = "/conf/area.txt";
+
     private FileUtil() {
+    }
+
+    public static String getAreaFilePath() {
+        return getCurrentPath() + AREA_POST;
     }
 
     public static String getDistinctsFilePath() {
@@ -59,13 +65,10 @@ public class FileUtil {
         checkNotNull(path);
         File file = new File(path);
         try {
-            List<String> lines = Files.readLines(file, Charsets.UTF_16);
+            List<String> lines = Files.readLines(file, Charsets.UTF_8);
             String content = "";
             for (String line : lines) {
                 content += line;
-            }
-            if (content.length() == 0) {
-                return null;
             }
             return content;
         } catch (IOException e) {

@@ -1,5 +1,7 @@
 package wuxian.me.lagouspider;
 
+import static com.google.common.base.Preconditions.*;
+
 import okhttp3.*;
 
 import java.io.IOException;
@@ -20,8 +22,9 @@ import wuxian.me.lagouspider.util.FileUtil;
  * Todo: integrate logging
  */
 public class LagouSpider {
-    private static final String URL_LAGOU_HANGZHOU_JAVA = "https://www.lagou.com/zhaopin/Java/?labelWords=label";
-    private static final String CUT = ",";
+    private static final String URL_LAGOU_HANGZHOU_JAVA = "https://www.lagou.com/jobs/list_Java?px=default";
+    private static final String CUT = ";";
+    private static final String SEPRATE = ":";
 
     private final OkHttpClient client = new OkHttpClient();
 
@@ -36,11 +39,121 @@ public class LagouSpider {
         distinctsHeaders = disinctsBuilder.build();
     }
 
-
     public void beginSpider() {
         if (!distinctsFileValid()) {
             getDisticts();
+            return;
         }
+
+        if (!areaFileValid()) {
+            getAreas();
+        }
+
+        //Todo: 拿到所有的区 街道信息了
+    }
+
+    private void getAreas() {
+        String distincts = FileUtil.readFromFile(FileUtil.getDistinctsFilePath());
+        if (null == distincts) {
+            System.out.println("read distincts file error");
+        }
+
+        String[] dis = distincts.split(CUT);  //编码问题带来分解失败...
+
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(URL_LAGOU_HANGZHOU_JAVA)
+                .newBuilder();
+        urlBuilder.addQueryParameter("city", "杭州");
+
+        Headers.Builder builder = new Headers.Builder();
+        builder.add("Connection", "keep_alive");
+        builder.add("Host", "www.lagou.com");
+        builder.add("Referer", urlBuilder.build().toString());
+        builder.add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36");
+
+
+        for (int i = 0; i < dis.length; i++) {
+            urlBuilder.removeAllQueryParameters("district");
+            urlBuilder.addQueryParameter("district", dis[i]);
+            Request request = new Request.Builder()
+                    .headers(builder.build())
+                    .url(urlBuilder.build().toString())
+                    .build();
+
+            final String distinct = dis[i];
+            client.newCall(request).enqueue(new Callback() {
+                public void onFailure(Call call, IOException e) {
+                    System.out.println("onFailure");
+                }
+
+                public void onResponse(Call call, Response response) throws IOException {
+                    if (!response.isSuccessful()) {
+                        System.out.println("onResponse fail");
+                    }
+                    System.out.println("onResponse success");
+
+                    final String data = response.body().string();
+                    //System.out.println(data);
+                    List<String> areas = parseArea(data);
+                    writeArea(distinct, areas);
+                }
+            });
+        }
+    }
+
+    private synchronized void writeArea(String distinct, List<String> areas) {
+        checkNotNull(distinct);
+        checkNotNull(areas);
+
+        String former = "";
+        if (FileUtil.checkFileExist(FileUtil.getAreaFilePath())) {
+            former = FileUtil.readFromFile(FileUtil.getAreaFilePath());
+        }
+
+        String content = former;
+        for (String area : areas) {
+            content += distinct + SEPRATE + area + CUT;
+        }
+
+        content += "\n";
+
+        if (!FileUtil.writeToFile(FileUtil.getAreaFilePath(), content)) {
+            System.out.println("writearea error");
+        }
+    }
+
+    private List<String> parseArea(String data) {
+        List<String> distincts = new ArrayList<String>();
+        try {
+            Parser parser = new Parser(data);
+            parser.setEncoding("utf-8");
+            HasAttributeFilter filter = new HasAttributeFilter("class", "detail-bizArea-area");
+
+            NodeList list = parser.extractAllNodesThatMatch(filter);
+            if (list != null) {
+                for (int i = 0; i < list.size(); i++) {
+                    Node tag = list.elementAt(i);
+                    NodeList child = tag.getChildren();
+                    for (int j = 0; j < child.size(); j++) {
+
+                        Node node = child.elementAt(j);
+                        if (node instanceof LinkTag) {
+                            if (((LinkTag) node).getLinkText().equals("不限")) {
+                                continue;
+                            }
+                            distincts.add(((LinkTag) node).getLinkText());
+                        }
+                    }
+                }
+            }
+            System.out.println("parseDistincts success");
+        } catch (ParserException e) {
+            System.out.println("parseDistincts error");
+        }
+        return distincts;
+    }
+
+    private boolean areaFileValid() {
+        return FileUtil.checkFileExist(FileUtil.getAreaFilePath());
     }
 
     private boolean distinctsFileValid() {
@@ -48,7 +161,9 @@ public class LagouSpider {
     }
 
     private void getDisticts() {
-        HttpUrl.Builder urlBuilder = HttpUrl.parse(URL_LAGOU_HANGZHOU_JAVA).newBuilder();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(URL_LAGOU_HANGZHOU_JAVA)
+                .newBuilder();
+        urlBuilder.addQueryParameter("city", "杭州");
 
         final Request request = new Request.Builder()
                 .headers(distinctsHeaders)
@@ -74,6 +189,10 @@ public class LagouSpider {
                     }
                     FileUtil.writeToFile(FileUtil.getDistinctsFilePath(), content);
                 }
+
+                if (!areaFileValid()) {   //进行读取erea过程
+                    getAreas();
+                }
             }
         });
     }
@@ -94,7 +213,7 @@ public class LagouSpider {
 
                         Node node = child.elementAt(j);
                         if (node instanceof LinkTag) {
-                            if (j == 0) {
+                            if (((LinkTag) node).getLinkText().equals("不限")) {
                                 continue;
                             }
                             distincts.add(((LinkTag) node).getLinkText() + CUT);
