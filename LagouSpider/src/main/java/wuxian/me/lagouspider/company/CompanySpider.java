@@ -7,10 +7,14 @@ import wuxian.me.lagouspider.model.Area;
  * <p>
  * Todo：抓取该公司所有的职位
  */
-public class CompanySpider {
+public class CompanySpider implements Runnable {
     Area area;
 
     public CompanySpider(Area area) {
         this.area = area;
+    }
+
+    public void run() {
+
     }
 }
