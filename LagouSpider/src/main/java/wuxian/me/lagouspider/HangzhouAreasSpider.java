@@ -15,10 +15,10 @@ import org.htmlparser.tags.LinkTag;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import wuxian.me.lagouspider.util.FileUtil;
+import wuxian.me.lagouspider.util.OkhttpProvider;
 
 /**
  * Created by wuxian on 30/3/2017.
- *
  * 抓取杭州所有的区信息,保存到@distinct.txt,area.txt
  * <p>
  */

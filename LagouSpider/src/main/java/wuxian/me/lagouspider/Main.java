@@ -49,7 +49,7 @@ public class Main {
         ctx = new ClassPathXmlApplicationContext("spider.xml");
 
         if (Helper.isTest) {
-            testDB();
+            //testDB();
             return;
         }
 

@@ -1,25 +1,31 @@
 package wuxian.me.lagouspider.model;
 
+import com.sun.istack.internal.NotNull;
+
 /**
  * Created by wuxian on 30/3/2017.
  */
 public class Company {
     private Area area;
 
-    long companyId;  //--> https://www.lagou.com/gongsi/110890.html
+    public Company(@NotNull Area area) {
+        this.area = area;
+    }
 
-    //Todo
+    int companyId;  //--> https://www.lagou.com/gongsi/110890.html
+
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return companyId;
     }
 
-    //Todo
     @Override
     public boolean equals(Object obj) {
+        if (obj != null && obj instanceof Company) {
+            return companyId == ((Company) obj).companyId;
+        }
         return super.equals(obj);
     }
-
 }
 
 
