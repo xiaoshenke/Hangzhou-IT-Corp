@@ -1,10 +1,16 @@
 package wuxian.me.lagouspider;
 
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.stereotype.Service;
 import wuxian.me.lagouspider.area.AreaSpider;
 import wuxian.me.lagouspider.model.Area;
 import wuxian.me.lagouspider.model.Distinct;
@@ -13,6 +19,8 @@ import wuxian.me.lagouspider.strategy.StrategyProvider;
 import wuxian.me.lagouspider.util.FileUtil;
 import wuxian.me.lagouspider.util.Helper;
 
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,11 +29,38 @@ import java.util.List;
  */
 public class Main {
 
+    private static boolean testDB() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            System.out.println("No jdbc driver");
+            e.printStackTrace();
+            return false;
+        }
+
+        String url = "jdbc:mysql://192.168.13.212:3306/lagoujob?useUnicode=true&characterEncoding=utf-8";
+        String username = "user1";
+        String password = "123456";
+
+        try {
+            DriverManager.getConnection(url, username, password);
+            System.out.println("Database connect success!");
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Database connect failure!");
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private static ApplicationContext ctx;
     public static void main(String[] args){
-        ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        Resource res = resolver.getResource("classpath:spider.xml");  //p75
-        BeanFactory bf = new XmlBeanFactory(res);
-        //bf.getBean("sqlSessionFactory");
+        ctx = new ClassPathXmlApplicationContext("spider.xml");
+
+        if (Helper.isTest) {
+            testDB();
+            return;
+        }
 
         if (!HangzhouAreasSpider.areaFileValid()) {
             HangzhouAreasSpider spider = new HangzhouAreasSpider();
