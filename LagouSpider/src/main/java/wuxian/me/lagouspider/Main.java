@@ -5,10 +5,10 @@ import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
-import wuxian.me.lagouspider.area.AreaSpider;
 import wuxian.me.lagouspider.model.Area;
 import wuxian.me.lagouspider.model.Distinct;
 import wuxian.me.lagouspider.util.FileUtil;
+import wuxian.me.lagouspider.util.Helper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,27 +28,28 @@ public class Main {
             HangzhouAreasSpider spider = new HangzhouAreasSpider();
             spider.beginSpider();
         } else {
-            //Todo：检查上一次爬虫爬取的时间 若超过xxx时间 再进行爬取
 
-            List<Area> areas = parseAreasFromFile();
-            if (areas.size() == 0) {
-                System.out.println("parese Areas file fail");
-            }
+            if (Helper.shouldStartNewGrab()) {
+                FileUtil.writeToFile(FileUtil.getGrabFilePath(), String.valueOf(System.currentTimeMillis()));
 
-            for (Area area : areas) {
-                new AreaSpider(area).beginSpider();
+                List<Area> areas = parseAreasFromFile();
+                if (areas.size() == 0) {
+                    System.out.println("parese Areas file fail");
+                }
+                for (Area area : areas) {
+                    //Todo
+                    //new AreaSpider(area).beginSpider();
+                }
             }
         }
     }
 
     private static List<Area> parseAreasFromFile() {
         List<Area> areaList = new ArrayList<Area>();
-
         String areaString = FileUtil.readFromFile(FileUtil.getAreaFilePath());
         if (areaString.equals("")) {
             return areaList;
         }
-
         String[] areas = areaString.split(HangzhouAreasSpider.CUT);
 
         for (int i = 0; i < areas.length; i++) {
@@ -58,7 +59,6 @@ public class Main {
             }
             areaList.add(new Area(new Distinct(detail[0]), detail[1]));
         }
-
         return areaList;
     }
 

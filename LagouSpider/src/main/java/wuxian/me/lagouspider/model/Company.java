@@ -8,6 +8,17 @@ public class Company {
 
     long companyId;  //--> https://www.lagou.com/gongsi/110890.html
 
+    //Todo
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    //Todo
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
 
 }
 

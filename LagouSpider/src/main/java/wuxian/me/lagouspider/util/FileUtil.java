@@ -1,13 +1,15 @@
 package wuxian.me.lagouspider.util;
 
 import static com.google.common.base.Preconditions.*;
+import static wuxian.me.lagouspider.Config.CONF_AREA;
+import static wuxian.me.lagouspider.Config.CONF_DISTINTC;
+import static wuxian.me.lagouspider.Config.CONF_LASTGRAB;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import com.sun.istack.internal.Nullable;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -17,19 +19,20 @@ import java.util.List;
  * http://outofmemory.cn/java/guava/IO/Files-operation
  */
 public class FileUtil {
-    private static final String DISTINTC_POST = "/conf/distinct.txt";
-
-    private static final String AREA_POST = "/conf/area.txt";
 
     private FileUtil() {
     }
 
     public static String getAreaFilePath() {
-        return getCurrentPath() + AREA_POST;
+        return getCurrentPath() + CONF_AREA;
     }
 
     public static String getDistinctsFilePath() {
-        return getCurrentPath() + DISTINTC_POST;
+        return getCurrentPath() + CONF_DISTINTC;
+    }
+
+    public static String getGrabFilePath() {
+        return getCurrentPath() + CONF_LASTGRAB;
     }
 
     public static String getCurrentPath() {
