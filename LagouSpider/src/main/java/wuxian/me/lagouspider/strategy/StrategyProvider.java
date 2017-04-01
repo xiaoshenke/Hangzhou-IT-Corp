@@ -1,5 +1,7 @@
 package wuxian.me.lagouspider.strategy;
 
+import wuxian.me.lagouspider.util.Helper;
+
 import java.util.Random;
 
 /**
@@ -17,6 +19,10 @@ public class StrategyProvider {
     private static Random random = new Random();
 
     public static IStrategy getStrategy() {
+
+        if (Helper.isTest) {
+            return new ImmediateStrategy();
+        }
 
         if (random.nextDouble() * 100 > 30) {
             return new DelayStrategy();

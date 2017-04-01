@@ -11,7 +11,7 @@ import wuxian.me.lagouspider.model.Area;
  * 2 根据页数发送每一页数据的请求
  * 3 重试机制
  */
-public class AreaSpider {
+public class AreaSpider implements Runnable {
     Area area;
     private int pageNum;
 
@@ -26,5 +26,9 @@ public class AreaSpider {
 
     private void getCompanyPageNum() {
         ;
+    }
+
+    public void run() {
+        beginSpider();
     }
 }

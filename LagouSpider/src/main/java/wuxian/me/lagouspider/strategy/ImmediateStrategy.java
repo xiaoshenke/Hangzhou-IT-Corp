@@ -6,6 +6,8 @@ package wuxian.me.lagouspider.strategy;
 public class ImmediateStrategy extends BaseStrategy {
 
     public void run() {
-        realJob.run();
+        if (realJob != null) {
+            realJob.run();
+        }
     }
 }

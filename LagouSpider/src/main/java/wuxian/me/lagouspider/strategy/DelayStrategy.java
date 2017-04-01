@@ -17,7 +17,9 @@ public class DelayStrategy extends BaseStrategy {
             timerTask = new TimerTask() {
                 @Override
                 public void run() {
-                    realJob.run();
+                    if (realJob != null) {
+                        realJob.run();
+                    }
                 }
             };
         }

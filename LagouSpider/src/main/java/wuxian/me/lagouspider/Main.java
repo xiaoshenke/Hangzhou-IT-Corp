@@ -5,8 +5,11 @@ import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import wuxian.me.lagouspider.area.AreaSpider;
 import wuxian.me.lagouspider.model.Area;
 import wuxian.me.lagouspider.model.Distinct;
+import wuxian.me.lagouspider.strategy.IStrategy;
+import wuxian.me.lagouspider.strategy.StrategyProvider;
 import wuxian.me.lagouspider.util.FileUtil;
 import wuxian.me.lagouspider.util.Helper;
 
@@ -28,7 +31,6 @@ public class Main {
             HangzhouAreasSpider spider = new HangzhouAreasSpider();
             spider.beginSpider();
         } else {
-
             if (Helper.shouldStartNewGrab()) {
                 FileUtil.writeToFile(FileUtil.getGrabFilePath(), String.valueOf(System.currentTimeMillis()));
 
@@ -37,8 +39,13 @@ public class Main {
                     System.out.println("parese Areas file fail");
                 }
                 for (Area area : areas) {
-                    //Todo
-                    //new AreaSpider(area).beginSpider();
+                    IStrategy strategy = StrategyProvider.getStrategy();
+                    strategy.setRunnable(new AreaSpider(area));
+                    strategy.run();
+
+                    if (Helper.isTest) {  //先抓一个试试
+                        break;
+                    }
                 }
             }
         }
@@ -61,5 +68,4 @@ public class Main {
         }
         return areaList;
     }
-
 }

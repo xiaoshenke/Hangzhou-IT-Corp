@@ -13,6 +13,8 @@ public class Helper {
     private Helper() {
     }
 
+    public static boolean isTest = true;
+
     private static String post = null;
 
     /**
@@ -21,6 +23,7 @@ public class Helper {
      * 找到数据库后缀
      * 数据库每过1周会全新抓取一次拉勾数据 因此要做分表操作
      * 表的名字像这样 company_2017_0303,company_2017_0403
+     *
      * @return
      */
     public static String getDatabasePost() {
@@ -31,7 +34,7 @@ public class Helper {
         long time = Long.parseLong(content);
 
         SimpleDateFormat dd = new SimpleDateFormat("yyyy-MM-dd");
-        return post = dd.format(new Date(time));
+        return post = "_" + dd.format(new Date(time));
     }
 
     public static boolean shouldStartNewGrab() {
