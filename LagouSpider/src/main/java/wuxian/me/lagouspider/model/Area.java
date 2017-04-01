@@ -15,6 +15,14 @@ public class Area {
         this.area = area;
     }
 
+    public String getAreaName() {
+        return area;
+    }
+
+    public String getDistinctName() {
+        return distinct.getDistinct();
+    }
+
 
     @Override
     public int hashCode() {

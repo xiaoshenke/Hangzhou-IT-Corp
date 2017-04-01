@@ -13,6 +13,9 @@ public class Distinct {
         this.distinct = distinct;
     }
 
+    public String getDistinct() {
+        return distinct;
+    }
 
     @Override
     public int hashCode() {

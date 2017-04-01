@@ -12,6 +12,11 @@
     <!-- mapper Interface -->
     <mybatis:scan base-package="wuxian.me.lagouspider.mapper"/>
 
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="wuxian.me.lagouspider.mapper"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
     <bean id="dataSource"
           class="org.apache.commons.dbcp.BasicDataSource"
           p:url="jdbc:mysql://192.168.13.212:3306/lagoujob"
@@ -21,5 +26,6 @@
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
+        <property name="mapperLocations" value="classpath:mybatis/AreaMapper.xml"/>
     </bean>
 </beans>

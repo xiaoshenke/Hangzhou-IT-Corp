@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="wuxian.me.lagouspider.mapper.AreaMapper">
+    <select id="getArea" resultType="wuxian.me.lagouspider.model.Area1">
+        select * from area where name = #{name}
+    </select>
+    <insert id="insertArea">
+        insert into area (name,distinct_name) values (#{areaName},#{distinctName})
+    </insert>
+</mapper>
