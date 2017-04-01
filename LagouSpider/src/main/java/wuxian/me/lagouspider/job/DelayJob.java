@@ -1,4 +1,4 @@
-package wuxian.me.lagouspider.strategy;
+package wuxian.me.lagouspider.job;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -6,7 +6,7 @@ import java.util.TimerTask;
 /**
  * Created by wuxian on 31/3/2017.
  */
-public class DelayStrategy extends BaseStrategy {
+public class DelayJob extends BaseJob {
 
     private static Timer timer = new Timer();
 

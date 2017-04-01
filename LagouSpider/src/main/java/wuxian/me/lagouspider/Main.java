@@ -1,21 +1,12 @@
 package wuxian.me.lagouspider;
 
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePatternResolver;
-import org.springframework.stereotype.Service;
 import wuxian.me.lagouspider.area.AreaSpider;
+import wuxian.me.lagouspider.job.JobProvider;
 import wuxian.me.lagouspider.model.Area;
 import wuxian.me.lagouspider.model.Distinct;
-import wuxian.me.lagouspider.strategy.IStrategy;
-import wuxian.me.lagouspider.strategy.StrategyProvider;
+import wuxian.me.lagouspider.job.IJob;
 import wuxian.me.lagouspider.util.FileUtil;
 import wuxian.me.lagouspider.util.Helper;
 
@@ -74,9 +65,9 @@ public class Main {
                     System.out.println("parese Areas file fail");
                 }
                 for (Area area : areas) {
-                    IStrategy strategy = StrategyProvider.getStrategy();
-                    strategy.setRunnable(new AreaSpider(area));
-                    strategy.run();
+                    IJob job = JobProvider.getJob();
+                    job.setRealRunnable(new AreaSpider(area));
+                    job.run();
 
                     if (Helper.isTest) {  //先抓一个试试
                         break;
