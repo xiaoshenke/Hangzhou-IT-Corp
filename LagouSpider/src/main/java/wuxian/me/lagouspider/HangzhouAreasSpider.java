@@ -27,7 +27,7 @@ public class HangzhouAreasSpider {
     public static final String CUT = ";";
     public static final String SEPRATE = ":";
 
-    private final OkHttpClient client = new OkHttpClient();
+    private final OkHttpClient client = OkhttpProvider.getClient();
 
     private Headers distinctsHeaders;
 
