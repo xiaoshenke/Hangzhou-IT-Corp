@@ -7,9 +7,8 @@ import org.springframework.stereotype.Component;
 import wuxian.me.lagouspider.area.AreaSpider;
 import wuxian.me.lagouspider.job.JobProvider;
 import wuxian.me.lagouspider.mapper.AreaMapper;
-import wuxian.me.lagouspider.model.Area;
-import wuxian.me.lagouspider.model.Distinct;
 import wuxian.me.lagouspider.job.IJob;
+import wuxian.me.lagouspider.model.Area;
 import wuxian.me.lagouspider.util.FileUtil;
 import wuxian.me.lagouspider.util.Helper;
 
@@ -28,20 +27,57 @@ public class Main {
     AreaMapper areaMapper;
 
     public Main() {
+    }
 
+    //Todo:
+    public void doJob() {
+        if (!checkDBConnection()) {
+            System.out.println("connect db fail");
+            return;
+        }
+
+        if (!HangzhouAreasSpider.areaFileValid()) {      //第一次运行进程的时候先拿到杭州所有的街道信息
+
+            HangzhouAreasSpider spider = new HangzhouAreasSpider();
+            spider.beginSpider();
+
+        } else {
+            if (true || Helper.shouldStartNewGrab()) {     //每过7天开始一次全新抓取
+                Helper.updateNewGrab();
+
+                List<Area> areas = parseAreasFromFile();
+                if (areas.size() == 0) {
+                    System.out.println("parese Areas file fail");
+                    return;
+                }
+
+                if (Helper.isTest && false) {  //Todo: 检查表里的数据是不是空的
+                    insertData(areas);  //Fixme:现在字符编码有点问题
+                    return;
+                }
+
+                for (Area area : areas) {
+                    IJob job = JobProvider.getJob();
+                    job.setRealRunnable(new AreaSpider(area));
+
+                    JobQueue.getInstance().putJob(job);
+                }
+                //Todo: 开启worker线程
+            }
+        }
     }
 
     public void insertData(List<Area> areas) {
         if (Helper.isTest) {
             for (Area area : areas) {
-                areaMapper.insertArea(area.getAreaName(), area.getDistinctName());
+                System.out.println("area: " + area.name + " distinct: " + area.distinct_name);
+                areaMapper.insertArea(area.name, area.distinct_name);
             }
-
             return;
         }
     }
 
-    private static boolean testDB() {
+    private static boolean checkDBConnection() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -50,7 +86,7 @@ public class Main {
             return false;
         }
 
-        String url = "jdbc:mysql://192.168.13.212:3306/lagoujob?useUnicode=true&characterEncoding=utf-8";
+        String url = "jdbc:mysql://192.168.13.245:3306/lagoujob?useUnicode=true&characterEncoding=utf-8";
         String username = "user1";
         String password = "123456";
 
@@ -70,39 +106,10 @@ public class Main {
         ctx = new ClassPathXmlApplicationContext("spider.xml");
 
         Main main = ctx.getBean(Main.class);
-
-        if (!HangzhouAreasSpider.areaFileValid()) {
-            HangzhouAreasSpider spider = new HangzhouAreasSpider();
-            spider.beginSpider();
-        } else {
-            if (Helper.shouldStartNewGrab()) {
-                FileUtil.writeToFile(FileUtil.getGrabFilePath(), String.valueOf(System.currentTimeMillis()));
-
-                List<Area> areas = parseAreasFromFile();
-                if (areas.size() == 0) {
-                    System.out.println("parese Areas file fail");
-                    return;
-                }
-
-                if (Helper.isTest) {
-                    main.insertData(areas);  //Fixme:现在字符编码有点问题
-                    return;
-                }
-
-                for (Area area : areas) {
-                    IJob job = JobProvider.getJob();
-                    job.setRealRunnable(new AreaSpider(area));
-                    job.run();
-
-                    if (Helper.isTest) {  //先抓一个试试
-                        break;
-                    }
-                }
-            }
-        }
+        main.doJob();
     }
 
-    private static List<Area> parseAreasFromFile() {
+    private List<Area> parseAreasFromFile() {
         List<Area> areaList = new ArrayList<Area>();
         String areaString = FileUtil.readFromFile(FileUtil.getAreaFilePath());
         if (areaString.equals("")) {
@@ -115,7 +122,10 @@ public class Main {
             if (detail.length != 2) {
                 continue;
             }
-            areaList.add(new Area(new Distinct(detail[0]), detail[1]));
+            Area area = new Area();
+            area.name = detail[0];
+            area.distinct_name = detail[1];
+            areaList.add(area);
         }
         return areaList;
     }

@@ -1,39 +1,10 @@
 package wuxian.me.lagouspider.model;
 
-import com.sun.istack.internal.NotNull;
-
 /**
- * Created by wuxian on 30/3/2017.
+ * Created by wuxian on 1/4/2017.
  */
 public class Area {
-
-    private Distinct distinct;
-    private String area;
-
-    public Area(@NotNull Distinct distinct, @NotNull String area) {
-        this.distinct = distinct;
-        this.area = area;
-    }
-
-    public String getAreaName() {
-        return area;
-    }
-
-    public String getDistinctName() {
-        return distinct.getDistinct();
-    }
-
-
-    @Override
-    public int hashCode() {
-        return area.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj != null && obj instanceof Area) {
-            return distinct.equals(((Area) obj).distinct) && area.equals(((Area) obj).area);
-        }
-        return super.equals(obj);
-    }
+    public long area_id = -1;
+    public String name;
+    public String distinct_name;
 }

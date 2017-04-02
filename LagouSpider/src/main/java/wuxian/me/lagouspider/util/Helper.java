@@ -49,4 +49,8 @@ public class Helper {
         long time = Long.parseLong(content);
         return (System.currentTimeMillis() - time > Config.GRAB_INTERNAL);
     }
+
+    public static void updateNewGrab() {
+        FileUtil.writeToFile(FileUtil.getGrabFilePath(), String.valueOf(System.currentTimeMillis()));
+    }
 }
