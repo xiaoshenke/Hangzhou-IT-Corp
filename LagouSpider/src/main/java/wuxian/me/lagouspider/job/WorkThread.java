@@ -1,6 +1,5 @@
-package wuxian.me.lagouspider;
+package wuxian.me.lagouspider.job;
 
-import wuxian.me.lagouspider.job.IJob;
 
 /**
  * Created by wuxian on 6/4/2017.

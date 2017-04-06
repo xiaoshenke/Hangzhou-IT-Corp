@@ -5,6 +5,8 @@ package wuxian.me.lagouspider;
  */
 public class Config {
 
+    public static final String TABLE_COMPANY = "companies";
+
     //7天全面抓一次
     public static final long GRAB_INTERNAL = -1;//1000 * 60 * 60 * 24 * 7;
     //上一次爬虫抓取的时间

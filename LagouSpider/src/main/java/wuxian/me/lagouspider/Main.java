@@ -6,8 +6,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 import wuxian.me.lagouspider.area.AreaSpider;
 import wuxian.me.lagouspider.job.JobProvider;
+import wuxian.me.lagouspider.job.JobQueue;
+import wuxian.me.lagouspider.job.WorkThread;
 import wuxian.me.lagouspider.mapper.AreaMapper;
 import wuxian.me.lagouspider.job.IJob;
+import wuxian.me.lagouspider.mapper.CompanyMapper;
 import wuxian.me.lagouspider.model.Area;
 import wuxian.me.lagouspider.util.FileUtil;
 import wuxian.me.lagouspider.util.Helper;
@@ -26,6 +29,9 @@ public class Main {
     @Autowired
     AreaMapper areaMapper;
 
+    @Autowired
+    CompanyMapper companyMapper;
+
     public Main() {
     }
 
@@ -43,6 +49,14 @@ public class Main {
         } else {
             if (true || Helper.shouldStartNewGrab()) {     //每过7天开始一次全新抓取
                 Helper.updateNewGrab();
+
+                String tableName = Helper.getCompanyTableName();
+                companyMapper.createNewTableIfNeed(tableName);
+
+                if (true) {
+                    return;
+                }
+
                 List<Area> areas = areaMapper.loadAll();
                 if (areas == null || areas.size() == 0) {
                     areas = parseAreasFromFile();

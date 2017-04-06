@@ -1,6 +1,4 @@
-package wuxian.me.lagouspider;
-
-import wuxian.me.lagouspider.job.IJob;
+package wuxian.me.lagouspider.job;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;

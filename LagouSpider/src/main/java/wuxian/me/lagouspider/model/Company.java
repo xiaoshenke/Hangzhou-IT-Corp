@@ -1,28 +1,31 @@
 package wuxian.me.lagouspider.model;
 
-import com.sun.istack.internal.NotNull;
-
 /**
  * Created by wuxian on 30/3/2017.
  */
 public class Company {
-    private Area area;
 
-    public Company(@NotNull Area area) {
-        this.area = area;
+    public int area_id;
+    public String company_fullname;
+    public String financeStage;
+    public String industryField;
+    public String detail_location;
+
+    public Company(long companyId) {
+        this.company_id = companyId;
     }
 
-    int companyId;  //--> https://www.lagou.com/gongsi/110890.html
+    public long company_id;  //--> https://www.lagou.com/gongsi/110890.html
 
     @Override
     public int hashCode() {
-        return companyId;
+        return (int) company_id;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj != null && obj instanceof Company) {
-            return companyId == ((Company) obj).companyId;
+            return company_id == ((Company) obj).company_id;
         }
         return super.equals(obj);
     }
@@ -30,7 +33,7 @@ public class Company {
 
 
 /**
- * "companyId":51881,
+ * "company_id":51881,
  * "adWord":0,
  * "createTime":"2017-03-30 10:02:39",
  * "companyShortName":"浙江小融网络科技股份有限公司",

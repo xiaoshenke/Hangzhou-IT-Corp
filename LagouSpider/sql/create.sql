@@ -20,4 +20,3 @@ CREATE INDEX idx_name ON area (name);
 CREATE INDEX idx_area_id ON area (area_id);
 
 #FOREIGN KEY (course_id) REFERENCES course (courses_id);
-

@@ -49,22 +49,27 @@ public class Helper {
         return builder.build();
     }
 
+    public static String getCompanyTableName() {
+        return Config.TABLE_COMPANY + getDatabasePost();
+    }
+
     /**
      * 用于数据库"根据不同时间"分表:分表的目的用于后续研究公司变迁的数据：比如说某块区域的公司迁移数据 某个公司的招聘岗位的变化等
      * <p>
      * 找到数据库后缀
      * 数据库每过1周会全新抓取一次拉勾数据 因此要做分表操作
      * 表的名字像这样 company_2017_0303,company_2017_0403
+     *
      * @return
      */
-    public static String getDatabasePost() {
+    private static String getDatabasePost() {
         if (post != null) {
             return post;
         }
         String content = FileUtil.readFromFile(FileUtil.getGrabFilePath());
         long time = Long.parseLong(content);
 
-        SimpleDateFormat dd = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dd = new SimpleDateFormat("yyyy_MM_dd");
         return post = "_" + dd.format(new Date(time));
     }
 
