@@ -15,6 +15,7 @@ import org.htmlparser.tags.LinkTag;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import wuxian.me.lagouspider.util.FileUtil;
+import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.OkhttpProvider;
 
 /**
@@ -32,12 +33,7 @@ public class HangzhouAreasSpider {
     private Headers distinctsHeaders;
 
     public HangzhouAreasSpider() {
-        Headers.Builder disinctsBuilder = new Headers.Builder();
-        disinctsBuilder.add("Connection", "keep_alive");
-        disinctsBuilder.add("Host", "www.lagou.com");
-        disinctsBuilder.add("Referer", "https://www.lagou.com/");
-        disinctsBuilder.add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36");
-        distinctsHeaders = disinctsBuilder.build();
+        distinctsHeaders = Helper.getHeaderBySpecifyRef("https://www.lagou.com/");
     }
 
     public void beginSpider() {
@@ -62,19 +58,13 @@ public class HangzhouAreasSpider {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(URL_LAGOU_HANGZHOU_JAVA)
                 .newBuilder();
         urlBuilder.addQueryParameter("city", "杭州");
-
-        Headers.Builder builder = new Headers.Builder();
-        builder.add("Connection", "keep_alive");
-        builder.add("Host", "www.lagou.com");
-        builder.add("Referer", urlBuilder.build().toString());
-        builder.add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36");
-
+        String referer = urlBuilder.build().toString();
 
         for (int i = 0; i < dis.length; i++) {
             urlBuilder.removeAllQueryParameters("district");
             urlBuilder.addQueryParameter("district", dis[i]);
             Request request = new Request.Builder()
-                    .headers(builder.build())
+                    .headers(Helper.getHeaderBySpecifyRef(referer))
                     .url(urlBuilder.build().toString())
                     .build();
 

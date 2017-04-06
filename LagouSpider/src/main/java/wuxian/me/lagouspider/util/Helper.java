@@ -1,6 +1,9 @@
 package wuxian.me.lagouspider.util;
 
+import com.sun.istack.internal.NotNull;
+import okhttp3.Headers;
 import wuxian.me.lagouspider.Config;
+import wuxian.me.lagouspider.HangzhouAreasSpider;
 import wuxian.me.lagouspider.util.FileUtil;
 
 import java.text.SimpleDateFormat;
@@ -16,6 +19,22 @@ public class Helper {
     public static boolean isTest = true;
 
     private static String post = null;
+
+    private static final String HEADER_REFERER = "Referer";
+    private static Headers.Builder builder;
+
+    static {
+        builder = new Headers.Builder();
+        builder.add("Connection", "keep_alive");
+        builder.add("Host", "www.lagou.com");
+        builder.add(HEADER_REFERER, "abd");
+        builder.add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36");
+    }
+
+    public static Headers getHeaderBySpecifyRef(@NotNull String reference) {
+        builder.set(HEADER_REFERER, reference);
+        return builder.build();
+    }
 
     /**
      * 用于数据库"根据不同时间"分表:分表的目的用于后续研究公司变迁的数据：比如说某块区域的公司迁移数据 某个公司的招聘岗位的变化等

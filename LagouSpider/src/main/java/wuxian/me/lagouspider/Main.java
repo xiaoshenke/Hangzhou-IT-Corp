@@ -59,8 +59,11 @@ public class Main {
                 for (Area area : areas) {
                     IJob job = JobProvider.getJob();
                     job.setRealRunnable(new AreaSpider(area));
-
                     JobQueue.getInstance().putJob(job);
+
+                    if (Helper.isTest) {
+                        break;
+                    }
                 }
                 //Todo: 开启worker线程
             }
