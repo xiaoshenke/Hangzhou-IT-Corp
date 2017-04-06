@@ -62,8 +62,9 @@ public class AreaSpider implements Runnable {
             public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful()) {
                     System.out.println("onResponse fail");
+                    return;
                 }
-                System.out.println("onResponse success");
+                System.out.println("begin to parse num");
 
                 pageNum = parsePageNum(response.body().string());
 

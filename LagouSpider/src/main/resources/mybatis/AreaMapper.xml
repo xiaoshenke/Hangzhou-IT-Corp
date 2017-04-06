@@ -8,4 +8,8 @@
     <insert id="insertArea">
         insert into area (name,distinct_name) values (#{areaName},#{distinctName})
     </insert>
+    <resultMap id="allArea" type="wuxian.me.lagouspider.model.Area"/>
+    <select id="loadAll" resultMap="allArea">
+        select * from area
+    </select>
 </mapper>

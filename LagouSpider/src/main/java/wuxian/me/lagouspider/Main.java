@@ -37,46 +37,40 @@ public class Main {
         }
 
         if (!HangzhouAreasSpider.areaFileValid()) {      //第一次运行进程的时候先拿到杭州所有的街道信息
-
             HangzhouAreasSpider spider = new HangzhouAreasSpider();
             spider.beginSpider();
 
         } else {
             if (true || Helper.shouldStartNewGrab()) {     //每过7天开始一次全新抓取
                 Helper.updateNewGrab();
-
-                List<Area> areas = parseAreasFromFile();
-                if (areas.size() == 0) {
-                    System.out.println("parese Areas file fail");
-                    return;
-                }
-
-                if (Helper.isTest && false) {  //Todo: 检查表里的数据是不是空的
-                    insertData(areas);  //Fixme:现在字符编码有点问题
-                    return;
+                List<Area> areas = areaMapper.loadAll();
+                if (areas == null || areas.size() == 0) {
+                    areas = parseAreasFromFile();
+                    if (areas.size() == 0) {
+                        System.out.println("parese Areas file fail");
+                        return;
+                    }
+                    insertAreaDataToDB(areas);
                 }
 
                 for (Area area : areas) {
                     IJob job = JobProvider.getJob();
                     job.setRealRunnable(new AreaSpider(area));
                     JobQueue.getInstance().putJob(job);
-
                     if (Helper.isTest) {
                         break;
                     }
                 }
-                //Todo: 开启worker线程
+
+                new WorkThread().start();
             }
         }
     }
 
-    public void insertData(List<Area> areas) {
-        if (Helper.isTest) {
-            for (Area area : areas) {
-                System.out.println("area: " + area.name + " distinct: " + area.distinct_name);
-                areaMapper.insertArea(area.name, area.distinct_name);
-            }
-            return;
+    public void insertAreaDataToDB(List<Area> areas) {
+        for (Area area : areas) {
+            System.out.println("area: " + area.name + " distinct: " + area.distinct_name);
+            areaMapper.insertArea(area.name, area.distinct_name);
         }
     }
 
@@ -89,7 +83,7 @@ public class Main {
             return false;
         }
 
-        String url = "jdbc:mysql://192.168.13.245:3306/lagoujob?useUnicode=true&characterEncoding=utf-8";
+        String url = "jdbc:mysql://127.0.0.1:3306/lagoujob?useUnicode=true&characterEncoding=utf-8";
         String username = "user1";
         String password = "123456";
 
@@ -126,8 +120,8 @@ public class Main {
                 continue;
             }
             Area area = new Area();
-            area.name = detail[0];
-            area.distinct_name = detail[1];
+            area.name = detail[1];
+            area.distinct_name = detail[0];
             areaList.add(area);
         }
         return areaList;

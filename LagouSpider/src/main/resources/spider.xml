@@ -19,7 +19,7 @@
 
     <bean id="dataSource"
           class="org.apache.commons.dbcp.BasicDataSource"
-          p:url="jdbc:mysql://192.168.13.245:3306/lagoujob?useUnicode=true&amp;characterEncoding=gbk"
+          p:url="jdbc:mysql://127.0.0.1:3306/lagoujob?useUnicode=true&amp;characterEncoding=gbk"
           p:username="user1"
           p:password="123456"
     />

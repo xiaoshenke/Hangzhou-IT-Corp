@@ -25,7 +25,7 @@ public class JobQueue {
         return queue.offer(job);
     }
 
-    public IJob getJob(IJob job) {
+    public IJob getJob() {
         return queue.poll();
     }
 
