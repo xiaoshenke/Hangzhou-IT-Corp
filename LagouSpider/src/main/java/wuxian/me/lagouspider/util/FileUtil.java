@@ -1,9 +1,7 @@
 package wuxian.me.lagouspider.util;
 
 import static com.google.common.base.Preconditions.*;
-import static wuxian.me.lagouspider.Config.CONF_AREA;
-import static wuxian.me.lagouspider.Config.CONF_DISTINTC;
-import static wuxian.me.lagouspider.Config.CONF_LASTGRAB;
+import static wuxian.me.lagouspider.Config.*;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
@@ -33,6 +31,10 @@ public class FileUtil {
 
     public static String getGrabFilePath() {
         return getCurrentPath() + CONF_LASTGRAB;
+    }
+
+    public static String getCookieFilePath() {
+        return getCurrentPath() + CONF_COOKIE;
     }
 
     public static String getCurrentPath() {

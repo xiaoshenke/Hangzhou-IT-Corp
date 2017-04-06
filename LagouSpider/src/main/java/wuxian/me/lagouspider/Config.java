@@ -16,6 +16,8 @@ public class Config {
     //存储街道的文件
     public static final String CONF_AREA = "/conf/area.txt";
 
+    public static final String CONF_COOKIE = "/conf/cookies";
+
     public interface DB {
 
         String TABLE_DISTINCT_AREA = "area";  //杭州某个区下对应的街道
