@@ -6,17 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
-import wuxian.me.lagouspider.control.WholeJob;
+import wuxian.me.lagouspider.control.JobMonitor;
 import wuxian.me.lagouspider.core.AreaSpider;
 import wuxian.me.lagouspider.control.JobProvider;
 import wuxian.me.lagouspider.control.JobQueue;
 import wuxian.me.lagouspider.control.WorkThread;
-import wuxian.me.lagouspider.core.HangzhouAreasSpider;
+import wuxian.me.lagouspider.core.DistinctSpider;
 import wuxian.me.lagouspider.mapper.AreaMapper;
 import wuxian.me.lagouspider.job.IJob;
 import wuxian.me.lagouspider.mapper.CompanyMapper;
 import wuxian.me.lagouspider.model.Area;
-import wuxian.me.lagouspider.util.FileUtil;
+
+import static wuxian.me.lagouspider.util.FileUtil.*;
 import wuxian.me.lagouspider.util.Helper;
 
 import java.sql.DriverManager;
@@ -32,7 +33,7 @@ public class Main {
 
     public static Logger logger = Logger.getLogger(Main.class);
     static {
-        PropertyConfigurator.configure(FileUtil.getLog4jPropFilePath());
+        PropertyConfigurator.configure(getLog4jPropFilePath());
     }
 
     @Autowired
@@ -44,15 +45,15 @@ public class Main {
     public Main() {
     }
 
-    public void doJob() {
+    public void run() {
 
         if (!checkDBConnection()) {
             System.out.println("connect db fail");
             return;
         }
 
-        if (!HangzhouAreasSpider.areaFileValid()) {      //第一次运行进程的时候先拿到杭州所有的街道信息
-            HangzhouAreasSpider spider = new HangzhouAreasSpider();
+        if (!DistinctSpider.areaFileValid()) {      //第一次运行进程的时候先拿到杭州所有的街道信息
+            DistinctSpider spider = new DistinctSpider();
             spider.beginSpider();
 
         } else {
@@ -75,15 +76,13 @@ public class Main {
                 for (Area area : areas) {
                     IJob job = JobProvider.getJob();
                     job.setRealRunnable(new AreaSpider(area));
-
                     JobQueue.getInstance().putJob(job);
-                    WholeJob.getInstance().putJob(job, IJob.STATE_IN_PROGRESS);
 
+                    JobMonitor.getInstance().putJob(job, IJob.STATE_IN_PROGRESS);
                     if (Helper.isTest) {
                         break;
                     }
                 }
-
                 new WorkThread().start();
             }
         }
@@ -96,7 +95,7 @@ public class Main {
         }
     }
 
-    private static boolean checkDBConnection() {
+    private boolean checkDBConnection() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -120,24 +119,22 @@ public class Main {
         return false;
     }
 
-    private static ApplicationContext ctx;
     public static void main(String[] args){
-        ctx = new ClassPathXmlApplicationContext("spider.xml");
-
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("spider.xml");
         Main main = ctx.getBean(Main.class);
-        main.doJob();
+        main.run();
     }
 
     private List<Area> parseAreasFromFile() {
         List<Area> areaList = new ArrayList<Area>();
-        String areaString = FileUtil.readFromFile(FileUtil.getAreaFilePath());
+        String areaString = readFromFile(getAreaFilePath());
         if (areaString.equals("")) {
             return areaList;
         }
-        String[] areas = areaString.split(HangzhouAreasSpider.CUT);
+        String[] areas = areaString.split(DistinctSpider.CUT);
 
         for (int i = 0; i < areas.length; i++) {
-            String[] detail = areas[i].split(HangzhouAreasSpider.SEPRATE);
+            String[] detail = areas[i].split(DistinctSpider.SEPRATE);
             if (detail.length != 2) {
                 continue;
             }

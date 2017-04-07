@@ -5,6 +5,8 @@ package wuxian.me.lagouspider;
  */
 public class Config {
 
+    public static final String URL_LAGOU_JAVA = "https://www.lagou.com/jobs/list_Java?px=default";
+
     public static final String TABLE_COMPANY = "companies";
 
     //7天全面抓一次

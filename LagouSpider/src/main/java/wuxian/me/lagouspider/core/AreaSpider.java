@@ -10,7 +10,7 @@ import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import wuxian.me.lagouspider.Main;
 import wuxian.me.lagouspider.control.Fail;
-import wuxian.me.lagouspider.control.WholeJob;
+import wuxian.me.lagouspider.control.JobMonitor;
 import wuxian.me.lagouspider.job.IJob;
 import wuxian.me.lagouspider.control.JobProvider;
 import wuxian.me.lagouspider.control.JobQueue;
@@ -20,6 +20,8 @@ import wuxian.me.lagouspider.util.OkhttpProvider;
 
 import java.io.IOException;
 
+import static wuxian.me.lagouspider.Config.URL_LAGOU_JAVA;
+
 /**
  * Created by wuxian on 30/3/2017.
  * <p>
@@ -28,14 +30,12 @@ import java.io.IOException;
  * 3 重试机制
  */
 public class AreaSpider implements Runnable {
-    private static final String URL_LAGOU_JAVA = "https://www.lagou.com/jobs/list_Java?px=default";
     Area area;
     private int pageNum = -1;
 
     public AreaSpider(@NotNull Area area) {
         this.area = area;
     }
-
 
     public void beginSpider() {
         for (int i = 0; i < pageNum; i++) {
@@ -54,7 +54,7 @@ public class AreaSpider implements Runnable {
                 .newBuilder();
         urlBuilder.addQueryParameter("city", "杭州");
         urlBuilder.addQueryParameter("district", area.distinct_name);
-        String referer = urlBuilder.build().toString();
+        final String referer = urlBuilder.build().toString();
 
         urlBuilder.addQueryParameter("bizArea", area.name);
         Request request = new Request.Builder()
@@ -64,43 +64,17 @@ public class AreaSpider implements Runnable {
 
         OkhttpProvider.getClient().newCall(request).enqueue(new Callback() {
             public void onFailure(Call call, IOException e) {
-
-                IJob job = WholeJob.getInstance().getJob(AreaSpider.this);
-                if (job != null) {
-                    job.fail(new Fail(Fail.FAIL_NETWORK_ERROR));
-                    job.setCurrentState(IJob.STATE_FAIL);
-                    WholeJob.getInstance().putJob(job, IJob.STATE_FAIL);  //本次失败了
-
-                    IJob next = JobProvider.getNextJob(job);              //重新制定爬虫策略 放入jobQueue
-                    next.setCurrentState(IJob.STATE_RETRY);
-                    WholeJob.getInstance().putJob(next, IJob.STATE_RETRY);
-                    JobQueue.getInstance().putJob(next);
-                }
+                JobMonitor.getInstance().fail(AreaSpider.this, new Fail(Fail.FAIL_NETWORK_ERROR));
                 Main.logger.error("AreaSpider onFailure");
             }
 
             public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful()) {
-                    IJob job = WholeJob.getInstance().getJob(AreaSpider.this);
-                    if (job != null) {
-                        job.fail(new Fail(response.code(), response.message()));
-                        job.setCurrentState(IJob.STATE_FAIL);
-                        WholeJob.getInstance().putJob(job, IJob.STATE_FAIL);
-
-                        IJob next = JobProvider.getNextJob(job);
-                        next.setCurrentState(IJob.STATE_RETRY);
-                        WholeJob.getInstance().putJob(next, IJob.STATE_RETRY);
-                        JobQueue.getInstance().putJob(next);
-                    }
+                    JobMonitor.getInstance().fail(AreaSpider.this, new Fail(response.code(), response.message()));
                     Main.logger.error("AreaSpider onSuccess,error code" + response.code());
                     return;
                 } else {
-                    IJob job = WholeJob.getInstance().getJob(AreaSpider.this);
-                    if (job != null) {
-                        job.setCurrentState(IJob.STATE_SUCCESS);
-                        WholeJob.getInstance().putJob(job, IJob.STATE_SUCCESS);
-                    }
-
+                    JobMonitor.getInstance().success(AreaSpider.this);
                     Main.logger.info("AreaSpider onSuccess");
                 }
                 pageNum = parsePageNum(response.body().string());
@@ -115,7 +89,6 @@ public class AreaSpider implements Runnable {
      * @return -1表示解析失败
      */
     private int parsePageNum(String data) {
-
         try {
             Parser parser = new Parser(data);
             parser.setEncoding("utf-8");
@@ -134,7 +107,6 @@ public class AreaSpider implements Runnable {
         } catch (ParserException e) {
 
         }
-
         return -1;
     }
 

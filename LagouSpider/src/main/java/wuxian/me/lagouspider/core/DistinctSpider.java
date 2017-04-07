@@ -1,6 +1,7 @@
 package wuxian.me.lagouspider.core;
 
 import static com.google.common.base.Preconditions.*;
+import static wuxian.me.lagouspider.Config.URL_LAGOU_JAVA;
 
 import okhttp3.*;
 
@@ -23,16 +24,13 @@ import wuxian.me.lagouspider.util.OkhttpProvider;
  * 抓取杭州所有的区信息,保存到@distinct.txt,area.txt
  * <p>
  */
-public class HangzhouAreasSpider {
-    private static final String URL_LAGOU_HANGZHOU_JAVA = "https://www.lagou.com/jobs/list_Java?px=default";
+public class DistinctSpider {
     public static final String CUT = ";";
     public static final String SEPRATE = ":";
 
-    private final OkHttpClient client = OkhttpProvider.getClient();
-
     private Headers distinctsHeaders;
 
-    public HangzhouAreasSpider() {
+    public DistinctSpider() {
         distinctsHeaders = Helper.getHeaderBySpecifyRef("https://www.lagou.com/");
     }
 
@@ -41,7 +39,6 @@ public class HangzhouAreasSpider {
             getDisticts();
             return;
         }
-
         if (!areaFileValid()) {
             getAreas();
         }
@@ -55,7 +52,7 @@ public class HangzhouAreasSpider {
 
         String[] dis = distincts.split(CUT);  //编码问题带来分解失败...
 
-        HttpUrl.Builder urlBuilder = HttpUrl.parse(URL_LAGOU_HANGZHOU_JAVA)
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(URL_LAGOU_JAVA)
                 .newBuilder();
         urlBuilder.addQueryParameter("city", "杭州");
         String referer = urlBuilder.build().toString();
@@ -69,7 +66,7 @@ public class HangzhouAreasSpider {
                     .build();
 
             final String distinct = dis[i];
-            client.newCall(request).enqueue(new Callback() {
+            OkhttpProvider.getClient().newCall(request).enqueue(new Callback() {
                 public void onFailure(Call call, IOException e) {
                     System.out.println("onFailure");
                 }
@@ -104,7 +101,6 @@ public class HangzhouAreasSpider {
         }
 
         content += "\n";
-
         if (!FileUtil.writeToFile(FileUtil.getAreaFilePath(), content)) {
             System.out.println("writearea error");
         }
@@ -150,7 +146,7 @@ public class HangzhouAreasSpider {
     }
 
     private void getDisticts() {
-        HttpUrl.Builder urlBuilder = HttpUrl.parse(URL_LAGOU_HANGZHOU_JAVA)
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(URL_LAGOU_JAVA)
                 .newBuilder();
         urlBuilder.addQueryParameter("city", "杭州");
 
@@ -158,7 +154,7 @@ public class HangzhouAreasSpider {
                 .headers(distinctsHeaders)
                 .url(urlBuilder.build().toString())
                 .build();
-        client.newCall(request).enqueue(new Callback() {
+        OkhttpProvider.getClient().newCall(request).enqueue(new Callback() {
             public void onFailure(Call call, IOException e) {
                 System.out.println("onFailure");
             }
@@ -199,7 +195,6 @@ public class HangzhouAreasSpider {
                     Node tag = list.elementAt(i);
                     NodeList child = tag.getChildren();
                     for (int j = 0; j < child.size(); j++) {
-
                         Node node = child.elementAt(j);
                         if (node instanceof LinkTag) {
                             if (((LinkTag) node).getLinkText().equals("不限")) {
