@@ -9,6 +9,9 @@ import org.htmlparser.tags.LinkTag;
 import org.htmlparser.tags.Span;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
+import wuxian.me.lagouspider.job.IJob;
+import wuxian.me.lagouspider.job.JobProvider;
+import wuxian.me.lagouspider.job.JobQueue;
 import wuxian.me.lagouspider.model.Area;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.OkhttpProvider;
@@ -19,16 +22,12 @@ import java.util.List;
 /**
  * Created by wuxian on 30/3/2017.
  * <p>
- * Todo:抓取某块区域所有的公司
  * 1 先拿到该地区的页数
  * 2 根据页数发送每一页数据的请求
  * 3 重试机制
  */
 public class AreaSpider implements Runnable {
-
     private static final String URL_LAGOU_JAVA = "https://www.lagou.com/jobs/list_Java?px=default";
-
-
     Area area;
     private int pageNum = -1;
 
@@ -36,9 +35,17 @@ public class AreaSpider implements Runnable {
         this.area = area;
     }
 
-    //Todo
-    public void beginSpider() {
 
+    public void beginSpider() {
+        for (int i = 0; i < pageNum; i++) {
+            IJob job = JobProvider.getJob();
+            job.setRealRunnable(new AreaPageSpider(area, i));
+            JobQueue.getInstance().putJob(job);
+
+            if (Helper.isTest) {
+                break;
+            }
+        }
     }
 
     private void getCompanyPageNum() {
@@ -61,15 +68,9 @@ public class AreaSpider implements Runnable {
 
             public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful()) {
-                    System.out.println("onResponse fail");
                     return;
                 }
-                System.out.println("begin to parse num");
-
                 pageNum = parsePageNum(response.body().string());
-
-                System.out.println("pageNum: " + pageNum);
-
                 if (pageNum != -1) {
                     beginSpider();
                 }
@@ -97,16 +98,14 @@ public class AreaSpider implements Runnable {
             } else {
                 return 0;  //这个区域内没有公司 比如说灵隐区...
             }
-            //System.out.println("parseDistincts success");
         } catch (ParserException e) {
-            //System.out.println("parseDistincts error");
+
         }
 
         return -1;
     }
 
     public void run() {
-
         if (pageNum == -1) {
             getCompanyPageNum();
         } else {

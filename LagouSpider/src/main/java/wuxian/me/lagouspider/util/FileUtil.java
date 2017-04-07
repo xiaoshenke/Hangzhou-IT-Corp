@@ -37,6 +37,10 @@ public class FileUtil {
         return getCurrentPath() + CONF_COOKIE;
     }
 
+    public static String getLog4jPropFilePath() {
+        return getCurrentPath() + CONF_LOG4J_PROPERTIES;
+    }
+
     public static String getCurrentPath() {
         File file = new File("");
 

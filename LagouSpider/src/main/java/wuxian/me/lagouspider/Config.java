@@ -20,6 +20,8 @@ public class Config {
 
     public static final String CONF_COOKIE = "/conf/cookies";
 
+    public static final String CONF_LOG4J_PROPERTIES = "/log4j.properties";
+
     public interface DB {
 
         String TABLE_DISTINCT_AREA = "area";  //杭州某个区下对应的街道

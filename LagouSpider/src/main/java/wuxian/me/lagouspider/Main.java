@@ -1,5 +1,7 @@
 package wuxian.me.lagouspider;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -26,6 +28,12 @@ import java.util.List;
 @Component
 public class Main {
 
+    static Logger logger = Logger.getLogger(Main.class);
+
+    static {
+        PropertyConfigurator.configure(FileUtil.getLog4jPropFilePath());
+    }
+
     @Autowired
     AreaMapper areaMapper;
 
@@ -35,8 +43,8 @@ public class Main {
     public Main() {
     }
 
-    //Todo:
     public void doJob() {
+
         if (!checkDBConnection()) {
             System.out.println("connect db fail");
             return;
@@ -52,10 +60,6 @@ public class Main {
 
                 String tableName = Helper.getCompanyTableName();
                 companyMapper.createNewTableIfNeed(tableName);
-
-                if (true) {
-                    return;
-                }
 
                 List<Area> areas = areaMapper.loadAll();
                 if (areas == null || areas.size() == 0) {
