@@ -1,5 +1,8 @@
-package wuxian.me.lagouspider.job;
+package wuxian.me.lagouspider.control;
 
+import wuxian.me.lagouspider.job.DelayJob;
+import wuxian.me.lagouspider.job.IJob;
+import wuxian.me.lagouspider.job.ImmediateJob;
 import wuxian.me.lagouspider.util.Helper;
 
 import java.util.Random;

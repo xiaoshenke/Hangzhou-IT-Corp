@@ -1,4 +1,4 @@
-package wuxian.me.lagouspider;
+package wuxian.me.lagouspider.core;
 
 import static com.google.common.base.Preconditions.*;
 

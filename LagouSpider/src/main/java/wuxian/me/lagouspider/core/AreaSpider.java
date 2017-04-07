@@ -1,23 +1,21 @@
-package wuxian.me.lagouspider.area;
+package wuxian.me.lagouspider.core;
 
 import com.sun.istack.internal.NotNull;
 import okhttp3.*;
 import org.htmlparser.Node;
 import org.htmlparser.Parser;
 import org.htmlparser.filters.HasAttributeFilter;
-import org.htmlparser.tags.LinkTag;
 import org.htmlparser.tags.Span;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import wuxian.me.lagouspider.job.IJob;
-import wuxian.me.lagouspider.job.JobProvider;
-import wuxian.me.lagouspider.job.JobQueue;
+import wuxian.me.lagouspider.control.JobProvider;
+import wuxian.me.lagouspider.control.JobQueue;
 import wuxian.me.lagouspider.model.Area;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.OkhttpProvider;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Created by wuxian on 30/3/2017.
@@ -63,6 +61,7 @@ public class AreaSpider implements Runnable {
 
         OkhttpProvider.getClient().newCall(request).enqueue(new Callback() {
             public void onFailure(Call call, IOException e) {
+                //Fixme:怎么通过runnable拿到job..进而更改这个job的状态：成功失败重试...
                 System.out.println("onFailure");
             }
 

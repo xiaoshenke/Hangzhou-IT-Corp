@@ -4,8 +4,6 @@ import com.sun.istack.internal.NotNull;
 import okhttp3.Headers;
 import okhttp3.Response;
 import wuxian.me.lagouspider.Config;
-import wuxian.me.lagouspider.HangzhouAreasSpider;
-import wuxian.me.lagouspider.util.FileUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -1,4 +1,4 @@
-package wuxian.me.lagouspider.company;
+package wuxian.me.lagouspider.core;
 
 import wuxian.me.lagouspider.model.Area;
 

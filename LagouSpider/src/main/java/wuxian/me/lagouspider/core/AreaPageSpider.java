@@ -1,4 +1,4 @@
-package wuxian.me.lagouspider.area;
+package wuxian.me.lagouspider.core;
 
 import com.sun.istack.internal.NotNull;
 import wuxian.me.lagouspider.model.Area;

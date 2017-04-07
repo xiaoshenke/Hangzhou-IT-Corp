@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
-import wuxian.me.lagouspider.area.AreaSpider;
-import wuxian.me.lagouspider.job.JobProvider;
-import wuxian.me.lagouspider.job.JobQueue;
-import wuxian.me.lagouspider.job.WorkThread;
+import wuxian.me.lagouspider.control.WholeJob;
+import wuxian.me.lagouspider.core.AreaSpider;
+import wuxian.me.lagouspider.control.JobProvider;
+import wuxian.me.lagouspider.control.JobQueue;
+import wuxian.me.lagouspider.control.WorkThread;
+import wuxian.me.lagouspider.core.HangzhouAreasSpider;
 import wuxian.me.lagouspider.mapper.AreaMapper;
 import wuxian.me.lagouspider.job.IJob;
 import wuxian.me.lagouspider.mapper.CompanyMapper;
@@ -29,7 +31,6 @@ import java.util.List;
 public class Main {
 
     static Logger logger = Logger.getLogger(Main.class);
-
     static {
         PropertyConfigurator.configure(FileUtil.getLog4jPropFilePath());
     }
@@ -74,7 +75,10 @@ public class Main {
                 for (Area area : areas) {
                     IJob job = JobProvider.getJob();
                     job.setRealRunnable(new AreaSpider(area));
+
                     JobQueue.getInstance().putJob(job);
+                    WholeJob.getInstance().putJob(job, IJob.STATE_IN_PROGRESS);
+
                     if (Helper.isTest) {
                         break;
                     }
