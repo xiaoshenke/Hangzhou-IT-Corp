@@ -30,7 +30,7 @@ import java.util.List;
 @Component
 public class Main {
 
-    static Logger logger = Logger.getLogger(Main.class);
+    public static Logger logger = Logger.getLogger(Main.class);
     static {
         PropertyConfigurator.configure(FileUtil.getLog4jPropFilePath());
     }

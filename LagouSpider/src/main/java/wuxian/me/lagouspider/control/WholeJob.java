@@ -17,6 +17,8 @@ public class WholeJob {
 
     private Map<IJob, Integer> set = new ConcurrentHashMap<IJob, Integer>();
 
+    private Map<Runnable, IJob> jobMap = new ConcurrentHashMap<Runnable, IJob>();
+
     private WholeJob() {
     }
 
@@ -31,6 +33,15 @@ public class WholeJob {
 
     public void putJob(@NotNull IJob job, int state) {
         set.put(job, state);
+
+        jobMap.put(job.getRealRunnable(), job);
+    }
+
+    public IJob getJob(@NotNull Runnable runnable) {
+        if (jobMap.containsKey(runnable)) {
+            return jobMap.get(runnable);
+        }
+        return null;
     }
 
     public boolean contains(@NotNull IJob job) {

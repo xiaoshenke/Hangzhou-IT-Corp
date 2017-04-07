@@ -40,6 +40,10 @@ public abstract class BaseJob implements IJob {
         realJob = runnable;
     }
 
+    public final Runnable getRealRunnable() {
+        return realJob;
+    }
+
     @Override
     public int hashCode() {
         if (realJob != null) {

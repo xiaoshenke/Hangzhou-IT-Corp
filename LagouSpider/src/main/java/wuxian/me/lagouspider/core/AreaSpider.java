@@ -8,6 +8,9 @@ import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.tags.Span;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
+import wuxian.me.lagouspider.Main;
+import wuxian.me.lagouspider.control.Fail;
+import wuxian.me.lagouspider.control.WholeJob;
 import wuxian.me.lagouspider.job.IJob;
 import wuxian.me.lagouspider.control.JobProvider;
 import wuxian.me.lagouspider.control.JobQueue;
@@ -61,13 +64,44 @@ public class AreaSpider implements Runnable {
 
         OkhttpProvider.getClient().newCall(request).enqueue(new Callback() {
             public void onFailure(Call call, IOException e) {
-                //Fixme:怎么通过runnable拿到job..进而更改这个job的状态：成功失败重试...
-                System.out.println("onFailure");
+
+                IJob job = WholeJob.getInstance().getJob(AreaSpider.this);
+                if (job != null) {
+                    job.fail(new Fail(Fail.FAIL_NETWORK_ERROR));
+                    job.setCurrentState(IJob.STATE_FAIL);
+                    WholeJob.getInstance().putJob(job, IJob.STATE_FAIL);  //本次失败了
+
+                    IJob next = JobProvider.getNextJob(job);              //重新制定爬虫策略 放入jobQueue
+                    next.setCurrentState(IJob.STATE_RETRY);
+                    WholeJob.getInstance().putJob(next, IJob.STATE_RETRY);
+                    JobQueue.getInstance().putJob(next);
+                }
+                Main.logger.error("AreaSpider onFailure");
             }
 
             public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful()) {
+                    IJob job = WholeJob.getInstance().getJob(AreaSpider.this);
+                    if (job != null) {
+                        job.fail(new Fail(response.code(), response.message()));
+                        job.setCurrentState(IJob.STATE_FAIL);
+                        WholeJob.getInstance().putJob(job, IJob.STATE_FAIL);
+
+                        IJob next = JobProvider.getNextJob(job);
+                        next.setCurrentState(IJob.STATE_RETRY);
+                        WholeJob.getInstance().putJob(next, IJob.STATE_RETRY);
+                        JobQueue.getInstance().putJob(next);
+                    }
+                    Main.logger.error("AreaSpider onSuccess,error code" + response.code());
                     return;
+                } else {
+                    IJob job = WholeJob.getInstance().getJob(AreaSpider.this);
+                    if (job != null) {
+                        job.setCurrentState(IJob.STATE_SUCCESS);
+                        WholeJob.getInstance().putJob(job, IJob.STATE_SUCCESS);
+                    }
+
+                    Main.logger.info("AreaSpider onSuccess");
                 }
                 pageNum = parsePageNum(response.body().string());
                 if (pageNum != -1) {

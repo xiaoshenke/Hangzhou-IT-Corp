@@ -26,4 +26,6 @@ public interface IJob extends Runnable {
     int getFailTimes();
 
     void setRealRunnable(@NotNull Runnable runnable);
+
+    Runnable getRealRunnable();
 }
