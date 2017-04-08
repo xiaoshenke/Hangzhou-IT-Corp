@@ -46,13 +46,6 @@ public class Main {
     }
 
     public void run() {
-
-        logger.error("hello");
-
-        if (Helper.isTest) {
-            return;
-        }
-
         if (!checkDBConnection()) {
             return;
         }
@@ -60,7 +53,6 @@ public class Main {
         if (!DistinctSpider.areaFileValid()) {      //第一次运行进程的时候先拿到杭州所有的街道信息
             DistinctSpider spider = new DistinctSpider();
             spider.beginSpider();
-
         } else {
             if (true || Helper.shouldStartNewGrab()) {     //每过7天开始一次全新抓取
                 Helper.updateNewGrab();

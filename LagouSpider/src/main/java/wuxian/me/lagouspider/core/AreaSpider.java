@@ -38,11 +38,12 @@ public class AreaSpider implements Runnable {
     }
 
     public void beginSpider() {
-        for (int i = 0; i < pageNum; i++) {
+        for (int i = 1; i < pageNum; i++) {
             IJob job = JobProvider.getJob();
             job.setRealRunnable(new AreaPageSpider(area, i));
             JobQueue.getInstance().putJob(job);
 
+            JobMonitor.getInstance().putJob(job, IJob.STATE_IN_PROGRESS);
             if (Helper.isTest) {
                 break;
             }

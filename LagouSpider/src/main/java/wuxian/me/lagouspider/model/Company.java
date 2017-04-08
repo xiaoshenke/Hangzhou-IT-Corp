@@ -1,5 +1,7 @@
 package wuxian.me.lagouspider.model;
 
+import org.springframework.core.annotation.Order;
+
 /**
  * Created by wuxian on 30/3/2017.
  *
@@ -7,7 +9,7 @@ package wuxian.me.lagouspider.model;
  */
 public class Company {
 
-    public int area_id;
+    public int area_id = -1;
     public String company_fullname;
     public String financeStage;
     public String industryField;
@@ -30,6 +32,11 @@ public class Company {
             return company_id == ((Company) obj).company_id;
         }
         return super.equals(obj);
+    }
+
+    @Override
+    public String toString() {
+        return "companyId: " + company_id + " name: " + company_fullname + " stage: " + financeStage + " industry: " + industryField;
     }
 }
 
