@@ -37,13 +37,16 @@ public class JobMonitor {
         }
     }
 
-    //Fixme: 根据失败上限丢掉runnable？
     public void fail(@NotNull Runnable runnable, @NotNull Fail fail) {
         IJob job = getJob(runnable);
         if (job != null) {
             job.fail(fail);
             job.setCurrentState(IJob.STATE_FAIL);
             JobMonitor.getInstance().putJob(job, IJob.STATE_FAIL);  //本次失败了
+
+            if (job.getFailTimes() >= IJob.MAX_FAIL_TIME) {  //ignore this
+                return;
+            }
 
             IJob next = JobProvider.getNextJob(job);              //重新制定爬虫策略 放入jobQueue
             next.setCurrentState(IJob.STATE_RETRY);
@@ -55,7 +58,6 @@ public class JobMonitor {
 
     public void putJob(@NotNull IJob job, int state) {
         set.put(job, state);
-
         jobMap.put(job.getRealRunnable(), job);
     }
 

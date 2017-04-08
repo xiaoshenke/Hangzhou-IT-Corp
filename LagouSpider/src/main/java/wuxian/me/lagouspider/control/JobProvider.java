@@ -22,17 +22,19 @@ public class JobProvider {
 
     private static Random random = new Random();
 
-    //Todo:读取失败的数据 根据失败原因制定重试策略
     public static IJob getNextJob(@NotNull IJob job) {
-        return job;
+        int time = job.getFailTimes();
+
+        IJob next = new DelayJob(time * time * 1000);  //Fixme: Todo: a better strategy?
+        next.setRealRunnable(job.getRealRunnable());
+
+        return next;
     }
 
     public static IJob getJob() {
-        if (Helper.isTest) {
-            return new ImmediateJob();
-        }
-        if (random.nextDouble() * 100 > 30) {
-            return new DelayJob();
+
+        if (random.nextDouble() * 100 > 20) {
+            return new DelayJob((long) random.nextDouble() * 1000 + 200);
         }
         return new ImmediateJob();
     }

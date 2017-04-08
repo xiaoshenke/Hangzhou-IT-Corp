@@ -47,8 +47,13 @@ public class Main {
 
     public void run() {
 
+        logger.error("hello");
+
+        if (Helper.isTest) {
+            return;
+        }
+
         if (!checkDBConnection()) {
-            System.out.println("connect db fail");
             return;
         }
 
@@ -67,7 +72,7 @@ public class Main {
                 if (areas == null || areas.size() == 0) {
                     areas = parseAreasFromFile();
                     if (areas.size() == 0) {
-                        System.out.println("parese Areas file fail");
+                        logger.error("parse Area info from AreaFile error,check your file");
                         return;
                     }
                     insertAreaDataToDB(areas);
@@ -90,7 +95,6 @@ public class Main {
 
     public void insertAreaDataToDB(List<Area> areas) {
         for (Area area : areas) {
-            System.out.println("area: " + area.name + " distinct: " + area.distinct_name);
             areaMapper.insertArea(area.name, area.distinct_name);
         }
     }
@@ -99,8 +103,7 @@ public class Main {
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            System.out.println("No jdbc driver");
-            e.printStackTrace();
+            logger.error("no jdbc driver");
             return false;
         }
 
@@ -110,11 +113,10 @@ public class Main {
 
         try {
             DriverManager.getConnection(url, username, password);
-            System.out.println("Database connect success!");
+            logger.debug("db check connection success");
             return true;
         } catch (SQLException e) {
-            System.out.println("Database connect failure!");
-            e.printStackTrace();
+            logger.info("db check connection fail");
         }
         return false;
     }

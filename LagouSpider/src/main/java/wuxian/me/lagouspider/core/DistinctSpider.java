@@ -15,6 +15,7 @@ import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.tags.LinkTag;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
+import wuxian.me.lagouspider.Main;
 import wuxian.me.lagouspider.util.FileUtil;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.OkhttpProvider;
@@ -27,11 +28,7 @@ import wuxian.me.lagouspider.util.OkhttpProvider;
 public class DistinctSpider {
     public static final String CUT = ";";
     public static final String SEPRATE = ":";
-
-    private Headers distinctsHeaders;
-
     public DistinctSpider() {
-        distinctsHeaders = Helper.getHeaderBySpecifyRef("https://www.lagou.com/");
     }
 
     public void beginSpider() {
@@ -47,7 +44,7 @@ public class DistinctSpider {
     private void getAreas() {
         String distincts = FileUtil.readFromFile(FileUtil.getDistinctsFilePath());
         if (null == distincts) {
-            System.out.println("read distincts file error");
+            return;
         }
 
         String[] dis = distincts.split(CUT);  //编码问题带来分解失败...
@@ -68,17 +65,16 @@ public class DistinctSpider {
             final String distinct = dis[i];
             OkhttpProvider.getClient().newCall(request).enqueue(new Callback() {
                 public void onFailure(Call call, IOException e) {
-                    System.out.println("onFailure");
+                    //Todo:?
                 }
 
                 public void onResponse(Call call, Response response) throws IOException {
                     if (!response.isSuccessful()) {
-                        System.out.println("onResponse fail");
+                        //Todo:?
+                        return;
                     }
-                    System.out.println("onResponse success");
 
                     final String data = response.body().string();
-                    //System.out.println(data);
                     List<String> areas = parseArea(data);
                     writeArea(distinct, areas);
                 }
@@ -102,7 +98,7 @@ public class DistinctSpider {
 
         content += "\n";
         if (!FileUtil.writeToFile(FileUtil.getAreaFilePath(), content)) {
-            System.out.println("writearea error");
+            Main.logger.error("write Areas info to AreaFile fail");
         }
     }
 
@@ -130,9 +126,9 @@ public class DistinctSpider {
                     }
                 }
             }
-            System.out.println("parseDistincts success");
+
         } catch (ParserException e) {
-            System.out.println("parseDistincts error");
+            Main.logger.error("parse areas from html error");
         }
         return distincts;
     }
@@ -151,19 +147,18 @@ public class DistinctSpider {
         urlBuilder.addQueryParameter("city", "杭州");
 
         final Request request = new Request.Builder()
-                .headers(distinctsHeaders)
+                .headers(Helper.getHeaderBySpecifyRef("https://www.lagou.com/"))
                 .url(urlBuilder.build().toString())
                 .build();
         OkhttpProvider.getClient().newCall(request).enqueue(new Callback() {
             public void onFailure(Call call, IOException e) {
-                System.out.println("onFailure");
+                //Todo:?
             }
 
             public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful()) {
-                    System.out.println("onResponse fail");
+                    return;
                 }
-                System.out.println("onResponse success");
 
                 final String data = response.body().string();
                 List<String> distincts = parseDistincts(data);
@@ -205,9 +200,9 @@ public class DistinctSpider {
                     }
                 }
             }
-            System.out.println("parseDistincts success");
+
         } catch (ParserException e) {
-            System.out.println("parseDistincts error");
+            Main.logger.error("parse distinct from html fail");
         }
         return distincts;
     }

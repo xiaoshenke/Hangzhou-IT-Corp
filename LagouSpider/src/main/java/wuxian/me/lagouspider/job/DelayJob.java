@@ -8,6 +8,12 @@ import java.util.TimerTask;
  */
 public class DelayJob extends BaseJob {
 
+    private long milltimes;
+
+    public DelayJob(long milltimes) {
+        this.milltimes = milltimes;
+    }
+
     private static Timer timer = new Timer();
 
     TimerTask timerTask;
@@ -24,6 +30,6 @@ public class DelayJob extends BaseJob {
             };
         }
 
-        timer.schedule(timerTask, 1000);  //Todo:延迟时间策略
+        timer.schedule(timerTask, milltimes);  //Todo:延迟时间策略
     }
 }

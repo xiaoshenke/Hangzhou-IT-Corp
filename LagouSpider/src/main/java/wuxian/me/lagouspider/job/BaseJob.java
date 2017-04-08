@@ -20,8 +20,12 @@ public abstract class BaseJob implements IJob {
         fails.add(fail);
     }
 
-    public final int getFailTimes() {
+    public int getFailTimes() {
         return fails == null ? 0 : fails.size();
+    }
+
+    public final List<Fail> getFailures() {
+        return fails;
     }
 
     private int state = STATE_INIT;
