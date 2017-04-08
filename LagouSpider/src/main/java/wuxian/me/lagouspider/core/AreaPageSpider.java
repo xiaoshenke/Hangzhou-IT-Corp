@@ -89,7 +89,7 @@ public class AreaPageSpider implements Runnable {
 
     }
 
-    //Todo
+    //Todo:存的时候多一层缓存？
     private void saveCompany(@Nullable Company company) {
         if (company != null) {
             System.out.println(company.toString());
@@ -102,6 +102,7 @@ public class AreaPageSpider implements Runnable {
         company.company_fullname = object.get("companyFullName").getAsString();
         company.financeStage = object.get("financeStage").getAsString();
         company.industryField = object.get("industryField").getAsString();
+        company.area_id = area.area_id;
         return company;
     }
 

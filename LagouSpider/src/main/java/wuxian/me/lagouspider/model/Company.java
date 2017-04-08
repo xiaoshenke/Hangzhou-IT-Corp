@@ -1,7 +1,5 @@
 package wuxian.me.lagouspider.model;
 
-import org.springframework.core.annotation.Order;
-
 /**
  * Created by wuxian on 30/3/2017.
  *

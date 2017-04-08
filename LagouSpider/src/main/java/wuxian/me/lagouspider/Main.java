@@ -19,6 +19,7 @@ import wuxian.me.lagouspider.model.Area;
 
 import static wuxian.me.lagouspider.util.FileUtil.*;
 import wuxian.me.lagouspider.util.Helper;
+import wuxian.me.lagouspider.util.ModuleProvider;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -36,11 +37,8 @@ public class Main {
         PropertyConfigurator.configure(getLog4jPropFilePath());
     }
 
-    @Autowired
-    AreaMapper areaMapper;
-
-    @Autowired
-    CompanyMapper companyMapper;
+    AreaMapper areaMapper = ModuleProvider.getInstance().areaMapper;
+    CompanyMapper companyMapper = ModuleProvider.getInstance().companyMapper;
 
     public Main() {
     }
@@ -113,8 +111,11 @@ public class Main {
         return false;
     }
 
+    public static ApplicationContext ctx = null;
+
     public static void main(String[] args){
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("spider.xml");
+        ApplicationContext tmp = new ClassPathXmlApplicationContext("spider.xml");
+        ctx = tmp;
         Main main = ctx.getBean(Main.class);
         main.run();
     }
