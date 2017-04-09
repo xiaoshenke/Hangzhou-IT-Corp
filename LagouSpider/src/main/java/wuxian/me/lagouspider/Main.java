@@ -1,10 +1,5 @@
 package wuxian.me.lagouspider;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.stereotype.Component;
 import wuxian.me.lagouspider.control.JobMonitor;
 import wuxian.me.lagouspider.core.AreaSpider;
 import wuxian.me.lagouspider.control.JobProvider;
@@ -16,6 +11,8 @@ import wuxian.me.lagouspider.job.IJob;
 import wuxian.me.lagouspider.mapper.CompanyMapper;
 import wuxian.me.lagouspider.model.Area;
 import static wuxian.me.lagouspider.util.FileUtil.*;
+import static wuxian.me.lagouspider.util.ModuleProvider.logger;
+
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.ModuleProvider;
 import java.sql.DriverManager;
@@ -26,15 +23,9 @@ import java.util.List;
 /**
  * Created by wuxian on 29/3/2017.
  */
-@Component
 public class Main {
-    public static Logger logger = Logger.getLogger(Main.class);
-    static {
-        PropertyConfigurator.configure(getLog4jPropFilePath());
-    }
-
-    AreaMapper areaMapper = ModuleProvider.getInstance().areaMapper;
-    CompanyMapper companyMapper = ModuleProvider.getInstance().companyMapper;
+    AreaMapper areaMapper = ModuleProvider.areaMapper();
+    CompanyMapper companyMapper = ModuleProvider.companyMapper();
 
     public Main() {
     }
@@ -48,15 +39,15 @@ public class Main {
             DistinctSpider spider = new DistinctSpider();
             spider.beginSpider();
         } else {
-            if (Helper.isTest || Helper.shouldStartNewGrab()) {     //每过7天开始一次全新抓取
-                logger.info("begin a new total grab");
+            if (Helper.shouldStartNewGrab()) {     //每过7天开始一次全新抓取
+                logger().info("begin a new total grab");
                 Helper.updateNewGrab();
 
-                logger.info("create new company table");
+                logger().info("create new company table");
                 String tableName = Helper.getCompanyTableName();
                 companyMapper.createNewTableIfNeed(tableName);
 
-                logger.info("load areas from database");
+                logger().info("load areas from database");
                 List<Area> areas = areaMapper.loadAll();
                 if (areas == null || areas.size() == 0) {
                     areas = parseAreasFromFile();
@@ -67,20 +58,17 @@ public class Main {
                     areas = areaMapper.loadAll();
                 }
 
-                logger.info("add job to jobqueue...");
+                logger().info("add job to jobqueue...");
                 for (Area area : areas) {
                     IJob job = JobProvider.getJob();
                     job.setRealRunnable(new AreaSpider(area));
                     JobQueue.getInstance().putJob(job);
 
                     JobMonitor.getInstance().putJob(job, IJob.STATE_IN_PROGRESS);
-                    if (Helper.isTest) {
-                        break;
-                    }
                 }
 
                 new WorkThread().start();
-                logger.info("start workThread...");
+                logger().info("start workThread...");
             }
         }
     }
@@ -95,7 +83,7 @@ public class Main {
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            logger.error("no jdbc driver");
+            logger().error("no jdbc driver");
             return false;
         }
 
@@ -107,17 +95,13 @@ public class Main {
             DriverManager.getConnection(url, username, password);
             return true;
         } catch (SQLException e) {
-            logger.error("db check connection fail");
+            logger().error("db check connection fail");
         }
         return false;
     }
 
-    public static ApplicationContext ctx = null;
-
     public static void main(String[] args){
-        ApplicationContext tmp = new ClassPathXmlApplicationContext("spider.xml");
-        ctx = tmp;
-        Main main = ctx.getBean(Main.class);
+        Main main = new Main();
         main.run();
     }
 

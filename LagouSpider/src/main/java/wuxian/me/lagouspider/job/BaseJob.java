@@ -63,4 +63,10 @@ public abstract class BaseJob implements IJob {
         }
         return super.equals(obj);
     }
+
+    //Todo
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

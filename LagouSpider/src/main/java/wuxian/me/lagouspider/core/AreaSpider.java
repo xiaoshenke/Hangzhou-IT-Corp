@@ -44,9 +44,6 @@ public class AreaSpider implements Runnable {
             JobQueue.getInstance().putJob(job);
 
             JobMonitor.getInstance().putJob(job, IJob.STATE_IN_PROGRESS);
-            if (Helper.isTest) {
-                break;
-            }
         }
     }
 

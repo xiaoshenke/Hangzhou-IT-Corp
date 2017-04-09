@@ -18,6 +18,7 @@ import wuxian.me.lagouspider.util.OkhttpProvider;
 import java.io.IOException;
 import static wuxian.me.lagouspider.Config.URL_LAGOU_JAVA;
 import static wuxian.me.lagouspider.Config.URL_LAGOU_POSITION_JSON;
+import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
 /**
  * Created by wuxian on 7/4/2017.
@@ -113,7 +114,7 @@ public class AreaPageSpider implements Runnable {
             }
 
         } catch (JsonIOException e) {
-            Main.logger.error("AreaPageSpider parse json result fail");
+            logger().error("AreaPageSpider parse json result fail");
         }
 
     }

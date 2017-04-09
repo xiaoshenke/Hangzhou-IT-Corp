@@ -12,9 +12,6 @@ import java.util.Date;
 public class Helper {
     private Helper() {
     }
-
-    public static boolean isTest = true;
-
     private static String post = null;
     private static final String HEADER_REFERER = "Referer";
     private static Headers.Builder builder;

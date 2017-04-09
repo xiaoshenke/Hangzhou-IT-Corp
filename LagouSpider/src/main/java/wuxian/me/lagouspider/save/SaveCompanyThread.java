@@ -23,7 +23,7 @@ public class SaveCompanyThread extends Thread {
         this.insert = insert;
     }
 
-    private CompanyMapper mapper = ModuleProvider.getInstance().companyMapper;
+    private CompanyMapper mapper = ModuleProvider.companyMapper();
     private String tableName = Helper.getCompanyTableName();
 
     @Override

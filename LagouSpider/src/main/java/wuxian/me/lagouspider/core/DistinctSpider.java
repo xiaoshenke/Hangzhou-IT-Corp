@@ -2,6 +2,8 @@ package wuxian.me.lagouspider.core;
 
 import static com.google.common.base.Preconditions.*;
 import static wuxian.me.lagouspider.Config.URL_LAGOU_JAVA;
+import static wuxian.me.lagouspider.util.ModuleProvider.logger;
+
 import okhttp3.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -123,7 +125,7 @@ public class DistinctSpider {
             }
 
         } catch (ParserException e) {
-            Main.logger.error("parse areas from html error");
+            logger().error("parse areas from html error");
         }
         return distincts;
     }
@@ -195,7 +197,7 @@ public class DistinctSpider {
             }
 
         } catch (ParserException e) {
-            Main.logger.error("parse distinct from html fail");
+            logger().error("parse distinct from html fail");
         }
         return distincts;
     }

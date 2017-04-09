@@ -5,6 +5,8 @@ package wuxian.me.lagouspider;
  */
 public class Config {
 
+    public static boolean IS_TEST = true;
+
     public final static int FAIL_FREQUENCY_NETWORK_ERR = 5;
     public final static int FAIL_FREQUENCY_SERVER_ERR = 5;
 
