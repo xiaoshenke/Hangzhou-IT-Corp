@@ -5,6 +5,9 @@ package wuxian.me.lagouspider;
  */
 public class Config {
 
+    public final static int FAIL_FREQUENCY_NETWORK_ERR = 5;
+    public final static int FAIL_FREQUENCY_SERVER_ERR = 5;
+
     public static final String URL_LAGOU_POSITION_JSON = "https://www.lagou.com/jobs/positionAjax.json?px=default";
 
     public static final String URL_LAGOU_JAVA = "https://www.lagou.com/jobs/list_Java?px=default";
@@ -12,7 +15,7 @@ public class Config {
     public static final String TABLE_COMPANY = "companies";
 
     //7天全面抓一次
-    public static final long GRAB_INTERNAL = -1;//1000 * 60 * 60 * 24 * 7;
+    public static final long GRAB_INTERNAL = 1000 * 60 * 60 * 24 * 7;
     //上一次爬虫抓取的时间
     public static final String CONF_LASTGRAB = "/conf/lastgrab.txt";
 

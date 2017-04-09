@@ -66,17 +66,14 @@ public class AreaSpider implements Runnable {
         OkhttpProvider.getClient().newCall(request).enqueue(new Callback() {
             public void onFailure(Call call, IOException e) {
                 JobMonitor.getInstance().fail(AreaSpider.this, new Fail(Fail.FAIL_NETWORK_ERROR));
-                Main.logger.error("AreaSpider onFailure");
             }
 
             public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful()) {
                     JobMonitor.getInstance().fail(AreaSpider.this, new Fail(response.code(), response.message()));
-                    Main.logger.error("AreaSpider onSuccess,error code" + response.code());
                     return;
                 } else {
                     JobMonitor.getInstance().success(AreaSpider.this);
-                    Main.logger.info("AreaSpider onSuccess");
                 }
                 pageNum = parsePageNum(response.body().string());
                 if (pageNum != -1) {

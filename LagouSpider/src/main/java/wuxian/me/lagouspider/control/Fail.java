@@ -10,9 +10,13 @@ public class Fail {
     int httpCode;
     String message;
 
+    long millis;
+
     public Fail(int code, String msg) {
         this.httpCode = code;
         this.message = msg;
+
+        millis = System.currentTimeMillis();
     }
 
     public Fail(int code) {

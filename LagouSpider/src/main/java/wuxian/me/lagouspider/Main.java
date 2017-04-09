@@ -2,7 +2,6 @@ package wuxian.me.lagouspider;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
@@ -16,11 +15,9 @@ import wuxian.me.lagouspider.mapper.AreaMapper;
 import wuxian.me.lagouspider.job.IJob;
 import wuxian.me.lagouspider.mapper.CompanyMapper;
 import wuxian.me.lagouspider.model.Area;
-
 import static wuxian.me.lagouspider.util.FileUtil.*;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.ModuleProvider;
-
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -31,7 +28,6 @@ import java.util.List;
  */
 @Component
 public class Main {
-
     public static Logger logger = Logger.getLogger(Main.class);
     static {
         PropertyConfigurator.configure(getLog4jPropFilePath());
@@ -52,22 +48,26 @@ public class Main {
             DistinctSpider spider = new DistinctSpider();
             spider.beginSpider();
         } else {
-            if (true || Helper.shouldStartNewGrab()) {     //每过7天开始一次全新抓取
+            if (Helper.isTest || Helper.shouldStartNewGrab()) {     //每过7天开始一次全新抓取
+                logger.info("begin a new total grab");
                 Helper.updateNewGrab();
 
+                logger.info("create new company table");
                 String tableName = Helper.getCompanyTableName();
                 companyMapper.createNewTableIfNeed(tableName);
 
+                logger.info("load areas from database");
                 List<Area> areas = areaMapper.loadAll();
                 if (areas == null || areas.size() == 0) {
                     areas = parseAreasFromFile();
                     if (areas.size() == 0) {
-                        logger.error("parse Area info from AreaFile error,check your file");
                         return;
                     }
-                    insertAreaDataToDB(areas);
+                    insertAreaData(areas);
+                    areas = areaMapper.loadAll();
                 }
 
+                logger.info("add job to jobqueue...");
                 for (Area area : areas) {
                     IJob job = JobProvider.getJob();
                     job.setRealRunnable(new AreaSpider(area));
@@ -78,12 +78,14 @@ public class Main {
                         break;
                     }
                 }
+
                 new WorkThread().start();
+                logger.info("start workThread...");
             }
         }
     }
 
-    public void insertAreaDataToDB(List<Area> areas) {
+    public void insertAreaData(List<Area> areas) {
         for (Area area : areas) {
             areaMapper.insertArea(area.name, area.distinct_name);
         }
@@ -103,10 +105,9 @@ public class Main {
 
         try {
             DriverManager.getConnection(url, username, password);
-            logger.debug("db check connection success");
             return true;
         } catch (SQLException e) {
-            logger.info("db check connection fail");
+            logger.error("db check connection fail");
         }
         return false;
     }

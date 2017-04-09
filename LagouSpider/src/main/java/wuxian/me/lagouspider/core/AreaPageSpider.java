@@ -69,17 +69,14 @@ public class AreaPageSpider implements Runnable {
         OkhttpProvider.getClient().newCall(request).enqueue(new Callback() {
             public void onFailure(Call call, IOException e) {
                 JobMonitor.getInstance().fail(AreaPageSpider.this, new Fail(Fail.FAIL_NETWORK_ERROR));
-                Main.logger.error("AreaPageSpider onFailure");
             }
 
             public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful()) {
                     JobMonitor.getInstance().fail(AreaPageSpider.this, new Fail(response.code(), response.message()));
-                    Main.logger.error("AreaPageSpider onSuccess,error code" + response.code());
                     return;
                 } else {
                     JobMonitor.getInstance().success(AreaPageSpider.this);
-                    Main.logger.info("AreaPageSpider onSuccess");
                 }
                 parseResult(response.body().string());
             }
@@ -104,7 +101,6 @@ public class AreaPageSpider implements Runnable {
     }
 
     private void parseResult(@NotNull String data) {
-        Main.logger.debug("begin to parse json Result");
         try {
             JsonParser parser = new JsonParser();
             JsonObject obj = (JsonObject) parser.parse(data);

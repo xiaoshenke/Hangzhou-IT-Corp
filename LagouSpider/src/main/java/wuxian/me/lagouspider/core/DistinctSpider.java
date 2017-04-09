@@ -93,7 +93,7 @@ public class DistinctSpider {
 
         content += "\n";
         if (!FileUtil.writeToFile(FileUtil.getAreaFilePath(), content)) {
-            Main.logger.error("write Areas info to AreaFile fail");
+
         }
     }
 

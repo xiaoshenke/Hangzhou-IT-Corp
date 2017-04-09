@@ -1,6 +1,6 @@
 package wuxian.me.lagouspider.control;
 
-
+import wuxian.me.lagouspider.Main;
 import wuxian.me.lagouspider.job.IJob;
 
 /**
@@ -23,5 +23,6 @@ public class WorkThread extends Thread {
                 ;  //ignore
             }
         }
+
     }
 }

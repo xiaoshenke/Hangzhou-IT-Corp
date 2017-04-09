@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class JobMonitor {
 
+    private FailureMonitor failureMonitor = FailureMonitor.getInstance();
     private Map<IJob, Integer> set = new ConcurrentHashMap<IJob, Integer>();
 
     private Map<Runnable, IJob> jobMap = new ConcurrentHashMap<Runnable, IJob>();
@@ -32,6 +33,8 @@ public class JobMonitor {
     public void success(Runnable runnable) {
         IJob job = getJob(runnable);
         if (job != null) {
+            failureMonitor.success(job);
+
             job.setCurrentState(IJob.STATE_SUCCESS);
             putJob(job, IJob.STATE_SUCCESS);
         }
@@ -40,6 +43,8 @@ public class JobMonitor {
     public void fail(@NotNull Runnable runnable, @NotNull Fail fail) {
         IJob job = getJob(runnable);
         if (job != null) {
+            failureMonitor.fail(job, fail);
+
             job.fail(fail);
             job.setCurrentState(IJob.STATE_FAIL);
             JobMonitor.getInstance().putJob(job, IJob.STATE_FAIL);  //本次失败了
@@ -51,7 +56,6 @@ public class JobMonitor {
             IJob next = JobProvider.getNextJob(job);              //重新制定爬虫策略 放入jobQueue
             next.setCurrentState(IJob.STATE_RETRY);
             JobQueue.getInstance().putJob(next);
-
             putJob(next, IJob.STATE_RETRY);
         }
     }

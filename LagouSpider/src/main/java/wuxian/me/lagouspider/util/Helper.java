@@ -2,7 +2,6 @@ package wuxian.me.lagouspider.util;
 
 import com.sun.istack.internal.NotNull;
 import okhttp3.Headers;
-import okhttp3.Response;
 import wuxian.me.lagouspider.Config;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,7 +16,6 @@ public class Helper {
     public static boolean isTest = true;
 
     private static String post = null;
-
     private static final String HEADER_REFERER = "Referer";
     private static Headers.Builder builder;
 
@@ -85,8 +83,4 @@ public class Helper {
         FileUtil.writeToFile(FileUtil.getGrabFilePath(), String.valueOf(System.currentTimeMillis()));
     }
 
-    //Todo:根据返回码判断是否需要切换ip之类的
-    public static void shiftIPIfNeed(Response response) {
-        ;
-    }
 }
