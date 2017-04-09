@@ -1,12 +1,6 @@
 package wuxian.me.lagouspider;
 
 import okhttp3.*;
-import org.htmlparser.Node;
-import org.htmlparser.Parser;
-import org.htmlparser.filters.HasAttributeFilter;
-import org.htmlparser.tags.LinkTag;
-import org.htmlparser.util.NodeList;
-import org.htmlparser.util.ParserException;
 import org.junit.Test;
 import wuxian.me.lagouspider.control.JobMonitor;
 import wuxian.me.lagouspider.control.JobProvider;
@@ -31,27 +25,6 @@ import static wuxian.me.lagouspider.util.ModuleProvider.*;
 public class MainTest {
 
     @Test
-    public void testDelayJob() {
-        Config.IS_TEST = true;
-
-        Runnable runnable = new Runnable() {
-            public void run() {
-                logger().info("real run at: " + System.currentTimeMillis());
-            }
-        };
-        IJob job = JobProvider.getDelayJob(1000 * 2);
-        job.setRealRunnable(runnable);
-
-        JobQueue.getInstance().putJob(job);
-        logger().info("put runnable at: " + System.currentTimeMillis());
-
-        new WorkThread().start();
-
-        while (true) {
-        }
-    }
-
-    @Test
     public void testFrequency() {
         Config.IS_TEST = true;
 
@@ -63,12 +36,18 @@ public class MainTest {
         List<Area> areas = areaMapper.loadAll();
         assertTrue(areas.size() != 0);
 
+        final int AREA_NUM = 5;
+        int i = 0;
         for (Area area : areas) {
+            if (i >= AREA_NUM) {
+                break;
+            }
             IJob job = JobProvider.getFixedDelayJob(0);
             job.setRealRunnable(new AreaSpider(area));
             JobQueue.getInstance().putJob(job);
 
             JobMonitor.getInstance().putJob(job, IJob.STATE_INIT);
+            i++;
         }
 
         logger().info("start workThread...");
@@ -89,16 +68,15 @@ public class MainTest {
                 .build();
         try {
             Response response = OkhttpProvider.getClient().newCall(request).execute();
-            logger().debug("response success: " + response.isSuccessful());
             assertTrue(response.isSuccessful());
-
             String msg = response.body().string();
             logger().debug(msg);
 
             assertTrue(msg.contains(proxy.ip));
 
         } catch (IOException e) {
-            logger().error("request fail");  //使用代理会有些不大稳定...
+            logger().error("switch ip fail");  //使用代理会有些不大稳定...
+            assertTrue(false);
         }
     }
 
@@ -107,6 +85,27 @@ public class MainTest {
         final IPProxyTool.Proxy proxy = IPProxyTool.switchNextProxy();
         logger().info("proxy ip: " + proxy.ip + " port: " + proxy.port);
         ensureIpSwitched(proxy);
+    }
+
+    @Test
+    public void testDelayJob() {
+        Config.IS_TEST = true;
+
+        Runnable runnable = new Runnable() {
+            public void run() {
+                logger().info("real run at: " + System.currentTimeMillis());
+            }
+        };
+        IJob job = JobProvider.getDelayJob(1000 * 2);
+        job.setRealRunnable(runnable);
+
+        JobQueue.getInstance().putJob(job);
+        logger().info("put runnable at: " + System.currentTimeMillis());
+
+        new WorkThread().start();
+
+        while (true) {
+        }
     }
 
 }

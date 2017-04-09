@@ -48,7 +48,7 @@ public class FailureMonitor {
 
     //Fixme:暂时先这么实现
     public void fail(@NotNull IJob job, @NotNull Fail fail) {
-        logger().error(job.toString());
+        logger().error(job.toString() + " Fail reason: " + fail.toString());
 
         if (firstFailTime.get() == -1) {
             firstFailTime = new AtomicLong(fail.millis);

@@ -5,3 +5,15 @@
 2017-04-09 17:18:15 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.control.FailureMonitor.fail(FailureMonitor.java:51) job: job state: 3 failedTimes: 1 runnable: AreaSpider: area is area_name: 建设二路 ,distinct_name: 萧山区failed, Fail: network error
 2017-04-09 17:18:31 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.control.FailureMonitor.fail(FailureMonitor.java:51) job: job state: 3 failedTimes: 1 runnable: AreaSpider: area is area_name: 西湖大道 ,distinct_name: 上城区failed, Fail: network error
 2017-04-09 17:18:52 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.control.FailureMonitor.fail(FailureMonitor.java:51) job: job state: 3 failedTimes: 1 runnable: AreaPageSpider: pageIndex is 9 area is area_name: 仓前 ,distinct_name: 余杭区failed, Fail: network error
+2017-04-09 18:03:11 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:106) request fail
+2017-04-09 18:04:52 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.control.FailureMonitor.fail(FailureMonitor.java:51) Job fail,fail times: 1 AreaSpider area_name: 秋涛北路 ,distinct_name: 江干区
+2017-04-09 18:13:16 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.core.AreaSpider$1.onResponse(AreaSpider.java:82) parsePageNum fail
+2017-04-09 18:13:16 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.core.AreaSpider$1.onResponse(AreaSpider.java:82) parsePageNum fail
+2017-04-09 18:13:16 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.core.AreaSpider$1.onResponse(AreaSpider.java:82) parsePageNum fail
+2017-04-09 18:13:16 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.core.AreaSpider$1.onResponse(AreaSpider.java:82) parsePageNum fail
+2017-04-09 18:13:17 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.core.AreaSpider$1.onResponse(AreaSpider.java:82) parsePageNum fail
+2017-04-09 18:14:54 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.core.AreaSpider$1.onResponse(AreaSpider.java:82) parsePageNum fail
+2017-04-09 18:14:54 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.core.AreaSpider$1.onResponse(AreaSpider.java:82) parsePageNum fail
+2017-04-09 18:14:54 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.core.AreaSpider$1.onResponse(AreaSpider.java:82) parsePageNum fail
+2017-04-09 18:14:55 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.core.AreaSpider$1.onResponse(AreaSpider.java:82) parsePageNum fail
+2017-04-09 18:15:54 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.core.AreaSpider$1.onResponse(AreaSpider.java:82) parsePageNum fail

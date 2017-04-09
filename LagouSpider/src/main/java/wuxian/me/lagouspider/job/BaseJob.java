@@ -65,7 +65,6 @@ public abstract class BaseJob implements IJob {
         return super.equals(obj);
     }
 
-    //Todo
     @Override
     public String toString() {
         if (realJob == null) {

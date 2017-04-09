@@ -17,8 +17,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 2 job.setRealRunnable(real-runnable);
  * 3 job.run();
  * <p>
- * Todo: 确定策略
- * Todo: 跑几个单元测试
  */
 public class JobProvider {
     private JobProvider() {

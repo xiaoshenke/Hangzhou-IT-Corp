@@ -7,7 +7,7 @@ public class Config {
 
     public static boolean IS_TEST = true;
 
-    public static int SOCKET_READ_TIMEOUT = 10; //10s
+    public static int SOCKET_READ_TIMEOUT = 10 * 1000; //10s
 
     public static boolean ENABLE_SAVE_COMPANY_DB = false;
 

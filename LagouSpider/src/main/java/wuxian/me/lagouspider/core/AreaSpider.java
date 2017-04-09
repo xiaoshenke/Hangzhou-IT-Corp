@@ -21,6 +21,7 @@ import wuxian.me.lagouspider.util.OkhttpProvider;
 import java.io.IOException;
 
 import static wuxian.me.lagouspider.Config.URL_LAGOU_JAVA;
+import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
 /**
  * Created by wuxian on 30/3/2017.
@@ -73,8 +74,12 @@ public class AreaSpider extends BaseSpider {
                     JobMonitor.getInstance().success(AreaSpider.this);
                 }
                 pageNum = parsePageNum(response.body().string());
+
                 if (pageNum != -1) {
+                    logger().info("parsed pageNum: " + pageNum + " " + simpleName());
                     beginSpider();
+                } else {
+                    logger().error("parsePageNum fail");
                 }
             }
         });
@@ -88,6 +93,7 @@ public class AreaSpider extends BaseSpider {
             Parser parser = new Parser(data);
             parser.setEncoding("utf-8");
             HasAttributeFilter filter = new HasAttributeFilter("class", "span totalNum");
+
             NodeList list = parser.extractAllNodesThatMatch(filter);
             if (list != null) {
                 for (int i = 0; i < list.size(); i++) {
@@ -97,9 +103,11 @@ public class AreaSpider extends BaseSpider {
                     }
                 }
             } else {
+                //Todo: antiSpider
                 return 0;  //这个区域内没有公司 比如说灵隐区...
             }
         } catch (ParserException e) {
+
 
         }
         return -1;

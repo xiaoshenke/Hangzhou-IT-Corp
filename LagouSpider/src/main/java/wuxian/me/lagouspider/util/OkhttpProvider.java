@@ -13,7 +13,7 @@ public class OkhttpProvider {
     private static OkHttpClient client;
 
     static {
-        client = new OkHttpClient.Builder().readTimeout(Config.SOCKET_READ_TIMEOUT, TimeUnit.MICROSECONDS).build();
+        client = new OkHttpClient.Builder().readTimeout(Config.SOCKET_READ_TIMEOUT, TimeUnit.MILLISECONDS).build();
     }
 
     private OkhttpProvider() {
