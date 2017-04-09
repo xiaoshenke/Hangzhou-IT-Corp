@@ -1,6 +1,7 @@
 package wuxian.me.lagouspider.control;
 
 import com.sun.istack.internal.NotNull;
+import wuxian.me.lagouspider.Config;
 import wuxian.me.lagouspider.job.IJob;
 import wuxian.me.lagouspider.util.IPProxyTool;
 
@@ -12,6 +13,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import static wuxian.me.lagouspider.Config.FAIL_FREQUENCY_NETWORK_ERR;
 import static wuxian.me.lagouspider.Config.FAIL_FREQUENCY_SERVER_ERR;
+import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
 /**
  * Created by wuxian on 9/4/2017.
@@ -41,11 +43,13 @@ public class FailureMonitor {
 
     //Fixme:暂时先这么实现
     public void success(@NotNull IJob job) {
-        ;
+        logger().info(job.toString());
     }
 
     //Fixme:暂时先这么实现
     public void fail(@NotNull IJob job, @NotNull Fail fail) {
+        logger().error(job.toString());
+
         if (firstFailTime.get() == -1) {
             firstFailTime = new AtomicLong(fail.millis);
         }
@@ -57,7 +61,7 @@ public class FailureMonitor {
             failList.add(fail);
         }
 
-        if (shouldSwitchProxy()) {
+        if (!Config.IS_TEST && shouldSwitchProxy()) {  //测试的时候禁掉ip代理
             reset();
             IPProxyTool.switchNextProxy();
         }

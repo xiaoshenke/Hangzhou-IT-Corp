@@ -56,7 +56,7 @@ public class MainTest {
         Config.IS_TEST = true;
 
         IPProxyTool.Proxy proxy = IPProxyTool.switchNextProxy();
-        logger().info("proxy ip: " + proxy.ip + " port: " + proxy.port);
+        logger().info("using proxy ip: " + proxy.ip + " port: " + proxy.port);
         ensureIpSwitched(proxy);
 
         AreaMapper areaMapper = areaMapper();
@@ -64,13 +64,14 @@ public class MainTest {
         assertTrue(areas.size() != 0);
 
         for (Area area : areas) {
-            IJob job = JobProvider.getJob();
+            IJob job = JobProvider.getFixedDelayJob(0);
             job.setRealRunnable(new AreaSpider(area));
             JobQueue.getInstance().putJob(job);
 
-            JobMonitor.getInstance().putJob(job, IJob.STATE_IN_PROGRESS);
+            JobMonitor.getInstance().putJob(job, IJob.STATE_INIT);
         }
 
+        logger().info("start workThread...");
         new WorkThread().start();
 
         while (true) {

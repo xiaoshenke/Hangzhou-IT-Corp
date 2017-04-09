@@ -9,17 +9,12 @@ import java.util.List;
  * Created by wuxian on 31/3/2017.
  * <p>
  * 爬虫抓取策略 防止ip被封
- *
- * Fixme:每个job都独自的job ID?
  */
 public interface IJob extends Runnable {
     int STATE_INIT = 0;
-    int STATE_IN_PROGRESS = 1;
     int STATE_SUCCESS = 2;
     int STATE_FAIL = 3;
     int STATE_RETRY = 4;
-
-    int MAX_FAIL_TIME = 4;
 
     int getCurrentState();
 

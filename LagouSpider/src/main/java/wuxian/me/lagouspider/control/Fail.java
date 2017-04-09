@@ -22,4 +22,13 @@ public class Fail {
     public Fail(int code) {
         this(code, "");
     }
+
+    @Override
+    public String toString() {
+        if (httpCode == FAIL_NETWORK_ERROR) {
+            return "Fail: network error";
+        }
+
+        return "Fail: httpcode " + httpCode + " ,message " + message;
+    }
 }

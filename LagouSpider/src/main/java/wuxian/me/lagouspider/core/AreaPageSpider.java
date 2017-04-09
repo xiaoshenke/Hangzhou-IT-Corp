@@ -7,6 +7,7 @@ import com.google.gson.JsonParser;
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 import okhttp3.*;
+import wuxian.me.lagouspider.Config;
 import wuxian.me.lagouspider.Main;
 import wuxian.me.lagouspider.control.Fail;
 import wuxian.me.lagouspider.control.JobMonitor;
@@ -23,7 +24,7 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 /**
  * Created by wuxian on 7/4/2017.
  */
-public class AreaPageSpider implements Runnable {
+public class AreaPageSpider extends BaseSpider {
 
     private Area area;
     private int pageIndex;
@@ -86,6 +87,11 @@ public class AreaPageSpider implements Runnable {
     }
 
     private void saveCompany(@Nullable Company company) {
+
+        if (!Config.ENABLE_SAVE_COMPANY_DB) {
+            logger().info("SaveCompany " + company.toString());
+            return;
+        }
         if (company != null) {
             CompanySaver.getInstance().saveCompany(company);
         }
@@ -94,9 +100,16 @@ public class AreaPageSpider implements Runnable {
     private Company getCompany(@NotNull JsonObject object) {
         long id = object.get("companyId").getAsLong();
         Company company = new Company(id);
-        company.company_fullname = object.get("companyFullName").getAsString();
-        company.financeStage = object.get("financeStage").getAsString();
-        company.industryField = object.get("industryField").getAsString();
+
+        if (object.get("companyFullName") != null) {
+            company.company_fullname = object.get("companyFullName").getAsString();
+        }
+        if (object.get("financeStage") != null) {
+            company.financeStage = object.get("financeStage").getAsString();
+        }
+        if (object.get("industryField") != null) {
+            company.industryField = object.get("industryField").getAsString();
+        }
         company.area_id = area.area_id;
         return company;
     }
@@ -119,4 +132,12 @@ public class AreaPageSpider implements Runnable {
 
     }
 
+    @Override
+    public String toString() {
+        return "AreaPageSpider: pageIndex is " + pageIndex + " area is " + area.toString();
+    }
+
+    public String simpleName() {
+        return "AreaPageSpider index:" + pageIndex + " " + area.toString();
+    }
 }

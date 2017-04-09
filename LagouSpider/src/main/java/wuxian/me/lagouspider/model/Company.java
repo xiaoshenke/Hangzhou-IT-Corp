@@ -34,7 +34,7 @@ public class Company {
 
     @Override
     public String toString() {
-        return "companyId: " + company_id + " name: " + company_fullname + " stage: " + financeStage + " industry: " + industryField;
+        return "Company: {id: " + company_id + " name: " + company_fullname + " stage: " + financeStage + " industry: " + industryField + "}";
     }
 }
 

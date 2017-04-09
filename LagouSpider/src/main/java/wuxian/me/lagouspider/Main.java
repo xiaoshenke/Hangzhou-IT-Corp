@@ -64,7 +64,7 @@ public class Main {
                     job.setRealRunnable(new AreaSpider(area));
                     JobQueue.getInstance().putJob(job);
 
-                    JobMonitor.getInstance().putJob(job, IJob.STATE_IN_PROGRESS);
+                    JobMonitor.getInstance().putJob(job, IJob.STATE_INIT);
                 }
 
                 new WorkThread().start();

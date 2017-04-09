@@ -25,4 +25,9 @@ public class Area {
 
         return super.equals(obj);
     }
+
+    @Override
+    public String toString() {
+        return "area_name: " + name + " ,distinct_name: " + distinct_name;
+    }
 }

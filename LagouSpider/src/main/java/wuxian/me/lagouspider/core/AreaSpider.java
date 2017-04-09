@@ -29,7 +29,7 @@ import static wuxian.me.lagouspider.Config.URL_LAGOU_JAVA;
  * 2 根据页数发送每一页数据的请求
  * 3 重试机制
  */
-public class AreaSpider implements Runnable {
+public class AreaSpider extends BaseSpider {
     Area area;
     private int pageNum = -1;
 
@@ -43,7 +43,7 @@ public class AreaSpider implements Runnable {
             job.setRealRunnable(new AreaPageSpider(area, i));
             JobQueue.getInstance().putJob(job);
 
-            JobMonitor.getInstance().putJob(job, IJob.STATE_IN_PROGRESS);
+            JobMonitor.getInstance().putJob(job, IJob.STATE_INIT);
         }
     }
 
@@ -111,5 +111,15 @@ public class AreaSpider implements Runnable {
         } else {
             beginSpider();
         }
+    }
+
+    @Override
+    public String toString() {
+        return "AreaSpider: area is " + area.toString();
+    }
+
+    @Override
+    public String simpleName() {
+        return "AreaSpider " + area.toString();
     }
 }

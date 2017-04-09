@@ -1,6 +1,7 @@
 package wuxian.me.lagouspider.control;
 
 import com.sun.istack.internal.NotNull;
+import wuxian.me.lagouspider.Config;
 import wuxian.me.lagouspider.job.IJob;
 
 import java.util.Map;
@@ -35,9 +36,9 @@ public class JobMonitor {
     public void success(Runnable runnable) {
         IJob job = getJob(runnable);
         if (job != null) {
-            failureMonitor.success(job);
-
             job.setCurrentState(IJob.STATE_SUCCESS);
+
+            failureMonitor.success(job);
             putJob(job, IJob.STATE_SUCCESS);
         }
     }
@@ -45,13 +46,17 @@ public class JobMonitor {
     public void fail(@NotNull Runnable runnable, @NotNull Fail fail) {
         IJob job = getJob(runnable);
         if (job != null) {
-            failureMonitor.fail(job, fail);
-
             job.fail(fail);
             job.setCurrentState(IJob.STATE_FAIL);
+
+            failureMonitor.fail(job, fail);
             JobMonitor.getInstance().putJob(job, IJob.STATE_FAIL);  //本次失败了
 
-            if (job.getFailTimes() >= IJob.MAX_FAIL_TIME) {  //ignore this
+            if (job.getFailTimes() >= Config.MAX_FAIL_TIME) {
+                return;
+            }
+
+            if (!Config.ENABLE_RETRY_SPIDER) {
                 return;
             }
 
@@ -65,8 +70,6 @@ public class JobMonitor {
     public void putJob(@NotNull IJob job, int state) {
         set.put(job, state);
         jobMap.put(job.getRealRunnable(), job);
-
-        logger().info("putJob: " + job.toString());
     }
 
     public IJob getJob(@NotNull Runnable runnable) {

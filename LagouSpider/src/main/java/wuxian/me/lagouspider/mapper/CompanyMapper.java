@@ -24,7 +24,7 @@ public interface CompanyMapper {
                        @Param("field") String field);
 
     void updateCompanyLocation(@Param("tableName") String tableName,
-                               @Param("company_id") long companyId,
+                               @Param("companyId") long companyId,
                                @Param("location") String location);
 
     List<Company> loadAllCompanies(@Param("tableName") String tableName);

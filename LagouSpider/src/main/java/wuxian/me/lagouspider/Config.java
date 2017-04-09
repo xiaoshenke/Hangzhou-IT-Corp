@@ -7,6 +7,14 @@ public class Config {
 
     public static boolean IS_TEST = true;
 
+    public static int SOCKET_READ_TIMEOUT = 10; //10s
+
+    public static boolean ENABLE_SAVE_COMPANY_DB = false;
+
+    public static boolean ENABLE_RETRY_SPIDER = false;
+
+    public static int MAX_FAIL_TIME = 4;
+
     public final static int FAIL_FREQUENCY_NETWORK_ERR = 5;
     public final static int FAIL_FREQUENCY_SERVER_ERR = 5;
 

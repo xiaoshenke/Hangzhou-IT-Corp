@@ -7,6 +7,7 @@ import wuxian.me.lagouspider.job.IJob;
 import wuxian.me.lagouspider.job.ImmediateJob;
 
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by wuxian on 31/3/2017.
@@ -36,15 +37,23 @@ public class JobProvider {
         return next;
     }
 
+    private static AtomicInteger sindex = new AtomicInteger(0);
+
+    public static IJob getFixedDelayJob(long delay) {
+        if (delay == 0) {
+            return new ImmediateJob();
+        }
+
+        IJob job = new DelayJob(sindex.get() * delay);
+        sindex.set(sindex.get());
+        return job;
+    }
+
     public static IJob getDelayJob(long delay) {
         return new DelayJob(delay);
     }
 
     public static IJob getJob() {
-        if (Config.IS_TEST) {
-            return new ImmediateJob();
-        }
-
         if (random.nextDouble() * 100 > 20) {
             return new DelayJob((long) random.nextDouble() * 1000 + 200);
         }

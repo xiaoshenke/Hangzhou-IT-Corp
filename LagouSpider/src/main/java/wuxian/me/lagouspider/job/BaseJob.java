@@ -2,6 +2,7 @@ package wuxian.me.lagouspider.job;
 
 import com.sun.istack.internal.NotNull;
 import wuxian.me.lagouspider.control.Fail;
+import wuxian.me.lagouspider.core.BaseSpider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +68,17 @@ public abstract class BaseJob implements IJob {
     //Todo
     @Override
     public String toString() {
-        return super.toString();
+        if (realJob == null) {
+            return "invalid job";
+        }
+
+        if (state == STATE_FAIL) {
+            return "Job fail,fail times: " + getFailTimes() + " " + ((BaseSpider) realJob).simpleName();
+        } else if (state == STATE_SUCCESS) {
+            return "Job success " + ((BaseSpider) realJob).simpleName();
+        } else if (state == STATE_INIT) {
+            return "Job: " + ((BaseSpider) realJob).simpleName();
+        }
+        return "Job state: " + state + " " + realJob.toString();
     }
 }
