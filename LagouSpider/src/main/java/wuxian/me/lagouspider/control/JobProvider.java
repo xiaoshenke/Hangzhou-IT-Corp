@@ -4,7 +4,6 @@ import com.sun.istack.internal.NotNull;
 import wuxian.me.lagouspider.job.DelayJob;
 import wuxian.me.lagouspider.job.IJob;
 import wuxian.me.lagouspider.job.ImmediateJob;
-import wuxian.me.lagouspider.util.Helper;
 
 import java.util.Random;
 
@@ -15,6 +14,9 @@ import java.util.Random;
  * 1 IJob job = JobProvider.getNextJob();
  * 2 job.setRealRunnable(real-runnable);
  * 3 job.run();
+ *
+ * Todo: 确定策略
+ * Todo: 跑几个单元测试
  */
 public class JobProvider {
     private JobProvider() {
@@ -25,14 +27,12 @@ public class JobProvider {
     public static IJob getNextJob(@NotNull IJob job) {
         int time = job.getFailTimes();
 
-        IJob next = new DelayJob(time * time * 1000);  //Fixme: Todo: a better strategy?
+        IJob next = new DelayJob(time * time * 1000);
         next.setRealRunnable(job.getRealRunnable());
-
         return next;
     }
 
     public static IJob getJob() {
-
         if (random.nextDouble() * 100 > 20) {
             return new DelayJob((long) random.nextDouble() * 1000 + 200);
         }

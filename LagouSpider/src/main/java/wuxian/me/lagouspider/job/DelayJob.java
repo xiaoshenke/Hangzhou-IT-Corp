@@ -7,7 +7,6 @@ import java.util.TimerTask;
  * Created by wuxian on 31/3/2017.
  */
 public class DelayJob extends BaseJob {
-
     private long milltimes;
 
     public DelayJob(long milltimes) {
@@ -29,7 +28,6 @@ public class DelayJob extends BaseJob {
                 }
             };
         }
-
-        timer.schedule(timerTask, milltimes);  //Todo:延迟时间策略
+        timer.schedule(timerTask, milltimes);
     }
 }

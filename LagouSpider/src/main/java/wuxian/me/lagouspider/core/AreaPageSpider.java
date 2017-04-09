@@ -12,11 +12,10 @@ import wuxian.me.lagouspider.control.Fail;
 import wuxian.me.lagouspider.control.JobMonitor;
 import wuxian.me.lagouspider.model.Area;
 import wuxian.me.lagouspider.model.Company;
+import wuxian.me.lagouspider.save.CompanySaver;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.OkhttpProvider;
-
 import java.io.IOException;
-
 import static wuxian.me.lagouspider.Config.URL_LAGOU_JAVA;
 import static wuxian.me.lagouspider.Config.URL_LAGOU_POSITION_JSON;
 
@@ -82,17 +81,15 @@ public class AreaPageSpider implements Runnable {
                     JobMonitor.getInstance().success(AreaPageSpider.this);
                     Main.logger.info("AreaPageSpider onSuccess");
                 }
-
                 parseResult(response.body().string());
             }
         });
 
     }
 
-    //Todo:存的时候多一层缓存？
     private void saveCompany(@Nullable Company company) {
         if (company != null) {
-            System.out.println(company.toString());
+            CompanySaver.getInstance().saveCompany(company);
         }
     }
 

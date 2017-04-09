@@ -2,13 +2,10 @@ package wuxian.me.lagouspider.core;
 
 import static com.google.common.base.Preconditions.*;
 import static wuxian.me.lagouspider.Config.URL_LAGOU_JAVA;
-
 import okhttp3.*;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.htmlparser.Node;
 import org.htmlparser.Parser;
 import org.htmlparser.filters.HasAttributeFilter;
@@ -65,12 +62,10 @@ public class DistinctSpider {
             final String distinct = dis[i];
             OkhttpProvider.getClient().newCall(request).enqueue(new Callback() {
                 public void onFailure(Call call, IOException e) {
-                    //Todo:?
                 }
 
                 public void onResponse(Call call, Response response) throws IOException {
                     if (!response.isSuccessful()) {
-                        //Todo:?
                         return;
                     }
 
@@ -152,14 +147,12 @@ public class DistinctSpider {
                 .build();
         OkhttpProvider.getClient().newCall(request).enqueue(new Callback() {
             public void onFailure(Call call, IOException e) {
-                //Todo:?
             }
 
             public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful()) {
                     return;
                 }
-
                 final String data = response.body().string();
                 List<String> distincts = parseDistincts(data);
                 if (distincts.size() != 0) {

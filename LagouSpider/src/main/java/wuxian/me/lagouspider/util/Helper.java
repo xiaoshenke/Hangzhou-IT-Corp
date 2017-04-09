@@ -4,7 +4,6 @@ import com.sun.istack.internal.NotNull;
 import okhttp3.Headers;
 import okhttp3.Response;
 import wuxian.me.lagouspider.Config;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -57,8 +56,6 @@ public class Helper {
      * 找到数据库后缀
      * 数据库每过1周会全新抓取一次拉勾数据 因此要做分表操作
      * 表的名字像这样 company_2017_0303,company_2017_0403
-     *
-     * @return
      */
     private static String getDatabasePost() {
         if (post != null) {

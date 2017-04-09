@@ -5,7 +5,6 @@ import wuxian.me.lagouspider.mapper.CompanyMapper;
 import wuxian.me.lagouspider.model.Company;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.ModuleProvider;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +34,6 @@ public class SaveCompanyThread extends Thread {
                 companies.clear();
 
                 for (Company company : companyMap.values()) {
-
                     if (insert) {
                         mapper.insertCompany(tableName, company.company_id,
                                 company.area_id, company.company_fullname,
@@ -52,6 +50,5 @@ public class SaveCompanyThread extends Thread {
                 ;
             }
         }
-
     }
 }

@@ -1,7 +1,6 @@
 package wuxian.me.lagouspider.mapper;
 
 import org.apache.ibatis.annotations.Param;
-import wuxian.me.lagouspider.model.Area;
 import wuxian.me.lagouspider.model.Company;
 
 import java.util.List;
@@ -10,6 +9,8 @@ import java.util.List;
  * Created by wuxian on 6/4/2017.
  * <p>
  * tableName: companies_2017_03_03,companies_2017_03_10,etc
+ *
+ * Todo: insertCompany location
  */
 public interface CompanyMapper {
 
