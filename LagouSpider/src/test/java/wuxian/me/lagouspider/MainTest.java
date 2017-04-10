@@ -99,17 +99,20 @@ public class MainTest {
                 .headers(builder.build())
                 .url(urlBuilder.build().toString())
                 .build();
+        Response response = null;
         try {
-            Response response = OkhttpProvider.getClient().newCall(request).execute();
+            response = OkhttpProvider.getClient().newCall(request).execute();
             assertTrue(response.isSuccessful());
             String msg = response.body().string();
             logger().debug(msg);
-
             assertTrue(msg.contains(proxy.ip));
-
         } catch (IOException e) {
             logger().error("switch ip fail");  //使用代理会有些不大稳定...
             assertTrue(false);
+        } finally {
+            if (response != null && response.body() != null) {
+                response.body().close();
+            }
         }
     }
 

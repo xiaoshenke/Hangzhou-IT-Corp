@@ -75,14 +75,23 @@ public class AreaPageSpider extends BaseLagouSpider {
 
             public void onResponse(Call call, Response response) throws IOException {
                 super.onResponse(call, response);
-
                 if (!response.isSuccessful()) {
+                    if (checkBlockAndFailThisSpider(response.code())) {
+                        return;
+                    }
+
                     JobMonitor.getInstance().fail(AreaPageSpider.this, new Fail(response.code(), response.message()));
                     return;
                 } else {
                     JobMonitor.getInstance().success(AreaPageSpider.this);
                 }
-                parseResult(response.body().string());
+
+                String body = response.body().string();
+                parseResult(body);
+
+                if (checkBlockAndFailThisSpider(body)) {
+                    return;
+                }
 
                 if (response.body() != null) {
                     response.body().close();
@@ -133,7 +142,7 @@ public class AreaPageSpider extends BaseLagouSpider {
             }
 
         } catch (JsonIOException e) {
-            logger().error("AreaPageSpider parse json result fail");
+            logger().error("Parse json fail, " + name());
         }
 
     }

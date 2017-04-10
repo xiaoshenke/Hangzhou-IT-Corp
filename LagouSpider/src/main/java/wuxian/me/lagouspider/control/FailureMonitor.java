@@ -12,9 +12,6 @@ import wuxian.me.lagouspider.util.IPProxyTool;
 import wuxian.me.lagouspider.util.OkhttpProvider;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -22,8 +19,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static wuxian.me.lagouspider.Config.FAIL_FREQUENCY_NETWORK_ERR;
-import static wuxian.me.lagouspider.Config.FAIL_FREQUENCY_SERVER_ERR;
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
 /**
@@ -66,11 +61,7 @@ public class FailureMonitor {
         return instance;
     }
 
-    private AtomicLong firstFailTime = new AtomicLong(-1);
-    private AtomicLong currentFailTime;
-    private AtomicInteger networkErrCount = new AtomicInteger(0);
-    List<Fail> failList = Collections.synchronizedList(new ArrayList<Fail>());
-
+    private AtomicLong current404Time = new AtomicLong(0);
     AtomicInteger successNum = new AtomicInteger(0);
     AtomicInteger failNum = new AtomicInteger(0);
 
@@ -78,6 +69,15 @@ public class FailureMonitor {
         logger().info("Success: " + ((BaseLagouSpider) job.getRealRunnable()).simpleName());
         successNum.getAndIncrement();
     }
+
+    private AtomicInteger fail404Num = new AtomicInteger(0);
+
+    private AtomicLong last404Time = new AtomicLong(0);
+
+    private AtomicInteger failNetErrNum = new AtomicInteger(0);
+    private AtomicLong lastNetErrTime = new AtomicLong(0);
+    private AtomicLong currentNetErrTime = new AtomicLong(0);
+
 
     public void fail(@NotNull IJob job, @NotNull Fail fail) {
         if (isSwitchingIP.get()) {  //失败的延迟任务还是会被dispatch到FailMonitor,这里直接丢弃
@@ -88,39 +88,46 @@ public class FailureMonitor {
         }
         failNum.getAndIncrement();
 
-        logger().error(job.toString() + " Fail reason: " + fail.toString());
-        //Todo: 404错误码
+        logger().debug(job.toString() + " Fail reason: " + fail.toString());
 
-        if (firstFailTime.get() == -1) {
-            firstFailTime = new AtomicLong(fail.millis);
-            logger().error("FirstFailTime: " + firstFailTime.get());
+        if (fail.is404()) {
+            fail404Num.incrementAndGet();
+
+            last404Time.set(current404Time.get());
+            current404Time.set(fail.millis);
+        } else if (fail.isNetworkErr()) {
+            failNetErrNum.incrementAndGet();
+
+            lastNetErrTime.set(currentNetErrTime.get());
+            currentNetErrTime.set(last404Time.get());
         }
 
-        if (fail.isBlock()) {
-            logger().error("WE ARE BLOCKED! We have success " + successNum.get() + " jobs,while fail " + failNum.get() + " jobs, we have already run " + (System.currentTimeMillis() - firstFailTime.get()) / 1000 + " second");
+        if (isBlocked(fail)) {
+            logger().error("WE ARE BLOCKED! We have success " + successNum.get() + " jobs");
             if (Config.ENABLE_SWITCH_IPPROXY) {
                 doSwitchIp();
             }
 
             if (Config.IS_TEST) {         //被block后就停止了
                 isSwitchingIP.set(true);
-                WorkThread.getInstance().pauseWhenSwitchIP();
+                WorkThread.getInstance().pauseWhenSwitchIP(); //Fixme:没什么卵用 请求都被放在OkHttpClient的pool里 任务还是一直在执行
             }
         }
 
-        currentFailTime = new AtomicLong(fail.millis);
+    }
 
-        /*  //暂时先注释掉
-        if (fail.isNetworkErr()) {
-            networkErrCount.set(networkErrCount.get() + 1);
-        } else {
-            failList.add(fail);
+    private boolean isBlocked(@NotNull Fail fail) {
+        if (fail.isBlock()) {
+            return true;
+        }
+        if (fail404Num.get() > 10 || current404Time.get() - last404Time.get() < 500) { //已经有了10个404且相隔不久
+            return true;
         }
 
-        if (shouldSwitchProxy()) {
-            doSwitchIp();
+        if (failNetErrNum.get() > 10 || currentNetErrTime.get() - lastNetErrTime.get() < 500) {
+            return true;
         }
-        */
+        return false;
     }
 
     private AtomicBoolean isSwitchingIP = new AtomicBoolean(false);
@@ -144,9 +151,8 @@ public class FailureMonitor {
     }
 
     private void reset() {
-        networkErrCount.set(0);
-        firstFailTime.set(-1);
-        failList.clear();
+        fail404Num.set(0);
+        failNetErrNum.set(0);
     }
 
     private boolean ensureIpSwitched(final IPProxyTool.Proxy proxy) {
@@ -159,19 +165,5 @@ public class FailureMonitor {
         } catch (ExecutionException e) {
             return false;
         }
-    }
-
-    private boolean shouldSwitchProxy() {
-        if (currentFailTime.get() - firstFailTime.get() < 1000 * 60) {  //小于1分钟跳过
-            return false;
-        }
-
-        int minute = (int) (currentFailTime.get() - firstFailTime.get()) / (1000 * 60);
-        if (networkErrCount.get() / minute >= FAIL_FREQUENCY_NETWORK_ERR) {
-            return true;
-        } else if (failList.size() / minute >= FAIL_FREQUENCY_SERVER_ERR) {
-            return true;
-        }
-        return false;
     }
 }

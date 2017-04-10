@@ -69,22 +69,32 @@ public class AreaSpider extends BaseLagouSpider {
             public void onResponse(Call call, Response response) throws IOException {
                 super.onResponse(call, response);
                 if (!response.isSuccessful()) {
+                    if (checkBlockAndFailThisSpider(response.code())) {
+                        return;
+                    }
                     JobMonitor.getInstance().fail(AreaSpider.this, new Fail(response.code(), response.message()));
                     return;
                 } else {
                     JobMonitor.getInstance().success(AreaSpider.this);
                 }
-                pageNum = parsePageNum(response.body().string());
+
+                String body = response.body().string();
+                pageNum = parseData(body);
 
                 if (pageNum != -1) {
                     if (pageNum == 0) {
-                        logger().info("PageNum 0, " + name());
+
+                        if (checkBlockAndFailThisSpider(body)) {
+                            ;
+                        } else {
+                            logger().info("We got zero page, " + name());
+                        }
                     } else {
                         logger().debug("Parsed num: " + pageNum + " " + simpleName());
                         beginSpider();
                     }
                 } else {
-                    logger().error("parsePageNum fail");
+                    logger().error("parseData fail");
                 }
 
                 if (response.body() != null) {
@@ -95,9 +105,11 @@ public class AreaSpider extends BaseLagouSpider {
     }
 
     /**
-     * @return -1表示解析失败
+     * @return
+     * -1:parsing error
+     * 0: 没有内容 或者已经被block
      */
-    private int parsePageNum(String data) {
+    private int parseData(String data) {
         try {
             Parser parser = new Parser(data);
             parser.setEncoding("utf-8");
@@ -111,14 +123,13 @@ public class AreaSpider extends BaseLagouSpider {
                         return Integer.parseInt(((Span) tag).getStringText());
                     }
                 }
-            } else {
-                return 0;  //这个区域内没有公司 比如说灵隐区...
             }
+
+            return 0;  //这个区域内没有公司 比如说灵隐区...
         } catch (ParserException e) {
-
-
+            return -1;
         }
-        return -1;
+
     }
 
     public void run() {

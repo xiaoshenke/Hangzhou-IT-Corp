@@ -17,8 +17,6 @@ public class Config {
 
     public static int MAX_FAIL_TIME = 4;
 
-    public final static int FAIL_FREQUENCY_NETWORK_ERR = 5;
-    public final static int FAIL_FREQUENCY_SERVER_ERR = 5;
 
     public static final String URL_LAGOU_POSITION_JSON = "https://www.lagou.com/jobs/positionAjax.json?px=default";
 

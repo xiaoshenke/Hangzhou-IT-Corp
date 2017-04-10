@@ -23,12 +23,16 @@ public class BaseLogCallback implements Callback {
     }
 
     public void onFailure(Call call, IOException e) {
-        logger().error("HttpCode: -1" + " spider: " + spider.simpleName());
+        logger().error("onFailure:" + " spider: " + spider.name());
     }
 
     public void onResponse(Call call, Response response) throws IOException {
         if (!response.isSuccessful()) {
-            logger().error("HttpCode: " + response.code() + " spider: " + spider.name());
+            if (spider.checkBlockAndFailThisSpider(response.code())) {
+                ;
+            } else {
+                logger().error("HttpCode: " + response.code() + " message: " + response.message() + " spider: " + spider.name());
+            }
         }
 
     }
