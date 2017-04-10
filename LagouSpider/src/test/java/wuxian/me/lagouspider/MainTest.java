@@ -47,7 +47,7 @@ public class MainTest {
             JobQueue.getInstance().putJob(job);
 
             JobMonitor.getInstance().putJob(job, IJob.STATE_INIT);
-            i++;
+            //i++;
         }
 
         logger().info("start workThread...");

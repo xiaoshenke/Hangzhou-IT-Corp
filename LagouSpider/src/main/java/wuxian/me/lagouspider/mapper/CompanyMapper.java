@@ -21,7 +21,8 @@ public interface CompanyMapper {
                        @Param("areaId") int areaId,
                        @Param("fullName") String fullName,
                        @Param("stage") String stage,
-                       @Param("field") String field);
+                       @Param("field") String field,
+                       @Param("location") String location);
 
     void updateCompanyLocation(@Param("tableName") String tableName,
                                @Param("companyId") long companyId,

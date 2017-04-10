@@ -13,6 +13,8 @@ public class Config {
 
     public static boolean ENABLE_RETRY_SPIDER = false;
 
+    public static boolean ENABLE_SWITCH_IPPROXY = false;
+
     public static int MAX_FAIL_TIME = 4;
 
     public final static int FAIL_FREQUENCY_NETWORK_ERR = 5;

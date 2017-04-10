@@ -72,11 +72,11 @@ public abstract class BaseJob implements IJob {
         }
 
         if (state == STATE_FAIL) {
-            return "Job fail,fail times: " + getFailTimes() + " " + ((BaseLagouSpider) realJob).simpleName();
+            return "Job fail,fail times: " + getFailTimes() + " " + ((BaseLagouSpider) realJob).name();
         } else if (state == STATE_SUCCESS) {
-            return "Job success " + ((BaseLagouSpider) realJob).simpleName();
+            return "Job success " + ((BaseLagouSpider) realJob).name();
         } else if (state == STATE_INIT) {
-            return "Job: " + ((BaseLagouSpider) realJob).simpleName();
+            return "Job: " + ((BaseLagouSpider) realJob).name();
         }
         return "Job state: " + state + " " + realJob.toString();
     }

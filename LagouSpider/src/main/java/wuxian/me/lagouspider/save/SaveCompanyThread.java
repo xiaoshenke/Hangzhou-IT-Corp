@@ -37,9 +37,9 @@ public class SaveCompanyThread extends Thread {
                     if (insert) {
                         mapper.insertCompany(tableName, company.company_id,
                                 company.area_id, company.company_fullname,
-                                company.financeStage, company.industryField);
+                                company.financeStage, company.industryField, company.detail_location);
                     } else {
-                        ;//Todo: update
+                        mapper.updateCompanyLocation(tableName, company.company_id, company.detail_location);
                     }
                 }
             }

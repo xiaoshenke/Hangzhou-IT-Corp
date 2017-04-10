@@ -60,12 +60,14 @@ public class AreaSpider extends BaseLagouSpider {
                 .url(urlBuilder.build().toString())
                 .build();
 
-        OkhttpProvider.getClient().newCall(request).enqueue(new Callback() {
+        OkhttpProvider.getClient().newCall(request).enqueue(new BaseLogCallback(this) {
             public void onFailure(Call call, IOException e) {
+                super.onFailure(call, e);
                 JobMonitor.getInstance().fail(AreaSpider.this, Fail.NETWORK_ERR);
             }
 
             public void onResponse(Call call, Response response) throws IOException {
+                super.onResponse(call, response);
                 if (!response.isSuccessful()) {
                     JobMonitor.getInstance().fail(AreaSpider.this, new Fail(response.code(), response.message()));
                     return;
@@ -75,10 +77,18 @@ public class AreaSpider extends BaseLagouSpider {
                 pageNum = parsePageNum(response.body().string());
 
                 if (pageNum != -1) {
-                    logger().info("parsed pageNum: " + pageNum + " " + simpleName());
-                    beginSpider();
+                    if (pageNum == 0) {
+                        logger().info("PageNum 0, " + name());
+                    } else {
+                        logger().debug("Parsed num: " + pageNum + " " + simpleName());
+                        beginSpider();
+                    }
                 } else {
                     logger().error("parsePageNum fail");
+                }
+
+                if (response.body() != null) {
+                    response.body().close();
                 }
             }
         });
@@ -102,7 +112,6 @@ public class AreaSpider extends BaseLagouSpider {
                     }
                 }
             } else {
-                //Todo: antiSpider
                 return 0;  //这个区域内没有公司 比如说灵隐区...
             }
         } catch (ParserException e) {
@@ -126,7 +135,7 @@ public class AreaSpider extends BaseLagouSpider {
     }
 
     @Override
-    public String simpleName() {
+    public String name() {
         return "AreaSpider " + area.toString();
     }
 }

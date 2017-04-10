@@ -1,5 +1,6 @@
 package wuxian.me.lagouspider.core;
 
+import com.sun.istack.internal.NotNull;
 import org.htmlparser.Parser;
 import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.util.NodeList;
@@ -11,8 +12,13 @@ import wuxian.me.lagouspider.control.JobMonitor;
  * Created by wuxian on 9/4/2017.
  */
 public abstract class BaseLagouSpider implements Runnable {
+    public String name() {
+        return simpleName();
+    }
 
-    abstract public String simpleName();
+    public final String simpleName() {
+        return getClass().getSimpleName();
+    }
 
     protected boolean checkBlockAndFailThisSpider(String html) {
         try {

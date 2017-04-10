@@ -15,15 +15,16 @@ public class IPProxyTool {
 
     static {
         ipPortList = new ArrayList<Proxy>();
-        ipPortList.add(new Proxy("35.185.44.214", 80));
-        ipPortList.add(new Proxy("110.170.201.227", 8080));
-        ipPortList.add(new Proxy("202.143.189.130", 8080));
+
+        ipPortList.add(new Proxy("171.13.36.161", 808));
         ipPortList.add(new Proxy("202.106.16.36", 3128));
         ipPortList.add(new Proxy("171.13.37.103", 808));
         ipPortList.add(new Proxy("121.204.165.246", 8118));
         ipPortList.add(new Proxy("36.249.25.72", 808));
         ipPortList.add(new Proxy("115.230.11.193", 808));
         ipPortList.add(new Proxy("1.83.120.48", 80));
+        ipPortList.add(new Proxy("35.185.44.214", 80));
+        ipPortList.add(new Proxy("110.170.201.227", 8080));
 
         current = new AtomicInteger(ipPortList.size() - 1);
     }

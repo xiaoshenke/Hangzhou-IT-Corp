@@ -15,7 +15,7 @@ public class WorkThread extends Thread {
 
     public static WorkThread getInstance() {
         if (instance == null) {
-            synchronized (instance) {
+            synchronized (WorkThread.class) {
                 if (instance == null) {
                     instance = new WorkThread();
                 }

@@ -24,16 +24,16 @@ public class JobQueue {
     }
 
     public boolean putJob(IJob job) {
-        //logger().info("putJob: " + job.toString());
+        logger().debug("putJob: " + job.toString());
         return queue.offer(job);
     }
 
     public IJob getJob() {
         IJob job = queue.poll();
         if (job == null) {
-            logger().info("getJob: jobQueue empty");
+            logger().debug("getJob: jobQueue empty");
         } else {
-            logger().info("getJob: " + job.toString());
+            logger().debug("getJob: " + job.toString());
         }
         return job;
     }

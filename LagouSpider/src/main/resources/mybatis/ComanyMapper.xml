@@ -13,7 +13,9 @@
         -->
     </update>
     <insert id="insertCompany">
-        insert into $(tableName) (company_id,area_id,company_fullname,financeStage,industryFiled) values (#{companyId},#{areaId},#{fullName},#{stage},#{field})
+        insert into $(tableName) (company_id,area_id,company_fullname,financeStage,industryFiled
+        <if test="location != null">, detail_location</if>) values (#{companyId},#{areaId},#{fullName},#{stage},#{field}<if
+            test="location != null">,#{location}</if>)
     </insert>
 
     <update id="updateCompany">
@@ -21,7 +23,7 @@
     </update>
 
     <resultMap id="allCompany" type="wuxian.me.lagouspider.model.Company"/>
-    <select id="loadAllCompanies" resultMap="allCompany">
+    <select id="loadAllCompanies" resultMap="allCompany" useCache="false">
         select * from ${tableName}
     </select>
 </mapper>

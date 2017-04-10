@@ -67,12 +67,15 @@ public class AreaPageSpider extends BaseLagouSpider {
                 .post(bodyBuilder.build())
                 .build();
 
-        OkhttpProvider.getClient().newCall(request).enqueue(new Callback() {
+        OkhttpProvider.getClient().newCall(request).enqueue(new BaseLogCallback(this) {
             public void onFailure(Call call, IOException e) {
+                super.onFailure(call, e);
                 JobMonitor.getInstance().fail(AreaPageSpider.this, Fail.NETWORK_ERR);
             }
 
             public void onResponse(Call call, Response response) throws IOException {
+                super.onResponse(call, response);
+
                 if (!response.isSuccessful()) {
                     JobMonitor.getInstance().fail(AreaPageSpider.this, new Fail(response.code(), response.message()));
                     return;
@@ -80,6 +83,10 @@ public class AreaPageSpider extends BaseLagouSpider {
                     JobMonitor.getInstance().success(AreaPageSpider.this);
                 }
                 parseResult(response.body().string());
+
+                if (response.body() != null) {
+                    response.body().close();
+                }
             }
         });
 
@@ -88,7 +95,7 @@ public class AreaPageSpider extends BaseLagouSpider {
     private void saveCompany(@Nullable Company company) {
 
         if (!Config.ENABLE_SAVE_COMPANY_DB) {
-            logger().info("SaveCompany " + company.toString());
+            logger().debug("SaveCompany " + company.toString());
             return;
         }
         if (company != null) {
@@ -100,13 +107,13 @@ public class AreaPageSpider extends BaseLagouSpider {
         long id = object.get("companyId").getAsLong();
         Company company = new Company(id);
 
-        if (object.get("companyFullName") != null) {
+        if (!object.get("companyFullName").isJsonNull()) {
             company.company_fullname = object.get("companyFullName").getAsString();
         }
-        if (object.get("financeStage") != null) {
+        if (!object.get("financeStage").isJsonNull()) {
             company.financeStage = object.get("financeStage").getAsString();
         }
-        if (object.get("industryField") != null) {
+        if (!object.get("industryField").isJsonNull()) {
             company.industryField = object.get("industryField").getAsString();
         }
         company.area_id = area.area_id;
@@ -136,7 +143,7 @@ public class AreaPageSpider extends BaseLagouSpider {
         return "AreaPageSpider: pageIndex is " + pageIndex + " area is " + area.toString();
     }
 
-    public String simpleName() {
+    public String name() {
         return "AreaPageSpider index:" + pageIndex + " " + area.toString();
     }
 }
