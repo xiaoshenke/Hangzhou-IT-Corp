@@ -1,6 +1,4 @@
 package wuxian.me.lagouspider.control;
-
-import wuxian.me.lagouspider.Main;
 import wuxian.me.lagouspider.job.IJob;
 
 /**
@@ -9,10 +7,50 @@ import wuxian.me.lagouspider.job.IJob;
 public class WorkThread extends Thread {
     private static final long SLEEP_TIME = 1000;
 
+    private WorkThread() {
+        ;
+    }
+
+    private static WorkThread instance;
+
+    public static WorkThread getInstance() {
+        if (instance == null) {
+            synchronized (instance) {
+                if (instance == null) {
+                    instance = new WorkThread();
+                }
+            }
+        }
+        return instance;
+    }
+
+    private boolean pause = false;
+
+    public void pauseWhenSwitchIP() {
+        pause = true;
+    }
+
+    public synchronized void resumeNow() {
+        pause = false;
+        notifyAll();
+    }
+
+    private synchronized boolean doIfShouldWait() {
+        if (pause) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                ;
+            }
+        }
+        return true;
+    }
+
     @Override
     public void run() {
         while (true) {
             while (!JobQueue.getInstance().isEmpty()) {
+                doIfShouldWait();
                 IJob job = JobQueue.getInstance().getJob();
                 job.run();
             }
@@ -23,6 +61,5 @@ public class WorkThread extends Thread {
                 ;  //ignore
             }
         }
-
     }
 }

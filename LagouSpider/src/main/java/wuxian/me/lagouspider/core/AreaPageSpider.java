@@ -8,7 +8,6 @@ import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 import okhttp3.*;
 import wuxian.me.lagouspider.Config;
-import wuxian.me.lagouspider.Main;
 import wuxian.me.lagouspider.control.Fail;
 import wuxian.me.lagouspider.control.JobMonitor;
 import wuxian.me.lagouspider.model.Area;
@@ -24,7 +23,7 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 /**
  * Created by wuxian on 7/4/2017.
  */
-public class AreaPageSpider extends BaseSpider {
+public class AreaPageSpider extends BaseLagouSpider {
 
     private Area area;
     private int pageIndex;
@@ -70,7 +69,7 @@ public class AreaPageSpider extends BaseSpider {
 
         OkhttpProvider.getClient().newCall(request).enqueue(new Callback() {
             public void onFailure(Call call, IOException e) {
-                JobMonitor.getInstance().fail(AreaPageSpider.this, new Fail(Fail.FAIL_NETWORK_ERROR));
+                JobMonitor.getInstance().fail(AreaPageSpider.this, Fail.NETWORK_ERR);
             }
 
             public void onResponse(Call call, Response response) throws IOException {

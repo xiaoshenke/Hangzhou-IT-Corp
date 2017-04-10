@@ -8,7 +8,6 @@ import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.tags.Span;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
-import wuxian.me.lagouspider.Main;
 import wuxian.me.lagouspider.control.Fail;
 import wuxian.me.lagouspider.control.JobMonitor;
 import wuxian.me.lagouspider.job.IJob;
@@ -30,7 +29,7 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
  * 2 根据页数发送每一页数据的请求
  * 3 重试机制
  */
-public class AreaSpider extends BaseSpider {
+public class AreaSpider extends BaseLagouSpider {
     Area area;
     private int pageNum = -1;
 
@@ -63,7 +62,7 @@ public class AreaSpider extends BaseSpider {
 
         OkhttpProvider.getClient().newCall(request).enqueue(new Callback() {
             public void onFailure(Call call, IOException e) {
-                JobMonitor.getInstance().fail(AreaSpider.this, new Fail(Fail.FAIL_NETWORK_ERROR));
+                JobMonitor.getInstance().fail(AreaSpider.this, Fail.NETWORK_ERR);
             }
 
             public void onResponse(Call call, Response response) throws IOException {

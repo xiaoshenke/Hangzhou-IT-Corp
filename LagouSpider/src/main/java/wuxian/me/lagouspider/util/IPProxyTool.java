@@ -28,7 +28,7 @@ public class IPProxyTool {
         current = new AtomicInteger(ipPortList.size() - 1);
     }
 
-    public static Proxy switchNextProxy() {
+    public static Proxy switchNextProxy() {  //Fixme: 一个proxy被禁掉之后 是否应该删了这个proxy
         current.set((current.get() + 1) % ipPortList.size());
 
         Proxy proxy = ipPortList.get(current.get());

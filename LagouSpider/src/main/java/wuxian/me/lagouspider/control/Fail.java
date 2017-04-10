@@ -5,7 +5,8 @@ package wuxian.me.lagouspider.control;
  */
 public class Fail {
 
-    public static final int FAIL_NETWORK_ERROR = -1;
+    private static final int FAIL_NETWORK_ERROR = -1;
+    private static final int FAIL_BLOCK_404 = 101;
 
     int httpCode;
     String message;
@@ -27,7 +28,21 @@ public class Fail {
     public String toString() {
         if (httpCode == FAIL_NETWORK_ERROR) {
             return "network error";
+        } else if (httpCode == FAIL_BLOCK_404) {
+            return "ip blocked by Lagou-Anti-Spider";
         }
         return "httpcode " + httpCode + " ,message " + message;
     }
+
+    public boolean isNetworkErr() {
+        return httpCode == FAIL_NETWORK_ERROR;
+    }
+
+    public boolean isBlock() {
+        return httpCode == FAIL_BLOCK_404;
+    }
+
+    public final static Fail BLOCK = new Fail(FAIL_BLOCK_404, "Blocked");
+
+    public final static Fail NETWORK_ERR = new Fail(FAIL_NETWORK_ERROR, "NetworkErr");
 }

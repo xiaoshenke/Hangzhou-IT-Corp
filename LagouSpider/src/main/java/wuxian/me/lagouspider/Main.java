@@ -67,7 +67,7 @@ public class Main {
                     JobMonitor.getInstance().putJob(job, IJob.STATE_INIT);
                 }
 
-                new WorkThread().start();
+                WorkThread.getInstance().start();
                 logger().info("start workThread...");
             }
         }

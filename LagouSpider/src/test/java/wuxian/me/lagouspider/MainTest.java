@@ -51,10 +51,43 @@ public class MainTest {
         }
 
         logger().info("start workThread...");
-        new WorkThread().start();
+        WorkThread.getInstance().start();
 
         while (true) {
             //never stop //http://www.cnblogs.com/yanphet/p/5774291.html
+        }
+    }
+
+    @Test
+    public void testSuspendWorkThread() {
+        Config.IS_TEST = true;
+
+        AreaMapper areaMapper = areaMapper();
+        List<Area> areas = areaMapper.loadAll();
+        assertTrue(areas.size() != 0);
+
+        for (Area area : areas) {
+            IJob job = JobProvider.getFixedDelayJob(0);
+            job.setRealRunnable(new AreaSpider(area));
+            JobQueue.getInstance().putJob(job);
+
+            JobMonitor.getInstance().putJob(job, IJob.STATE_INIT);
+        }
+
+        WorkThread thread = WorkThread.getInstance();
+        thread.start();
+        try {
+            Thread.sleep(100);
+            logger().info("begin to pauseWhenSwitchIP");
+            thread.pauseWhenSwitchIP();
+
+            Thread.sleep(1000);
+            logger().info("begin to resume");
+            thread.resumeNow();
+
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+
         }
     }
 
@@ -102,7 +135,7 @@ public class MainTest {
         JobQueue.getInstance().putJob(job);
         logger().info("put runnable at: " + System.currentTimeMillis());
 
-        new WorkThread().start();
+        WorkThread.getInstance().start();
 
         while (true) {
         }

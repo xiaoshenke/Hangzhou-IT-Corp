@@ -1,13 +1,21 @@
 package wuxian.me.lagouspider.control;
 
 import com.sun.istack.internal.NotNull;
-import wuxian.me.lagouspider.Config;
+import okhttp3.Headers;
+import okhttp3.HttpUrl;
+import okhttp3.Request;
+import okhttp3.Response;
 import wuxian.me.lagouspider.job.IJob;
 import wuxian.me.lagouspider.util.IPProxyTool;
+import wuxian.me.lagouspider.util.OkhttpProvider;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -19,11 +27,31 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
  * Created by wuxian on 9/4/2017.
  * 根据失败的情况判断是否ip被屏蔽了:
  * 目前只根据fail的频率 不去管job自身的状态 --> 短期大量的失败认为被屏蔽了 或者网络条件很差
- * Fixme:后续的算法可以进行改进
  */
 public class FailureMonitor {
 
+    private FutureTask<String> confirmSwitchIPFuture;
+
     private FailureMonitor() {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://www.ip138.com/ip2city.asp").newBuilder();
+        Headers.Builder builder = new Headers.Builder();
+        builder.add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36");
+        final Request request = new Request.Builder()
+                .headers(builder.build())
+                .url(urlBuilder.build().toString())
+                .build();
+
+        Callable<String> callable = new Callable<String>() {
+            public String call() throws Exception {
+                try {
+                    Response response = OkhttpProvider.getClient().newCall(request).execute();
+                    return response.body().string();
+                } catch (IOException e) {
+                    return null;
+                }
+            }
+        };
+        confirmSwitchIPFuture = new FutureTask<String>(callable);
     }
 
     private static FailureMonitor instance;
@@ -50,27 +78,58 @@ public class FailureMonitor {
     public void fail(@NotNull IJob job, @NotNull Fail fail) {
         logger().error(job.toString() + " Fail reason: " + fail.toString());
 
+        if (fail.isBlock()) {
+            doSwitchIp();
+        }
+
         if (firstFailTime.get() == -1) {
             firstFailTime = new AtomicLong(fail.millis);
         }
         currentFailTime = new AtomicLong(fail.millis);
 
-        if (fail.httpCode == Fail.FAIL_NETWORK_ERROR) {
+        if (fail.isNetworkErr()) {
             networkErrCount.set(networkErrCount.get() + 1);
         } else {
             failList.add(fail);
         }
 
-        if (!Config.IS_TEST && shouldSwitchProxy()) {  //测试的时候禁掉ip代理
-            reset();
-            IPProxyTool.switchNextProxy();
+        if (shouldSwitchProxy()) {
+            doSwitchIp();
         }
+    }
+
+    private void doSwitchIp() {
+        WorkThread.getInstance().pauseWhenSwitchIP();  //只需停止workThread,尽管有的延迟任务还是会继续,那不管了
+        reset();
+        int times = 0;
+        while (true) {
+            if (times > 10) {
+                throw new RuntimeException("No Proxy available!");
+            }
+            IPProxyTool.Proxy proxy = IPProxyTool.switchNextProxy();
+            if (ensureIpSwitched(proxy)) {
+                break;
+            }
+            times++;
+        }
+        WorkThread.getInstance().resumeNow();
     }
 
     private void reset() {
         networkErrCount.set(0);
         firstFailTime.set(-1);
         failList.clear();
+    }
+
+    private boolean ensureIpSwitched(final IPProxyTool.Proxy proxy) {
+        new Thread(confirmSwitchIPFuture).start();
+        try {
+            return confirmSwitchIPFuture.get() == null ? false : confirmSwitchIPFuture.get().contains(proxy.ip);
+        } catch (InterruptedException e1) {
+            return false;
+        } catch (ExecutionException e) {
+            return false;
+        }
     }
 
     private boolean shouldSwitchProxy() {

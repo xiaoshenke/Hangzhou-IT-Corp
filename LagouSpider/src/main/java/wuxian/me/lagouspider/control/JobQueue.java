@@ -31,9 +31,9 @@ public class JobQueue {
     public IJob getJob() {
         IJob job = queue.poll();
         if (job == null) {
-            //logger().info("getJob: jobQueue empty");
+            logger().info("getJob: jobQueue empty");
         } else {
-            //logger().info("getJob: " + job.toString());
+            logger().info("getJob: " + job.toString());
         }
         return job;
     }
