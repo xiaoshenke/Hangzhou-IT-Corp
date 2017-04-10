@@ -67,10 +67,10 @@ public class AreaPageSpider extends BaseLagouSpider {
                 .post(bodyBuilder.build())
                 .build();
 
-        OkhttpProvider.getClient().newCall(request).enqueue(new BaseLogCallback(this) {
+        OkhttpProvider.getClient().newCall(request).enqueue(new BaseSpiderCallback(this) {
             public void onFailure(Call call, IOException e) {
                 super.onFailure(call, e);
-                JobMonitor.getInstance().fail(AreaPageSpider.this, Fail.NETWORK_ERR);
+                JobMonitor.getInstance().fail(getSpider(), Fail.NETWORK_ERR);
             }
 
             public void onResponse(Call call, Response response) throws IOException {
@@ -80,10 +80,10 @@ public class AreaPageSpider extends BaseLagouSpider {
                         return;
                     }
 
-                    JobMonitor.getInstance().fail(AreaPageSpider.this, new Fail(response.code(), response.message()));
+                    JobMonitor.getInstance().fail(getSpider(), new Fail(response.code(), response.message()));
                     return;
                 } else {
-                    JobMonitor.getInstance().success(AreaPageSpider.this);
+                    JobMonitor.getInstance().success(getSpider());
                 }
 
                 String body = response.body().string();

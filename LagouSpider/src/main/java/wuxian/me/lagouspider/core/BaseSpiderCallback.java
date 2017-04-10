@@ -4,6 +4,7 @@ import com.sun.istack.internal.NotNull;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+import wuxian.me.lagouspider.control.FailureManager;
 
 import java.io.IOException;
 
@@ -14,12 +15,16 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
  * <p>
  * Used for LOG.
  */
-public class BaseLogCallback implements Callback {
-
+public abstract class BaseSpiderCallback implements Callback {
     private BaseLagouSpider spider;
 
-    public BaseLogCallback(@NotNull BaseLagouSpider spider) {
+    protected BaseLagouSpider getSpider() {
+        return spider;
+    }
+
+    public BaseSpiderCallback(@NotNull BaseLagouSpider spider) {
         this.spider = spider;
+        FailureManager.register(spider);
     }
 
     public void onFailure(Call call, IOException e) {
@@ -34,6 +39,5 @@ public class BaseLogCallback implements Callback {
                 logger().error("HttpCode: " + response.code() + " message: " + response.message() + " spider: " + spider.name());
             }
         }
-
     }
 }

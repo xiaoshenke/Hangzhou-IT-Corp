@@ -12,6 +12,9 @@ import wuxian.me.lagouspider.util.IPProxyTool;
 import wuxian.me.lagouspider.util.OkhttpProvider;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -23,14 +26,13 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
 /**
  * Created by wuxian on 9/4/2017.
- * 根据失败的情况判断是否ip被屏蔽了:
- * 目前只根据fail的频率 不去管job自身的状态 --> 短期大量的失败认为被屏蔽了 或者网络条件很差
+ * 根据失败的情况判断是否ip被屏蔽了
  */
-public class FailureMonitor {
+public class FailureManager {
 
     private FutureTask<String> confirmSwitchIPFuture;
 
-    private FailureMonitor() {
+    private FailureManager() {
         HttpUrl.Builder urlBuilder = HttpUrl.parse("http://www.ip138.com/ip2city.asp").newBuilder();
         Headers.Builder builder = new Headers.Builder();
         builder.add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36");
@@ -52,11 +54,11 @@ public class FailureMonitor {
         confirmSwitchIPFuture = new FutureTask<String>(callable);
     }
 
-    private static FailureMonitor instance;
+    private static FailureManager instance;
 
-    public static FailureMonitor getInstance() {
+    public static FailureManager getInstance() {
         if (instance == null) {
-            instance = new FailureMonitor();
+            instance = new FailureManager();
         }
         return instance;
     }
@@ -68,15 +70,24 @@ public class FailureMonitor {
     public void success(@NotNull IJob job) {
         logger().info("Success: " + ((BaseLagouSpider) job.getRealRunnable()).simpleName());
         successNum.getAndIncrement();
+
+        if (todoSpiderList.contains(job)) {
+            todoSpiderList.remove((BaseLagouSpider) job);
+        }
     }
 
     private AtomicInteger fail404Num = new AtomicInteger(0);
-
     private AtomicLong last404Time = new AtomicLong(0);
-
     private AtomicInteger failNetErrNum = new AtomicInteger(0);
     private AtomicLong lastNetErrTime = new AtomicLong(0);
     private AtomicLong currentNetErrTime = new AtomicLong(0);
+
+    //记录单次(单个ip)的spiderList
+    private static List<BaseLagouSpider> todoSpiderList = Collections.synchronizedList(new ArrayList<BaseLagouSpider>());
+
+    public static void register(@NotNull BaseLagouSpider spider) {
+        todoSpiderList.add(spider);
+    }
 
 
     public void fail(@NotNull IJob job, @NotNull Fail fail) {
@@ -86,6 +97,10 @@ public class FailureMonitor {
         if (Config.IS_TEST && failNum.get() >= 10) {  //为了测试 先这么搞
             return;
         }
+        if (todoSpiderList.contains(job)) {
+            todoSpiderList.remove(job);
+        }
+
         failNum.getAndIncrement();
 
         logger().debug(job.toString() + " Fail reason: " + fail.toString());
@@ -110,7 +125,8 @@ public class FailureMonitor {
 
             if (Config.IS_TEST) {         //被block后就停止了
                 isSwitchingIP.set(true);
-                WorkThread.getInstance().pauseWhenSwitchIP(); //Fixme:没什么卵用 请求都被放在OkHttpClient的pool里 任务还是一直在执行
+                OkhttpProvider.getClient().dispatcher().cancelAll();
+                WorkThread.getInstance().pauseWhenSwitchIP();
             }
         }
 
@@ -131,9 +147,11 @@ public class FailureMonitor {
     }
 
     private AtomicBoolean isSwitchingIP = new AtomicBoolean(false);
+
     private void doSwitchIp() {
         isSwitchingIP.set(true);
-        WorkThread.getInstance().pauseWhenSwitchIP();  //只需停止workThread,尽管有的延迟任务还是会继续,那不管了
+        OkhttpProvider.getClient().dispatcher().cancelAll();
+        WorkThread.getInstance().pauseWhenSwitchIP();
         reset();
         int times = 0;
         while (true) {
@@ -146,6 +164,13 @@ public class FailureMonitor {
             }
             times++;
         }
+        OkhttpProvider.getClient().dispatcher().cancelAll();
+
+        for (BaseLagouSpider spider : todoSpiderList) {
+            IJob job = JobMonitor.getInstance().getJob(spider);
+            JobQueue.getInstance().putJob(job);
+        }
+        todoSpiderList.clear();
         WorkThread.getInstance().resumeNow();
         isSwitchingIP.set(false);
     }

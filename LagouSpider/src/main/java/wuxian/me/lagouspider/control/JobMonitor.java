@@ -7,15 +7,13 @@ import wuxian.me.lagouspider.job.IJob;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static wuxian.me.lagouspider.util.ModuleProvider.logger;
-
 /**
  * Created by wuxian on 7/4/2017.
  * 记录所有状态的job --> 防止一个job被多次重复
  */
 public class JobMonitor {
 
-    private FailureMonitor failureMonitor = FailureMonitor.getInstance();
+    private FailureManager failureMonitor = FailureManager.getInstance();
     private Map<IJob, Integer> set = new ConcurrentHashMap<IJob, Integer>();
 
     private Map<Runnable, IJob> jobMap = new ConcurrentHashMap<Runnable, IJob>();
