@@ -17,6 +17,7 @@ public class Config {
 
     public static int MAX_FAIL_TIME = 4;
 
+    public static final String URL_LAGOU_COMPANY_MAIN = "https://www.lagou.com/gongsi/";
 
     public static final String URL_LAGOU_POSITION_JSON = "https://www.lagou.com/jobs/positionAjax.json?px=default";
 

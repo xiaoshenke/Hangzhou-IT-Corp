@@ -9,8 +9,6 @@ import java.util.List;
  * Created by wuxian on 6/4/2017.
  * <p>
  * tableName: companies_2017_03_03,companies_2017_03_10,etc
- *
- * Todo: insertCompany location
  */
 public interface CompanyMapper {
 

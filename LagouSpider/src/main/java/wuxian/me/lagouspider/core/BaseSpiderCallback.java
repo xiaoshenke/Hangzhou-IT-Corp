@@ -4,7 +4,9 @@ import com.sun.istack.internal.NotNull;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+import wuxian.me.lagouspider.control.Fail;
 import wuxian.me.lagouspider.control.FailureManager;
+import wuxian.me.lagouspider.control.JobMonitor;
 
 import java.io.IOException;
 
@@ -18,7 +20,7 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 public abstract class BaseSpiderCallback implements Callback {
     private BaseLagouSpider spider;
 
-    protected BaseLagouSpider getSpider() {
+    protected final BaseLagouSpider getSpider() {
         return spider;
     }
 
@@ -27,17 +29,31 @@ public abstract class BaseSpiderCallback implements Callback {
         FailureManager.register(spider);
     }
 
-    public void onFailure(Call call, IOException e) {
+    public final void onFailure(Call call, IOException e) {
         logger().error("onFailure:" + " spider: " + spider.name());
+        JobMonitor.getInstance().fail(spider, Fail.NETWORK_ERR);
     }
 
-    public void onResponse(Call call, Response response) throws IOException {
+    public final void onResponse(Call call, Response response) throws IOException {
         if (!response.isSuccessful()) {
             if (spider.checkBlockAndFailThisSpider(response.code())) {
-                ;
+                if (response.body() != null) {
+                    response.body().close();
+                }
+                return;
             } else {
                 logger().error("HttpCode: " + response.code() + " message: " + response.message() + " spider: " + spider.name());
             }
+            JobMonitor.getInstance().fail(getSpider(), new Fail(response.code(), response.message()));
+            if (response.body() != null) {
+                response.body().close();
+            }
+            return;
         }
+        JobMonitor.getInstance().success(getSpider());
+
+        parseResponseData(response.body().string());
     }
+
+    protected abstract void parseResponseData(String data);
 }

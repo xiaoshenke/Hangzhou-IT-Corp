@@ -68,33 +68,13 @@ public class AreaPageSpider extends BaseLagouSpider {
                 .build();
 
         OkhttpProvider.getClient().newCall(request).enqueue(new BaseSpiderCallback(this) {
-            public void onFailure(Call call, IOException e) {
-                super.onFailure(call, e);
-                JobMonitor.getInstance().fail(getSpider(), Fail.NETWORK_ERR);
-            }
 
-            public void onResponse(Call call, Response response) throws IOException {
-                super.onResponse(call, response);
-                if (!response.isSuccessful()) {
-                    if (checkBlockAndFailThisSpider(response.code())) {
-                        return;
-                    }
-
-                    JobMonitor.getInstance().fail(getSpider(), new Fail(response.code(), response.message()));
-                    return;
-                } else {
-                    JobMonitor.getInstance().success(getSpider());
-                }
-
-                String body = response.body().string();
+            protected void parseResponseData(String data) {
+                String body = data;
                 parseResult(body);
 
                 if (checkBlockAndFailThisSpider(body)) {
                     return;
-                }
-
-                if (response.body() != null) {
-                    response.body().close();
                 }
             }
         });

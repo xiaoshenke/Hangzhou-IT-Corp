@@ -24,6 +24,8 @@ import static wuxian.me.lagouspider.util.ModuleProvider.*;
  */
 public class MainTest {
 
+    //Todo: 切换IP,重试队列的联合测试
+
     @Test
     public void testFrequency() {
         Config.IS_TEST = true;
