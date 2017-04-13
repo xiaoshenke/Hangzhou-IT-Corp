@@ -12,4 +12,6 @@ public abstract class BaseSpider implements Runnable {
     public abstract String name();
 
     public abstract boolean parseRealData(String data);
+
+    public abstract void serializeFullLog();
 }

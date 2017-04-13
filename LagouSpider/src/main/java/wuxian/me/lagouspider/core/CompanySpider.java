@@ -155,7 +155,7 @@ public class CompanySpider extends BaseLagouSpider {
         }
     }
 
-    //Todo:
+    //Todo: location,product,面试评分
     public boolean parseRealData(String data) {
         logger().info("CompanySpider, received htmlData,begin to pase");
         try {

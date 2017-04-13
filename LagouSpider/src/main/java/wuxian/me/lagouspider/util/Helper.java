@@ -3,13 +3,41 @@ package wuxian.me.lagouspider.util;
 import com.sun.istack.internal.NotNull;
 import okhttp3.Headers;
 import wuxian.me.lagouspider.Config;
+import wuxian.me.lagouspider.framework.FileUtil;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static wuxian.me.lagouspider.Config.*;
+import static wuxian.me.lagouspider.Config.CONF_LOG4J_PROPERTIES;
+import static wuxian.me.lagouspider.framework.FileUtil.getCurrentPath;
 
 /**
  * Created by wuxian on 1/4/2017.
  */
 public class Helper {
+
+    public static String getAreaFilePath() {
+        return getCurrentPath() + CONF_AREA;
+    }
+
+    public static String getDistinctsFilePath() {
+        return getCurrentPath() + CONF_DISTINTC;
+    }
+
+    public static String getGrabFilePath() {
+        return getCurrentPath() + CONF_LASTGRAB;
+    }
+
+    public static String getCookieFilePath() {
+        return getCurrentPath() + CONF_COOKIE;
+    }
+
+    public static String getLog4jPropFilePath() {
+        return getCurrentPath() + CONF_LOG4J_PROPERTIES;
+    }
+
+
     private Helper() {
     }
     private static String post = null;
@@ -28,8 +56,8 @@ public class Helper {
 
     public static Headers getHeaderBySpecifyRef(@NotNull String reference) {
         if (!cookieInit) {
-            if (FileUtil.checkFileExist(FileUtil.getCookieFilePath())) {
-                String content = FileUtil.readFromFile(FileUtil.getCookieFilePath());
+            if (FileUtil.checkFileExist(getCookieFilePath())) {
+                String content = FileUtil.readFromFile(getCookieFilePath());
                 if (content != null && content.length() != 0) {
                     builder.add("Cookie", content);
                     cookieInit = true;
@@ -56,7 +84,7 @@ public class Helper {
         if (post != null) {
             return post;
         }
-        String content = FileUtil.readFromFile(FileUtil.getGrabFilePath());
+        String content = FileUtil.readFromFile(getGrabFilePath());
         long time = Long.parseLong(content);
 
         SimpleDateFormat dd = new SimpleDateFormat("yyyy_MM_dd");
@@ -64,10 +92,10 @@ public class Helper {
     }
 
     public static boolean shouldStartNewGrab() {
-        if (!FileUtil.checkFileExist(FileUtil.getGrabFilePath())) {
+        if (!FileUtil.checkFileExist(getGrabFilePath())) {
             return true;
         }
-        String content = FileUtil.readFromFile(FileUtil.getGrabFilePath());
+        String content = FileUtil.readFromFile(getGrabFilePath());
 
         if (content == null) {
             return true;
@@ -77,7 +105,7 @@ public class Helper {
     }
 
     public static void updateNewGrab() {
-        FileUtil.writeToFile(FileUtil.getGrabFilePath(), String.valueOf(System.currentTimeMillis()));
+        FileUtil.writeToFile(getGrabFilePath(), String.valueOf(System.currentTimeMillis()));
     }
 
 }

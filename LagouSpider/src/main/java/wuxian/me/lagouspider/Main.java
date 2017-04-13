@@ -10,7 +10,9 @@ import wuxian.me.lagouspider.mapper.AreaMapper;
 import wuxian.me.lagouspider.framework.job.IJob;
 import wuxian.me.lagouspider.mapper.CompanyMapper;
 import wuxian.me.lagouspider.model.Area;
-import static wuxian.me.lagouspider.util.FileUtil.*;
+
+import static wuxian.me.lagouspider.framework.FileUtil.*;
+import static wuxian.me.lagouspider.util.Helper.getAreaFilePath;
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
 import wuxian.me.lagouspider.util.Helper;

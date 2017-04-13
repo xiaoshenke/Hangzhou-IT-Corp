@@ -1,4 +1,4 @@
-package wuxian.me.lagouspider.util;
+package wuxian.me.lagouspider.framework;
 
 import static com.google.common.base.Preconditions.*;
 import static wuxian.me.lagouspider.Config.*;
@@ -21,30 +21,14 @@ public class FileUtil {
     private FileUtil() {
     }
 
-    public static String getAreaFilePath() {
-        return getCurrentPath() + CONF_AREA;
-    }
-
-    public static String getDistinctsFilePath() {
-        return getCurrentPath() + CONF_DISTINTC;
-    }
-
-    public static String getGrabFilePath() {
-        return getCurrentPath() + CONF_LASTGRAB;
-    }
-
-    public static String getCookieFilePath() {
-        return getCurrentPath() + CONF_COOKIE;
-    }
-
-    public static String getLog4jPropFilePath() {
-        return getCurrentPath() + CONF_LOG4J_PROPERTIES;
-    }
+    private static String currentPath;
 
     public static String getCurrentPath() {
-        File file = new File("");
-
-        return file.getAbsolutePath();
+        if (currentPath == null) {
+            File file = new File("");
+            currentPath = file.getAbsolutePath();
+        }
+        return currentPath;
     }
 
     public static boolean checkFileExist(String path) {

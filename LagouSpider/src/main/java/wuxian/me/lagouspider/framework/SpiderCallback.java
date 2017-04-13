@@ -51,10 +51,6 @@ public final class SpiderCallback implements Callback {
             return;
         }
 
-        //Todo: httpCode != 200的时候,把网页保存下来 保存到本地？
-        // --> 暂时可以先统一放到文件夹里 以后可以根据抓取时间的不同放不同的文件夹
-        //文件名也要取的不一样
-
         if (spider.parseRealData(response.body().string())) {  //Fixme: 如果失败呢？
             JobMonitor.getInstance().success(getSpider());
         }

@@ -10,7 +10,7 @@ import wuxian.me.lagouspider.Main;
 import wuxian.me.lagouspider.mapper.AreaMapper;
 import wuxian.me.lagouspider.mapper.CompanyMapper;
 
-import static wuxian.me.lagouspider.util.FileUtil.getLog4jPropFilePath;
+import static wuxian.me.lagouspider.util.Helper.getLog4jPropFilePath;
 
 /**
  * Created by wuxian on 8/4/2017.

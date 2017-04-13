@@ -54,6 +54,13 @@ public abstract class BaseLagouSpider extends BaseSpider {
         }
     }
 
+    //Todo:打详细log到文件 包括request,response,html,spider的类型,时间等等等等...
+    //文件名也应该不一样
+    @Override
+    public final void serializeFullLog() {
+        ;
+    }
+
     //For Log
     protected final void printPreviousBrother(@NotNull Node node) {
         Node real = node.getPreviousSibling();
