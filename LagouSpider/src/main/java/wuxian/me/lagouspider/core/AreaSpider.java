@@ -42,22 +42,6 @@ public class AreaSpider extends BaseLagouSpider {
         }
     }
 
-    private void getCompanyPageNum() {
-        HttpUrl.Builder urlBuilder = HttpUrl.parse(URL_LAGOU_JAVA)
-                .newBuilder();
-        urlBuilder.addQueryParameter("city", "杭州");
-        urlBuilder.addQueryParameter("district", area.distinct_name);
-        final String referer = urlBuilder.build().toString();
-
-        urlBuilder.addQueryParameter("bizArea", area.name);
-        Request request = new Request.Builder()
-                .headers(Helper.getHeaderBySpecifyRef(referer))
-                .url(urlBuilder.build().toString())
-                .build();
-
-        OkhttpProvider.getClient().newCall(request).enqueue(getCallback());
-    }
-
     /**
      * @return
      * -1:parsing error
@@ -86,21 +70,24 @@ public class AreaSpider extends BaseLagouSpider {
 
     }
 
-    public void run() {
-        if (pageNum == -1) {
-            getCompanyPageNum();
-        } else {
-            beginSpider();
-        }
-    }
-
     @Override
     public String toString() {
         return "AreaSpider: area is " + area.toString();
     }
 
-    protected String getRequestString() {
-        return null;
+    protected Request buildRequest() {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(URL_LAGOU_JAVA)
+                .newBuilder();
+        urlBuilder.addQueryParameter("city", "杭州");
+        urlBuilder.addQueryParameter("district", area.distinct_name);
+        final String referer = urlBuilder.build().toString();
+
+        urlBuilder.addQueryParameter("bizArea", area.name);
+        Request request = new Request.Builder()
+                .headers(Helper.getHeaderBySpecifyRef(referer))
+                .url(urlBuilder.build().toString())
+                .build();
+        return request;
     }
 
     @Override

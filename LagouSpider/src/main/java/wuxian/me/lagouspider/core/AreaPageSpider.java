@@ -33,46 +33,7 @@ public class AreaPageSpider extends BaseLagouSpider {
         this.pageIndex = pageNum;
     }
 
-    public void run() {
-        beginSpider();
-    }
-
-
-    private void beginSpider() {
-        HttpUrl.Builder urlBuilder = HttpUrl.parse(URL_LAGOU_POSITION_JSON)
-                .newBuilder();
-        urlBuilder.addQueryParameter("city", "杭州")
-                .addQueryParameter("district", area.distinct_name)
-                .addQueryParameter("bizArea", area.name);
-
-        final String referer = HttpUrl.parse(URL_LAGOU_JAVA).newBuilder()
-                .addQueryParameter("city", "杭州")
-                .addQueryParameter("district", area.distinct_name)
-                .addQueryParameter("bizArea", area.name)
-                .build().toString();
-
-        FormBody.Builder bodyBuilder = new FormBody.Builder();
-
-        if (pageIndex == 1) {
-            bodyBuilder.add("first", "true");
-        } else {
-            bodyBuilder.add("first", "false");
-        }
-        bodyBuilder.add("pn", String.valueOf(pageIndex));
-        bodyBuilder.add("kd", "Java");
-
-        Request request = new Request.Builder()
-                .headers(Helper.getHeaderBySpecifyRef(referer))
-                .url(urlBuilder.build().toString())
-                .post(bodyBuilder.build())
-                .build();
-
-        OkhttpProvider.getClient().newCall(request)
-                .enqueue(getCallback());
-    }
-
     private void saveCompany(@Nullable Company company) {
-
         if (!Config.ENABLE_SAVE_COMPANY_DB) {
             logger().debug("SaveCompany " + company.toString());
             return;
@@ -123,8 +84,35 @@ public class AreaPageSpider extends BaseLagouSpider {
         return "AreaPageSpider: pageIndex is " + pageIndex + " area is " + area.toString();
     }
 
-    protected String getRequestString() {
-        return null;
+    protected Request buildRequest() {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(URL_LAGOU_POSITION_JSON)
+                .newBuilder();
+        urlBuilder.addQueryParameter("city", "杭州")
+                .addQueryParameter("district", area.distinct_name)
+                .addQueryParameter("bizArea", area.name);
+
+        final String referer = HttpUrl.parse(URL_LAGOU_JAVA).newBuilder()
+                .addQueryParameter("city", "杭州")
+                .addQueryParameter("district", area.distinct_name)
+                .addQueryParameter("bizArea", area.name)
+                .build().toString();
+
+        FormBody.Builder bodyBuilder = new FormBody.Builder();
+
+        if (pageIndex == 1) {
+            bodyBuilder.add("first", "true");
+        } else {
+            bodyBuilder.add("first", "false");
+        }
+        bodyBuilder.add("pn", String.valueOf(pageIndex));
+        bodyBuilder.add("kd", "Java");
+
+        Request request = new Request.Builder()
+                .headers(Helper.getHeaderBySpecifyRef(referer))
+                .url(urlBuilder.build().toString())
+                .post(bodyBuilder.build())
+                .build();
+        return request;
     }
 
     public String name() {

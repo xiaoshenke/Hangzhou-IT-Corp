@@ -1,50 +1,28 @@
 package wuxian.me.lagouspider.core;
 
 import com.sun.istack.internal.NotNull;
-import okhttp3.Response;
 import org.htmlparser.Node;
 import org.htmlparser.Parser;
 import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
-import wuxian.me.lagouspider.framework.FileUtil;
-import wuxian.me.lagouspider.framework.SpiderCallback;
 import wuxian.me.lagouspider.framework.control.Fail;
 import wuxian.me.lagouspider.framework.control.JobMonitor;
 import wuxian.me.lagouspider.framework.BaseSpider;
-import wuxian.me.lagouspider.util.Helper;
-
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
 /**
  * Created by wuxian on 9/4/2017.
+ *
+ * 这个类继承自framework包中的BaseSpider,主要是不同网站的BaseSpider认定被屏蔽的现象是不一致的。
+ *
+ * 子类需要实现的方法
+ * 1 Request buildRequest()
+ * 2 parseRealData(String data)
+ * 3 name(),fullName();
  */
 public abstract class BaseLagouSpider extends BaseSpider {
-
-    protected abstract String getRequestString();
-
-    private SpiderCallback callback;
-
-    protected SpiderCallback getCallback() {
-        return callback;
-    }
-
-    public BaseLagouSpider() {
-        callback = new SpiderCallback(this);
-    }
-
-    public String name() {
-        return simpleName();
-    }
-
-    @Override
-    public String fullName() {
-        return name();
-    }
 
     @Override
     public final boolean checkBlockAndFailThisSpider(int httpCode) {
@@ -54,6 +32,7 @@ public abstract class BaseLagouSpider extends BaseSpider {
         return false;
     }
 
+    //子类可以自己实现
     @Override
     protected boolean checkBlockAndFailThisSpider(String html) {
         try {
@@ -72,39 +51,6 @@ public abstract class BaseLagouSpider extends BaseSpider {
         } catch (ParserException e) {
             return false;
         }
-    }
-
-    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-    private static SimpleDateFormat fullLogSdf = new SimpleDateFormat("yyyy_MM_dd_HH:mm:ss");
-
-    @Override
-    public final void serializeFullLog() {
-        StringBuilder builder = new StringBuilder("");
-        Date date = new Date();
-        String time = sdf.format(date);
-        builder.append(time);
-
-        builder.append(" [" + Thread.currentThread().getName() + "]/n");
-        builder.append("Spider: " + toString() + "/n");
-
-        builder.append("Request: " + getRequestString() + "/n");
-        Response response = getCallback().getResponse();
-        if (response != null) {
-            builder.append("Response: HttpCode: " + response.code() + " isRedirect: " + getCallback().getResponse().isRedirect() + " Message: " + getCallback().getResponse().message() + "/n");
-            builder.append("Header: " + response.headers().toString() + "/n");
-
-            try {
-                builder.append("/nBody: " + response.body().string());
-            } catch (IOException e) {
-                if (response.body() != null) {
-                    response.body().close();
-                }
-            }
-        }
-        String fileName = fullLogSdf.format(date) + simpleName(); //simpleName只有一个类名
-        FileUtil.writeToFile(Helper.getFullLogFilePath(fileName), builder.toString());
-
     }
 
     //For Log
@@ -131,5 +77,15 @@ public abstract class BaseLagouSpider extends BaseSpider {
 
             real = real.getNextSibling();
         }
+    }
+
+    @Override
+    public String name() {
+        return simpleName();
+    }
+
+    @Override
+    public String fullName() {
+        return name();
     }
 }

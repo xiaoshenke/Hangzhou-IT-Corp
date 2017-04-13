@@ -31,7 +31,7 @@ public final class SpiderCallback implements Callback {
         return spider;
     }
 
-    public SpiderCallback(@NotNull BaseLagouSpider spider) {
+    public SpiderCallback(@NotNull BaseSpider spider) {
         this.spider = spider;
         FailureManager.register(spider);
     }

@@ -53,19 +53,6 @@ public class CompanySpider extends BaseLagouSpider {
         this.company_id = company_id;
     }
 
-    public void run() {
-        beginSpider();
-    }
-
-    private void beginSpider() {
-        Request request = new Request.Builder()
-                .headers(Helper.getHeaderBySpecifyRef(REFERER))
-                .url(getUrl(company_id))
-                .build();
-
-        OkhttpProvider.getClient().newCall(request).enqueue(getCallback());
-    }
-
     private String getUrl(long companyId) {
         return Config.URL_LAGOU_COMPANY_MAIN + companyId + ".html";
     }
@@ -90,7 +77,8 @@ public class CompanySpider extends BaseLagouSpider {
             }
 
             HasAttributeFilter f2 = new HasAttributeFilter("class", "identification"); //拉勾认证
-            NodeList ret = info_wrap_list.extractAllNodesThatMatch(f2, true);  //Fixme:不知道为什么这边的api设计必须是NodeList而不是一个Node来调用extractAllxxx
+            NodeList ret = info_wrap_list.extractAllNodesThatMatch(f2, true);
+            //Fixme:不知道为什么这边的api设计必须是NodeList而不是一个Node来调用extractAllxxx
             if (ret != null && ret.size() != 0) {
                 lagouAuthen = true;
             }
@@ -170,7 +158,11 @@ public class CompanySpider extends BaseLagouSpider {
         return BaseSpider.RET_SUCCESS;
     }
 
-    protected String getRequestString() {
-        return null;
+    protected Request buildRequest() {
+        Request request = new Request.Builder()
+                .headers(Helper.getHeaderBySpecifyRef(REFERER))
+                .url(getUrl(company_id))
+                .build();
+        return request;
     }
 }

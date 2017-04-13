@@ -7,6 +7,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import wuxian.me.lagouspider.Config;
 import wuxian.me.lagouspider.core.BaseLagouSpider;
+import wuxian.me.lagouspider.framework.BaseSpider;
 import wuxian.me.lagouspider.framework.job.IJob;
 import wuxian.me.lagouspider.framework.IPProxyTool;
 import wuxian.me.lagouspider.framework.OkhttpProvider;
@@ -83,9 +84,9 @@ public class FailureManager {
     private AtomicLong currentNetErrTime = new AtomicLong(0);
 
     //记录单次(单个ip)的spiderList
-    private static List<BaseLagouSpider> todoSpiderList = Collections.synchronizedList(new ArrayList<BaseLagouSpider>());
+    private static List<BaseSpider> todoSpiderList = Collections.synchronizedList(new ArrayList<BaseSpider>());
 
-    public static void register(@NotNull BaseLagouSpider spider) {
+    public static void register(@NotNull BaseSpider spider) {
         todoSpiderList.add(spider);
     }
 
@@ -167,7 +168,7 @@ public class FailureManager {
         }
         OkhttpProvider.getClient().dispatcher().cancelAll();
 
-        for (BaseLagouSpider spider : todoSpiderList) {
+        for (BaseSpider spider : todoSpiderList) {
             IJob job = JobMonitor.getInstance().getJob(spider);
             JobQueue.getInstance().putJob(job);
         }
