@@ -16,16 +16,15 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 /**
  * Created by wuxian on 10/4/2017.
  * <p>
- * Used for LOG.
  */
-public abstract class BaseSpiderCallback implements Callback {
-    private BaseLagouSpider spider;
+public final class SpiderCallback implements Callback {
+    private BaseSpider spider;
 
-    protected final BaseLagouSpider getSpider() {
+    protected final BaseSpider getSpider() {
         return spider;
     }
 
-    public BaseSpiderCallback(@NotNull BaseLagouSpider spider) {
+    public SpiderCallback(@NotNull BaseLagouSpider spider) {
         this.spider = spider;
         FailureManager.register(spider);
     }
@@ -51,10 +50,13 @@ public abstract class BaseSpiderCallback implements Callback {
             }
             return;
         }
-        JobMonitor.getInstance().success(getSpider());
 
-        parseResponseData(response.body().string());
+        //Todo: httpCode != 200的时候,把网页保存下来 保存到本地？
+        // --> 暂时可以先统一放到文件夹里 以后可以根据抓取时间的不同放不同的文件夹
+        //文件名也要取的不一样
+
+        if (spider.parseRealData(response.body().string())) {  //Fixme: 如果失败呢？
+            JobMonitor.getInstance().success(getSpider());
+        }
     }
-
-    protected abstract void parseResponseData(String data);
 }

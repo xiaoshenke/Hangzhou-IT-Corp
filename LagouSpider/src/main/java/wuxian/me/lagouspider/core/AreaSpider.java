@@ -9,7 +9,7 @@ import org.htmlparser.tags.Span;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import wuxian.me.lagouspider.framework.control.JobMonitor;
-import wuxian.me.lagouspider.framework.BaseSpiderCallback;
+import wuxian.me.lagouspider.framework.SpiderCallback;
 import wuxian.me.lagouspider.framework.job.IJob;
 import wuxian.me.lagouspider.framework.control.JobProvider;
 import wuxian.me.lagouspider.framework.control.JobQueue;
@@ -23,9 +23,6 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 /**
  * Created by wuxian on 30/3/2017.
  * <p>
- * 1 先拿到该地区的页数
- * 2 根据页数发送每一页数据的请求
- * 3 重试机制
  */
 public class AreaSpider extends BaseLagouSpider {
     Area area;
@@ -58,27 +55,7 @@ public class AreaSpider extends BaseLagouSpider {
                 .url(urlBuilder.build().toString())
                 .build();
 
-        OkhttpProvider.getClient().newCall(request).enqueue(new BaseSpiderCallback(this) {
-            protected void parseResponseData(String data) {
-                String body = data;
-                pageNum = parseData(body);
-
-                if (pageNum != -1) {
-                    if (pageNum == 0) {
-                        if (checkBlockAndFailThisSpider(body)) {
-                            ;
-                        } else {
-                            logger().info("We got zero page, " + name());
-                        }
-                    } else {
-                        logger().debug("Parsed num: " + pageNum + " " + simpleName());
-                        beginSpider();
-                    }
-                } else {
-                    logger().error("parseData fail");
-                }
-            }
-        });
+        OkhttpProvider.getClient().newCall(request).enqueue(new SpiderCallback(this));
     }
 
     /**
@@ -125,5 +102,27 @@ public class AreaSpider extends BaseLagouSpider {
     @Override
     public String name() {
         return "AreaSpider " + area.toString();
+    }
+
+    public boolean parseRealData(String data) {
+        String body = data;
+        pageNum = parseData(body);
+
+        if (pageNum != -1) {
+            if (pageNum == 0) {
+                if (checkBlockAndFailThisSpider(body)) {
+                    ;
+                } else {
+                    logger().info("We got zero page, " + name());
+                }
+            } else {
+                logger().debug("Parsed num: " + pageNum + " " + simpleName());
+                beginSpider();
+            }
+        } else {
+            logger().error("parseData fail");
+        }
+
+        return true;
     }
 }

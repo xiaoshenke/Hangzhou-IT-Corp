@@ -8,4 +8,8 @@ public abstract class BaseSpider implements Runnable {
     public abstract boolean checkBlockAndFailThisSpider(int httpCode);
 
     protected abstract boolean checkBlockAndFailThisSpider(String html);
+
+    public abstract String name();
+
+    public abstract boolean parseRealData(String data);
 }

@@ -2,6 +2,7 @@ package wuxian.me.lagouspider;
 
 import okhttp3.*;
 import org.junit.Test;
+import wuxian.me.lagouspider.core.CompanySpider;
 import wuxian.me.lagouspider.framework.control.JobMonitor;
 import wuxian.me.lagouspider.framework.control.JobProvider;
 import wuxian.me.lagouspider.framework.control.JobQueue;
@@ -25,6 +26,25 @@ import static wuxian.me.lagouspider.util.ModuleProvider.*;
 public class MainTest {
 
     //Todo: 切换IP,重试队列的联合测试
+
+    @Test
+    public void testCompanyMain() {
+        Config.IS_TEST = true;
+        IPProxyTool.Proxy proxy = IPProxyTool.switchNextProxy();
+        logger().info("using proxy ip: " + proxy.ip + " port: " + proxy.port);
+        ensureIpSwitched(proxy);
+
+        IJob job = JobProvider.getFixedDelayJob(0);
+        job.setRealRunnable(new CompanySpider(43753));
+        JobQueue.getInstance().putJob(job);
+
+        logger().info("start workThread...");
+        WorkThread.getInstance().start();
+
+        while (true) {
+
+        }
+    }
 
     @Test
     public void testFrequency() {

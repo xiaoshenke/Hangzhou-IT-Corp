@@ -1,5 +1,7 @@
 package wuxian.me.lagouspider.core;
 
+import com.sun.istack.internal.NotNull;
+import org.htmlparser.Node;
 import org.htmlparser.Parser;
 import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.util.NodeList;
@@ -49,6 +51,31 @@ public abstract class BaseLagouSpider extends BaseSpider {
             return false;
         } catch (ParserException e) {
             return false;
+        }
+    }
+
+    //For Log
+    protected final void printPreviousBrother(@NotNull Node node) {
+        Node real = node.getPreviousSibling();
+        while (real != null) {
+            logger().info("type: " + real.getClass().getSimpleName());
+            logger().info("getText: " + real.getText());
+            logger().info("toString: " + real.toString());
+            logger().info("toPlainTextString: " + real.toPlainTextString());
+
+            real = real.getPreviousSibling();
+        }
+    }
+
+    protected final void printNextBrother(@NotNull Node node) {
+        Node real = node.getNextSibling();
+        while (real != null) {
+            logger().info("type: " + real.getClass().getSimpleName());
+            logger().info("getText: " + real.getText());
+            logger().info("toString: " + real.toString());
+            logger().info("toPlainTextString: " + real.toPlainTextString());
+
+            real = real.getNextSibling();
         }
     }
 }

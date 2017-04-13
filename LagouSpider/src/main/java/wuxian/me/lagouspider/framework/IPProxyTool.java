@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by wuxian on 9/4/2017.
+ * http://www.ip181.com/
  */
 public class IPProxyTool {
 
@@ -16,8 +17,7 @@ public class IPProxyTool {
     static {
         ipPortList = new ArrayList<Proxy>();
 
-        ipPortList.add(new Proxy("183.184.167.89", 31915));
-        ipPortList.add(new Proxy("171.13.37.103", 808));
+        ipPortList.add(new Proxy("221.219.67.175", 41083));
         ipPortList.add(new Proxy("121.204.165.246", 8118));
         ipPortList.add(new Proxy("36.249.25.72", 808));
         ipPortList.add(new Proxy("115.230.11.193", 808));
@@ -25,6 +25,7 @@ public class IPProxyTool {
         ipPortList.add(new Proxy("35.185.44.214", 80));
         ipPortList.add(new Proxy("110.170.201.227", 8080));
         ipPortList.add(new Proxy("171.13.36.161", 808));
+        ipPortList.add(new Proxy("183.184.167.89", 31915));
 
         current = new AtomicInteger(ipPortList.size() - 1);
     }

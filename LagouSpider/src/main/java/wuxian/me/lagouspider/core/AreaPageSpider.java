@@ -8,7 +8,7 @@ import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 import okhttp3.*;
 import wuxian.me.lagouspider.Config;
-import wuxian.me.lagouspider.framework.BaseSpiderCallback;
+import wuxian.me.lagouspider.framework.SpiderCallback;
 import wuxian.me.lagouspider.model.Area;
 import wuxian.me.lagouspider.model.Company;
 import wuxian.me.lagouspider.save.CompanySaver;
@@ -66,17 +66,7 @@ public class AreaPageSpider extends BaseLagouSpider {
                 .post(bodyBuilder.build())
                 .build();
 
-        OkhttpProvider.getClient().newCall(request).enqueue(new BaseSpiderCallback(this) {
-
-            protected void parseResponseData(String data) {
-                String body = data;
-                parseResult(body);
-
-                if (checkBlockAndFailThisSpider(body)) {
-                    return;
-                }
-            }
-        });
+        OkhttpProvider.getClient().newCall(request).enqueue(new SpiderCallback(this));
 
     }
 
@@ -133,5 +123,16 @@ public class AreaPageSpider extends BaseLagouSpider {
 
     public String name() {
         return "AreaPageSpider index:" + pageIndex + " " + area.toString();
+    }
+
+    public boolean parseRealData(String data) {
+        String body = data;
+        parseResult(body);
+
+        if (checkBlockAndFailThisSpider(body)) {
+            return false;
+        }
+
+        return true;
     }
 }
