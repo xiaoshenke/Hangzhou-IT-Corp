@@ -1,12 +1,13 @@
-package wuxian.me.lagouspider.core;
+package wuxian.me.lagouspider.framework;
 
 import com.sun.istack.internal.NotNull;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
-import wuxian.me.lagouspider.control.Fail;
-import wuxian.me.lagouspider.control.FailureManager;
-import wuxian.me.lagouspider.control.JobMonitor;
+import wuxian.me.lagouspider.framework.control.Fail;
+import wuxian.me.lagouspider.framework.control.FailureManager;
+import wuxian.me.lagouspider.framework.control.JobMonitor;
+import wuxian.me.lagouspider.core.BaseLagouSpider;
 
 import java.io.IOException;
 

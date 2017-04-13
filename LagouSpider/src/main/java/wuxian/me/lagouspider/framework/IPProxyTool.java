@@ -1,4 +1,4 @@
-package wuxian.me.lagouspider.util;
+package wuxian.me.lagouspider.framework;
 
 import java.util.ArrayList;
 import java.util.List;

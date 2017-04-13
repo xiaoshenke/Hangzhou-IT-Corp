@@ -1,10 +1,10 @@
-package wuxian.me.lagouspider.control;
+package wuxian.me.lagouspider.framework.control;
 
 import com.sun.istack.internal.NotNull;
 import wuxian.me.lagouspider.Config;
-import wuxian.me.lagouspider.job.DelayJob;
-import wuxian.me.lagouspider.job.IJob;
-import wuxian.me.lagouspider.job.ImmediateJob;
+import wuxian.me.lagouspider.framework.job.DelayJob;
+import wuxian.me.lagouspider.framework.job.IJob;
+import wuxian.me.lagouspider.framework.job.ImmediateJob;
 
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;

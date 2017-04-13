@@ -1,4 +1,4 @@
-package wuxian.me.lagouspider.job;
+package wuxian.me.lagouspider.framework.job;
 
 /**
  * Created by wuxian on 31/3/2017.

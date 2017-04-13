@@ -40,11 +40,4 @@ public class Config {
 
     public static final String CONF_LOG4J_PROPERTIES = "/log4j.properties";
 
-    public interface DB {
-
-        String TABLE_DISTINCT_AREA = "area";  //杭州某个区下对应的街道
-
-        String TABLE_AREA_COMPANY = "company";   //某个街道里的company
-    }
-
 }

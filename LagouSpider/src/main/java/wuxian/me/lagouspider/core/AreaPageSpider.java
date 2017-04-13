@@ -8,14 +8,13 @@ import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 import okhttp3.*;
 import wuxian.me.lagouspider.Config;
-import wuxian.me.lagouspider.control.Fail;
-import wuxian.me.lagouspider.control.JobMonitor;
+import wuxian.me.lagouspider.framework.BaseSpiderCallback;
 import wuxian.me.lagouspider.model.Area;
 import wuxian.me.lagouspider.model.Company;
 import wuxian.me.lagouspider.save.CompanySaver;
 import wuxian.me.lagouspider.util.Helper;
-import wuxian.me.lagouspider.util.OkhttpProvider;
-import java.io.IOException;
+import wuxian.me.lagouspider.framework.OkhttpProvider;
+
 import static wuxian.me.lagouspider.Config.URL_LAGOU_JAVA;
 import static wuxian.me.lagouspider.Config.URL_LAGOU_POSITION_JSON;
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;

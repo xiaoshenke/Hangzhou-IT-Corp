@@ -1,4 +1,4 @@
-package wuxian.me.lagouspider.util;
+package wuxian.me.lagouspider.framework;
 
 import okhttp3.OkHttpClient;
 import wuxian.me.lagouspider.Config;

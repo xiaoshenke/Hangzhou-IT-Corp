@@ -1,4 +1,4 @@
-package wuxian.me.lagouspider.control;
+package wuxian.me.lagouspider.framework.control;
 
 import com.sun.istack.internal.NotNull;
 import okhttp3.Headers;
@@ -7,9 +7,9 @@ import okhttp3.Request;
 import okhttp3.Response;
 import wuxian.me.lagouspider.Config;
 import wuxian.me.lagouspider.core.BaseLagouSpider;
-import wuxian.me.lagouspider.job.IJob;
-import wuxian.me.lagouspider.util.IPProxyTool;
-import wuxian.me.lagouspider.util.OkhttpProvider;
+import wuxian.me.lagouspider.framework.job.IJob;
+import wuxian.me.lagouspider.framework.IPProxyTool;
+import wuxian.me.lagouspider.framework.OkhttpProvider;
 
 import java.io.IOException;
 import java.util.ArrayList;

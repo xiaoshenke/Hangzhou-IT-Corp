@@ -3,7 +3,7 @@ package wuxian.me.lagouspider.model;
 /**
  * Created by wuxian on 30/3/2017.
  *
- * Fixme:如何处理有多个地址的公司
+ * Fixme:如何处理有多个地址的公司 --> 多一张表记录多个地址的公司？这个数据量不会很大
  */
 public class Company {
 

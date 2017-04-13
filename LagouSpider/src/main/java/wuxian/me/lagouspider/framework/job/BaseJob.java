@@ -1,7 +1,7 @@
-package wuxian.me.lagouspider.job;
+package wuxian.me.lagouspider.framework.job;
 
 import com.sun.istack.internal.NotNull;
-import wuxian.me.lagouspider.control.Fail;
+import wuxian.me.lagouspider.framework.control.Fail;
 import wuxian.me.lagouspider.core.BaseLagouSpider;
 
 import java.util.ArrayList;

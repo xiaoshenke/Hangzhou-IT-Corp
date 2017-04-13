@@ -1,5 +1,6 @@
-package wuxian.me.lagouspider.control;
-import wuxian.me.lagouspider.job.IJob;
+package wuxian.me.lagouspider.framework.control;
+
+import wuxian.me.lagouspider.framework.job.IJob;
 
 /**
  * Created by wuxian on 6/4/2017.

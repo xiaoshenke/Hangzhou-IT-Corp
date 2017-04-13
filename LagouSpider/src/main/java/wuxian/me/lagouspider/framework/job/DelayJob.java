@@ -1,4 +1,4 @@
-package wuxian.me.lagouspider.job;
+package wuxian.me.lagouspider.framework.job;
 
 import java.util.Timer;
 import java.util.TimerTask;

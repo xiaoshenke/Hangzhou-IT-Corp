@@ -1,8 +1,8 @@
-package wuxian.me.lagouspider.control;
+package wuxian.me.lagouspider.framework.control;
 
 import com.sun.istack.internal.NotNull;
 import wuxian.me.lagouspider.Config;
-import wuxian.me.lagouspider.job.IJob;
+import wuxian.me.lagouspider.framework.job.IJob;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

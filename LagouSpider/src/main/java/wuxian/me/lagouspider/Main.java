@@ -1,13 +1,13 @@
 package wuxian.me.lagouspider;
 
-import wuxian.me.lagouspider.control.JobMonitor;
+import wuxian.me.lagouspider.framework.control.JobMonitor;
 import wuxian.me.lagouspider.core.AreaSpider;
-import wuxian.me.lagouspider.control.JobProvider;
-import wuxian.me.lagouspider.control.JobQueue;
-import wuxian.me.lagouspider.control.WorkThread;
+import wuxian.me.lagouspider.framework.control.JobProvider;
+import wuxian.me.lagouspider.framework.control.JobQueue;
+import wuxian.me.lagouspider.framework.control.WorkThread;
 import wuxian.me.lagouspider.core.DistinctSpider;
 import wuxian.me.lagouspider.mapper.AreaMapper;
-import wuxian.me.lagouspider.job.IJob;
+import wuxian.me.lagouspider.framework.job.IJob;
 import wuxian.me.lagouspider.mapper.CompanyMapper;
 import wuxian.me.lagouspider.model.Area;
 import static wuxian.me.lagouspider.util.FileUtil.*;

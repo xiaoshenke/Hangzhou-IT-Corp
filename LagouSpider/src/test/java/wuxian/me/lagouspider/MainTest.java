@@ -2,16 +2,16 @@ package wuxian.me.lagouspider;
 
 import okhttp3.*;
 import org.junit.Test;
-import wuxian.me.lagouspider.control.JobMonitor;
-import wuxian.me.lagouspider.control.JobProvider;
-import wuxian.me.lagouspider.control.JobQueue;
-import wuxian.me.lagouspider.control.WorkThread;
+import wuxian.me.lagouspider.framework.control.JobMonitor;
+import wuxian.me.lagouspider.framework.control.JobProvider;
+import wuxian.me.lagouspider.framework.control.JobQueue;
+import wuxian.me.lagouspider.framework.control.WorkThread;
 import wuxian.me.lagouspider.core.AreaSpider;
-import wuxian.me.lagouspider.job.IJob;
+import wuxian.me.lagouspider.framework.job.IJob;
 import wuxian.me.lagouspider.mapper.AreaMapper;
 import wuxian.me.lagouspider.model.Area;
-import wuxian.me.lagouspider.util.IPProxyTool;
-import wuxian.me.lagouspider.util.OkhttpProvider;
+import wuxian.me.lagouspider.framework.IPProxyTool;
+import wuxian.me.lagouspider.framework.OkhttpProvider;
 
 import java.io.IOException;
 import java.util.List;
