@@ -17,6 +17,10 @@ import static wuxian.me.lagouspider.framework.FileUtil.getCurrentPath;
  */
 public class Helper {
 
+    public static String getFullLogFilePath(String filename) {
+        return getCurrentPath() + CONF_FULLLOG_TEXT + filename + CONF_FULLLOG_TEXT_POST;
+    }
+
     public static String getAreaFilePath() {
         return getCurrentPath() + CONF_AREA;
     }
@@ -40,6 +44,7 @@ public class Helper {
 
     private Helper() {
     }
+
     private static String post = null;
     private static final String HEADER_REFERER = "Referer";
     private static Headers.Builder builder;

@@ -20,6 +20,12 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 public final class SpiderCallback implements Callback {
     private BaseSpider spider;
 
+    private Response response;
+
+    public Response getResponse() {
+        return response;
+    }
+
     protected final BaseSpider getSpider() {
         return spider;
     }
@@ -30,17 +36,18 @@ public final class SpiderCallback implements Callback {
     }
 
     public final void onFailure(Call call, IOException e) {
+        //Fixme: 这里怎么优化log？？？
         logger().error("onFailure:" + " spider: " + spider.name());
         JobMonitor.getInstance().fail(spider, Fail.NETWORK_ERR);
     }
 
     public final void onResponse(Call call, Response response) throws IOException {
+        this.response = response;
         if (!response.isSuccessful()) {
             if (spider.checkBlockAndFailThisSpider(response.code())) {
                 if (response.body() != null) {
                     response.body().close();
                 }
-                return;
             } else {
                 logger().error("HttpCode: " + response.code() + " message: " + response.message() + " spider: " + spider.name());
             }
@@ -53,6 +60,8 @@ public final class SpiderCallback implements Callback {
 
         if (spider.parseRealData(response.body().string())) {  //Fixme: 如果失败呢？
             JobMonitor.getInstance().success(getSpider());
+        } else {
+            spider.serializeFullLog();  //Fixme
         }
     }
 }

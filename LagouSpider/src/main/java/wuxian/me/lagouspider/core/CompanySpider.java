@@ -49,6 +49,7 @@ public class CompanySpider extends BaseLagouSpider {
     private static final String REFERER = "https://www.lagou.com/zhaopin/Java/?labelWords=label";
 
     public CompanySpider(long company_id) {
+        super();
         this.company_id = company_id;
     }
 
@@ -62,7 +63,7 @@ public class CompanySpider extends BaseLagouSpider {
                 .url(getUrl(company_id))
                 .build();
 
-        OkhttpProvider.getClient().newCall(request).enqueue(new SpiderCallback(this));
+        OkhttpProvider.getClient().newCall(request).enqueue(getCallback());
     }
 
     private String getUrl(long companyId) {
@@ -167,5 +168,9 @@ public class CompanySpider extends BaseLagouSpider {
         }
 
         return true;
+    }
+
+    protected String getRequestString() {
+        return null;
     }
 }

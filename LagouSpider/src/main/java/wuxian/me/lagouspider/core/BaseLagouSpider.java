@@ -1,14 +1,22 @@
 package wuxian.me.lagouspider.core;
 
 import com.sun.istack.internal.NotNull;
+import okhttp3.Response;
 import org.htmlparser.Node;
 import org.htmlparser.Parser;
 import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
+import wuxian.me.lagouspider.framework.FileUtil;
+import wuxian.me.lagouspider.framework.SpiderCallback;
 import wuxian.me.lagouspider.framework.control.Fail;
 import wuxian.me.lagouspider.framework.control.JobMonitor;
 import wuxian.me.lagouspider.framework.BaseSpider;
+import wuxian.me.lagouspider.util.Helper;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
@@ -16,6 +24,19 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
  * Created by wuxian on 9/4/2017.
  */
 public abstract class BaseLagouSpider extends BaseSpider {
+
+    protected abstract String getRequestString();
+
+    private SpiderCallback callback;
+
+    protected SpiderCallback getCallback() {
+        return callback;
+    }
+
+    public BaseLagouSpider() {
+        callback = new SpiderCallback(this);
+    }
+
     public String name() {
         return simpleName();
     }
@@ -54,11 +75,37 @@ public abstract class BaseLagouSpider extends BaseSpider {
         }
     }
 
-    //Todo:打详细log到文件 包括request,response,html,spider的类型,时间等等等等...
-    //文件名也应该不一样
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    private static SimpleDateFormat fullLogSdf = new SimpleDateFormat("yyyy_MM_dd_HH:mm:ss");
+
     @Override
     public final void serializeFullLog() {
-        ;
+        StringBuilder builder = new StringBuilder("");
+        Date date = new Date();
+        String time = sdf.format(date);
+        builder.append(time);
+
+        builder.append(" [" + Thread.currentThread().getName() + "]/n");
+        builder.append("Spider: " + toString() + "/n");
+
+        builder.append("Request: " + getRequestString() + "/n");
+        Response response = getCallback().getResponse();
+        if (response != null) {
+            builder.append("Response: HttpCode: " + getCallback().getResponse().code() + " isRedirect: " + getCallback().getResponse().isRedirect() + " Message: " + getCallback().getResponse().message() + "/n");
+            builder.append("Header: " + getCallback().getResponse().headers().toString() + "/n");
+
+            try {
+                builder.append("/nBody: " + response.body().string());
+            } catch (IOException e) {
+                if (response.body() != null) {
+                    response.body().close();
+                }
+            }
+        }
+        String fileName = fullLogSdf.format(date) + simpleName(); //simpleName只有一个类名
+        FileUtil.writeToFile(Helper.getFullLogFilePath(fileName), builder.toString());
+
     }
 
     //For Log
@@ -74,6 +121,7 @@ public abstract class BaseLagouSpider extends BaseSpider {
         }
     }
 
+    //For Log
     protected final void printNextBrother(@NotNull Node node) {
         Node real = node.getNextSibling();
         while (real != null) {

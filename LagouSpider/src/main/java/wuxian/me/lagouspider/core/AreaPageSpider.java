@@ -28,6 +28,7 @@ public class AreaPageSpider extends BaseLagouSpider {
     private int pageIndex;
 
     public AreaPageSpider(@NotNull Area area, @NotNull int pageNum) {
+        super();
         this.area = area;
         this.pageIndex = pageNum;
     }
@@ -66,8 +67,8 @@ public class AreaPageSpider extends BaseLagouSpider {
                 .post(bodyBuilder.build())
                 .build();
 
-        OkhttpProvider.getClient().newCall(request).enqueue(new SpiderCallback(this));
-
+        OkhttpProvider.getClient().newCall(request)
+                .enqueue(getCallback());
     }
 
     private void saveCompany(@Nullable Company company) {
@@ -119,6 +120,10 @@ public class AreaPageSpider extends BaseLagouSpider {
     @Override
     public String toString() {
         return "AreaPageSpider: pageIndex is " + pageIndex + " area is " + area.toString();
+    }
+
+    protected String getRequestString() {
+        return null;
     }
 
     public String name() {

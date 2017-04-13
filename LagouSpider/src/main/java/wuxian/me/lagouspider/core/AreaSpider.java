@@ -28,6 +28,7 @@ public class AreaSpider extends BaseLagouSpider {
     private int pageNum = -1;
 
     public AreaSpider(@NotNull Area area) {
+        super();
         this.area = area;
     }
 
@@ -54,7 +55,7 @@ public class AreaSpider extends BaseLagouSpider {
                 .url(urlBuilder.build().toString())
                 .build();
 
-        OkhttpProvider.getClient().newCall(request).enqueue(new SpiderCallback(this));
+        OkhttpProvider.getClient().newCall(request).enqueue(getCallback());
     }
 
     /**
@@ -96,6 +97,10 @@ public class AreaSpider extends BaseLagouSpider {
     @Override
     public String toString() {
         return "AreaSpider: area is " + area.toString();
+    }
+
+    protected String getRequestString() {
+        return null;
     }
 
     @Override

@@ -40,4 +40,8 @@ public class Config {
 
     public static final String CONF_LOG4J_PROPERTIES = "/log4j.properties";
 
+    public static final String CONF_FULLLOG_TEXT = "/htmls/";
+
+    public static final String CONF_FULLLOG_TEXT_POST = ".txt";
+
 }
