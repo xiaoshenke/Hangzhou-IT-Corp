@@ -6,6 +6,7 @@ package wuxian.me.lagouspider.framework.control;
 public class Fail {
 
     private static final int FAIL_NETWORK_ERROR = -2;
+    private static final int FAIL_MAYBE_BLOCK = 102;
     private static final int FAIL_BLOCK = 101;
 
     private static final int FAIL_404 = 404;
@@ -47,6 +48,8 @@ public class Fail {
     public boolean isBlock() {
         return httpCode == FAIL_BLOCK;
     }
+
+    public final static Fail MAYBE_BLOCK = new Fail(FAIL_MAYBE_BLOCK, "Maybe Blocked");
 
     public final static Fail BLOCK = new Fail(FAIL_BLOCK, "Blocked");
 

@@ -125,7 +125,8 @@ public class DistinctSpider {
             }
 
         } catch (ParserException e) {
-            logger().error("parse areas from html error");
+            //Todo:
+            //logger().error("parse areas from html error");
         }
         return distincts;
     }
@@ -197,7 +198,8 @@ public class DistinctSpider {
             }
 
         } catch (ParserException e) {
-            logger().error("parse distinct from html fail");
+            //Todo
+            //logger().error("parse distinct from html fail");
         }
         return distincts;
     }

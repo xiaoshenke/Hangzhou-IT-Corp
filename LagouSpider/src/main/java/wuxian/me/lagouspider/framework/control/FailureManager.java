@@ -118,6 +118,7 @@ public class FailureManager {
         }
 
         if (isBlocked(fail)) {
+            //Todo
             logger().error("WE ARE BLOCKED! We have success " + successNum.get() + " jobs");
             if (Config.ENABLE_SWITCH_IPPROXY) {
                 doSwitchIp();

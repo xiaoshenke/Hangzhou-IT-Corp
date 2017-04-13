@@ -8,8 +8,8 @@ import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.tags.Span;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
+import wuxian.me.lagouspider.framework.BaseSpider;
 import wuxian.me.lagouspider.framework.control.JobMonitor;
-import wuxian.me.lagouspider.framework.SpiderCallback;
 import wuxian.me.lagouspider.framework.job.IJob;
 import wuxian.me.lagouspider.framework.control.JobProvider;
 import wuxian.me.lagouspider.framework.control.JobQueue;
@@ -108,7 +108,7 @@ public class AreaSpider extends BaseLagouSpider {
         return "AreaSpider " + area.toString();
     }
 
-    public boolean parseRealData(String data) {
+    public int parseRealData(String data) {
         String body = data;
         pageNum = parseData(body);
 
@@ -124,9 +124,10 @@ public class AreaSpider extends BaseLagouSpider {
                 beginSpider();
             }
         } else {
-            logger().error("parseData fail");
+            //Todo
+            //logger().error("parseData fail");
         }
 
-        return true;
+        return BaseSpider.RET_SUCCESS;
     }
 }

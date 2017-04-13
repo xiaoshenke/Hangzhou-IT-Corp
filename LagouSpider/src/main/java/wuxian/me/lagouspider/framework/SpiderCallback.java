@@ -26,7 +26,8 @@ public final class SpiderCallback implements Callback {
         return response;
     }
 
-    protected final BaseSpider getSpider() {
+    //先由protect改成private
+    private final BaseSpider getSpider() {
         return spider;
     }
 
@@ -36,32 +37,48 @@ public final class SpiderCallback implements Callback {
     }
 
     public final void onFailure(Call call, IOException e) {
-        //Fixme: 这里怎么优化log？？？
-        logger().error("onFailure:" + " spider: " + spider.name());
+        logger().error("onFailure: spider: " + spider.name());
         JobMonitor.getInstance().fail(spider, Fail.NETWORK_ERR);
     }
 
     public final void onResponse(Call call, Response response) throws IOException {
         this.response = response;
         if (!response.isSuccessful()) {
+            logger().error("HttpCode: " + response.code() + " spider: " + spider.name()); //console尽量少log
+
             if (spider.checkBlockAndFailThisSpider(response.code())) {
-                if (response.body() != null) {
-                    response.body().close();
-                }
+                logger().error("We got BLOCKED, " + spider.name());
+                JobMonitor.getInstance().fail(spider, Fail.BLOCK);
             } else {
-                logger().error("HttpCode: " + response.code() + " message: " + response.message() + " spider: " + spider.name());
+                JobMonitor.getInstance().fail(spider, new Fail(response.code(), response.message()));
             }
-            JobMonitor.getInstance().fail(getSpider(), new Fail(response.code(), response.message()));
             if (response.body() != null) {
                 response.body().close();
             }
-            return;
-        }
+            spider.serializeFullLog();
 
-        if (spider.parseRealData(response.body().string())) {  //Fixme: 如果失败呢？
-            JobMonitor.getInstance().success(getSpider());
         } else {
-            spider.serializeFullLog();  //Fixme
+            String body = response.body().string();
+
+            int result = spider.parseRealData(body);
+            if (result == BaseSpider.RET_SUCCESS) {
+                JobMonitor.getInstance().success(spider);
+
+            } else if (result == BaseSpider.RET_ERROR) {
+
+                JobMonitor.getInstance().fail(spider, Fail.MAYBE_BLOCK);
+                spider.serializeFullLog();
+
+            } else if (result == BaseSpider.RET_PARSING_ERR) {
+
+                if (spider.checkBlockAndFailThisSpider(body)) {
+                    logger().error("We got BLOCKED, " + spider.name());
+                    JobMonitor.getInstance().fail(spider, Fail.BLOCK);
+                    spider.serializeFullLog();
+                } else {
+                    JobMonitor.getInstance().success(spider);
+                }
+            }
         }
     }
 }

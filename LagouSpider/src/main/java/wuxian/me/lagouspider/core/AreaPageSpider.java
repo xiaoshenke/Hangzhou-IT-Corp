@@ -8,7 +8,7 @@ import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 import okhttp3.*;
 import wuxian.me.lagouspider.Config;
-import wuxian.me.lagouspider.framework.SpiderCallback;
+import wuxian.me.lagouspider.framework.BaseSpider;
 import wuxian.me.lagouspider.model.Area;
 import wuxian.me.lagouspider.model.Company;
 import wuxian.me.lagouspider.save.CompanySaver;
@@ -112,7 +112,8 @@ public class AreaPageSpider extends BaseLagouSpider {
             }
 
         } catch (JsonIOException e) {
-            logger().error("Parse json fail, " + name());
+            //Todo:
+            //logger().error("Parse json fail, " + name());
         }
 
     }
@@ -130,14 +131,10 @@ public class AreaPageSpider extends BaseLagouSpider {
         return "AreaPageSpider index:" + pageIndex + " " + area.toString();
     }
 
-    public boolean parseRealData(String data) {
+    public int parseRealData(String data) {
         String body = data;
         parseResult(body);
 
-        if (checkBlockAndFailThisSpider(body)) {
-            return false;
-        }
-
-        return true;
+        return BaseSpider.RET_SUCCESS;
     }
 }

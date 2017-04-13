@@ -11,7 +11,7 @@ import org.htmlparser.tags.ImageTag;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import wuxian.me.lagouspider.Config;
-import wuxian.me.lagouspider.framework.SpiderCallback;
+import wuxian.me.lagouspider.framework.BaseSpider;
 import wuxian.me.lagouspider.model.Product;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.framework.OkhttpProvider;
@@ -157,7 +157,7 @@ public class CompanySpider extends BaseLagouSpider {
     }
 
     //Todo: location,product,面试评分
-    public boolean parseRealData(String data) {
+    public int parseRealData(String data) {
         logger().info("CompanySpider, received htmlData,begin to pase");
         try {
             Parser parser = new Parser(data);
@@ -167,7 +167,7 @@ public class CompanySpider extends BaseLagouSpider {
         } catch (ParserException e) {
         }
 
-        return true;
+        return BaseSpider.RET_SUCCESS;
     }
 
     protected String getRequestString() {

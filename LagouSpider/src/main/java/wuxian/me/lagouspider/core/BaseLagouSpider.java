@@ -41,15 +41,14 @@ public abstract class BaseLagouSpider extends BaseSpider {
         return simpleName();
     }
 
-    public final String simpleName() {
-        return getClass().getSimpleName();
+    @Override
+    public String fullName() {
+        return name();
     }
 
     @Override
     public final boolean checkBlockAndFailThisSpider(int httpCode) {
-        if (httpCode == -1) {
-            logger().error("We got BLOCKED, " + name());
-            JobMonitor.getInstance().fail(BaseLagouSpider.this, Fail.BLOCK);
+        if (httpCode == -1 || httpCode == 404) {
             return true;
         }
         return false;
@@ -92,8 +91,8 @@ public abstract class BaseLagouSpider extends BaseSpider {
         builder.append("Request: " + getRequestString() + "/n");
         Response response = getCallback().getResponse();
         if (response != null) {
-            builder.append("Response: HttpCode: " + getCallback().getResponse().code() + " isRedirect: " + getCallback().getResponse().isRedirect() + " Message: " + getCallback().getResponse().message() + "/n");
-            builder.append("Header: " + getCallback().getResponse().headers().toString() + "/n");
+            builder.append("Response: HttpCode: " + response.code() + " isRedirect: " + getCallback().getResponse().isRedirect() + " Message: " + getCallback().getResponse().message() + "/n");
+            builder.append("Header: " + response.headers().toString() + "/n");
 
             try {
                 builder.append("/nBody: " + response.body().string());
