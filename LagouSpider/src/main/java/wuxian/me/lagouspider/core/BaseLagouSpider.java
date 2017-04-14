@@ -53,6 +53,25 @@ public abstract class BaseLagouSpider extends BaseSpider {
         }
     }
 
+    protected final void printNodeOnly(@NotNull Node node) {
+        logger().info("type: " + node.getClass().getSimpleName());
+        logger().info("getText: " + node.getText());
+        logger().info("toString: " + node.toString());
+        logger().info("toPlainTextString: " + node.toPlainTextString());
+    }
+
+    protected final void printChildrenOfNode(@NotNull Node node) {
+        NodeList children = node.getChildren();
+        if (children == null || children.size() == 0) {
+            return;
+        }
+
+        for (int i = 0; i < children.size(); i++) {
+            Node child = children.elementAt(i);
+            printNodeOnly(child);
+        }
+    }
+
     //For Log
     protected final void printPreviousBrother(@NotNull Node node) {
         Node real = node.getPreviousSibling();

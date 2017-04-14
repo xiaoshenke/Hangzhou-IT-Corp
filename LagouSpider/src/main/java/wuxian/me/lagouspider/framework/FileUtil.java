@@ -1,8 +1,6 @@
 package wuxian.me.lagouspider.framework;
 
 import static com.google.common.base.Preconditions.*;
-import static wuxian.me.lagouspider.Config.*;
-
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import com.sun.istack.internal.Nullable;

@@ -17,7 +17,7 @@ public class IPProxyTool {
     static {
         ipPortList = new ArrayList<Proxy>();
 
-        ipPortList.add(new Proxy("115.220.145.133", 808));
+        ipPortList.add(new Proxy("120.27.158.41", 8888));
         ipPortList.add(new Proxy("121.204.165.246", 8118));
         ipPortList.add(new Proxy("36.249.25.72", 808));
         ipPortList.add(new Proxy("115.230.11.193", 808));
@@ -30,7 +30,8 @@ public class IPProxyTool {
         current = new AtomicInteger(ipPortList.size() - 1);
     }
 
-    public static Proxy switchNextProxy() {  //Fixme: 一个proxy被禁掉之后 是否应该删了这个proxy
+    //Fixme:2017-04-14 代理ip一直不可用
+    public static Proxy switchNextProxy() {
         current.set((current.get() + 1) % ipPortList.size());
 
         Proxy proxy = ipPortList.get(current.get());

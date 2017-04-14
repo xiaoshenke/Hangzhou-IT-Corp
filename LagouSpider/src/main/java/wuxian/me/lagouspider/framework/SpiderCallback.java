@@ -7,7 +7,6 @@ import okhttp3.Response;
 import wuxian.me.lagouspider.framework.control.Fail;
 import wuxian.me.lagouspider.framework.control.FailureManager;
 import wuxian.me.lagouspider.framework.control.JobMonitor;
-import wuxian.me.lagouspider.core.BaseLagouSpider;
 
 import java.io.IOException;
 
@@ -36,6 +35,7 @@ public final class SpiderCallback implements Callback {
         FailureManager.register(spider);
     }
 
+    //OkHttpClient的Callback不应该是跑在Main里面的么？
     public final void onFailure(Call call, IOException e) {
         logger().error("onFailure: spider: " + spider.name());
         JobMonitor.getInstance().fail(spider, Fail.MAYBE_BLOCK);

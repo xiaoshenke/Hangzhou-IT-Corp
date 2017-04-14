@@ -1,8 +1,8 @@
 package wuxian.me.lagouspider.framework.job;
 
 import com.sun.istack.internal.NotNull;
+import wuxian.me.lagouspider.framework.BaseSpider;
 import wuxian.me.lagouspider.framework.control.Fail;
-import wuxian.me.lagouspider.core.BaseLagouSpider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,11 +72,11 @@ public abstract class BaseJob implements IJob {
         }
 
         if (state == STATE_FAIL) {
-            return "Job fail,fail times: " + getFailTimes() + " " + ((BaseLagouSpider) realJob).name();
+            return "Job fail,fail times: " + getFailTimes() + " " + ((BaseSpider) realJob).name();
         } else if (state == STATE_SUCCESS) {
-            return "Job success " + ((BaseLagouSpider) realJob).name();
+            return "Job success " + ((BaseSpider) realJob).name();
         } else if (state == STATE_INIT) {
-            return "Job: " + ((BaseLagouSpider) realJob).name();
+            return "Job: " + ((BaseSpider) realJob).name();
         }
         return "Job state: " + state + " " + realJob.toString();
     }

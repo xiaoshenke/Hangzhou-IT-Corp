@@ -14,7 +14,6 @@ import wuxian.me.lagouspider.Config;
 import wuxian.me.lagouspider.framework.BaseSpider;
 import wuxian.me.lagouspider.model.Product;
 import wuxian.me.lagouspider.util.Helper;
-import wuxian.me.lagouspider.framework.OkhttpProvider;
 
 import java.util.List;
 
@@ -144,6 +143,75 @@ public class CompanySpider extends BaseLagouSpider {
         }
     }
 
+    private void parseProduct(Node node) {
+        {
+            Product product = new Product(company_id);
+            Node child = node.getFirstChild();
+            printNodeOnly(child);
+            if ((child instanceof ImageTag)) {
+                product.imgUrl = ((ImageTag) child).getImageURL(); //产品logo
+            }
+
+            HasAttributeFilter f1 = new HasAttributeFilter("class", "product_url");
+            NodeList ret = node.getChildren().extractAllNodesThatMatch(f1, true);
+            if (ret != null && ret.size() != 0) {
+                child = ret.elementAt(0);
+                if (child.getChildren() != null && child.getChildren().size() != 0) {
+                    child = child.getChildren().elementAt(0);  //这里是为了获取Product Name
+                    printNodeOnly(child);
+                }
+            }
+
+            HasAttributeFilter f2 = new HasAttributeFilter("class", "clearfix");
+
+            ret = node.getChildren().extractAllNodesThatMatch(f2, true);  //product type
+            if (ret != null && ret.size() != 0) {
+                child = ret.elementAt(0);
+                printChildrenOfNode(child);
+            }
+
+            HasAttributeFilter f3 = new HasAttributeFilter("class", "mCSB_container");
+            ret = node.getChildren().extractAllNodesThatMatch(f2, true);
+            if (ret != null && ret.size() != 0) {
+                child = ret.elementAt(0);
+                printChildrenOfNode(child);
+            }
+
+        }
+    }
+
+    private void parseProductList(Parser parser) {
+        logger().info("Begin to parse ProductList");
+        try {
+            HasAttributeFilter f1 = new HasAttributeFilter("id", "company_products");
+            NodeList list = parser.extractAllNodesThatMatch(f1);
+            if (list == null || list.size() == 0) {
+                logger().info("No company_products found");
+                return;
+            }
+
+            Node product = list.elementAt(0);
+            HasAttributeFilter f2 = new HasAttributeFilter("class", "item_content");
+            NodeList ret = product.getChildren().extractAllNodesThatMatch(f2, true);
+            if (ret != null && ret.size() == 0) {
+                product = ret.elementAt(0);  //item_content的子节点就是product节点
+                ret = product.getChildren();
+                if (ret != null && ret.size() != 0) {
+                    for (int i = 0; i < ret.size(); i++) {
+                        logger().info("Begin to parse Product: " + i);
+                        parseProduct(ret.elementAt(i)); //解析每一个item 存入到类变量
+                    }
+                }
+            } else {
+                logger().info("No item_content node found");
+            }
+
+
+        } catch (ParserException e) {
+            ;
+        }
+    }
+
     //Todo: location,product,面试评分
     public int parseRealData(String data) {
         logger().info("CompanySpider, received htmlData,begin to pase");
@@ -151,6 +219,7 @@ public class CompanySpider extends BaseLagouSpider {
             Parser parser = new Parser(data);
             parser.setEncoding("utf-8");
             parseBaseInfo(parser);
+            parseProductList(parser);
 
         } catch (ParserException e) {
         }

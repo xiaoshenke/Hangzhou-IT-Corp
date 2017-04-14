@@ -27,6 +27,7 @@ public class Config {
 
     //7天全面抓一次
     public static final long GRAB_INTERNAL = 1000 * 60 * 60 * 24 * 7;
+
     //上一次爬虫抓取的时间
     public static final String CONF_LASTGRAB = "/conf/lastgrab.txt";
 
