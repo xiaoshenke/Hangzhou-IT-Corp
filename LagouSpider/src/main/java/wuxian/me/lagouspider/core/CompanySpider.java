@@ -6,8 +6,10 @@ import org.htmlparser.Parser;
 import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.nodes.TagNode;
 import org.htmlparser.nodes.TextNode;
+import org.htmlparser.tags.Bullet;
 import org.htmlparser.tags.Div;
 import org.htmlparser.tags.ImageTag;
+import org.htmlparser.tags.LinkTag;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import wuxian.me.lagouspider.Config;
@@ -56,172 +58,199 @@ public class CompanySpider extends BaseLagouSpider {
         return Config.URL_LAGOU_COMPANY_MAIN + companyId + ".html";
     }
 
-    boolean parseBaseInfo(Parser parser) {
-        try {
-            HasAttributeFilter f1 = new HasAttributeFilter("class", "top_info_wrap");
-            NodeList list = parser.extractAllNodesThatMatch(f1);
-            if (list == null) {
-                return true;
-            }
+    boolean parseBaseInfo(Parser parser) throws ParserException {
+        HasAttributeFilter f1 = new HasAttributeFilter("class", "top_info_wrap");
+        NodeList list = parser.extractAllNodesThatMatch(f1);
+        if (list == null) {
+            return true;
+        }
 
-            Node info_wrap = list.elementAt(0);
-            NodeList info_wrap_list = info_wrap.getChildren();
-            for (int i = 0; i < info_wrap_list.size(); i++) {
-                Node node = info_wrap_list.elementAt(i);
-                if (node instanceof ImageTag) {
-                    logo = ((ImageTag) node).getImageURL();
-                    //logger().info("Logo: " + logo);
+        Node info_wrap = list.elementAt(0);
+        NodeList info_wrap_list = info_wrap.getChildren();
+        for (int i = 0; i < info_wrap_list.size(); i++) {
+            Node node = info_wrap_list.elementAt(i);
+            if (node instanceof ImageTag) {
+                logo = ((ImageTag) node).getImageURL();
+                logger().info("Logo: " + logo);
+                break;
+            }
+        }
+
+        HasAttributeFilter f2 = new HasAttributeFilter("class", "identification"); //拉勾认证
+        NodeList ret = info_wrap_list.extractAllNodesThatMatch(f2, true);
+        //Fixme:不知道为什么这边的api设计必须是NodeList而不是一个Node来调用extractAllxxx
+        if (ret != null && ret.size() != 0) {
+            lagouAuthen = true;
+        }
+        //logger().info("Authenticate by Laoug: " + lagouAuthen);
+
+        HasAttributeFilter f3 = new HasAttributeFilter("class", "company_word");
+        ret = info_wrap_list.extractAllNodesThatMatch(f3, true);
+        if (ret != null && ret.size() != 0) {
+            Node node = info_wrap_list.elementAt(0);
+            if (node instanceof Div) {
+                selfDescription = ((Div) node).getStringText();
+                logger().info("selfDescripition: " + selfDescription);
+            }
+        }
+
+        HasAttributeFilter f4 = new HasAttributeFilter("class", "company_data");
+        ret = info_wrap_list.extractAllNodesThatMatch(f4, true);
+        if (ret != null && ret.size() != 0) {
+            Node interview_data = ret.elementAt(0);
+            HasAttributeFilter f5 = new HasAttributeFilter("class", "tipsys");
+            ret = interview_data.getChildren().extractAllNodesThatMatch(f5, true);
+            if (ret != null && ret.size() != 0) {
+                for (int i = 0; i < ret.size(); i++) {
+                    Node node = ret.elementAt(i);
+                    if (i == 2) {
+                        continue;
+                    } else if (i > 3) {
+                        break;
+                    }
+                    Node real = node.getPreviousSibling();
+
+                    while (real != null) {
+                        if (real instanceof TagNode) {
+                            if (!real.getText().trim().contains("/strong")) {
+                                real = real.getPreviousSibling();
+                                continue;
+                            }
+                            Node pre = real.getPreviousSibling();
+                            if (pre != null && pre instanceof TextNode) {
+                                if (i == 0) {
+                                    posionNum = pre.getText().trim();
+                                    logger().info("招聘职位: " + posionNum);
+                                } else if (i == 1) {
+                                    resumeRate = pre.getText().trim();
+                                    logger().info("简历处理率: " + resumeRate);
+                                } else if (i == 3) {
+                                    interCommentNum = pre.getText().trim();
+                                    logger().info("面试评价: " + interCommentNum);
+                                }
+                                break;
+                            }
+                        }
+                        real = real.getPreviousSibling();
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    private void parseProduct(final Node node) throws ParserException {
+        Product product = new Product(company_id);
+        NodeList list = node.getChildren();
+        if (list == null) {
+            //logger().info("Node has no children, return");
+            return;
+        }
+        for (int i = 0; i < list.size(); i++) {
+            Node child = list.elementAt(i);
+            //printNodeOnly(child);
+            if ((child instanceof ImageTag)) {
+                product.imgUrl = ((ImageTag) child).getImageURL(); //产品logo --> success
+                //logger().info("Product logo: "+product.imgUrl);
+                break;
+            }
+        }
+
+        Node child = null;
+        //logger().info("BEGIN to parse product_url");
+        HasAttributeFilter f1 = new HasAttributeFilter("class", "product_url");
+        NodeList ret = list.extractAllNodesThatMatch(f1, true);
+        if (ret != null && ret.size() != 0) {
+            child = ret.elementAt(0);  //这是product_url node
+            //printChildrenOfNode(child);
+            ret = child.getChildren();
+            for (int i = 0; i < ret.size(); i++) {
+                child = ret.elementAt(i);
+                if (child instanceof LinkTag) {
+                    product.url = ((LinkTag) child).getLinkText();
+                    product.name = child.toPlainTextString().trim();
                     break;
                 }
             }
+        }
 
-            HasAttributeFilter f2 = new HasAttributeFilter("class", "identification"); //拉勾认证
-            NodeList ret = info_wrap_list.extractAllNodesThatMatch(f2, true);
-            //Fixme:不知道为什么这边的api设计必须是NodeList而不是一个Node来调用extractAllxxx
-            if (ret != null && ret.size() != 0) {
-                lagouAuthen = true;
-            }
-            //logger().info("Authenticate by Laoug: " + lagouAuthen);
-
-            HasAttributeFilter f3 = new HasAttributeFilter("class", "company_word");
-            ret = info_wrap_list.extractAllNodesThatMatch(f3, true);
-            if (ret != null && ret.size() != 0) {
-                Node node = info_wrap_list.elementAt(0);
-                if (node instanceof Div) {
-                    selfDescription = ((Div) node).getStringText();
-                    //logger().info("selfDescripition: " + selfDescription);
-                }
-            }
-
-            HasAttributeFilter f4 = new HasAttributeFilter("class", "company_data");
-            ret = info_wrap_list.extractAllNodesThatMatch(f4, true);
-            if (ret != null && ret.size() != 0) {
-                Node interview_data = ret.elementAt(0);
-                HasAttributeFilter f5 = new HasAttributeFilter("class", "tipsys");
-                ret = interview_data.getChildren().extractAllNodesThatMatch(f5, true);
-                if (ret != null && ret.size() != 0) {
-                    for (int i = 0; i < ret.size(); i++) {
-                        Node node = ret.elementAt(i);
-                        if (i == 2) {
-                            continue;
-                        } else if (i > 3) {
-                            break;
-                        }
-                        Node real = node.getPreviousSibling();
-
-                        while (real != null) {
-                            if (real instanceof TagNode) {
-                                if (!real.getText().trim().contains("/strong")) {
-                                    real = real.getPreviousSibling();
-                                    continue;
-                                }
-                                Node pre = real.getPreviousSibling();
-                                if (pre != null && pre instanceof TextNode) {
-                                    if (i == 0) {
-                                        posionNum = pre.getText().trim();
-                                        //logger().info("招聘职位: " + posionNum);
-                                    } else if (i == 1) {
-                                        resumeRate = pre.getText().trim();
-                                        //logger().info("简历处理率: " + resumeRate);
-                                    } else if (i == 3) {
-                                        interCommentNum = pre.getText().trim();
-                                        //logger().info("面试评价: " + interCommentNum);
-                                    }
-                                    break;
-                                }
-                            }
-                            real = real.getPreviousSibling();
-                        }
+        //logger().info("BEGIN to parse clearfix");
+        HasAttributeFilter f2 = new HasAttributeFilter("class", "clearfix");
+        ret = list.extractAllNodesThatMatch(f2, true);  //product type
+        if (ret != null && ret.size() != 0) {
+            child = ret.elementAt(0);
+            ret = child.getChildren();
+            if (ret != null) {
+                for (int i = 0; i < ret.size(); i++) {
+                    Node child2 = ret.elementAt(i);
+                    if (child2 instanceof Bullet) {
+                        product.addType(child2.toPlainTextString().trim()); //Todo: 优化
                     }
                 }
             }
-            return true;
-
-        } catch (ParserException e) {
-            //logger().error("Parsing companyInfo error");
-            return false;
         }
+
+        //logger().info("BEGIN to parse product_profile");//解析product description
+        HasAttributeFilter f3 = new HasAttributeFilter("class", "product_profile");
+        ret = list.extractAllNodesThatMatch(f3, true);
+        if (ret != null && ret.size() != 0) {
+            child = ret.elementAt(0);
+            product.description = child.toPlainTextString().trim();
+        }
+
     }
 
-    private void parseProduct(Node node) {
-        {
-            Product product = new Product(company_id);
-            Node child = node.getFirstChild();
-            printNodeOnly(child);
-            if ((child instanceof ImageTag)) {
-                product.imgUrl = ((ImageTag) child).getImageURL(); //产品logo
-            }
-
-            HasAttributeFilter f1 = new HasAttributeFilter("class", "product_url");
-            NodeList ret = node.getChildren().extractAllNodesThatMatch(f1, true);
-            if (ret != null && ret.size() != 0) {
-                child = ret.elementAt(0);
-                if (child.getChildren() != null && child.getChildren().size() != 0) {
-                    child = child.getChildren().elementAt(0);  //这里是为了获取Product Name
-                    printNodeOnly(child);
-                }
-            }
-
-            HasAttributeFilter f2 = new HasAttributeFilter("class", "clearfix");
-
-            ret = node.getChildren().extractAllNodesThatMatch(f2, true);  //product type
-            if (ret != null && ret.size() != 0) {
-                child = ret.elementAt(0);
-                printChildrenOfNode(child);
-            }
-
-            HasAttributeFilter f3 = new HasAttributeFilter("class", "mCSB_container");
-            ret = node.getChildren().extractAllNodesThatMatch(f2, true);
-            if (ret != null && ret.size() != 0) {
-                child = ret.elementAt(0);
-                printChildrenOfNode(child);
-            }
-
-        }
-    }
-
-    private void parseProductList(Parser parser) {
+    private void parseProductList(Parser parser) throws ParserException {
         logger().info("Begin to parse ProductList");
-        try {
-            HasAttributeFilter f1 = new HasAttributeFilter("id", "company_products");
-            NodeList list = parser.extractAllNodesThatMatch(f1);
-            if (list == null || list.size() == 0) {
-                logger().info("No company_products found");
-                return;
-            }
-
-            Node product = list.elementAt(0);
-            HasAttributeFilter f2 = new HasAttributeFilter("class", "item_content");
-            NodeList ret = product.getChildren().extractAllNodesThatMatch(f2, true);
-            if (ret != null && ret.size() == 0) {
-                product = ret.elementAt(0);  //item_content的子节点就是product节点
-                ret = product.getChildren();
-                if (ret != null && ret.size() != 0) {
-                    for (int i = 0; i < ret.size(); i++) {
-                        logger().info("Begin to parse Product: " + i);
-                        parseProduct(ret.elementAt(i)); //解析每一个item 存入到类变量
-                    }
-                }
-            } else {
-                logger().info("No item_content node found");
-            }
-
-
-        } catch (ParserException e) {
-            ;
+        HasAttributeFilter f1 = new HasAttributeFilter("class", "item_container");
+        NodeList list = parser.extractAllNodesThatMatch(f1);
+        if (list == null || list.size() == 0) {
+            logger().info("No company_products found");
+            return;
+            //throw new ParserException("No Company_products found");
         }
+
+        Node product = list.elementAt(0);
+        //printNodeOnly(product);
+        HasAttributeFilter f2 = new HasAttributeFilter("class", "item_content");
+        NodeList ret = product.getChildren().extractAllNodesThatMatch(f2, true);
+        if (ret != null && ret.size() != 0) {
+            product = ret.elementAt(0);  //item_content的子节点就是product节点
+            ret = product.getChildren();
+            if (ret != null && ret.size() != 0) {
+                for (int i = 0; i < ret.size(); i++) {
+                    logger().info("Begin to parse Product: " + i);
+                    parseProduct(ret.elementAt(i)); //解析每一个item 存入到类变量
+                }
+            }
+        } else {
+            logger().info("No item_content node found");
+        }
+
     }
 
-    //Todo: location,product,面试评分
+    //Todo 解析位置
+    private void parseLocation(Parser parser) throws ParserException {
+        ;
+    }
+
     public int parseRealData(String data) {
         logger().info("CompanySpider, received htmlData,begin to pase");
         try {
             Parser parser = new Parser(data);
             parser.setEncoding("utf-8");
             parseBaseInfo(parser);
+
+            parser = new Parser(data);  //必须重新赋值一下
             parseProductList(parser);
 
+            parser = new Parser(data);
+            parseLocation(parser);
+
+            //Todo:解析面试评分
+
         } catch (ParserException e) {
+            return BaseSpider.RET_PARSING_ERR;
         }
 
         return BaseSpider.RET_SUCCESS;

@@ -305,3 +305,25 @@
 2017-04-14 15:21:45 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:133) switch ip fail
 2017-04-14 15:22:00 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:133) switch ip fail
 2017-04-14 15:22:15 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:133) switch ip fail
+2017-04-14 19:32:07 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.framework.SpiderCallback.onFailure(SpiderCallback.java:40) onFailure: spider: CompanySpider
+2017-04-14 19:36:58 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:133) switch ip fail
+2017-04-14 19:37:06 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:133) switch ip fail
+2017-04-14 19:37:13 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:133) switch ip fail
+2017-04-14 19:37:20 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:133) switch ip fail
+2017-04-14 19:37:50 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:133) switch ip fail
+2017-04-14 19:37:57 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:133) switch ip fail
+2017-04-14 19:38:02 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:133) switch ip fail
+2017-04-14 19:38:09 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:133) switch ip fail
+2017-04-14 19:39:36 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:133) switch ip fail
+2017-04-14 19:43:22 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:135) switch ip fail
+2017-04-14 19:44:36 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:135) switch ip fail
+2017-04-14 19:45:06 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:135) switch ip fail
+2017-04-14 19:45:51 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:135) switch ip fail
+2017-04-14 19:46:08 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:135) switch ip fail
+2017-04-14 19:46:13 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:135) switch ip fail
+2017-04-14 19:46:28 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:135) switch ip fail
+2017-04-14 19:46:35 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:135) switch ip fail
+2017-04-14 19:47:06 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:135) switch ip fail
+2017-04-14 19:47:25 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:135) switch ip fail
+2017-04-14 19:47:41 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:135) switch ip fail
+2017-04-14 19:48:00 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:135) switch ip fail

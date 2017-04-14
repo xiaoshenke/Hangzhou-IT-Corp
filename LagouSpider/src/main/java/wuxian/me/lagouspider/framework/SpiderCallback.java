@@ -21,6 +21,12 @@ public final class SpiderCallback implements Callback {
 
     private Response response;
 
+    private String body;
+
+    public String getBody() {
+        return body;
+    }
+
     public Response getResponse() {
         return response;
     }
@@ -44,6 +50,10 @@ public final class SpiderCallback implements Callback {
 
     public final void onResponse(Call call, Response response) throws IOException {
         this.response = response;
+        if (response.body() != null) {
+            this.body = response.body().string();
+        }
+
         if (!response.isSuccessful()) {
             logger().error("HttpCode: " + response.code() + " spider: " + spider.name()); //console尽量少log
 
@@ -59,8 +69,6 @@ public final class SpiderCallback implements Callback {
             spider.serializeFullLog();
 
         } else {
-            String body = response.body().string();
-
             int result = spider.parseRealData(body);
             if (result == BaseSpider.RET_SUCCESS) {
                 JobMonitor.getInstance().success(spider);

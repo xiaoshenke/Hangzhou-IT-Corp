@@ -35,7 +35,7 @@ public class MainTest {
         ensureIpSwitched(proxy);
 
         IJob job = JobProvider.getFixedDelayJob(0);
-        job.setRealRunnable(new CompanySpider(43753));
+        job.setRealRunnable(new CompanySpider(37974));
         JobQueue.getInstance().putJob(job);
 
         logger().info("start workThread...");
@@ -117,6 +117,8 @@ public class MainTest {
     private void ensureIpSwitched(IPProxyTool.Proxy proxy) {
         HttpUrl.Builder urlBuilder = HttpUrl.parse("http://www.ip138.com/ip2city.asp").newBuilder();
         Headers.Builder builder = new Headers.Builder();
+        //builder.add("Connection","close");
+
         builder.add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36");
         final Request request = new Request.Builder()
                 .headers(builder.build())

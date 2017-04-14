@@ -43,6 +43,6 @@ public class Config {
 
     public static final String CONF_FULLLOG_TEXT = "/htmls/";
 
-    public static final String CONF_FULLLOG_TEXT_POST = ".txt";
+    public static final String CONF_FULLLOG_TEXT_POST = ".html";
 
 }

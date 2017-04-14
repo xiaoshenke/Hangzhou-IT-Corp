@@ -13,6 +13,7 @@ import java.util.Date;
  */
 public abstract class BaseSpider implements Runnable {
 
+    private static final String LINTFEED = "/r/n";
     public static final int RET_SUCCESS = 0; //成功
 
     //parsing error --> 指new Parser(html) 是不是因为parser能力太弱 这个网页有些tag不支持
@@ -79,22 +80,15 @@ public abstract class BaseSpider implements Runnable {
         String time = sdf.format(date);
         builder.append(time);
 
-        builder.append(" [" + Thread.currentThread().getName() + "]/n");
-        builder.append("Spider: " + toString() + "/n");
+        builder.append(" [" + Thread.currentThread().getName() + "]" + LINTFEED);
+        builder.append("Spider: " + toString() + LINTFEED);
 
-        builder.append("Request: " + buildRequest() + "/n");
+        builder.append("Request: " + buildRequest() + LINTFEED);
         Response response = callback.getResponse();
         if (response != null) {
-            builder.append("Response: HttpCode: " + response.code() + " isRedirect: " + response.isRedirect() + " Message: " + response.message() + "/n");
-            builder.append("Header: " + response.headers().toString() + "/n");
-
-            try {
-                builder.append("/nBody: " + response.body().string());
-            } catch (IOException e) {
-                if (response.body() != null) {
-                    response.body().close();
-                }
-            }
+            builder.append("Response: HttpCode: " + response.code() + " isRedirect: " + response.isRedirect() + " Message: " + response.message() + LINTFEED);
+            builder.append("Header: " + response.headers().toString() + LINTFEED);
+            builder.append(LINTFEED + "Body: " + callback.getBody());
         }
 
         //Todo 规范一下name()的取值
