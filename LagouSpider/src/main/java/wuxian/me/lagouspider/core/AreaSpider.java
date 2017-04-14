@@ -101,20 +101,15 @@ public class AreaSpider extends BaseLagouSpider {
 
         if (pageNum != -1) {
             if (pageNum == 0) {
-                if (checkBlockAndFailThisSpider(body)) {
-                    ;
-                } else {
-                    logger().info("We got zero page, " + name());
-                }
+                logger().info("We got zero page, " + name());
+                return BaseSpider.RET_MAYBE_BLOCK;
             } else {
                 logger().debug("Parsed num: " + pageNum + " " + simpleName());
                 beginSpider();
+                return BaseSpider.RET_SUCCESS;
             }
-        } else {
-            //Todo
-            //logger().error("parseData fail");
         }
 
-        return BaseSpider.RET_SUCCESS;
+        return BaseSpider.RET_PARSING_ERR;
     }
 }

@@ -14,8 +14,13 @@ import java.util.Date;
 public abstract class BaseSpider implements Runnable {
 
     public static final int RET_SUCCESS = 0; //成功
-    public static final int RET_ERROR = 1;   //失败(不是因为解析失败造成的失败)
-    public static final int RET_PARSING_ERR = 2;//parsing错误造成的失败
+
+    //parsing error --> 指new Parser(html) 是不是因为parser能力太弱 这个网页有些tag不支持
+    //这种情况认为任务失败了(FullLog处理),但不进行重试
+    //Fixme:正确处理？
+    public static final int RET_PARSING_ERR = 1;
+
+    public static final int RET_MAYBE_BLOCK = 2; //可能被block
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static SimpleDateFormat fullLogSdf = new SimpleDateFormat("yyyy_MM_dd_HH:mm:ss");
@@ -91,7 +96,10 @@ public abstract class BaseSpider implements Runnable {
                 }
             }
         }
-        String fileName = fullLogSdf.format(date) + simpleName(); //simpleName只有一个类名
+
+        //Todo 规范一下name()的取值
+        String name = name().length() > 15 ? name().substring(0, 15) : name();
+        String fileName = fullLogSdf.format(date) + name; //simpleName只有一个类名
 
         //Fixme:framework包下引入了一个非framework的Helper类 --> 间接引用了一些配置项 不过这个类移植起来还是很容易的
         FileUtil.writeToFile(Helper.getFullLogFilePath(fileName), builder.toString());

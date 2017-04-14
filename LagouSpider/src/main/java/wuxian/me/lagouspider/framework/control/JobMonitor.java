@@ -41,7 +41,7 @@ public class JobMonitor {
         }
     }
 
-    public void fail(@NotNull Runnable runnable, @NotNull Fail fail) {
+    public void fail(@NotNull Runnable runnable, @NotNull Fail fail, boolean retry) {
         IJob job = getJob(runnable);
         if (job != null) {
             job.fail(fail);
@@ -54,7 +54,7 @@ public class JobMonitor {
                 return;
             }
 
-            if (!Config.ENABLE_RETRY_SPIDER) {
+            if (!Config.ENABLE_RETRY_SPIDER || !retry) {
                 return;
             }
 
@@ -63,6 +63,10 @@ public class JobMonitor {
             JobQueue.getInstance().putJob(next);
             putJob(next, IJob.STATE_RETRY);
         }
+    }
+
+    public void fail(@NotNull Runnable runnable, @NotNull Fail fail) {
+        fail(runnable, fail, true);
     }
 
     public void putJob(@NotNull IJob job, int state) {

@@ -6,7 +6,6 @@ import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
 import wuxian.me.lagouspider.Config;
-import wuxian.me.lagouspider.core.BaseLagouSpider;
 import wuxian.me.lagouspider.framework.BaseSpider;
 import wuxian.me.lagouspider.framework.job.IJob;
 import wuxian.me.lagouspider.framework.IPProxyTool;
@@ -33,6 +32,7 @@ public class FailureManager {
 
     private FutureTask<String> confirmSwitchIPFuture;
 
+    private long startTime = System.currentTimeMillis();
     private FailureManager() {
         HttpUrl.Builder urlBuilder = HttpUrl.parse("http://www.ip138.com/ip2city.asp").newBuilder();
         Headers.Builder builder = new Headers.Builder();
@@ -69,11 +69,11 @@ public class FailureManager {
     AtomicInteger failNum = new AtomicInteger(0);
 
     public void success(@NotNull IJob job) {
-        logger().info("Success: " + ((BaseLagouSpider) job.getRealRunnable()).simpleName());
+        logger().info("Success: " + ((BaseSpider) job.getRealRunnable()).simpleName());
         successNum.getAndIncrement();
 
         if (todoSpiderList.contains(job)) {
-            todoSpiderList.remove((BaseLagouSpider) job);
+            todoSpiderList.remove(job);
         }
     }
 
@@ -82,6 +82,10 @@ public class FailureManager {
     private AtomicInteger failNetErrNum = new AtomicInteger(0);
     private AtomicLong lastNetErrTime = new AtomicLong(0);
     private AtomicLong currentNetErrTime = new AtomicLong(0);
+
+    private AtomicInteger failMaybeBlockNum = new AtomicInteger(0);
+    private AtomicLong lastMaybeBlockTime = new AtomicLong(0);
+    private AtomicLong currentMaybeBlockTime = new AtomicLong(0);
 
     //记录单次(单个ip)的spiderList
     private static List<BaseSpider> todoSpiderList = Collections.synchronizedList(new ArrayList<BaseSpider>());
@@ -115,12 +119,17 @@ public class FailureManager {
             failNetErrNum.incrementAndGet();
 
             lastNetErrTime.set(currentNetErrTime.get());
-            currentNetErrTime.set(last404Time.get());
+            currentNetErrTime.set(lastNetErrTime.get());
+        } else if (fail.isMaybeBlock()) {
+            failMaybeBlockNum.incrementAndGet();
+
+            lastMaybeBlockTime.set(currentMaybeBlockTime.get());
+            currentMaybeBlockTime.set(lastMaybeBlockTime.get());
         }
 
         if (isBlocked(fail)) {
-            //Todo
-            logger().error("WE ARE BLOCKED! We have success " + successNum.get() + " jobs");
+            logger().info("WE ARE BLOCKED! Until Now we have success " + successNum.get() +
+                    " jobs, we have run " + (System.currentTimeMillis() - startTime) / 1000 + " seconds");
             if (Config.ENABLE_SWITCH_IPPROXY) {
                 doSwitchIp();
             }
@@ -131,18 +140,21 @@ public class FailureManager {
                 WorkThread.getInstance().pauseWhenSwitchIP();
             }
         }
-
     }
 
     private boolean isBlocked(@NotNull Fail fail) {
         if (fail.isBlock()) {
             return true;
         }
-        if (fail404Num.get() > 10 || current404Time.get() - last404Time.get() < 500) { //已经有了10个404且相隔不久
+        if (fail404Num.get() >= 2) {
             return true;
         }
 
-        if (failNetErrNum.get() > 10 || currentNetErrTime.get() - lastNetErrTime.get() < 500) {
+        if (failMaybeBlockNum.get() >= 3 || currentMaybeBlockTime.get() - lastMaybeBlockTime.get() < 300) {
+            return true;
+        }
+
+        if (failNetErrNum.get() > 5 || currentNetErrTime.get() - lastNetErrTime.get() < 500) {
             return true;
         }
         return false;

@@ -46,12 +46,13 @@ public class MainTest {
         }
     }
 
+    //Fixme:疑似拉勾会爬取代理网站的ip,若是则立马进行屏蔽...
     @Test
     public void testFrequency() {
         Config.IS_TEST = true;
 
         IPProxyTool.Proxy proxy = IPProxyTool.switchNextProxy();
-        logger().info("using proxy ip: " + proxy.ip + " port: " + proxy.port);
+        logger().info("Using proxy ip: " + proxy.ip + " port: " + proxy.port);
         ensureIpSwitched(proxy);
 
         AreaMapper areaMapper = areaMapper();
@@ -72,7 +73,7 @@ public class MainTest {
             //i++;
         }
 
-        logger().info("start workThread...");
+        logger().info("Start workThread...");
         WorkThread.getInstance().start();
 
         while (true) {

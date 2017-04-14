@@ -38,7 +38,8 @@ public final class SpiderCallback implements Callback {
 
     public final void onFailure(Call call, IOException e) {
         logger().error("onFailure: spider: " + spider.name());
-        JobMonitor.getInstance().fail(spider, Fail.NETWORK_ERR);
+        JobMonitor.getInstance().fail(spider, Fail.MAYBE_BLOCK);
+        spider.serializeFullLog();
     }
 
     public final void onResponse(Call call, Response response) throws IOException {
@@ -64,12 +65,12 @@ public final class SpiderCallback implements Callback {
             if (result == BaseSpider.RET_SUCCESS) {
                 JobMonitor.getInstance().success(spider);
 
-            } else if (result == BaseSpider.RET_ERROR) {
+            } else if (result == BaseSpider.RET_PARSING_ERR) {
 
-                JobMonitor.getInstance().fail(spider, Fail.MAYBE_BLOCK);
+                JobMonitor.getInstance().fail(spider, Fail.MAYBE_BLOCK, false);  //这个不放入重试队列
                 spider.serializeFullLog();
 
-            } else if (result == BaseSpider.RET_PARSING_ERR) {
+            } else if (result == BaseSpider.RET_MAYBE_BLOCK) {
 
                 if (spider.checkBlockAndFailThisSpider(body)) {
                     logger().error("We got BLOCKED, " + spider.name());

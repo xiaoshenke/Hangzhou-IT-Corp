@@ -20,6 +20,10 @@ public class Fail {
         return httpCode == FAIL_404;
     }
 
+    public boolean isMaybeBlock() {
+        return httpCode == FAIL_MAYBE_BLOCK;
+    }
+
     public Fail(int code, String msg) {
         this.httpCode = code;
         this.message = msg;
