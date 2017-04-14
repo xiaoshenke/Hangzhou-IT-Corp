@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Created by wuxian on 9/4/2017.
  * http://www.ip181.com/
+ * http://www.us-proxy.org/
  */
 public class IPProxyTool {
 

@@ -6,10 +6,7 @@ import org.htmlparser.Parser;
 import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.nodes.TagNode;
 import org.htmlparser.nodes.TextNode;
-import org.htmlparser.tags.Bullet;
-import org.htmlparser.tags.Div;
-import org.htmlparser.tags.ImageTag;
-import org.htmlparser.tags.LinkTag;
+import org.htmlparser.tags.*;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import wuxian.me.lagouspider.Config;
@@ -33,6 +30,8 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
  * 6 产品列表
  * 7 公司地址列表 --> 多个地址存入多地址表
  * 8 公司描述
+ * <p>
+ * Todo:数据存表
  */
 public class CompanySpider extends BaseLagouSpider {
     long company_id = -1;
@@ -40,10 +39,19 @@ public class CompanySpider extends BaseLagouSpider {
     private String logo;
     private boolean lagouAuthen = false;  //是否是拉勾认证的
     private String selfDescription;
+    private String companyBussiness;
+    private String process;
+    private String employeeNum;
     String posionNum;
     String resumeRate;
     String interCommentNum;  //面试评价个数
-    int commentScore = -1;  //面试评价评分 --> 满分5分换算过来
+
+    String score;
+    String accordSore;  //描述是否相符
+    String interviewerScore;
+    String environmentScore;
+
+    //int commentScore = -1;  //面试评价评分 --> 满分5分换算过来
     private List<Product> productList;
     private List<String> locationList;
 
@@ -59,8 +67,9 @@ public class CompanySpider extends BaseLagouSpider {
     }
 
     boolean parseBaseInfo(Parser parser) throws ParserException {
+
         HasAttributeFilter f1 = new HasAttributeFilter("class", "top_info_wrap");
-        NodeList list = parser.extractAllNodesThatMatch(f1);
+        NodeList list = trees.extractAllNodesThatMatch(f1, true);//= parser.extractAllNodesThatMatch(f1);
         if (list == null) {
             return true;
         }
@@ -136,6 +145,85 @@ public class CompanySpider extends BaseLagouSpider {
                 }
             }
         }
+
+        HasAttributeFilter f5 = new HasAttributeFilter("id", "basic_container");
+        list = trees.extractAllNodesThatMatch(f5, true);
+        if (list != null && list.size() != 0) {
+            Node child = list.elementAt(0);  //item_container
+
+            if (child.getChildren() != null && child.getChildren().size() != 0) {
+                HasAttributeFilter f6 = new HasAttributeFilter("class", "type");  //type
+                list = child.getChildren().extractAllNodesThatMatch(f6, true);
+
+                if (list != null && list.size() != 0) {
+                    Node type = list.elementAt(0);
+                    type = type.getNextSibling();
+                    while (type != null) {
+                        if (type instanceof Span) {
+                            companyBussiness = ((Span) type).getStringText().trim();
+                            break;
+                        }
+                        type = type.getNextSibling();
+                    }
+                }
+
+                HasAttributeFilter f7 = new HasAttributeFilter("class", "process");  //type
+                list = child.getChildren().extractAllNodesThatMatch(f7, true);
+
+                if (list != null && list.size() != 0) {
+                    Node type = list.elementAt(0);
+                    type = type.getNextSibling();
+                    while (type != null) {
+                        if (type instanceof Span) {
+                            process = ((Span) type).getStringText().trim();
+                            break;
+                        }
+                        type = type.getNextSibling();
+                    }
+                }
+
+                HasAttributeFilter f8 = new HasAttributeFilter("class", "number");  //type
+                list = child.getChildren().extractAllNodesThatMatch(f8, true);
+
+                if (list != null && list.size() != 0) {
+                    Node type = list.elementAt(0);
+                    type = type.getNextSibling();
+                    while (type != null) {
+                        if (type instanceof Span) {
+                            employeeNum = ((Span) type).getStringText().trim();
+                            break;
+                        }
+                        type = type.getNextSibling();
+                    }
+                }
+            }
+        }
+
+        HasAttributeFilter f9 = new HasAttributeFilter("class", "reviews-top");
+        list = trees.extractAllNodesThatMatch(f9, true);
+        if (list != null && list.size() != 0) {
+            Node child = list.elementAt(0);  //reviews-top
+
+            if (child.getChildren() != null && child.getChildren().size() != 0) {
+                HasAttributeFilter f10 = new HasAttributeFilter("class", "score");
+                list = child.getChildren().extractAllNodesThatMatch(f10, true);
+                if (list != null) {
+                    for (int i = 0; i < list.size(); i++) {
+                        if (i == 0) {
+                            score = ((Span) list.elementAt(i)).getStringText().trim();  //面试得分
+                        } else if (i == 1) {
+                            accordSore = ((Span) list.elementAt(i)).getStringText().trim();
+                        } else if (i == 2) {
+                            interviewerScore = ((Span) list.elementAt(i)).getStringText().trim();
+                        } else if (i == 3) {
+                            environmentScore = ((Span) list.elementAt(i)).getStringText().trim();
+                        }
+                    }
+                }
+            }
+        }
+
+
         return true;
     }
 
@@ -202,8 +290,8 @@ public class CompanySpider extends BaseLagouSpider {
 
     private void parseProductList(Parser parser) throws ParserException {
         logger().info("Begin to parse ProductList");
-        HasAttributeFilter f1 = new HasAttributeFilter("class", "item_container");
-        NodeList list = parser.extractAllNodesThatMatch(f1);
+        HasAttributeFilter f1 = new HasAttributeFilter("id", "company_products");
+        NodeList list = trees.extractAllNodesThatMatch(f1, true);//parser.extractAllNodesThatMatch(f1);
         if (list == null || list.size() == 0) {
             logger().info("No company_products found");
             return;
@@ -229,16 +317,27 @@ public class CompanySpider extends BaseLagouSpider {
 
     }
 
-    //Todo 解析位置
     private void parseLocation(Parser parser) throws ParserException {
-        ;
+        HasAttributeFilter f1 = new HasAttributeFilter("class", "mlist_li_desc");
+        NodeList list = trees.extractAllNodesThatMatch(f1, true);
+
+        logger().info("BEGIN to parse location");
+        if (list != null && list.size() != 0) {
+            for (int i = 0; i < list.size(); i++) {
+                printChildrenOfNode(list.elementAt(i));  //<p />
+            }
+        }
     }
+
+    private NodeList trees = null;
 
     public int parseRealData(String data) {
         logger().info("CompanySpider, received htmlData,begin to pase");
         try {
             Parser parser = new Parser(data);
             parser.setEncoding("utf-8");
+
+            trees = parser.parse(null);
             parseBaseInfo(parser);
 
             parser = new Parser(data);  //必须重新赋值一下
@@ -246,8 +345,6 @@ public class CompanySpider extends BaseLagouSpider {
 
             parser = new Parser(data);
             parseLocation(parser);
-
-            //Todo:解析面试评分
 
         } catch (ParserException e) {
             return BaseSpider.RET_PARSING_ERR;
