@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
+import static wuxian.me.lagouspider.util.NodeLogUtil.*;
 
 /**
  * Created by wuxian on 30/3/2017.
@@ -37,6 +38,7 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 public class CompanySpider extends BaseLagouSpider {
     long company_id = -1;
 
+    private String companyName;
     private String logo;
     private boolean lagouAuthen = false;  //是否是拉勾认证的
     private String selfDescription;
@@ -47,13 +49,12 @@ public class CompanySpider extends BaseLagouSpider {
     String resumeRate;
     String interCommentNum;  //面试评价个数
 
-    String score;
+    String score;       //面试评价评分
     String accordSore;  //描述是否相符
     String interviewerScore;
     String environmentScore;
 
-    //int commentScore = -1;  //面试评价评分 --> 满分5分换算过来
-    private List<Product> productList;
+    private List<Product> productList = new ArrayList<Product>();
     private List<String> locationList = new ArrayList<String>();
 
     private static final String REFERER = "https://www.lagou.com/zhaopin/Java/?labelWords=label";
@@ -76,9 +77,9 @@ public class CompanySpider extends BaseLagouSpider {
         }
 
         Node info_wrap = list.elementAt(0);
-        NodeList info_wrap_list = info_wrap.getChildren();
-        for (int i = 0; i < info_wrap_list.size(); i++) {
-            Node node = info_wrap_list.elementAt(i);
+        list = info_wrap.getChildren();
+        for (int i = 0; i < list.size(); i++) {
+            Node node = list.elementAt(i);
             if (node instanceof ImageTag) {
                 logo = ((ImageTag) node).getImageURL();
                 logger().info("Logo: " + logo);
@@ -87,25 +88,31 @@ public class CompanySpider extends BaseLagouSpider {
         }
 
         HasAttributeFilter f2 = new HasAttributeFilter("class", "identification"); //拉勾认证
-        NodeList ret = info_wrap_list.extractAllNodesThatMatch(f2, true);
-        //Fixme:不知道为什么这边的api设计必须是NodeList而不是一个Node来调用extractAllxxx
+        NodeList ret = list.extractAllNodesThatMatch(f2, true);
         if (ret != null && ret.size() != 0) {
             lagouAuthen = true;
         }
-        logger().info("Authenticate by Laoug: " + lagouAuthen);
+        logger().info("Authenticate by Lagou: " + lagouAuthen);
+
+        HasAttributeFilter f12 = new HasAttributeFilter("class", "hovertips");
+        ret = list.extractAllNodesThatMatch(f12, true);
+        logger().info("BEGIN to parse company name");
+        if (ret != null && ret.size() != 0) {
+            companyName = ((LinkTag) ret.elementAt(0)).getAttribute("title").trim(); //Todo:IT橙子
+            logger().info("companyName: " + companyName);
+        }
+
 
         HasAttributeFilter f3 = new HasAttributeFilter("class", "company_word");
-        ret = info_wrap_list.extractAllNodesThatMatch(f3, true);
+        ret = list.extractAllNodesThatMatch(f3, true);
         if (ret != null && ret.size() != 0) {
-            Node node = info_wrap_list.elementAt(0);
-            if (node instanceof Div) {
-                selfDescription = ((Div) node).getStringText();
-                logger().info("selfDescripition: " + selfDescription);
-            }
+            printChildrenOfNode(ret.elementAt(0));
+            selfDescription = ret.elementAt(0).toPlainTextString().trim();
+            logger().info("selfDescripition: " + selfDescription);
         }
 
         HasAttributeFilter f4 = new HasAttributeFilter("class", "company_data");
-        ret = info_wrap_list.extractAllNodesThatMatch(f4, true);
+        ret = list.extractAllNodesThatMatch(f4, true);
         if (ret != null && ret.size() != 0) {
             Node interview_data = ret.elementAt(0);
             HasAttributeFilter f5 = new HasAttributeFilter("class", "tipsys");
@@ -231,7 +238,6 @@ public class CompanySpider extends BaseLagouSpider {
             }
         }
 
-
         return true;
     }
 
@@ -302,6 +308,7 @@ public class CompanySpider extends BaseLagouSpider {
             logger().info("product description: " + product.description);
         }
 
+        productList.add(product);
     }
 
     private void parseProductList(Parser parser) throws ParserException {

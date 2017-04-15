@@ -14,4 +14,6 @@ public interface Converter {
     //<a href="xxx" /> --> LinkTag
 
     //<p /> --> TextNode
+
+    //<div /> --> TextNode
 }

@@ -46,7 +46,7 @@ public class MainTest {
         }
     }
 
-    //Fixme:疑似拉勾会爬取代理网站的ip,若是则立马进行屏蔽...
+    //疑似拉勾会爬取代理网站的ip,若是则立马进行屏蔽...
     @Test
     public void testFrequency() {
         Config.IS_TEST = true;

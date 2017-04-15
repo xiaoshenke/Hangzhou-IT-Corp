@@ -1,3 +1,4 @@
 2017-04-15 16:01:51 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:135) switch ip fail
 2017-04-15 16:05:38 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:135) switch ip fail
 2017-04-15 16:05:54 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:135) switch ip fail
+2017-04-15 16:41:28 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.framework.SpiderCallback.onFailure(SpiderCallback.java:46) onFailure: spider: CompanySpider
