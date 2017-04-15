@@ -12,4 +12,6 @@ public interface Converter {
     //<li /> --> Bullet.class
 
     //<a href="xxx" /> --> LinkTag
+
+    //<p /> --> TextNode
 }

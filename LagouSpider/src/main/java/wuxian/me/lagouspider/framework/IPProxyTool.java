@@ -18,7 +18,7 @@ public class IPProxyTool {
     static {
         ipPortList = new ArrayList<Proxy>();
 
-        ipPortList.add(new Proxy("104.198.237.2", 80));
+        ipPortList.add(new Proxy("182.38.21.11", 808));
         ipPortList.add(new Proxy("121.204.165.246", 8118));
         ipPortList.add(new Proxy("36.249.25.72", 808));
         ipPortList.add(new Proxy("115.230.11.193", 808));

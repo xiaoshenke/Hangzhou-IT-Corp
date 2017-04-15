@@ -14,6 +14,7 @@ import wuxian.me.lagouspider.framework.BaseSpider;
 import wuxian.me.lagouspider.model.Product;
 import wuxian.me.lagouspider.util.Helper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
@@ -53,7 +54,7 @@ public class CompanySpider extends BaseLagouSpider {
 
     //int commentScore = -1;  //面试评价评分 --> 满分5分换算过来
     private List<Product> productList;
-    private List<String> locationList;
+    private List<String> locationList = new ArrayList<String>();
 
     private static final String REFERER = "https://www.lagou.com/zhaopin/Java/?labelWords=label";
 
@@ -91,7 +92,7 @@ public class CompanySpider extends BaseLagouSpider {
         if (ret != null && ret.size() != 0) {
             lagouAuthen = true;
         }
-        //logger().info("Authenticate by Laoug: " + lagouAuthen);
+        logger().info("Authenticate by Laoug: " + lagouAuthen);
 
         HasAttributeFilter f3 = new HasAttributeFilter("class", "company_word");
         ret = info_wrap_list.extractAllNodesThatMatch(f3, true);
@@ -161,6 +162,7 @@ public class CompanySpider extends BaseLagouSpider {
                     while (type != null) {
                         if (type instanceof Span) {
                             companyBussiness = ((Span) type).getStringText().trim();
+                            logger().info("companyBussiness: " + companyBussiness);
                             break;
                         }
                         type = type.getNextSibling();
@@ -176,6 +178,7 @@ public class CompanySpider extends BaseLagouSpider {
                     while (type != null) {
                         if (type instanceof Span) {
                             process = ((Span) type).getStringText().trim();
+                            logger().info("process: " + process);
                             break;
                         }
                         type = type.getNextSibling();
@@ -191,6 +194,7 @@ public class CompanySpider extends BaseLagouSpider {
                     while (type != null) {
                         if (type instanceof Span) {
                             employeeNum = ((Span) type).getStringText().trim();
+                            logger().info("employeeNum: " + employeeNum);
                             break;
                         }
                         type = type.getNextSibling();
@@ -211,12 +215,16 @@ public class CompanySpider extends BaseLagouSpider {
                     for (int i = 0; i < list.size(); i++) {
                         if (i == 0) {
                             score = ((Span) list.elementAt(i)).getStringText().trim();  //面试得分
+                            logger().info("面试得分: " + score);
                         } else if (i == 1) {
                             accordSore = ((Span) list.elementAt(i)).getStringText().trim();
+                            logger().info("面试符合: " + accordSore);
                         } else if (i == 2) {
                             interviewerScore = ((Span) list.elementAt(i)).getStringText().trim();
+                            logger().info("面试官评分: " + interviewerScore);
                         } else if (i == 3) {
                             environmentScore = ((Span) list.elementAt(i)).getStringText().trim();
+                            logger().info("环境得分: " + environmentScore);
                         }
                     }
                 }
@@ -239,7 +247,7 @@ public class CompanySpider extends BaseLagouSpider {
             //printNodeOnly(child);
             if ((child instanceof ImageTag)) {
                 product.imgUrl = ((ImageTag) child).getImageURL(); //产品logo --> success
-                //logger().info("Product logo: "+product.imgUrl);
+                logger().info("Product logo: " + product.imgUrl);
                 break;
             }
         }
@@ -255,8 +263,11 @@ public class CompanySpider extends BaseLagouSpider {
             for (int i = 0; i < ret.size(); i++) {
                 child = ret.elementAt(i);
                 if (child instanceof LinkTag) {
-                    product.url = ((LinkTag) child).getLinkText();
+                    product.url = ((LinkTag) child).getLink();
                     product.name = child.toPlainTextString().trim();
+
+                    logger().info("product url: " + product.url);
+                    logger().info("product name: " + product.name);
                     break;
                 }
             }
@@ -272,7 +283,10 @@ public class CompanySpider extends BaseLagouSpider {
                 for (int i = 0; i < ret.size(); i++) {
                     Node child2 = ret.elementAt(i);
                     if (child2 instanceof Bullet) {
-                        product.addType(child2.toPlainTextString().trim()); //Todo: 优化
+                        String productType = child2.toPlainTextString().trim();
+                        product.addType(productType); //Todo: 优化
+
+                        logger().info("product type: " + productType);
                     }
                 }
             }
@@ -284,6 +298,8 @@ public class CompanySpider extends BaseLagouSpider {
         if (ret != null && ret.size() != 0) {
             child = ret.elementAt(0);
             product.description = child.toPlainTextString().trim();
+
+            logger().info("product description: " + product.description);
         }
 
     }
@@ -324,7 +340,8 @@ public class CompanySpider extends BaseLagouSpider {
         logger().info("BEGIN to parse location");
         if (list != null && list.size() != 0) {
             for (int i = 0; i < list.size(); i++) {
-                printChildrenOfNode(list.elementAt(i));  //<p />
+                //printChildrenOfNode(list.elementAt(i));  //<p />
+                locationList.add(list.elementAt(i).toPlainTextString().trim());
             }
         }
     }
