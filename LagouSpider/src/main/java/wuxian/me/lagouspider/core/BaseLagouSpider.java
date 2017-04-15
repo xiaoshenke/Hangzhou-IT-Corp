@@ -24,14 +24,6 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
  */
 public abstract class BaseLagouSpider extends BaseSpider {
 
-    @Override
-    public final boolean checkBlockAndFailThisSpider(int httpCode) {
-        if (httpCode == -1 || httpCode == 404) {
-            return true;
-        }
-        return false;
-    }
-
     //子类可以自己实现
     @Override
     protected boolean checkBlockAndFailThisSpider(String html) {

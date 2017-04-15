@@ -15,10 +15,6 @@ public class CompanyResultSpider extends BaseSpider {
         return 0;
     }
 
-    public boolean checkBlockAndFailThisSpider(int httpCode) {
-        return false;
-    }
-
     protected boolean checkBlockAndFailThisSpider(String html) {
         return false;
     }

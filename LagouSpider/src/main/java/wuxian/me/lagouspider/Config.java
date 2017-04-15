@@ -11,6 +11,10 @@ public class Config {
 
     public static boolean ENABLE_SAVE_COMPANY_DB = false;
 
+    public static boolean ENABLE_SPIDER_COMPANY_MAIN = true;
+
+    public static boolean ENABLE_SPIDER_ITCHENGZI_SEARCH = false;
+
     public static boolean ENABLE_RETRY_SPIDER = false;
 
     public static boolean ENABLE_SWITCH_IPPROXY = false;
@@ -24,6 +28,8 @@ public class Config {
     public static final String URL_LAGOU_JAVA = "https://www.lagou.com/jobs/list_Java?px=default";
 
     public static final String TABLE_COMPANY = "companies";
+
+    public static final String TABLE_PRODUCT = "products";
 
     //7天全面抓一次
     public static final long GRAB_INTERNAL = 1000 * 60 * 60 * 24 * 7;

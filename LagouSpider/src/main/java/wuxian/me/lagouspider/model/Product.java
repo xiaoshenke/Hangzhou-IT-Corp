@@ -7,8 +7,8 @@ import java.util.List;
 
 /**
  * Created by wuxian on 13/4/2017.
- *
- * Todo: 类型优化
+ * 产品来看 IT橙子的数据会更加靠谱
+ * Todo: 标签优化 ？？？？
  */
 public class Product {
 

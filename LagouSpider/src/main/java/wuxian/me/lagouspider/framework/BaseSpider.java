@@ -34,7 +34,12 @@ public abstract class BaseSpider implements Runnable {
     }
 
     public final void run() {
-        OkhttpProvider.getClient().newCall(getRequest()).enqueue(callback);
+
+        Request request = getRequest();
+        if (request == null) {  //Should NEVER happen!
+            return;
+        }
+        OkhttpProvider.getClient().newCall(request).enqueue(callback);
     }
 
 
@@ -59,7 +64,12 @@ public abstract class BaseSpider implements Runnable {
 
 
     //根据HttpCode判定是否被block
-    public abstract boolean checkBlockAndFailThisSpider(int httpCode);
+    protected boolean checkBlockAndFailThisSpider(int httpCode) {
+        if (httpCode == -1 || httpCode == 404) {
+            return true;
+        }
+        return false;
+    }
 
     //根据网页内容判定是否被block
     protected abstract boolean checkBlockAndFailThisSpider(String html);

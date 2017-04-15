@@ -1,5 +1,6 @@
 package wuxian.me.lagouspider.core.itchengzi;
 
+import com.sun.istack.internal.NotNull;
 import okhttp3.Request;
 import wuxian.me.lagouspider.framework.BaseSpider;
 
@@ -9,6 +10,15 @@ import wuxian.me.lagouspider.framework.BaseSpider;
  * Todo
  */
 public class SearchSpider extends BaseSpider {
+
+    private long companyId;
+    private String companyName;
+
+    public SearchSpider(@NotNull long companyId, @NotNull String companyName) {
+        this.companyId = companyId;
+        this.companyName = companyName;
+    }
+
     protected Request buildRequest() {
         return null;
     }
@@ -17,9 +27,6 @@ public class SearchSpider extends BaseSpider {
         return 0;
     }
 
-    public boolean checkBlockAndFailThisSpider(int httpCode) {
-        return false;
-    }
 
     protected boolean checkBlockAndFailThisSpider(String html) {
         return false;

@@ -10,7 +10,11 @@ import org.htmlparser.tags.*;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import wuxian.me.lagouspider.Config;
+import wuxian.me.lagouspider.core.itchengzi.SearchSpider;
 import wuxian.me.lagouspider.framework.BaseSpider;
+import wuxian.me.lagouspider.framework.control.JobProvider;
+import wuxian.me.lagouspider.framework.control.JobQueue;
+import wuxian.me.lagouspider.framework.job.IJob;
 import wuxian.me.lagouspider.model.Product;
 import wuxian.me.lagouspider.util.Helper;
 
@@ -100,6 +104,12 @@ public class CompanySpider extends BaseLagouSpider {
         if (ret != null && ret.size() != 0) {
             companyName = ((LinkTag) ret.elementAt(0)).getAttribute("title").trim(); //Todo:IT橙子
             logger().info("companyName: " + companyName);
+
+            if (Config.ENABLE_SPIDER_ITCHENGZI_SEARCH) {
+                IJob iJob = JobProvider.getJob();
+                iJob.setRealRunnable(new SearchSpider(company_id, companyName));
+                JobQueue.getInstance().putJob(iJob);
+            }
         }
 
 
