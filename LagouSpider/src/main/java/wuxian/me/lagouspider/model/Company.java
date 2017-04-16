@@ -7,19 +7,31 @@ package wuxian.me.lagouspider.model;
  */
 public class Company {
     public int area_id = -1;
-    public String company_fullname;
-    public String financeStage;
+    public long company_id;
+    public String company_fullname;  //这些可以从@AreaPageSpider拿
     public String industryField;
     public String detail_location;
     public String company_size;
-    public String logo;   //从主页拿
-    public String labelList;
+
+    public String logo;   //这些需要从@CompanySpider拿
+    public String financeStage;
+    public String webLink;
+    public boolean lagouAuthentic;
+    public String description;
+    public String positionNum;
+    public String resumeRate;
+    public String interviewNum;
+
+    public String score;       //面试评价评分
+    public String accordSore;  //描述是否相符
+    public String interviewerScore;
+    public String environmentScore;
+
+    //public String labelList; //lagou给的labelList 比如什么五险一金 年底双薪啦
 
     public Company(long companyId) {
         this.company_id = companyId;
     }
-
-    public long company_id;  //--> https://www.lagou.com/gongsi/110890.html
 
     @Override
     public int hashCode() {

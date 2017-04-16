@@ -8,22 +8,24 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by wuxian on 8/4/2017.
+ *
+ * 从拉勾的公司主页抓的数据
  */
-public class CompanyLocationSaver implements ICompanySaver {
+public class CompanyMainSaver implements ICompanySaver {
 
-    private static CompanyLocationSaver instance = null;
+    private static CompanyMainSaver instance = null;
 
-    public static CompanyLocationSaver getInstance() {
+    public static CompanyMainSaver getInstance() {
         if (instance == null) {
-            instance = new CompanyLocationSaver();
+            instance = new CompanyMainSaver();
         }
         return instance;
     }
 
 
-    private CompanyLocationSaver() {
-        thread = new SaveCompanyThread(companyMap, ICompanySaver.SAVE_COMPANY_LOCATION_INTERVAL, false);
-        thread.setName("save_company_location");
+    private CompanyMainSaver() {
+        thread = new SaveCompanyThread(companyMap, ICompanySaver.SAVE_COMPANY_MAIN_INTERVAL, false);
+        thread.setName("save_company_main");
         thread.start();
     }
 

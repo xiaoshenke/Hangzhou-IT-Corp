@@ -22,7 +22,7 @@ public class CompanySaver implements ICompanySaver {
     }
 
     private CompanyJsonSaver jsonSaver = CompanyJsonSaver.getInstance();
-    private CompanyLocationSaver locationSaver = CompanyLocationSaver.getInstance();
+    private CompanyMainSaver locationSaver = CompanyMainSaver.getInstance();
 
     private CompanySaver() {
     }

@@ -10,7 +10,7 @@ import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import wuxian.me.lagouspider.Config;
 import wuxian.me.lagouspider.framework.BaseSpider;
-import wuxian.me.lagouspider.framework.control.JobMonitor;
+import wuxian.me.lagouspider.framework.control.MaybeBlockedException;
 import wuxian.me.lagouspider.framework.job.IJob;
 import wuxian.me.lagouspider.framework.control.JobProvider;
 import wuxian.me.lagouspider.framework.control.JobQueue;
@@ -23,6 +23,9 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 /**
  * Created by wuxian on 30/3/2017.
  * <p>
+ * 抓取某区域的公司页数 一个区域的公司可能不止一页,所以先拿到总的页数 然后分别对那一页的数据进行抓取@AreaPageSpider
+ *
+ * Todo: logger
  */
 public class AreaSpider extends BaseLagouSpider {
     Area area;
@@ -42,29 +45,18 @@ public class AreaSpider extends BaseLagouSpider {
         }
     }
 
-    /**
-     * @return -1:parsing error
-     * 0: 没有内容 或者已经被block
-     */
-    private int parseData(String data) {
-        try {
-            Parser parser = new Parser(data);
-            parser.setEncoding("utf-8");
-            HasAttributeFilter filter = new HasAttributeFilter("class", "span totalNum");
+    private int parseData(String data) throws ParserException, MaybeBlockedException {
+        Parser parser = new Parser(data);
+        parser.setEncoding("utf-8");
+        HasAttributeFilter filter = new HasAttributeFilter("class", "span totalNum");
 
-            NodeList list = parser.extractAllNodesThatMatch(filter);
-            if (list != null) {
-                for (int i = 0; i < list.size(); i++) {
-                    Node tag = list.elementAt(i);
-                    if (tag instanceof Span) {
-                        return Integer.parseInt(((Span) tag).getStringText());
-                    }
-                }
-            }
+        NodeList list = parser.extractAllNodesThatMatch(filter);
+        if (list != null && list.size() != 0) {
+            Node tag = list.elementAt(0);
+            return Integer.parseInt(((Span) tag).getStringText().trim());
 
-            return 0;  //这个区域内没有公司 比如说灵隐区...
-        } catch (ParserException e) {
-            return -1;
+        } else {
+            throw new MaybeBlockedException();
         }
 
     }
@@ -96,23 +88,21 @@ public class AreaSpider extends BaseLagouSpider {
 
     public int parseRealData(String data) {
         String body = data;
-        pageNum = parseData(body);
 
-        if (pageNum != -1) {
-            if (pageNum == 0) {
-                logger().info("We got zero page, " + name());
-                return BaseSpider.RET_MAYBE_BLOCK;
-            } else {
-                logger().debug("Parsed num: " + pageNum + " " + simpleName());
-
-                if (Config.ENABLE_SPIDER_AREAPAGE) {
-                    beginSpiderAreaPage();
-                }
-
-                return BaseSpider.RET_SUCCESS;
-            }
+        try {
+            pageNum = parseData(body);
+        } catch (ParserException e) {
+            return BaseSpider.RET_PARSING_ERR;
+        } catch (MaybeBlockedException e) {
+            return BaseSpider.RET_MAYBE_BLOCK;
         }
 
-        return BaseSpider.RET_PARSING_ERR;
+        logger().debug("Parsed num: " + pageNum + " " + simpleName());
+
+        if (Config.ENABLE_SPIDER_AREAPAGE) {
+            beginSpiderAreaPage();
+        }
+
+        return BaseSpider.RET_SUCCESS;
     }
 }

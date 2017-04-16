@@ -16,7 +16,7 @@ public class CompanyJsonSaver implements ICompanySaver {
 
     private CompanyJsonSaver() {
         thread = new SaveCompanyThread(companyMap, ICompanySaver.SAVE_COMPANY_INTERVAL, true);
-        thread.setName("save_company");
+        thread.setName("save_company_json");
         thread.start();
     }
 
@@ -32,11 +32,28 @@ public class CompanyJsonSaver implements ICompanySaver {
     private Map<Long, Company> companyMap = new ConcurrentHashMap<Long, Company>();
 
     public boolean saveCompany(@NotNull Company company) {
-        if (company.detail_location != null && companyMap.keySet().contains(company.company_id)) {
-            Company tmp = companyMap.get(company.company_id);
-            tmp.detail_location = company.detail_location;
-            companyMap.put(company.company_id, company);
-            return true;
+        synchronized (companyMap) {
+            if (company.detail_location != null && companyMap.keySet().contains(company.company_id)) {
+                Company tmp = companyMap.get(company.company_id);
+                tmp.detail_location = company.detail_location;
+
+                tmp.webLink = company.webLink;
+                tmp.logo = company.logo;
+                tmp.lagouAuthentic = company.lagouAuthentic;
+                tmp.description = company.description;
+                tmp.financeStage = company.financeStage;
+                tmp.positionNum = company.positionNum;
+                tmp.resumeRate = company.resumeRate;
+                tmp.interviewNum = company.interviewNum;
+                tmp.score = company.score;
+                tmp.accordSore = company.accordSore;
+                tmp.interviewerScore = company.interviewerScore;
+                tmp.environmentScore = company.environmentScore;
+
+                tmp.detail_location = company.detail_location;
+                companyMap.put(company.company_id, tmp);
+                return true;
+            }
         }
 
         companyMap.put(company.company_id, company);

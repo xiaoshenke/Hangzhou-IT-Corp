@@ -56,7 +56,7 @@ public class MainTest {
         ensureIpSwitched(proxy);
 
         IJob job = JobProvider.getFixedDelayJob(0);
-        job.setRealRunnable(new CompanySpider(37974));
+        job.setRealRunnable(new CompanySpider(37974, ""));
         JobQueue.getInstance().putJob(job);
 
         logger().info("start workThread...");
@@ -69,7 +69,7 @@ public class MainTest {
 
     //疑似拉勾会爬取代理网站的ip,若是则立马进行屏蔽...
     @Test
-    public void testFrequency() {
+    public void testAreaSpider() {
         Config.IS_TEST = true;
 
         IPProxyTool.Proxy proxy = IPProxyTool.switchNextProxy();

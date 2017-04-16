@@ -1,5 +1,6 @@
 package wuxian.me.lagouspider.core;
 
+import com.sun.istack.internal.NotNull;
 import okhttp3.Request;
 import org.htmlparser.Node;
 import org.htmlparser.Parser;
@@ -14,8 +15,12 @@ import wuxian.me.lagouspider.core.itjuzi.SearchSpider;
 import wuxian.me.lagouspider.framework.BaseSpider;
 import wuxian.me.lagouspider.framework.control.JobProvider;
 import wuxian.me.lagouspider.framework.control.JobQueue;
+import wuxian.me.lagouspider.framework.control.MaybeBlockedException;
 import wuxian.me.lagouspider.framework.job.IJob;
+import wuxian.me.lagouspider.model.Company;
 import wuxian.me.lagouspider.model.Product;
+import wuxian.me.lagouspider.save.CompanySaver;
+import wuxian.me.lagouspider.save.ICompanySaver;
 import wuxian.me.lagouspider.util.Helper;
 
 import java.util.ArrayList;
@@ -27,57 +32,49 @@ import static wuxian.me.lagouspider.util.NodeLogUtil.*;
 /**
  * Created by wuxian on 30/3/2017.
  * <p>
- * 准备抓取的内容
- * 1 招聘职位
- * 2 简历及时处理率
- * 3 面试评价
- * 4 面试评分
- * 5 融资情况 --> 如果是有融资情况 爬取IT橙子
- * 6 产品列表
- * 7 公司地址列表 --> 多个地址存入多地址表
- * 8 公司描述
- * 9 公司web链接
- * <p>
- * Todo:数据存表
+ * Todo: 存储product,location
  */
 public class CompanySpider extends BaseLagouSpider {
     long company_id = -1;
 
-    private String webLink; //company的主页url
+    private String companyBussiness;  //和AreaPageSpider重复
     private String companyName;
+    private String companySize;         //和AreaPageSpider重复
+
+    private String webLink; //company的主页url
     private String logo;
-    private boolean lagouAuthen = false;  //是否是拉勾认证的
-    private String selfDescription;
-    private String companyBussiness;
-    private String process;
-    private String employeeNum;
-    String posionNum;
-    String resumeRate;
-    String interCommentNum;  //面试评价个数
+    private boolean lagouAuthentic = false;  //是否是拉勾认证的
+    private String description;
+
+    private String financeStage;  //A轮 B轮等信息
+    String positionNum;  //招聘岗位个数
+    String resumeRate;   //简历处理及时率
+    String interviewNum;  //面试评价个数
 
     String score;       //面试评价评分
     String accordSore;  //描述是否相符
-    String interviewerScore;
-    String environmentScore;
+    String interviewerScore; //面试官评分
+    String environmentScore; //环境评分
 
-    private List<Product> productList = new ArrayList<Product>();
-    private List<String> locationList = new ArrayList<String>();
+    private List<Product> productList = new ArrayList<Product>();  //这个存入product database
+    private List<String> locationList = new ArrayList<String>();  //如果是multi 存入locationDB
 
     private static final String REFERER = "https://www.lagou.com/zhaopin/Java/?labelWords=label";
 
-    public CompanySpider(long company_id) {
+    public CompanySpider(long company_id, String companyName) {
         super();
         this.company_id = company_id;
+        this.companyName = companyName;
     }
 
     private String getUrl(long companyId) {
         return Config.URL_LAGOU_COMPANY_MAIN + companyId + ".html";
     }
 
-    boolean parseBaseInfo(Parser parser) throws ParserException {
+    boolean parseBaseInfo() throws ParserException {
 
         HasAttributeFilter f1 = new HasAttributeFilter("class", "top_info_wrap");
-        NodeList list = trees.extractAllNodesThatMatch(f1, true);//= parser.extractAllNodesThatMatch(f1);
+        NodeList list = trees.extractAllNodesThatMatch(f1, true);
         if (list == null) {
             return true;
         }
@@ -88,7 +85,7 @@ public class CompanySpider extends BaseLagouSpider {
             Node node = list.elementAt(i);
             if (node instanceof ImageTag) {
                 logo = ((ImageTag) node).getImageURL();
-                logger().info("Logo: " + logo);
+                //logger().info("Logo: " + logo);
                 break;
             }
         }
@@ -96,17 +93,18 @@ public class CompanySpider extends BaseLagouSpider {
         HasAttributeFilter f2 = new HasAttributeFilter("class", "identification"); //拉勾认证
         NodeList ret = list.extractAllNodesThatMatch(f2, true);
         if (ret != null && ret.size() != 0) {
-            lagouAuthen = true;
+            lagouAuthentic = true;
         }
-        logger().info("Authenticate by Lagou: " + lagouAuthen);
+        //logger().info("Authenticate by Lagou: " + lagouAuthentic);
 
         HasAttributeFilter f12 = new HasAttributeFilter("class", "hovertips");
         ret = list.extractAllNodesThatMatch(f12, true);
-        logger().info("BEGIN to parse company name");
+        //logger().info("BEGIN to parse company name");
         if (ret != null && ret.size() != 0) {
-            companyName = ((LinkTag) ret.elementAt(0)).getAttribute("title").trim();
+            //companyName = ((LinkTag) ret.elementAt(0)).getAttribute("title").trim();
+            //logger().info("companyName: " + companyName);
+
             webLink = ((LinkTag) ret.elementAt(0)).getLink().trim();
-            logger().info("companyName: " + companyName);
 
             if (Config.ENABLE_SPIDER_ITCHENGZI_SEARCH) {
                 IJob iJob = JobProvider.getJob();
@@ -120,8 +118,8 @@ public class CompanySpider extends BaseLagouSpider {
         ret = list.extractAllNodesThatMatch(f3, true);
         if (ret != null && ret.size() != 0) {
             printChildrenOfNode(ret.elementAt(0));
-            selfDescription = ret.elementAt(0).toPlainTextString().trim();
-            logger().info("selfDescripition: " + selfDescription);
+            description = ret.elementAt(0).toPlainTextString().trim();
+            //logger().info("selfDescripition: " + description);
         }
 
         HasAttributeFilter f4 = new HasAttributeFilter("class", "company_data");
@@ -149,14 +147,14 @@ public class CompanySpider extends BaseLagouSpider {
                             Node pre = real.getPreviousSibling();
                             if (pre != null && pre instanceof TextNode) {
                                 if (i == 0) {
-                                    posionNum = pre.getText().trim();
-                                    logger().info("招聘职位: " + posionNum);
+                                    positionNum = pre.getText().trim();
+                                    //logger().info("招聘职位: " + positionNum);
                                 } else if (i == 1) {
                                     resumeRate = pre.getText().trim();
-                                    logger().info("简历处理率: " + resumeRate);
+                                    //logger().info("简历处理率: " + resumeRate);
                                 } else if (i == 3) {
-                                    interCommentNum = pre.getText().trim();
-                                    logger().info("面试评价: " + interCommentNum);
+                                    interviewNum = pre.getText().trim();
+                                    //logger().info("面试评价: " + interviewNum);
                                 }
                                 break;
                             }
@@ -173,9 +171,10 @@ public class CompanySpider extends BaseLagouSpider {
             Node child = list.elementAt(0);  //item_container
 
             if (child.getChildren() != null && child.getChildren().size() != 0) {
+
+                /*  //和@AreaPageSpider重复
                 HasAttributeFilter f6 = new HasAttributeFilter("class", "type");  //type
                 list = child.getChildren().extractAllNodesThatMatch(f6, true);
-
                 if (list != null && list.size() != 0) {
                     Node type = list.elementAt(0);
                     type = type.getNextSibling();
@@ -188,8 +187,9 @@ public class CompanySpider extends BaseLagouSpider {
                         type = type.getNextSibling();
                     }
                 }
+                */
 
-                HasAttributeFilter f7 = new HasAttributeFilter("class", "process");  //type
+                HasAttributeFilter f7 = new HasAttributeFilter("class", "process");
                 list = child.getChildren().extractAllNodesThatMatch(f7, true);
 
                 if (list != null && list.size() != 0) {
@@ -197,29 +197,30 @@ public class CompanySpider extends BaseLagouSpider {
                     type = type.getNextSibling();
                     while (type != null) {
                         if (type instanceof Span) {
-                            process = ((Span) type).getStringText().trim();
-                            logger().info("process: " + process);
+                            financeStage = ((Span) type).getStringText().trim();
+                            //logger().info("financeStage: " + financeStage);
                             break;
                         }
                         type = type.getNextSibling();
                     }
                 }
 
-                HasAttributeFilter f8 = new HasAttributeFilter("class", "number");  //type
+                /*  //和@AreaPageSpider重复
+                HasAttributeFilter f8 = new HasAttributeFilter("class", "number");
                 list = child.getChildren().extractAllNodesThatMatch(f8, true);
-
                 if (list != null && list.size() != 0) {
                     Node type = list.elementAt(0);
                     type = type.getNextSibling();
                     while (type != null) {
                         if (type instanceof Span) {
-                            employeeNum = ((Span) type).getStringText().trim();
-                            logger().info("employeeNum: " + employeeNum);
+                            companySize = ((Span) type).getStringText().trim();
+                            logger().info("companySize: " + companySize);
                             break;
                         }
                         type = type.getNextSibling();
                     }
                 }
+                */
             }
         }
 
@@ -235,16 +236,16 @@ public class CompanySpider extends BaseLagouSpider {
                     for (int i = 0; i < list.size(); i++) {
                         if (i == 0) {
                             score = ((Span) list.elementAt(i)).getStringText().trim();  //面试得分
-                            logger().info("面试得分: " + score);
+                            //logger().info("面试得分: " + score);
                         } else if (i == 1) {
                             accordSore = ((Span) list.elementAt(i)).getStringText().trim();
-                            logger().info("面试符合: " + accordSore);
+                            //logger().info("面试符合: " + accordSore);
                         } else if (i == 2) {
                             interviewerScore = ((Span) list.elementAt(i)).getStringText().trim();
-                            logger().info("面试官评分: " + interviewerScore);
+                            //logger().info("面试官评分: " + interviewerScore);
                         } else if (i == 3) {
                             environmentScore = ((Span) list.elementAt(i)).getStringText().trim();
-                            logger().info("环境得分: " + environmentScore);
+                            //logger().info("环境得分: " + environmentScore);
                         }
                     }
                 }
@@ -266,7 +267,7 @@ public class CompanySpider extends BaseLagouSpider {
             //printNodeOnly(child);
             if ((child instanceof ImageTag)) {
                 product.imgUrl = ((ImageTag) child).getImageURL(); //产品logo --> success
-                logger().info("Product logo: " + product.imgUrl);
+                //logger().info("Product logo: " + product.imgUrl);
                 break;
             }
         }
@@ -285,8 +286,8 @@ public class CompanySpider extends BaseLagouSpider {
                     product.url = ((LinkTag) child).getLink();
                     product.name = child.toPlainTextString().trim();
 
-                    logger().info("product url: " + product.url);
-                    logger().info("product name: " + product.name);
+                    //logger().info("product url: " + product.url);
+                    //logger().info("product name: " + product.name);
                     break;
                 }
             }
@@ -303,9 +304,8 @@ public class CompanySpider extends BaseLagouSpider {
                     Node child2 = ret.elementAt(i);
                     if (child2 instanceof Bullet) {
                         String productType = child2.toPlainTextString().trim();
-                        product.addLabel(productType); //Todo: 优化
-
-                        logger().info("product type: " + productType);
+                        product.addLabel(productType);
+                        //logger().info("product type: " + productType);
                     }
                 }
             }
@@ -318,18 +318,18 @@ public class CompanySpider extends BaseLagouSpider {
             child = ret.elementAt(0);
             product.description = child.toPlainTextString().trim();
 
-            logger().info("product description: " + product.description);
+            //logger().info("product description: " + product.description);
         }
 
         productList.add(product);
     }
 
-    private void parseProductList(Parser parser) throws ParserException {
-        logger().info("Begin to parse ProductList");
+    private void parseProductList() throws ParserException {
+        //logger().info("Begin to parse ProductList");
         HasAttributeFilter f1 = new HasAttributeFilter("id", "company_products");
         NodeList list = trees.extractAllNodesThatMatch(f1, true);//parser.extractAllNodesThatMatch(f1);
         if (list == null || list.size() == 0) {
-            logger().info("No company_products found");
+            //logger().info("No company_products found");
             return;
             //throw new ParserException("No Company_products found");
         }
@@ -343,26 +343,29 @@ public class CompanySpider extends BaseLagouSpider {
             ret = product.getChildren();
             if (ret != null && ret.size() != 0) {
                 for (int i = 0; i < ret.size(); i++) {
-                    logger().info("Begin to parse Product: " + i);
+                    //logger().info("Begin to parse Product: " + i);
                     parseProduct(ret.elementAt(i)); //解析每一个item 存入到类变量
                 }
             }
         } else {
-            logger().info("No item_content node found");
+            //logger().info("No item_content node found");
         }
 
     }
 
-    private void parseLocation(Parser parser) throws ParserException {
+    private void parseLocation() throws ParserException, MaybeBlockedException {
         HasAttributeFilter f1 = new HasAttributeFilter("class", "mlist_li_desc");
         NodeList list = trees.extractAllNodesThatMatch(f1, true);
 
-        logger().info("BEGIN to parse location");
+        //logger().info("BEGIN to parse location");
         if (list != null && list.size() != 0) {
             for (int i = 0; i < list.size(); i++) {
                 //printChildrenOfNode(list.elementAt(i));  //<p />
                 locationList.add(list.elementAt(i).toPlainTextString().trim());
             }
+            return;
+        } else {
+            throw new MaybeBlockedException();
         }
     }
 
@@ -375,19 +378,96 @@ public class CompanySpider extends BaseLagouSpider {
             parser.setEncoding("utf-8");
 
             trees = parser.parse(null);
-            parseBaseInfo(parser);
+            parseBaseInfo();
 
-            parser = new Parser(data);  //必须重新赋值一下
-            parseProductList(parser);
+            //parser = new Parser(data);  //必须重新赋值一下
+            parseProductList();
 
-            parser = new Parser(data);
-            parseLocation(parser);
+            parseLocation();
+
+            Company company = buildCompany();
+            if (Config.ENABLE_SAVE_COMPANY_DB) {
+                saveCompany(company);
+            } else {
+                logger().info("Company main: " + company.toString());
+            }
+
+            if (Config.ENABLE_SAVE_PRODUCT_DB) {
+                saveProduct();
+            } else {
+                StringBuilder str = new StringBuilder("");
+                for (Product product : productList) {
+                    str.append(product.toString() + ", ");
+                }
+                logger().info("ProductList: " + str.toString());
+            }
+
+            if (Config.ENABLE_SAVE_LOCATION_DB) {
+                saveLocation();
+            } else {
+                StringBuilder str = new StringBuilder("");
+                for (String location : locationList) {
+                    str.append(location.toString() + ", ");
+                }
+                logger().info("LocationList: ");
+            }
+
+            if (Config.ENABLE_SPIDER_ITCHENGZI_SEARCH) {
+                beginITJuziSearchSpider();
+            }
 
         } catch (ParserException e) {
             return BaseSpider.RET_PARSING_ERR;
+        } catch (MaybeBlockedException e) {
+            return BaseSpider.RET_MAYBE_BLOCK;
         }
 
         return BaseSpider.RET_SUCCESS;
+    }
+
+    //Todo:判断是A轮以上 那么进行IT桔子搜索
+    private void beginITJuziSearchSpider() {
+        ;
+    }
+
+    //Todo
+    private void saveLocation() {
+        ;
+    }
+
+    //Todo
+    private void saveProduct() {
+        ;
+    }
+
+    private Company buildCompany() {
+        Company company = new Company(company_id);
+
+        company.webLink = webLink;
+        company.logo = logo;
+        company.lagouAuthentic = lagouAuthentic;
+        company.description = description;
+        company.financeStage = financeStage;
+        company.positionNum = positionNum;
+        company.resumeRate = resumeRate;
+        company.interviewNum = interviewNum;
+        company.score = score;
+        company.accordSore = accordSore;
+        company.interviewerScore = interviewerScore;
+        company.environmentScore = environmentScore;
+
+        if (locationList.size() == 0) {
+            company.detail_location = ICompanySaver.LOCATION_NONE;
+        } else if (locationList.size() > 1) {
+            company.detail_location = ICompanySaver.LOCATION_MULTY;
+        } else {
+            company.detail_location = locationList.get(0);
+        }
+        return company;
+    }
+
+    private void saveCompany(@NotNull Company company) {
+        CompanySaver.getInstance().saveCompany(company);
     }
 
     protected Request buildRequest() {

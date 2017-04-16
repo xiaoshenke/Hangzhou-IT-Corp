@@ -55,19 +55,25 @@ public class AreaPageSpider extends BaseLagouSpider {
         Company company = new Company(id);
 
         if (!object.get("companyFullName").isJsonNull()) {
-            company.company_fullname = object.get("companyFullName").getAsString();
+            company.company_fullname = object.get("companyFullName").getAsString().trim();
         } else {
             throw new MaybeBlockedException();
         }
+        /*
         if (!object.get("financeStage").isJsonNull()) {
-            company.financeStage = object.get("financeStage").getAsString();
+            company.financeStage = object.get("financeStage").getAsString().trim();
         } else {
             throw new MaybeBlockedException();
         }
+        */
         if (!object.get("industryField").isJsonNull()) {
-            company.industryField = object.get("industryField").getAsString();
+            company.industryField = object.get("industryField").getAsString().trim();
         } else {
             throw new MaybeBlockedException();
+        }
+
+        if (!object.get("companySize").isJsonNull()) {
+            company.company_size = object.get("companySize").getAsString().trim();
         }
         company.area_id = area.area_id;
         return company;
@@ -175,7 +181,7 @@ public class AreaPageSpider extends BaseLagouSpider {
         if (Config.ENABLE_SPIDER_COMPANY_MAIN) {
             for (Company company : companyList) {
                 IJob job = JobProvider.getJob();
-                job.setRealRunnable(new CompanySpider(company.company_id));
+                job.setRealRunnable(new CompanySpider(company.company_id, company.company_fullname));
                 JobQueue.getInstance().putJob(job);
             }
         }
