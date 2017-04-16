@@ -27,7 +27,7 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 public abstract class BaseLagouSpider extends BaseSpider {
 
     @Override
-    protected SpiderCallback getCallback() {
+    protected final SpiderCallback getCallback() {
         return new LagouSpiderCallback(this);
     }
 

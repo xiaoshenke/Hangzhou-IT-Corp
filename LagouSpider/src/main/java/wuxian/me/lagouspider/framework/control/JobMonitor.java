@@ -2,6 +2,7 @@ package wuxian.me.lagouspider.framework.control;
 
 import com.sun.istack.internal.NotNull;
 import wuxian.me.lagouspider.Config;
+import wuxian.me.lagouspider.framework.BaseSpider;
 import wuxian.me.lagouspider.framework.job.IJob;
 
 import java.util.Map;
@@ -9,7 +10,14 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by wuxian on 7/4/2017.
- * 记录所有状态的job --> 防止一个job被多次重复
+ *
+ * 保存了所有Job的状态 --> 可以看作是一张监视表
+ *
+ * 现在的做法是这样的
+ * 1 放到@JobQueue队列里的时候 无需调用JobMonitor.put
+ * 2 只有Job Success,Fail的时候应该更新JobMonitor里的job状态 --> 这个设计是不是有点不大合理...
+ * 3 由JobMonitor来判断"这个job"是不是需要重试,由FailureManager来判断整个爬虫是不是被发现并且被屏蔽了
+ *
  */
 public class JobMonitor {
 
@@ -30,38 +38,41 @@ public class JobMonitor {
         return instance;
     }
 
+    public void register(@NotNull BaseSpider spider) {
+        failureMonitor.register(spider);
+    }
+
 
     public void success(Runnable runnable) {
         IJob job = getJob(runnable);
         if (job != null) {
             job.setCurrentState(IJob.STATE_SUCCESS);
+            putJob(job, IJob.STATE_SUCCESS);
 
             failureMonitor.success(job);
-            putJob(job, IJob.STATE_SUCCESS);
         }
     }
 
+    //Fail并且判断是否应该进行job重试 若是则放入重试队列
     public void fail(@NotNull Runnable runnable, @NotNull Fail fail, boolean retry) {
         IJob job = getJob(runnable);
         if (job != null) {
-            job.fail(fail);
             job.setCurrentState(IJob.STATE_FAIL);
+            job.fail(fail);
+            putJob(job, IJob.STATE_FAIL);  //更新状态
 
             failureMonitor.fail(job, fail);
-            JobMonitor.getInstance().putJob(job, IJob.STATE_FAIL);  //本次失败了
 
-            if (job.getFailTimes() >= Config.MAX_FAIL_TIME) {
+            if (job.getFailTimes() >= Config.SINGLEJOB_MAX_FAIL_TIME) { //是否进行重试
                 return;
             }
-
             if (!Config.ENABLE_RETRY_SPIDER || !retry) {
                 return;
             }
 
-            IJob next = JobProvider.getNextJob(job);              //重新制定爬虫策略 放入jobQueue
+            IJob next = JobProvider.getNextJob(job);  //重新制定爬虫策略 放入jobQueue
             next.setCurrentState(IJob.STATE_RETRY);
-            JobQueue.getInstance().putJob(next);
-            putJob(next, IJob.STATE_RETRY);
+            JobQueue.getInstance().putJob(next, IJob.STATE_RETRY);
         }
     }
 

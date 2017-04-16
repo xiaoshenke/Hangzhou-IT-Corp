@@ -9,6 +9,10 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
 /**
  * Created by wuxian on 1/4/2017.
+ *
+ * 任务队列:这个任务队列是要进行的任务队列,任务一旦开始后就会被踢出并被保存在@FailureManager.todoSpiderList中
+ *
+ * 所有任务的状态会被更新到@JobMonitor
  */
 public class JobQueue {
 
@@ -23,9 +27,16 @@ public class JobQueue {
     private JobQueue() {
     }
 
-    public boolean putJob(IJob job) {
+    public boolean putJob(IJob job, int state) {
         logger().debug("putJob: " + job.toString());
+
+        JobMonitor.getInstance().putJob(job, state);
+
         return queue.offer(job);
+    }
+
+    public boolean putJob(IJob job) {
+        return putJob(job, IJob.STATE_INIT);
     }
 
     public IJob getJob() {
@@ -36,14 +47,6 @@ public class JobQueue {
             logger().debug("getJob: " + job.toString());
         }
         return job;
-    }
-
-    public boolean contains(IJob job) {
-        return queue.contains(job);
-    }
-
-    public void removeAllJob() {
-        queue.clear();
     }
 
     public boolean isEmpty() {

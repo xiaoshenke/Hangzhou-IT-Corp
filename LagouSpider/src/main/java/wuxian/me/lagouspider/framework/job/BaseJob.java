@@ -37,6 +37,10 @@ public abstract class BaseJob implements IJob {
 
     public final void setCurrentState(int state) {
         this.state = state;
+
+        if (state == STATE_INIT) { //初始化一下
+            fails.clear();
+        }
     }
 
     protected Runnable realJob;

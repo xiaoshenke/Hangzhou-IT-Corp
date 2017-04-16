@@ -1,19 +1,25 @@
 package wuxian.me.lagouspider.core;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 import okhttp3.*;
+import org.htmlparser.util.ParserException;
 import wuxian.me.lagouspider.Config;
 import wuxian.me.lagouspider.framework.BaseSpider;
+import wuxian.me.lagouspider.framework.control.JobProvider;
+import wuxian.me.lagouspider.framework.control.JobQueue;
+import wuxian.me.lagouspider.framework.control.MaybeBlockedException;
+import wuxian.me.lagouspider.framework.job.IJob;
 import wuxian.me.lagouspider.model.Area;
 import wuxian.me.lagouspider.model.Company;
 import wuxian.me.lagouspider.save.CompanySaver;
 import wuxian.me.lagouspider.util.Helper;
-import wuxian.me.lagouspider.framework.OkhttpProvider;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static wuxian.me.lagouspider.Config.URL_LAGOU_JAVA;
 import static wuxian.me.lagouspider.Config.URL_LAGOU_POSITION_JSON;
@@ -21,6 +27,9 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
 /**
  * Created by wuxian on 7/4/2017.
+ *
+ * 拉勾的某个区域下的公司不止一页 这个就是第x页的数据
+ *
  */
 public class AreaPageSpider extends BaseLagouSpider {
 
@@ -34,49 +43,68 @@ public class AreaPageSpider extends BaseLagouSpider {
     }
 
     private void saveCompany(@Nullable Company company) {
-        if (!Config.ENABLE_SAVE_COMPANY_DB) {
-            logger().debug("SaveCompany " + company.toString());
-            return;
-        }
         if (company != null) {
             CompanySaver.getInstance().saveCompany(company);
         }
     }
 
-    private Company getCompany(@NotNull JsonObject object) {
+    private List<Company> companyList = new ArrayList<Company>();
+
+    private Company parseCompany(@NotNull JsonObject object) throws MaybeBlockedException {
         long id = object.get("companyId").getAsLong();
         Company company = new Company(id);
 
         if (!object.get("companyFullName").isJsonNull()) {
             company.company_fullname = object.get("companyFullName").getAsString();
+        } else {
+            throw new MaybeBlockedException();
         }
         if (!object.get("financeStage").isJsonNull()) {
             company.financeStage = object.get("financeStage").getAsString();
+        } else {
+            throw new MaybeBlockedException();
         }
         if (!object.get("industryField").isJsonNull()) {
             company.industryField = object.get("industryField").getAsString();
+        } else {
+            throw new MaybeBlockedException();
         }
         company.area_id = area.area_id;
         return company;
     }
 
-    private void parseResult(@NotNull String data) {
-        try {
-            JsonParser parser = new JsonParser();
-            JsonObject obj = (JsonObject) parser.parse(data);
-            obj = obj.getAsJsonObject("content");
-            obj = obj.getAsJsonObject("positionResult");
+    private void parseCompanylist(@NotNull String data) throws ParserException, MaybeBlockedException {
+        JsonParser parser = new JsonParser();
+        JsonObject obj = (JsonObject) parser.parse(data);
 
-            JsonArray array = obj.getAsJsonArray("result");
-            for (int i = 0; i < array.size(); i++) {
-                saveCompany(getCompany((JsonObject) array.get(i)));
+        if (obj.get("content").isJsonNull()) {
+            throw new MaybeBlockedException();
+        }
+        obj = obj.getAsJsonObject("content");
+
+        if (obj.get("positionResult").isJsonNull()) {
+            throw new MaybeBlockedException();
+        }
+        obj = obj.getAsJsonObject("positionResult");
+
+        if (obj.get("result").isJsonNull()) {
+            throw new MaybeBlockedException();
+        }
+        JsonArray array = obj.getAsJsonArray("result");
+
+        int mayBlockNum = 0;
+        for (int i = 0; i < array.size(); i++) {
+            try {
+                companyList.add(parseCompany((JsonObject) array.get(i)));
+            } catch (MaybeBlockedException e) {
+                mayBlockNum++;
             }
-
-        } catch (JsonIOException e) {
-            //Todo:
-            //logger().error("Parse json fail, " + name());
         }
 
+        //如果失败的次数和array的size一样 认为可能被屏蔽
+        if (array.size() != 0 && mayBlockNum == array.size()) {
+            throw new MaybeBlockedException();
+        }
     }
 
     @Override
@@ -121,7 +149,36 @@ public class AreaPageSpider extends BaseLagouSpider {
 
     public int parseRealData(String data) {
         String body = data;
-        parseResult(body);
+
+        try {
+            parseCompanylist(body);
+        } catch (ParserException e) {
+
+            return BaseSpider.RET_PARSING_ERR;
+        } catch (MaybeBlockedException e) {
+
+            return BaseSpider.RET_MAYBE_BLOCK;
+        }
+
+        if (Config.ENABLE_SAVE_COMPANY_DB) {
+            for (Company company : companyList) {
+                saveCompany(company);
+            }
+        }
+
+        if (Config.ENABLE_PRINT_PARSED_COMPANY) {
+            for (Company company : companyList) {
+                logger().info("SaveCompany: " + company.toString());
+            }
+        }
+
+        if (Config.ENABLE_SPIDER_COMPANY_MAIN) {
+            for (Company company : companyList) {
+                IJob job = JobProvider.getJob();
+                job.setRealRunnable(new CompanySpider(company.company_id));
+                JobQueue.getInstance().putJob(job);
+            }
+        }
 
         return BaseSpider.RET_SUCCESS;
     }

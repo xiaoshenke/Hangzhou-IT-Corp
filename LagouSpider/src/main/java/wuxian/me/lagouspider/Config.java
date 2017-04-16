@@ -9,9 +9,13 @@ public class Config {
 
     public static int SOCKET_READ_TIMEOUT = 10 * 1000; //10s
 
+    public static boolean ENABLE_SPIDER_AREAPAGE = true;
+
+    public static boolean ENABLE_PRINT_PARSED_COMPANY = true;
+
     public static boolean ENABLE_SAVE_COMPANY_DB = false;
 
-    public static boolean ENABLE_SPIDER_COMPANY_MAIN = true;
+    public static boolean ENABLE_SPIDER_COMPANY_MAIN = false;
 
     public static boolean ENABLE_SPIDER_ITCHENGZI_SEARCH = false;
 
@@ -19,7 +23,7 @@ public class Config {
 
     public static boolean ENABLE_SWITCH_IPPROXY = false;
 
-    public static int MAX_FAIL_TIME = 4;
+    public static int SINGLEJOB_MAX_FAIL_TIME = 4;  //单个job的最大失败次数
 
     public static final String URL_LAGOU_COMPANY_MAIN = "https://www.lagou.com/gongsi/";
 

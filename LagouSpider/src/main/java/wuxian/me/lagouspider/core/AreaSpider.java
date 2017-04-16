@@ -8,6 +8,7 @@ import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.tags.Span;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
+import wuxian.me.lagouspider.Config;
 import wuxian.me.lagouspider.framework.BaseSpider;
 import wuxian.me.lagouspider.framework.control.JobMonitor;
 import wuxian.me.lagouspider.framework.job.IJob;
@@ -15,7 +16,7 @@ import wuxian.me.lagouspider.framework.control.JobProvider;
 import wuxian.me.lagouspider.framework.control.JobQueue;
 import wuxian.me.lagouspider.model.Area;
 import wuxian.me.lagouspider.util.Helper;
-import wuxian.me.lagouspider.framework.OkhttpProvider;
+
 import static wuxian.me.lagouspider.Config.URL_LAGOU_JAVA;
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
@@ -32,19 +33,17 @@ public class AreaSpider extends BaseLagouSpider {
         this.area = area;
     }
 
-    public void beginSpider() {
+    public void beginSpiderAreaPage() {
+
         for (int i = 1; i < pageNum; i++) {
             IJob job = JobProvider.getJob();
             job.setRealRunnable(new AreaPageSpider(area, i));
             JobQueue.getInstance().putJob(job);
-
-            JobMonitor.getInstance().putJob(job, IJob.STATE_INIT);
         }
     }
 
     /**
-     * @return
-     * -1:parsing error
+     * @return -1:parsing error
      * 0: 没有内容 或者已经被block
      */
     private int parseData(String data) {
@@ -105,7 +104,11 @@ public class AreaSpider extends BaseLagouSpider {
                 return BaseSpider.RET_MAYBE_BLOCK;
             } else {
                 logger().debug("Parsed num: " + pageNum + " " + simpleName());
-                beginSpider();
+
+                if (Config.ENABLE_SPIDER_AREAPAGE) {
+                    beginSpiderAreaPage();
+                }
+
                 return BaseSpider.RET_SUCCESS;
             }
         }

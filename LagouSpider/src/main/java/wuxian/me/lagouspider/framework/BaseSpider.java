@@ -19,7 +19,6 @@ public abstract class BaseSpider implements Runnable {
 
     //parsing error --> 指new Parser(html) 是不是因为parser能力太弱 这个网页有些tag不支持
     //这种情况认为任务失败了(FullLog处理),但不进行重试
-    //Fixme:正确处理？
     public static final int RET_PARSING_ERR = 1;
 
     public static final int RET_MAYBE_BLOCK = 2; //可能被block
@@ -38,11 +37,7 @@ public abstract class BaseSpider implements Runnable {
     protected abstract SpiderCallback getCallback();
 
     public final void run() {
-
         Request request = getRequest();
-        if (request == null) {  //Should NEVER happen!
-            return;
-        }
         OkhttpProvider.getClient().newCall(request).enqueue(callback);
     }
 
@@ -54,6 +49,7 @@ public abstract class BaseSpider implements Runnable {
         return request;
     }
 
+    @NotNull
     protected abstract Request buildRequest();
 
     /**

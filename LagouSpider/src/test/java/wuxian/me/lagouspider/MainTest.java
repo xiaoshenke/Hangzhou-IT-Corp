@@ -89,8 +89,6 @@ public class MainTest {
             IJob job = JobProvider.getFixedDelayJob(0);
             job.setRealRunnable(new AreaSpider(area));
             JobQueue.getInstance().putJob(job);
-
-            JobMonitor.getInstance().putJob(job, IJob.STATE_INIT);
             //i++;
         }
 
@@ -114,8 +112,6 @@ public class MainTest {
             IJob job = JobProvider.getFixedDelayJob(0);
             job.setRealRunnable(new AreaSpider(area));
             JobQueue.getInstance().putJob(job);
-
-            JobMonitor.getInstance().putJob(job, IJob.STATE_INIT);
         }
 
         WorkThread thread = WorkThread.getInstance();

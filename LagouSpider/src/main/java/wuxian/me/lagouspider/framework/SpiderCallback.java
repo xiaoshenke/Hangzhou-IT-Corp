@@ -5,7 +5,6 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 import wuxian.me.lagouspider.framework.control.Fail;
-import wuxian.me.lagouspider.framework.control.FailureManager;
 import wuxian.me.lagouspider.framework.control.JobMonitor;
 
 import java.io.IOException;
@@ -38,7 +37,7 @@ public abstract class SpiderCallback implements Callback {
 
     public SpiderCallback(@NotNull BaseSpider spider) {
         this.spider = spider;
-        FailureManager.register(spider);
+        JobMonitor.getInstance().register(spider);
     }
 
 

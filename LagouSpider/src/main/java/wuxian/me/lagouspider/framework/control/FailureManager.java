@@ -27,6 +27,8 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 /**
  * Created by wuxian on 9/4/2017.
  * 根据失败的情况判断是否ip被屏蔽了
+ *
+ * 只暴露给 @JobMonitor
  */
 public class FailureManager {
 
@@ -89,9 +91,9 @@ public class FailureManager {
     private AtomicLong currentMaybeBlockTime = new AtomicLong(0);
 
     //记录单次(单个ip)的spiderList
-    private static List<BaseSpider> todoSpiderList = Collections.synchronizedList(new ArrayList<BaseSpider>());
+    private List<BaseSpider> todoSpiderList = Collections.synchronizedList(new ArrayList<BaseSpider>());
 
-    public static void register(@NotNull BaseSpider spider) {
+    public void register(@NotNull BaseSpider spider) {
         todoSpiderList.add(spider);
     }
 
@@ -180,8 +182,11 @@ public class FailureManager {
 
         for (BaseSpider spider : todoSpiderList) {
             IJob job = JobMonitor.getInstance().getJob(spider);
-            JobQueue.getInstance().putJob(job);
+            job.setCurrentState(IJob.STATE_INIT);
+
+            JobQueue.getInstance().putJob(job, IJob.STATE_INIT); //会同步跟新JobMonitor的状态
         }
+
         todoSpiderList.clear();
         WorkThread.getInstance().resumeNow();
         isSwitchingIP.set(false);
