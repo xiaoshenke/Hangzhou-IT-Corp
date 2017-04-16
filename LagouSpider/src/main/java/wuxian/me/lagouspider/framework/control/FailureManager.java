@@ -30,7 +30,7 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
  */
 public class FailureManager {
 
-    private FutureTask<String> confirmSwitchIPFuture;
+    private FutureTask<String> switchIPFuture;
 
     private long startTime = System.currentTimeMillis();
     private FailureManager() {
@@ -52,7 +52,7 @@ public class FailureManager {
                 }
             }
         };
-        confirmSwitchIPFuture = new FutureTask<String>(callable);
+        switchIPFuture = new FutureTask<String>(callable);
     }
 
     private static FailureManager instance;
@@ -64,7 +64,7 @@ public class FailureManager {
         return instance;
     }
 
-    private AtomicLong current404Time = new AtomicLong(0);
+    AtomicLong current404Time = new AtomicLong(0);
     AtomicInteger successNum = new AtomicInteger(0);
     AtomicInteger failNum = new AtomicInteger(0);
 
@@ -79,6 +79,7 @@ public class FailureManager {
 
     private AtomicInteger fail404Num = new AtomicInteger(0);
     private AtomicLong last404Time = new AtomicLong(0);
+
     private AtomicInteger failNetErrNum = new AtomicInteger(0);
     private AtomicLong lastNetErrTime = new AtomicLong(0);
     private AtomicLong currentNetErrTime = new AtomicLong(0);
@@ -95,13 +96,12 @@ public class FailureManager {
     }
 
 
+    //Todo: 不同的网站的判定被判定被屏蔽的策略应该是不一样的
     public void fail(@NotNull IJob job, @NotNull Fail fail) {
         if (isSwitchingIP.get()) {  //失败的延迟任务还是会被dispatch到FailMonitor,这里直接丢弃
             return;
         }
-        if (Config.IS_TEST && failNum.get() >= 10) {  //为了测试 先这么搞
-            return;
-        }
+
         if (todoSpiderList.contains(job)) {
             todoSpiderList.remove(job);
         }
@@ -112,19 +112,19 @@ public class FailureManager {
 
         if (fail.is404()) {
             fail404Num.incrementAndGet();
-
             last404Time.set(current404Time.get());
             current404Time.set(fail.millis);
+
         } else if (fail.isNetworkErr()) {
             failNetErrNum.incrementAndGet();
-
             lastNetErrTime.set(currentNetErrTime.get());
             currentNetErrTime.set(lastNetErrTime.get());
+
         } else if (fail.isMaybeBlock()) {
             failMaybeBlockNum.incrementAndGet();
-
             lastMaybeBlockTime.set(currentMaybeBlockTime.get());
             currentMaybeBlockTime.set(lastMaybeBlockTime.get());
+
         }
 
         if (isBlocked(fail)) {
@@ -132,9 +132,7 @@ public class FailureManager {
                     " jobs, we have run " + (System.currentTimeMillis() - startTime) / 1000 + " seconds");
             if (Config.ENABLE_SWITCH_IPPROXY) {
                 doSwitchIp();
-            }
-
-            if (Config.IS_TEST) {         //被block后就停止了
+            } else {        //被block后就停止了
                 isSwitchingIP.set(true);
                 OkhttpProvider.getClient().dispatcher().cancelAll();
                 WorkThread.getInstance().pauseWhenSwitchIP();
@@ -195,10 +193,10 @@ public class FailureManager {
     }
 
     private boolean ensureIpSwitched(final IPProxyTool.Proxy proxy) {
-        new Thread(confirmSwitchIPFuture).start();
+        new Thread(switchIPFuture).start();
         try {
-            return confirmSwitchIPFuture.get() == null ?
-                    false : confirmSwitchIPFuture.get().contains(proxy.ip);
+            return switchIPFuture.get() == null ?
+                    false : switchIPFuture.get().contains(proxy.ip);
         } catch (InterruptedException e1) {
             return false;
         } catch (ExecutionException e) {

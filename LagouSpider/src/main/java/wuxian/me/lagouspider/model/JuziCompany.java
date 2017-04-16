@@ -5,7 +5,7 @@ package wuxian.me.lagouspider.model;
  * <p>
  * Todo: IT橙子拉到的数据
  */
-public class CzCompany {
+public class JuziCompany {
 
     public long companyId;
 

@@ -16,7 +16,7 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
  * Created by wuxian on 10/4/2017.
  * <p>
  */
-public final class SpiderCallback implements Callback {
+public abstract class SpiderCallback implements Callback {
     private BaseSpider spider;
 
     private Response response;
@@ -32,7 +32,7 @@ public final class SpiderCallback implements Callback {
     }
 
     //先由protect改成private
-    private final BaseSpider getSpider() {
+    protected final BaseSpider getSpider() {
         return spider;
     }
 
@@ -41,12 +41,6 @@ public final class SpiderCallback implements Callback {
         FailureManager.register(spider);
     }
 
-    //OkHttpClient的Callback不应该是跑在Main里面的么？
-    public final void onFailure(Call call, IOException e) {
-        logger().error("onFailure: spider: " + spider.name());
-        JobMonitor.getInstance().fail(spider, Fail.MAYBE_BLOCK);
-        spider.serializeFullLog();
-    }
 
     public final void onResponse(Call call, Response response) throws IOException {
         this.response = response;

@@ -2,27 +2,23 @@ package wuxian.me.lagouspider.framework.control;
 
 /**
  * Created by wuxian on 7/4/2017.
+ * <p>
+ * Todo:不同的网站的Fail应该有不同的判断
  */
 public class Fail {
 
-    private static final int FAIL_NETWORK_ERROR = -2;
-    private static final int FAIL_MAYBE_BLOCK = 102;
-    private static final int FAIL_BLOCK = 101;
+    public static final int FAIL_NETWORK_ERROR = -1;
 
-    private static final int FAIL_404 = 404;
+    public static final int FAIL_MAYBE_BLOCK = 102;
+
+    public static final int FAIL_BLOCK = 101;
+
+    public static final int FAIL_404 = 404;
 
     int httpCode;
     String message;
 
     long millis;
-
-    public boolean is404() {
-        return httpCode == FAIL_404;
-    }
-
-    public boolean isMaybeBlock() {
-        return httpCode == FAIL_MAYBE_BLOCK;
-    }
 
     public Fail(int code, String msg) {
         this.httpCode = code;
@@ -35,14 +31,16 @@ public class Fail {
         this(code, "");
     }
 
-    @Override
-    public String toString() {
-        if (httpCode == FAIL_NETWORK_ERROR) {
-            return "network error";
-        } else if (httpCode == FAIL_BLOCK) {
-            return "ip blocked by Lagou-Anti-Spider";
-        }
-        return "httpcode " + httpCode + " ,message " + message;
+    public int getHttpCode() {
+        return httpCode;
+    }
+
+    public boolean is404() {
+        return httpCode == FAIL_404;
+    }
+
+    public boolean isMaybeBlock() {
+        return httpCode == FAIL_MAYBE_BLOCK;
     }
 
     public boolean isNetworkErr() {
@@ -53,9 +51,24 @@ public class Fail {
         return httpCode == FAIL_BLOCK;
     }
 
+    @Override
+    public String toString() {
+        if (httpCode == FAIL_NETWORK_ERROR) {
+            return message;
+
+        } else if (httpCode == FAIL_BLOCK) {
+            return message;
+
+        } else if (httpCode == FAIL_MAYBE_BLOCK) {
+            return message;
+        }
+        return "Httpcode: " + httpCode + " ,Message: " + message;
+    }
+
+
     public final static Fail MAYBE_BLOCK = new Fail(FAIL_MAYBE_BLOCK, "Maybe Blocked");
 
     public final static Fail BLOCK = new Fail(FAIL_BLOCK, "Blocked");
 
-    public final static Fail NETWORK_ERR = new Fail(FAIL_NETWORK_ERROR, "NetworkErr");
+    public final static Fail NETWORK_ERR = new Fail(FAIL_NETWORK_ERROR, "Network Error");
 }

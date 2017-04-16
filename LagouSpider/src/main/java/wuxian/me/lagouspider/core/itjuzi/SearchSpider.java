@@ -1,8 +1,9 @@
-package wuxian.me.lagouspider.core.itchengzi;
+package wuxian.me.lagouspider.core.itjuzi;
 
 import com.sun.istack.internal.NotNull;
 import okhttp3.Request;
 import wuxian.me.lagouspider.framework.BaseSpider;
+import wuxian.me.lagouspider.framework.SpiderCallback;
 
 /**
  * Created by wuxian on 15/4/2017.
@@ -17,6 +18,10 @@ public class SearchSpider extends BaseSpider {
     public SearchSpider(@NotNull long companyId, @NotNull String companyName) {
         this.companyId = companyId;
         this.companyName = companyName;
+    }
+
+    protected SpiderCallback getCallback() {
+        return null;
     }
 
     protected Request buildRequest() {

@@ -1,12 +1,17 @@
-package wuxian.me.lagouspider.core.itchengzi;
+package wuxian.me.lagouspider.core.itjuzi;
 
 import okhttp3.Request;
 import wuxian.me.lagouspider.framework.BaseSpider;
+import wuxian.me.lagouspider.framework.SpiderCallback;
 
 /**
  * Created by wuxian on 15/4/2017.
  */
 public class CompanyResultSpider extends BaseSpider {
+    protected SpiderCallback getCallback() {
+        return null;
+    }
+
     protected Request buildRequest() {
         return null;
     }

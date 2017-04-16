@@ -6,6 +6,8 @@ import org.htmlparser.Parser;
 import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
+import wuxian.me.lagouspider.LagouSpiderCallback;
+import wuxian.me.lagouspider.framework.SpiderCallback;
 import wuxian.me.lagouspider.framework.control.Fail;
 import wuxian.me.lagouspider.framework.control.JobMonitor;
 import wuxian.me.lagouspider.framework.BaseSpider;
@@ -23,6 +25,11 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
  * 3 name(),fullName();
  */
 public abstract class BaseLagouSpider extends BaseSpider {
+
+    @Override
+    protected SpiderCallback getCallback() {
+        return new LagouSpiderCallback(this);
+    }
 
     //子类可以自己实现
     @Override

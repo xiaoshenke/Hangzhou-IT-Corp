@@ -3,7 +3,7 @@ package wuxian.me.lagouspider;
 import okhttp3.*;
 import org.junit.Test;
 import wuxian.me.lagouspider.core.CompanySpider;
-import wuxian.me.lagouspider.core.itchengzi.SearchSpider;
+import wuxian.me.lagouspider.core.itjuzi.SearchSpider;
 import wuxian.me.lagouspider.framework.control.JobMonitor;
 import wuxian.me.lagouspider.framework.control.JobProvider;
 import wuxian.me.lagouspider.framework.control.JobQueue;

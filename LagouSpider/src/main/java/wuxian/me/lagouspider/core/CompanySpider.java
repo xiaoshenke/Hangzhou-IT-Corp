@@ -10,7 +10,7 @@ import org.htmlparser.tags.*;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import wuxian.me.lagouspider.Config;
-import wuxian.me.lagouspider.core.itchengzi.SearchSpider;
+import wuxian.me.lagouspider.core.itjuzi.SearchSpider;
 import wuxian.me.lagouspider.framework.BaseSpider;
 import wuxian.me.lagouspider.framework.control.JobProvider;
 import wuxian.me.lagouspider.framework.control.JobQueue;
@@ -36,12 +36,14 @@ import static wuxian.me.lagouspider.util.NodeLogUtil.*;
  * 6 产品列表
  * 7 公司地址列表 --> 多个地址存入多地址表
  * 8 公司描述
+ * 9 公司web链接
  * <p>
  * Todo:数据存表
  */
 public class CompanySpider extends BaseLagouSpider {
     long company_id = -1;
 
+    private String webLink; //company的主页url
     private String companyName;
     private String logo;
     private boolean lagouAuthen = false;  //是否是拉勾认证的
@@ -102,7 +104,8 @@ public class CompanySpider extends BaseLagouSpider {
         ret = list.extractAllNodesThatMatch(f12, true);
         logger().info("BEGIN to parse company name");
         if (ret != null && ret.size() != 0) {
-            companyName = ((LinkTag) ret.elementAt(0)).getAttribute("title").trim(); //Todo:IT橙子
+            companyName = ((LinkTag) ret.elementAt(0)).getAttribute("title").trim();
+            webLink = ((LinkTag) ret.elementAt(0)).getLink().trim();
             logger().info("companyName: " + companyName);
 
             if (Config.ENABLE_SPIDER_ITCHENGZI_SEARCH) {
@@ -300,7 +303,7 @@ public class CompanySpider extends BaseLagouSpider {
                     Node child2 = ret.elementAt(i);
                     if (child2 instanceof Bullet) {
                         String productType = child2.toPlainTextString().trim();
-                        product.addType(productType); //Todo: 优化
+                        product.addLabel(productType); //Todo: 优化
 
                         logger().info("product type: " + productType);
                     }

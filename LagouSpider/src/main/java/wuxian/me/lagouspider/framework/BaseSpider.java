@@ -1,5 +1,6 @@
 package wuxian.me.lagouspider.framework;
 
+import com.sun.istack.internal.NotNull;
 import okhttp3.Request;
 import okhttp3.Response;
 import wuxian.me.lagouspider.util.Helper;
@@ -30,8 +31,11 @@ public abstract class BaseSpider implements Runnable {
     private Request request;
 
     public BaseSpider() {
-        callback = new SpiderCallback(this);
+        callback = getCallback();
     }
+
+    @NotNull
+    protected abstract SpiderCallback getCallback();
 
     public final void run() {
 
