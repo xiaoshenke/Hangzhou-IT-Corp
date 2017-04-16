@@ -35,11 +35,15 @@ public class SaveCompanyThread extends Thread {
 
                 for (Company company : companyMap.values()) {
                     if (insert) {
+                        mapper.insertCompany(company);
+                        /*
                         mapper.insertCompany(tableName, company.company_id,
                                 company.area_id, company.company_fullname,
                                 company.financeStage, company.industryField, company.detail_location);
+                                */
                     } else {
-                        mapper.updateCompanyLocation(tableName, company.company_id, company.detail_location);
+                        //mapper.updateCompanyLocation(tableName, company.company_id, company.detail_location);
+                        mapper.updateCompany(company);
                     }
                 }
             }

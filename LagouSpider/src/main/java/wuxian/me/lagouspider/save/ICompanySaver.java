@@ -8,13 +8,6 @@ import wuxian.me.lagouspider.model.Company;
  */
 public interface ICompanySaver {
 
-    String LOCATION_MULTY = "multi";
-    String LOCATION_NONE = "none";
-
-    //每5分钟存储一次数据库
-    int SAVE_COMPANY_INTERVAL = 60 * 1000 * 1;
-    int SAVE_COMPANY_MAIN_INTERVAL = (int) (60 * 1000 * 1.5);
-
     /**
      * @return datachanged
      */

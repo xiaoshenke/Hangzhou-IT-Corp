@@ -9,6 +9,7 @@ import wuxian.me.lagouspider.model.Company;
  * 一次是抓岗位列表页的时候被初次赋值:对应的数据库操作是insert
  * 第二次是通过岗位id拿到公司的具体地址:对应的数据库操作是update
  * 因此这里设计一个缓冲机制
+ *
  */
 public class CompanySaver implements ICompanySaver {
 

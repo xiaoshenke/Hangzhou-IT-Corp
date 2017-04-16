@@ -11,9 +11,13 @@ import wuxian.me.lagouspider.framework.control.WorkThread;
 import wuxian.me.lagouspider.core.AreaSpider;
 import wuxian.me.lagouspider.framework.job.IJob;
 import wuxian.me.lagouspider.mapper.AreaMapper;
+import wuxian.me.lagouspider.mapper.CompanyMapper;
 import wuxian.me.lagouspider.model.Area;
 import wuxian.me.lagouspider.framework.IPProxyTool;
 import wuxian.me.lagouspider.framework.OkhttpProvider;
+import wuxian.me.lagouspider.model.Company;
+import wuxian.me.lagouspider.util.Helper;
+import wuxian.me.lagouspider.util.ModuleProvider;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,6 +31,21 @@ import static wuxian.me.lagouspider.util.ModuleProvider.*;
 public class MainTest {
 
     //Todo: 切换IP,重试队列的联合测试
+
+    @Test
+    public void testCompanyDB() {
+        Config.IS_TEST = true;
+
+        CompanyMapper companyMapper = ModuleProvider.companyMapper();
+
+        Helper.updateNewGrab();
+        logger().info("create new company table");
+        String tableName = Helper.getCompanyTableName();
+        logger().info("TableName: " + tableName);
+        Company.tableName = tableName;
+        companyMapper.createNewTableIfNeed(new Company(-1));
+        companyMapper.createIndex(new Company(-1));
+    }
 
     //Todo
     @Test
@@ -67,6 +86,7 @@ public class MainTest {
         }
     }
 
+    //todo：将AreaSpider --> AreaPageSpider(saveDB) --> CompanySpider(saveDB)串起来测试一下
     //疑似拉勾会爬取代理网站的ip,若是则立马进行屏蔽...
     @Test
     public void testAreaSpider() {

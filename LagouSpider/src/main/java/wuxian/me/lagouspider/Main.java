@@ -15,6 +15,7 @@ import static wuxian.me.lagouspider.framework.FileUtil.*;
 import static wuxian.me.lagouspider.util.Helper.getAreaFilePath;
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
+import wuxian.me.lagouspider.model.Company;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.ModuleProvider;
 import java.sql.DriverManager;
@@ -47,7 +48,8 @@ public class Main {
 
                 logger().info("create new company table");
                 String tableName = Helper.getCompanyTableName();
-                companyMapper.createNewTableIfNeed(tableName);
+                Company.tableName = tableName;
+                companyMapper.createNewTableIfNeed(new Company(-1));
 
                 logger().info("load areas from database");
                 List<Area> areas = areaMapper.loadAll();

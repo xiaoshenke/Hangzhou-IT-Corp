@@ -445,7 +445,7 @@ public class CompanySpider extends BaseLagouSpider {
 
         company.webLink = webLink;
         company.logo = logo;
-        company.lagouAuthentic = lagouAuthentic;
+        company.lagouAuthentic = String.valueOf(lagouAuthentic);
         company.description = description;
         company.financeStage = financeStage;
         company.positionNum = positionNum;
@@ -457,9 +457,9 @@ public class CompanySpider extends BaseLagouSpider {
         company.environmentScore = environmentScore;
 
         if (locationList.size() == 0) {
-            company.detail_location = ICompanySaver.LOCATION_NONE;
+            company.detail_location = Config.LOCATION_NONE;
         } else if (locationList.size() > 1) {
-            company.detail_location = ICompanySaver.LOCATION_MULTY;
+            company.detail_location = Config.LOCATION_MULTY;
         } else {
             company.detail_location = locationList.get(0);
         }

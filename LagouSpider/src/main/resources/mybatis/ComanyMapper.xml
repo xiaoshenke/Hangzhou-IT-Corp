@@ -2,24 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="wuxian.me.lagouspider.mapper.CompanyMapper">
-    <update id="createNewTableIfNeed">
+    <update id="createNewTableIfNeed" parameterType="wuxian.me.lagouspider.model.Company">
         create table if not exists ${tableName} (company_id INTEGER,area_id INT,company_fullname
-        VARCHAR(40),financeStage VARCHAR(30),industryField VARCHAR(40),detail_location VARCHAR(50),PRIMARY KEY
-        (company_id))
-        <!--DEFAULT CHARSET = utf8,
+        VARCHAR(40),industryField VARCHAR(20),company_size VARCHAR(10),logo VARCHAR(30),
+        detail_location VARCHAR(20),financeStage VARCHAR(30), webLink VARCHAR(20), lagouAuthentic VARCHAR(5),
+        description VARCHAR(30), positionNum VARCHAR(10),resumeRate VARCHAR(10),interviewNum VARCHAR(5),
+         score VARCHAR(5),accordSore VARCHAR(5),interviewerScore VARCHAR(5),environmentScore VARCHAR(5),
+        PRIMARY KEY (company_id))
+        DEFAULT CHARSET = utf8,
         ENGINE = InnoDB;
-        CREATE INDEX idx_company_fullname ON ${tableName} (company_fullname);
-        CREATE INDEX idx_company_id ON ${tableName} (company_id);
-        -->
+
     </update>
-    <insert id="insertCompany">
-        insert into $(tableName) (company_id,area_id,company_fullname,financeStage,industryFiled
-        <if test="location != null">, detail_location</if>) values (#{companyId},#{areaId},#{fullName},#{stage},#{field}<if
-            test="location != null">,#{location}</if>)
+
+    <update id="createIndex" parameterType="wuxian.me.lagouspider.model.Company">
+        CREATE INDEX idx_company_fullname ON ${tableName} (company_fullname);
+    </update>
+
+    <insert id="insertCompany" parameterType="wuxian.me.lagouspider.model.Company">
+        insert into $(tableName) (company_id,area_id,company_fullname,industryFiled,company_size
+        <if test="location != null">,
+            logo,detail_location,financeStage,webLink,lagouAuthentic,description,positionNum,resumeRate,interviewNum,score,accordSore,interviewerScore,environmentScore</if>
+        ) values (#{company_id},#{area_id},#{company_fullname},#{industryField},#{company_size}<if
+            test="location != null">,
+        #{logo},#{detail_location},#{financeStage},#{webLink},#{lagouAuthentic},#{description},#{positionNum},#{resumeRate},#{interviewNum},#{score},#{accordSore},#{interviewerScore},#{environmentScore}</if>)
     </insert>
 
-    <update id="updateCompany">
-        update ${tableName} set detail_location=#{location} where company_id=#{companyId}
+    <update id="updateCompany" parameterType="wuxian.me.lagouspider.model.Company">
+        update ${tableName} set logo=#{logo},detail_location=#{detail_location},financeStage=#{financeStage},webLink=#{webLink},lagouAuthentic=#{lagouAuthentic},description=#{description},positionNum=#{positionNum},resumeRate=#{resumeRate},interviewNum=#{interviewNum},score=#{score},accordSore=#{accordSore},interviewerScore=#{interviewerScore},environmentScore=#{environmentScore} where company_id=#{companyId}
     </update>
 
     <resultMap id="allCompany" type="wuxian.me.lagouspider.model.Company"/>

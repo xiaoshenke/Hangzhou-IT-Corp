@@ -6,17 +6,19 @@ package wuxian.me.lagouspider.model;
  * 处理有多个地址的公司 --> 多一张表记录多个地址的公司
  */
 public class Company {
+    public static String tableName;
+
     public int area_id = -1;
     public long company_id;
     public String company_fullname;  //这些可以从@AreaPageSpider拿
     public String industryField;
-    public String detail_location;
     public String company_size;
 
     public String logo;   //这些需要从@CompanySpider拿
+    public String detail_location;
     public String financeStage;
     public String webLink;
-    public boolean lagouAuthentic;
+    public String lagouAuthentic;
     public String description;
     public String positionNum;
     public String resumeRate;

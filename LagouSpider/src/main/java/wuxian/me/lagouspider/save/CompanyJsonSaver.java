@@ -1,6 +1,7 @@
 package wuxian.me.lagouspider.save;
 
 import com.sun.istack.internal.NotNull;
+import wuxian.me.lagouspider.Config;
 import wuxian.me.lagouspider.model.Company;
 
 import java.util.Map;
@@ -15,7 +16,7 @@ public class CompanyJsonSaver implements ICompanySaver {
     private SaveCompanyThread thread;
 
     private CompanyJsonSaver() {
-        thread = new SaveCompanyThread(companyMap, ICompanySaver.SAVE_COMPANY_INTERVAL, true);
+        thread = new SaveCompanyThread(companyMap, Config.SAVE_COMPANY_INTERVAL, true);
         thread.setName("save_company_json");
         thread.start();
     }
