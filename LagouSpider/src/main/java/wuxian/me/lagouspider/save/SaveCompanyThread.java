@@ -31,8 +31,12 @@ public class SaveCompanyThread extends Thread {
     public void run() {
         while (true) {
             if (!companies.isEmpty()) {
-                Map<Long, Company> companyMap = new HashMap<Long, Company>(companies);
-                companies.clear();
+                Map<Long, Company> companyMap;
+
+                synchronized (companies) {
+                    companyMap = new HashMap<Long, Company>(companies);
+                    companies.clear();
+                }
 
                 for (Company company : companyMap.values()) {
                     if (insert) {

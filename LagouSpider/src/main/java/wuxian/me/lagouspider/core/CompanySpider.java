@@ -387,7 +387,7 @@ public class CompanySpider extends BaseLagouSpider {
             Company company = buildCompany();
             if (Config.ENABLE_SAVE_COMPANY_DB) {
                 saveCompany(company);
-                logger().info("SAVE company MAIN: " + company.toString());
+                //logger().info("SAVE company MAIN: " + company.toString());
             } else {
                 logger().info("Company main: " + company.toString());
             }

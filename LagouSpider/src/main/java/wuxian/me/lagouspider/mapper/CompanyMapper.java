@@ -12,6 +12,8 @@ import java.util.List;
  */
 public interface CompanyMapper {
 
+    void deleteTable(Company company);
+
     //void createNewTableIfNeed(@Param("tableName") String tableName);
     void createNewTableIfNeed(Company company);
 

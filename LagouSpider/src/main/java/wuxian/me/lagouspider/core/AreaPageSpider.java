@@ -171,7 +171,7 @@ public class AreaPageSpider extends BaseLagouSpider {
                 saveCompany(company);
 
                 if (Config.IS_TEST) {
-                    logger().info("SAVE company: " + company.toString());
+                    //logger().info("SAVE company: " + company.toString());
                     break;
                 }
             }

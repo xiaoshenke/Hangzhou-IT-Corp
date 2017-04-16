@@ -71,7 +71,7 @@ public class FailureManager {
     AtomicInteger failNum = new AtomicInteger(0);
 
     public void success(@NotNull IJob job) {
-        logger().info("Success: " + ((BaseSpider) job.getRealRunnable()).simpleName());
+        logger().info("Success: " + ((BaseSpider) job.getRealRunnable()).name());
         successNum.getAndIncrement();
 
         if (todoSpiderList.contains(job)) {

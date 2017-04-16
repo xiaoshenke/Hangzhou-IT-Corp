@@ -32,6 +32,7 @@ import static wuxian.me.lagouspider.util.ModuleProvider.*;
 public class MainTest {
 
     //Todo: 切换IP,重试队列的联合测试
+    //id: 128631 name: 广州市仁创通讯科技有限公司 stage: 不需要融资 industry: 生活服务,金融 companySize :150-500人 logo: //www.lgstatic.com/thumbnail_300x300/i/image/M00/29/76/CgqKkVcv-KmAGEssAABfu0Hq3Wk960.jpg detail_location: multi finaceStage: 不需要融资 description: 让生活更便捷。}
 
     @Test
     public void testCompanyDB() {
@@ -44,12 +45,19 @@ public class MainTest {
         String tableName = Helper.getCompanyTableName();
         logger().info("TableName: " + tableName);
         Company.tableName = tableName;
-        //companyMapper.createNewTableIfNeed(new Company(-1));
+        companyMapper.deleteTable(new Company(-1));
+        companyMapper.createNewTableIfNeed(new Company(-1));
         //companyMapper.createIndex(new Company(-1));
-        Company company = new Company(113);
+        Company company = new Company(128631);
         company.area_id = 3;
-        company.company_fullname = "heello";
+        company.company_fullname = "广州市仁创通讯科技有限公司";
+        company.financeStage = "不需要融资";
+        company.industryField = "生活服务,金融";
+        company.company_size = "150-500人";
+        company.logo = null;//"//www.lgstatic.com/thumbnail_300x300/i/image/M00/29/76/CgqKkVcv-KmAGEssAABfu0Hq3Wk960.jpg";
 
+        company.detail_location = "multi";
+        company.financeStage = "不需要融资";
         CompanySaver saver = CompanySaver.getInstance();
         saver.saveCompany(company);
 

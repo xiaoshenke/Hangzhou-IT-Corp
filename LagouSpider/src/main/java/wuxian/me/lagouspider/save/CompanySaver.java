@@ -3,6 +3,8 @@ package wuxian.me.lagouspider.save;
 import com.sun.istack.internal.NotNull;
 import wuxian.me.lagouspider.model.Company;
 
+import static wuxian.me.lagouspider.util.ModuleProvider.logger;
+
 /**
  * Created by wuxian on 8/4/2017.
  * 一个company会被两次赋值：
@@ -29,10 +31,13 @@ public class CompanySaver implements ICompanySaver {
     }
 
     public boolean saveCompany(@NotNull Company company) {
+        logger().info("CompanySaver.saveCompany company: " + company.toString());
         if (company.detail_location != null) {  //这是一个location类型的company 先看看json类型里有没有
             if (jsonSaver.saveCompany(company)) {
+                logger().info("jsonSaver return true");
                 return true;
             }
+            logger().info("jsonSaver return false");
             locationSaver.saveCompany(company);
             return true;
         }

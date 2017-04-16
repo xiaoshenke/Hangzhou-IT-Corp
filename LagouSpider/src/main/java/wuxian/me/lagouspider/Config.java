@@ -47,9 +47,10 @@ public class Config {
     public static String LOCATION_NONE = "none";
 
     //每1分钟存储一次数据库
-    public static int SAVE_COMPANY_INTERVAL = 1000 * 1;
 
-    public static int SAVE_COMPANY_MAIN_INTERVAL = (int) (1000 * 1.5);
+    public static int SAVE_COMPANY_INTERVAL = 1000 * 1 * 30;
+
+    public static int SAVE_COMPANY_MAIN_INTERVAL = (int) (1000 * 30 * 1.5);
 
     //7天全面抓一次
     public static final long GRAB_INTERNAL = 1000 * 60 * 60 * 24 * 7;

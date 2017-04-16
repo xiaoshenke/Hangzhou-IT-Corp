@@ -2,7 +2,7 @@ package wuxian.me.lagouspider.model;
 
 /**
  * Created by wuxian on 30/3/2017.
- *
+ * <p>
  * 处理有多个地址的公司 --> 多一张表记录多个地址的公司
  */
 public class Company {
@@ -16,7 +16,7 @@ public class Company {
     public String company_size;
 
     public String logo;   //这些需要从@CompanySpider拿
-    public String detail_location;
+    public String detail_location = null;
     public String financeStage;
     public String webLink;
     public String lagouAuthentic;
@@ -51,7 +51,19 @@ public class Company {
 
     @Override
     public String toString() {
-        return "Company: {id: " + company_id + " name: " + company_fullname + " stage: " + financeStage + " industry: " + industryField + "}";
+
+        if (detail_location == null) {
+            return "Company: {id: " + company_id + " name: " + company_fullname + " stage: " +
+                    financeStage + " industry: " + industryField + " companySize :" + company_size + "}";
+
+        } else {
+            return "Company: {id: " + company_id + " name: " + company_fullname + " stage: " +
+                    financeStage + " industry: " + industryField + " companySize :" + company_size +
+                    " logo: " + logo + " detail_location: " + detail_location + " finaceStage: " + financeStage +
+                    " description: " + description + "}";
+
+        }
+
     }
 }
 

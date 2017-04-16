@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static wuxian.me.lagouspider.util.ModuleProvider.logger;
+
 /**
  * Created by wuxian on 8/4/2017.
  */
@@ -53,6 +55,8 @@ public class CompanyJsonSaver implements ICompanySaver {
                 tmp.environmentScore = company.environmentScore;
 
                 tmp.detail_location = company.detail_location;
+
+                logger().info("After merge: " + tmp.toString());
                 companyMap.put(company.company_id, tmp);
                 return true;
             }
