@@ -8,6 +8,8 @@ import wuxian.me.lagouspider.util.ModuleProvider;
 import java.util.HashMap;
 import java.util.Map;
 
+import static wuxian.me.lagouspider.util.ModuleProvider.logger;
+
 /**
  * Created by wuxian on 8/4/2017.
  */
@@ -24,7 +26,6 @@ public class SaveCompanyThread extends Thread {
     }
 
     private CompanyMapper mapper = ModuleProvider.companyMapper();
-    private String tableName = Helper.getCompanyTableName();
 
     @Override
     public void run() {
@@ -35,15 +36,13 @@ public class SaveCompanyThread extends Thread {
 
                 for (Company company : companyMap.values()) {
                     if (insert) {
+                        logger().info("SaveCompanyThread: Insert");
                         mapper.insertCompany(company);
-                        /*
-                        mapper.insertCompany(tableName, company.company_id,
-                                company.area_id, company.company_fullname,
-                                company.financeStage, company.industryField, company.detail_location);
-                                */
+
                     } else {
-                        //mapper.updateCompanyLocation(tableName, company.company_id, company.detail_location);
+                        logger().info("SaveCompanyThread: Update");
                         mapper.updateCompany(company);
+
                     }
                 }
             }

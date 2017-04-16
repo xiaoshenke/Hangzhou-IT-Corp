@@ -32,6 +32,7 @@ public class CompanyJsonSaver implements ICompanySaver {
 
     private Map<Long, Company> companyMap = new ConcurrentHashMap<Long, Company>();
 
+    //Todo:这里的函数有点问题
     public boolean saveCompany(@NotNull Company company) {
         synchronized (companyMap) {
             if (company.detail_location != null && companyMap.keySet().contains(company.company_id)) {

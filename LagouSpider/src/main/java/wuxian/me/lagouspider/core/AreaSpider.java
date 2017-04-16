@@ -24,7 +24,7 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
  * Created by wuxian on 30/3/2017.
  * <p>
  * 抓取某区域的公司页数 一个区域的公司可能不止一页,所以先拿到总的页数 然后分别对那一页的数据进行抓取@AreaPageSpider
- *
+ * <p>
  * Todo: logger
  */
 public class AreaSpider extends BaseLagouSpider {
@@ -42,6 +42,10 @@ public class AreaSpider extends BaseLagouSpider {
             IJob job = JobProvider.getJob();
             job.setRealRunnable(new AreaPageSpider(area, i));
             JobQueue.getInstance().putJob(job);
+            if (Config.IS_TEST) {
+                logger().info("BEGIN spider index: " + i + " ," + toString());
+                break;
+            }
         }
     }
 

@@ -16,6 +16,7 @@ import wuxian.me.lagouspider.model.Area;
 import wuxian.me.lagouspider.framework.IPProxyTool;
 import wuxian.me.lagouspider.framework.OkhttpProvider;
 import wuxian.me.lagouspider.model.Company;
+import wuxian.me.lagouspider.save.CompanySaver;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.ModuleProvider;
 
@@ -43,8 +44,18 @@ public class MainTest {
         String tableName = Helper.getCompanyTableName();
         logger().info("TableName: " + tableName);
         Company.tableName = tableName;
-        companyMapper.createNewTableIfNeed(new Company(-1));
-        companyMapper.createIndex(new Company(-1));
+        //companyMapper.createNewTableIfNeed(new Company(-1));
+        //companyMapper.createIndex(new Company(-1));
+        Company company = new Company(113);
+        company.area_id = 3;
+        company.company_fullname = "heello";
+
+        CompanySaver saver = CompanySaver.getInstance();
+        saver.saveCompany(company);
+
+        while (true) {
+
+        }
     }
 
     //Todo
@@ -92,24 +103,30 @@ public class MainTest {
     public void testAreaSpider() {
         Config.IS_TEST = true;
 
-        IPProxyTool.Proxy proxy = IPProxyTool.switchNextProxy();
-        logger().info("Using proxy ip: " + proxy.ip + " port: " + proxy.port);
-        ensureIpSwitched(proxy);
+        String tableName = Helper.getCompanyTableName();
+        logger().info("TableName: " + tableName);
+        Company.tableName = tableName;
+        CompanyMapper companyMapper = ModuleProvider.companyMapper();
+        companyMapper.createNewTableIfNeed(new Company(-1));
+
+        //IPProxyTool.Proxy proxy = IPProxyTool.switchNextProxy();
+        //logger().info("Using proxy ip: " + proxy.ip + " port: " + proxy.port);
+        //ensureIpSwitched(proxy);
 
         AreaMapper areaMapper = areaMapper();
-        List<Area> areas = areaMapper.loadAll();
+        logger().info("begin to load area of 西湖区");
+        List<Area> areas = areaMapper.loadAreaOfDistinct("西湖区");
         assertTrue(areas.size() != 0);
 
-        final int AREA_NUM = 5;
-        int i = 0;
         for (Area area : areas) {
-            if (i >= AREA_NUM) {
-                break;
-            }
-            IJob job = JobProvider.getFixedDelayJob(0);
+            logger().info(area.toString());
+
+            IJob job = JobProvider.getFixedDelayJob();
             job.setRealRunnable(new AreaSpider(area));
             JobQueue.getInstance().putJob(job);
-            //i++;
+
+            logger().info("BEGIN AreaSpider " + area.toString());
+            break;
         }
 
         logger().info("Start workThread...");

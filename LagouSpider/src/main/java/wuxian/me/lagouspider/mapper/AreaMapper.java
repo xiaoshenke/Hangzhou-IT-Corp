@@ -13,5 +13,7 @@ public interface AreaMapper {
 
     void insertArea(@Param("areaName") String areaName, @Param("distinctName") String distinctName);
 
+    List<Area> loadAreaOfDistinct(@Param("distinctName") String distinctName);
+
     List<Area> loadAll();
 }

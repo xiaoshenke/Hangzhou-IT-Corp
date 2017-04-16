@@ -117,9 +117,8 @@ public class CompanySpider extends BaseLagouSpider {
         HasAttributeFilter f3 = new HasAttributeFilter("class", "company_word");
         ret = list.extractAllNodesThatMatch(f3, true);
         if (ret != null && ret.size() != 0) {
-            printChildrenOfNode(ret.elementAt(0));
+            //printChildrenOfNode(ret.elementAt(0));
             description = ret.elementAt(0).toPlainTextString().trim();
-            //logger().info("selfDescripition: " + description);
         }
 
         HasAttributeFilter f4 = new HasAttributeFilter("class", "company_data");
@@ -388,6 +387,7 @@ public class CompanySpider extends BaseLagouSpider {
             Company company = buildCompany();
             if (Config.ENABLE_SAVE_COMPANY_DB) {
                 saveCompany(company);
+                logger().info("SAVE company MAIN: " + company.toString());
             } else {
                 logger().info("Company main: " + company.toString());
             }

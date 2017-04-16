@@ -50,6 +50,7 @@ public class Main {
                 String tableName = Helper.getCompanyTableName();
                 Company.tableName = tableName;
                 companyMapper.createNewTableIfNeed(new Company(-1));
+                companyMapper.createIndex(new Company(-1));
 
                 logger().info("load areas from database");
                 List<Area> areas = areaMapper.loadAll();

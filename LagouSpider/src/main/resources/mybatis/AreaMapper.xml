@@ -12,4 +12,8 @@
     <select id="loadAll" resultMap="allArea">
         select * from area
     </select>
+
+    <select id="loadAreaOfDistinct" resultMap="allArea">
+        select * from area where distinct_name = #{distinctName}
+    </select>
 </mapper>

@@ -10,6 +10,7 @@ public class Company {
 
     public int area_id = -1;
     public long company_id;
+
     public String company_fullname;  //这些可以从@AreaPageSpider拿
     public String industryField;
     public String company_size;

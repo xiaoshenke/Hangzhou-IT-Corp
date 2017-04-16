@@ -169,6 +169,11 @@ public class AreaPageSpider extends BaseLagouSpider {
         if (Config.ENABLE_SAVE_COMPANY_DB) {
             for (Company company : companyList) {
                 saveCompany(company);
+
+                if (Config.IS_TEST) {
+                    logger().info("SAVE company: " + company.toString());
+                    break;
+                }
             }
         }
 
@@ -183,6 +188,11 @@ public class AreaPageSpider extends BaseLagouSpider {
                 IJob job = JobProvider.getJob();
                 job.setRealRunnable(new CompanySpider(company.company_id, company.company_fullname));
                 JobQueue.getInstance().putJob(job);
+
+                if (Config.IS_TEST) {
+                    logger().info("BEGIN spider MainPage of " + company.company_fullname + " ,id: " + company.company_id);
+                    break;
+                }
             }
         }
 

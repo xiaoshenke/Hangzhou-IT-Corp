@@ -37,6 +37,10 @@ public class JobProvider {
 
     private static AtomicInteger sindex = new AtomicInteger(0);
 
+    public static IJob getFixedDelayJob() {
+        return getFixedDelayJob(Config.FIXED_DELAYJOB_INTERVAL);
+    }
+
     public static IJob getFixedDelayJob(long delay) {
         if (delay == 0) {
             return new ImmediateJob();
@@ -52,6 +56,10 @@ public class JobProvider {
     }
 
     public static IJob getJob() {
+        if (Config.IS_TEST) {
+            return getFixedDelayJob();
+        }
+
         if (random.nextDouble() * 100 > 20) {
             return new DelayJob((long) random.nextDouble() * 1000 + 200);
         }
