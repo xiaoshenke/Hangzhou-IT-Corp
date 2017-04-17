@@ -7,7 +7,7 @@ public class Config {
 
     public static boolean IS_TEST = true;
 
-    public static long FIXED_DELAYJOB_INTERVAL = 500;
+    public static long FIXED_DELAYJOB_INTERVAL = 500 * 1;
 
     public static int SOCKET_READ_TIMEOUT = 10 * 1000; //10s
 

@@ -35,6 +35,12 @@ import static wuxian.me.lagouspider.util.ModuleProvider.*;
  */
 public class MainTest {
 
+    //Todo:
+    @Test
+    public void testSpiderEquals(){
+        ;
+    }
+
     @Test
     public void testAreaSpider() {
         Config.IS_TEST = true;
@@ -78,7 +84,6 @@ public class MainTest {
             job.setRealRunnable(LoggerSpider.from(new AreaSpider(area)));
             JobQueue.getInstance().putJob(job);
 
-            logger().info("BEGIN AreaSpider " + area.toString());
             break;
         }
 
@@ -162,7 +167,7 @@ public class MainTest {
             response = OkhttpProvider.getClient().newCall(request).execute();
             assertTrue(response.isSuccessful());
             String msg = response.body().string();
-            logger().debug(msg);
+            logger().info(msg);
             assertTrue(msg.contains(proxy.ip));
         } catch (IOException e) {
             logger().error("switch ip fail");  //使用代理会有些不大稳定...

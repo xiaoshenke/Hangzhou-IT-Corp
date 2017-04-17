@@ -161,15 +161,15 @@ public class FailureManager {
         if (fail.isBlock()) {
             return true;
         }
-        if (fail404Num.get() >= 2) {
+        if (fail404Num.get() >= 1) {
             return true;
         }
 
-        if (failMaybeBlockNum.get() >= 3 || currentMaybeBlockTime.get() - lastMaybeBlockTime.get() < 300) {
+        if (failMaybeBlockNum.get() >= 1 || currentMaybeBlockTime.get() - lastMaybeBlockTime.get() < 300) {
             return true;
         }
 
-        if (failNetErrNum.get() > 5 || currentNetErrTime.get() - lastNetErrTime.get() < 500) {
+        if (failNetErrNum.get() >= 1 || currentNetErrTime.get() - lastNetErrTime.get() < 500) {
             return true;
         }
         return false;

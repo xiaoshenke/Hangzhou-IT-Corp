@@ -92,6 +92,8 @@ public class JobMonitor {
         jobMap.put(job.getRealRunnable(), job);
     }
 
+    //Fixme: runnable没有override @hashCode,equals...
+    //这里有bug
     public IJob getJob(@NotNull Runnable runnable) {
         if (jobMap.containsKey(runnable)) {
             return jobMap.get(runnable);
