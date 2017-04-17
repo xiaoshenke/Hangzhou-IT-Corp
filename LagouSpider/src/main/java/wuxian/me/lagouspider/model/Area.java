@@ -5,7 +5,7 @@ import static com.google.common.base.Preconditions.*;
 /**
  * Created by wuxian on 1/4/2017.
  */
-public class Area {
+public class Area extends BaseModel {
     public int area_id = -1;
     public String name;
     public String distinct_name;
@@ -26,8 +26,8 @@ public class Area {
         return super.equals(obj);
     }
 
-    @Override
-    public String toString() {
+    public String name() {
         return "area_name: " + name + " ,distinct_name: " + distinct_name;
     }
+
 }

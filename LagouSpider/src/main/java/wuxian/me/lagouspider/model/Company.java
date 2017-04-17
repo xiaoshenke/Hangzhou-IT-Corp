@@ -5,7 +5,7 @@ package wuxian.me.lagouspider.model;
  * <p>
  * 处理有多个地址的公司 --> 多一张表记录多个地址的公司
  */
-public class Company {
+public class Company extends BaseModel {
     public static String tableName;
 
     public int area_id = -1;
@@ -49,19 +49,15 @@ public class Company {
         return super.equals(obj);
     }
 
-    @Override
-    public String toString() {
-
+    public String name() {
         if (detail_location == null) {
             return "Company: {id: " + company_id + " product_name: " + company_fullname + " stage: " +
                     financeStage + " industry: " + industryField + " companySize :" + company_size + "}";
-
         } else {
             return "Company: {id: " + company_id + " product_name: " + company_fullname + " stage: " +
                     financeStage + " industry: " + industryField + " companySize :" + company_size +
                     " logo: " + logo + " detail_location: " + detail_location + " finaceStage: " + financeStage +
                     " description: " + description + "}";
-
         }
     }
 }

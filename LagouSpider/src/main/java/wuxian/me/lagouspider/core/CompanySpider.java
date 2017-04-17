@@ -33,14 +33,12 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 /**
  * Created by wuxian on 30/3/2017.
  * <p>
- * Todo: 存储product,location
  */
 public class CompanySpider extends BaseLagouSpider {
-    long company_id = -1;
+    private NodeList trees = null;
 
-    private String companyBussiness;  //和AreaPageSpider重复
+    long company_id = -1;
     private String companyName;
-    private String companySize;         //和AreaPageSpider重复
 
     private String webLink; //company的主页url
     private String logo;
@@ -70,6 +68,69 @@ public class CompanySpider extends BaseLagouSpider {
 
     private String getUrl(long companyId) {
         return Config.URL_LAGOU_COMPANY_MAIN + companyId + ".html";
+    }
+
+    protected Request buildRequest() {
+        Request request = new Request.Builder()
+                .headers(Helper.getHeaderBySpecifyRef(REFERER))
+                .url(getUrl(company_id))
+                .build();
+        return request;
+    }
+
+    public int parseRealData(String data) {
+        logger().info("CompanySpider, received htmlData,begin to pase");
+        try {
+            Parser parser = new Parser(data);
+            parser.setEncoding("utf-8");
+
+            trees = parser.parse(null);
+            parseBaseInfo();
+
+            //parser = new Parser(data);  //必须重新赋值一下
+            parseProductList();
+
+            parseLocation();
+
+            Company company = buildCompany();
+            if (Config.ENABLE_SAVE_COMPANY_DB) {
+                saveCompany(company);
+                //logger().info("SAVE company MAIN: " + company.toString());
+            } else {
+                logger().info("Company main: " + company.toString());
+            }
+
+            if (Config.ENABLE_SAVE_PRODUCT_DB) {
+                saveProduct();
+            } else {
+                StringBuilder str = new StringBuilder("");
+                for (Product product : productList) {
+                    str.append(product.toString() + ", ");
+                }
+                logger().info("ProductList: " + str.toString());
+            }
+
+            if (Config.ENABLE_SAVE_LOCATION_DB) {
+                saveLocation();
+            } else {
+                StringBuilder str = new StringBuilder("");
+                for (String location : locationList) {
+                    str.append(location.toString() + ", ");
+                }
+                logger().info("LocationList: ");
+            }
+
+            if (Config.ENABLE_SPIDER_ITCHENGZI_SEARCH) {
+                beginITJuziSearchSpider();
+            }
+
+        } catch (ParserException e) {
+            return BaseSpider.RET_PARSING_ERR;
+        } catch (MaybeBlockedException e) {
+            return BaseSpider.RET_MAYBE_BLOCK;
+        }
+
+        return BaseSpider.RET_SUCCESS;
     }
 
     boolean parseBaseInfo() throws ParserException {
@@ -255,6 +316,35 @@ public class CompanySpider extends BaseLagouSpider {
         return true;
     }
 
+    private void parseProductList() throws ParserException {
+        //logger().info("Begin to parse ProductList");
+        HasAttributeFilter f1 = new HasAttributeFilter("id", "company_products");
+        NodeList list = trees.extractAllNodesThatMatch(f1, true);//parser.extractAllNodesThatMatch(f1);
+        if (list == null || list.size() == 0) {
+            //logger().info("No company_products found");
+            return;
+            //throw new ParserException("No Company_products found");
+        }
+
+        Node product = list.elementAt(0);
+        //printNodeOnly(product);
+        HasAttributeFilter f2 = new HasAttributeFilter("class", "item_content");
+        NodeList ret = product.getChildren().extractAllNodesThatMatch(f2, true);
+        if (ret != null && ret.size() != 0) {
+            product = ret.elementAt(0);  //item_content的子节点就是product节点
+            ret = product.getChildren();
+            if (ret != null && ret.size() != 0) {
+                for (int i = 0; i < ret.size(); i++) {
+                    //logger().info("Begin to parse Product: " + i);
+                    parseProduct(ret.elementAt(i)); //解析每一个item 存入到类变量
+                }
+            }
+        } else {
+            //logger().info("No item_content node found");
+        }
+
+    }
+
     private void parseProduct(final Node node) throws ParserException {
         Product product = new Product(company_id);
         NodeList list = node.getChildren();
@@ -324,35 +414,6 @@ public class CompanySpider extends BaseLagouSpider {
         productList.add(product);
     }
 
-    private void parseProductList() throws ParserException {
-        //logger().info("Begin to parse ProductList");
-        HasAttributeFilter f1 = new HasAttributeFilter("id", "company_products");
-        NodeList list = trees.extractAllNodesThatMatch(f1, true);//parser.extractAllNodesThatMatch(f1);
-        if (list == null || list.size() == 0) {
-            //logger().info("No company_products found");
-            return;
-            //throw new ParserException("No Company_products found");
-        }
-
-        Node product = list.elementAt(0);
-        //printNodeOnly(product);
-        HasAttributeFilter f2 = new HasAttributeFilter("class", "item_content");
-        NodeList ret = product.getChildren().extractAllNodesThatMatch(f2, true);
-        if (ret != null && ret.size() != 0) {
-            product = ret.elementAt(0);  //item_content的子节点就是product节点
-            ret = product.getChildren();
-            if (ret != null && ret.size() != 0) {
-                for (int i = 0; i < ret.size(); i++) {
-                    //logger().info("Begin to parse Product: " + i);
-                    parseProduct(ret.elementAt(i)); //解析每一个item 存入到类变量
-                }
-            }
-        } else {
-            //logger().info("No item_content node found");
-        }
-
-    }
-
     private void parseLocation() throws ParserException, MaybeBlockedException {
         HasAttributeFilter f1 = new HasAttributeFilter("class", "mlist_li_desc");
         NodeList list = trees.extractAllNodesThatMatch(f1, true);
@@ -369,76 +430,11 @@ public class CompanySpider extends BaseLagouSpider {
         }
     }
 
-    private NodeList trees = null;
-
-    public int parseRealData(String data) {
-        logger().info("CompanySpider, received htmlData,begin to pase");
-        try {
-            Parser parser = new Parser(data);
-            parser.setEncoding("utf-8");
-
-            trees = parser.parse(null);
-            parseBaseInfo();
-
-            //parser = new Parser(data);  //必须重新赋值一下
-            parseProductList();
-
-            parseLocation();
-
-            Company company = buildCompany();
-            if (Config.ENABLE_SAVE_COMPANY_DB) {
-                saveCompany(company);
-                //logger().info("SAVE company MAIN: " + company.toString());
-            } else {
-                logger().info("Company main: " + company.toString());
-            }
-
-            if (Config.ENABLE_SAVE_PRODUCT_DB) {
-                saveProduct();
-            } else {
-                StringBuilder str = new StringBuilder("");
-                for (Product product : productList) {
-                    str.append(product.toString() + ", ");
-                }
-                logger().info("ProductList: " + str.toString());
-            }
-
-            if (Config.ENABLE_SAVE_LOCATION_DB) {
-                saveLocation();
-            } else {
-                StringBuilder str = new StringBuilder("");
-                for (String location : locationList) {
-                    str.append(location.toString() + ", ");
-                }
-                logger().info("LocationList: ");
-            }
-
-            if (Config.ENABLE_SPIDER_ITCHENGZI_SEARCH) {
-                beginITJuziSearchSpider();
-            }
-
-        } catch (ParserException e) {
-            return BaseSpider.RET_PARSING_ERR;
-        } catch (MaybeBlockedException e) {
-            return BaseSpider.RET_MAYBE_BLOCK;
-        }
-
-        return BaseSpider.RET_SUCCESS;
-    }
-
-    //Todo:判断是A轮以上 那么进行IT桔子搜索
-    private void beginITJuziSearchSpider() {
-        ;
-    }
-
-
     private void saveLocation() {
         for (String location : locationList) {
             LocationSaver.getInstance().saveModel(new Location(company_id, location));
         }
-
     }
-
 
     private void saveProduct() {
         for (Product product : productList) {
@@ -476,11 +472,15 @@ public class CompanySpider extends BaseLagouSpider {
         CompanySaver.getInstance().saveModel(company);
     }
 
-    protected Request buildRequest() {
-        Request request = new Request.Builder()
-                .headers(Helper.getHeaderBySpecifyRef(REFERER))
-                .url(getUrl(company_id))
-                .build();
-        return request;
+    //Todo
+    public String name() {
+        return null;
     }
+
+    //Todo:判断是A轮以上 那么进行IT桔子搜索
+    private void beginITJuziSearchSpider() {
+        ;
+    }
+
+
 }

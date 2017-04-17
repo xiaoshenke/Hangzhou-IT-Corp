@@ -7,9 +7,8 @@ import wuxian.me.lagouspider.core.DistinctSpider;
  * Created by wuxian on 13/4/2017.
  * 产品来看 IT橙子的数据会更加靠谱
  * <p>
- * Todo: toString
  */
-public class Product {
+public class Product extends BaseModel {
     public static String tableName;
 
     public long company_id;
@@ -43,8 +42,8 @@ public class Product {
         return super.equals(obj);
     }
 
-    @Override
-    public String toString() {
+    public String name() {
         return "Product: {company_id: " + company_id + " product_name: " + product_name + " url: " + url + " labelstring: " + labelString + "}";
     }
+
 }

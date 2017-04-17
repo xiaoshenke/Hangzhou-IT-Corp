@@ -3,7 +3,7 @@ package wuxian.me.lagouspider.model;
 /**
  * Created by wuxian on 17/4/2017.
  */
-public class Location {
+public class Location extends BaseModel {
     public static String tableName;
 
     public String location;
@@ -24,8 +24,8 @@ public class Location {
         return super.equals(obj);
     }
 
-    @Override
-    public String toString() {
-        return super.toString();
+    public String name() {
+        return "Location: {" + "company_id: " + company_id + " location: " + location + "}";
     }
+
 }

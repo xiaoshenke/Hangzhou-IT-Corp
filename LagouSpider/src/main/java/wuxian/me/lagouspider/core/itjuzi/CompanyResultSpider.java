@@ -31,4 +31,5 @@ public class CompanyResultSpider extends BaseSpider {
     public String fullName() {
         return null;
     }
+
 }

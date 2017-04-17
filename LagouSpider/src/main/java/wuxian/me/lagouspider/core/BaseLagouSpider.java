@@ -1,12 +1,9 @@
 package wuxian.me.lagouspider.core;
 
-import com.sun.istack.internal.NotNull;
-import org.htmlparser.Node;
 import org.htmlparser.Parser;
 import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
-import wuxian.me.lagouspider.LagouSpiderCallback;
 import wuxian.me.lagouspider.framework.SpiderCallback;
 import wuxian.me.lagouspider.framework.control.Fail;
 import wuxian.me.lagouspider.framework.control.JobMonitor;
@@ -53,14 +50,13 @@ public abstract class BaseLagouSpider extends BaseSpider {
     }
 
 
-
-    @Override
-    public String name() {
-        return simpleName();
-    }
-
     @Override
     public String fullName() {
         return name();
+    }
+
+    @Override
+    public final String toString() {
+        return fullName();
     }
 }

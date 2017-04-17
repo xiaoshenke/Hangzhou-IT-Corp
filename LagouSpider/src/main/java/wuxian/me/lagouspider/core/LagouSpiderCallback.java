@@ -1,4 +1,4 @@
-package wuxian.me.lagouspider;
+package wuxian.me.lagouspider.core;
 
 import com.sun.istack.internal.NotNull;
 import okhttp3.Call;

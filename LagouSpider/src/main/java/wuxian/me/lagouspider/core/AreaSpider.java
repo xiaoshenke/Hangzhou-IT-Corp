@@ -35,36 +35,6 @@ public class AreaSpider extends BaseLagouSpider {
         this.area = area;
     }
 
-    public void beginSpiderAreaPage() {
-
-        for (int i = 1; i < pageNum; i++) {
-            IJob job = JobProvider.getJob();
-            job.setRealRunnable(new AreaPageSpider(area, i));
-            JobQueue.getInstance().putJob(job);
-        }
-    }
-
-    private int parseData(String data) throws ParserException, MaybeBlockedException {
-        Parser parser = new Parser(data);
-        parser.setEncoding("utf-8");
-        HasAttributeFilter filter = new HasAttributeFilter("class", "span totalNum");
-
-        NodeList list = parser.extractAllNodesThatMatch(filter);
-        if (list != null && list.size() != 0) {
-            Node tag = list.elementAt(0);
-            return Integer.parseInt(((Span) tag).getStringText().trim());
-
-        } else {
-            throw new MaybeBlockedException();
-        }
-
-    }
-
-    @Override
-    public String toString() {
-        return "AreaSpider: area is " + area.toString();
-    }
-
     protected Request buildRequest() {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(URL_LAGOU_JAVA)
                 .newBuilder();
@@ -80,14 +50,8 @@ public class AreaSpider extends BaseLagouSpider {
         return request;
     }
 
-    @Override
-    public String name() {
-        return "AreaSpider " + area.toString();
-    }
-
     public int parseRealData(String data) {
         String body = data;
-
         try {
             pageNum = parseData(body);
         } catch (ParserException e) {
@@ -95,13 +59,38 @@ public class AreaSpider extends BaseLagouSpider {
         } catch (MaybeBlockedException e) {
             return BaseSpider.RET_MAYBE_BLOCK;
         }
-
         logger().debug("Parsed num: " + pageNum + " " + simpleName());
-
         if (Config.ENABLE_SPIDER_AREAPAGE) {
             beginSpiderAreaPage();
         }
-
         return BaseSpider.RET_SUCCESS;
     }
+
+    private int parseData(String data) throws ParserException, MaybeBlockedException {
+        Parser parser = new Parser(data);
+        parser.setEncoding("utf-8");
+        HasAttributeFilter filter = new HasAttributeFilter("class", "span totalNum");
+        NodeList list = parser.extractAllNodesThatMatch(filter);
+        if (list != null && list.size() != 0) {
+            Node tag = list.elementAt(0);
+            return Integer.parseInt(((Span) tag).getStringText().trim());
+
+        } else {
+            throw new MaybeBlockedException();
+        }
+    }
+
+    public void beginSpiderAreaPage() {
+        for (int i = 1; i < pageNum; i++) {
+            IJob job = JobProvider.getJob();
+            job.setRealRunnable(new AreaPageSpider(area, i));
+            JobQueue.getInstance().putJob(job);
+        }
+    }
+
+    @Override
+    public String name() {
+        return "AreaSpider " + area.name();
+    }
+
 }
