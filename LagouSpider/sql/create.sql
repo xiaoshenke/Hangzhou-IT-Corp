@@ -1,9 +1,3 @@
-########################
-# Drop all table
-########################
-
-# company的表名会变化的 但是area这张表是不会变的
-# 杭州的区数据太少了 没必要多一张表
 
 DROP TABLE IF EXISTS area;
 
@@ -19,4 +13,3 @@ ENGINE = InnoDB;
 CREATE INDEX idx_name ON area (name);
 CREATE INDEX idx_area_id ON area (area_id);
 
-#FOREIGN KEY (course_id) REFERENCES course (courses_id);

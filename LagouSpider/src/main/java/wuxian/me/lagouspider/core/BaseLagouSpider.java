@@ -22,7 +22,7 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
  * 子类需要实现的方法
  * 1 Request buildRequest()
  * 2 parseRealData(String data)
- * 3 name(),fullName();
+ * 3 product_name(),fullName();
  */
 public abstract class BaseLagouSpider extends BaseSpider {
 

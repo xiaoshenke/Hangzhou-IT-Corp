@@ -23,21 +23,16 @@
         CREATE INDEX idx_company_fullname ON ${tableName} (company_fullname);
     </update>
 
-    <!--   -->
-
     <insert id="insertCompany" parameterType="wuxian.me.lagouspider.model.Company">
         insert into ${tableName} (company_id,area_id,company_fullname,industryField,company_size
-
         <if test="detail_location != null">
             ,logo,detail_location,financeStage,webLink,lagouAuthentic,description,positionNum,resumeRate,interviewNum,score,accordSore,interviewerScore,environmentScore
         </if>
 
         ) values (#{company_id},#{area_id},#{company_fullname},#{industryField},#{company_size}
-
         <if test="detail_location != null">
             ,#{logo},#{detail_location},#{financeStage},#{webLink},#{lagouAuthentic},#{description},#{positionNum},#{resumeRate},#{interviewNum},#{score},#{accordSore},#{interviewerScore},#{environmentScore}
         </if>
-
         );
     </insert>
 

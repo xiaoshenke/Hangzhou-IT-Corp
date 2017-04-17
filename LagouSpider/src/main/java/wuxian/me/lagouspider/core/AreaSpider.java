@@ -25,7 +25,6 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
  * <p>
  * 抓取某区域的公司页数 一个区域的公司可能不止一页,所以先拿到总的页数 然后分别对那一页的数据进行抓取@AreaPageSpider
  * <p>
- * Todo: logger
  */
 public class AreaSpider extends BaseLagouSpider {
     Area area;

@@ -20,14 +20,12 @@ import wuxian.me.lagouspider.framework.job.IJob;
 import wuxian.me.lagouspider.model.Company;
 import wuxian.me.lagouspider.model.Product;
 import wuxian.me.lagouspider.save.CompanySaver;
-import wuxian.me.lagouspider.save.ICompanySaver;
 import wuxian.me.lagouspider.util.Helper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
-import static wuxian.me.lagouspider.util.NodeLogUtil.*;
 
 /**
  * Created by wuxian on 30/3/2017.
@@ -99,7 +97,7 @@ public class CompanySpider extends BaseLagouSpider {
 
         HasAttributeFilter f12 = new HasAttributeFilter("class", "hovertips");
         ret = list.extractAllNodesThatMatch(f12, true);
-        //logger().info("BEGIN to parse company name");
+        //logger().info("BEGIN to parse company product_name");
         if (ret != null && ret.size() != 0) {
             //companyName = ((LinkTag) ret.elementAt(0)).getAttribute("title").trim();
             //logger().info("companyName: " + companyName);
@@ -283,10 +281,10 @@ public class CompanySpider extends BaseLagouSpider {
                 child = ret.elementAt(i);
                 if (child instanceof LinkTag) {
                     product.url = ((LinkTag) child).getLink();
-                    product.name = child.toPlainTextString().trim();
+                    product.product_name = child.toPlainTextString().trim();
 
                     //logger().info("product url: " + product.url);
-                    //logger().info("product name: " + product.name);
+                    //logger().info("product product_name: " + product.product_name);
                     break;
                 }
             }

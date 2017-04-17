@@ -1,6 +1,8 @@
 package wuxian.me.lagouspider.model;
 
+import com.google.gson.Gson;
 import com.sun.istack.internal.NotNull;
+import wuxian.me.lagouspider.core.DistinctSpider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +19,14 @@ public class Product {
 
     public void addLabel(@NotNull String label) {
         labelList.add(label);
+
+        //labelString = new Gson().toJson(labelList);
+        labelString += label + DistinctSpider.CUT;
     }
 
-    public String name;
+    public String labelString = "";
+
+    public String product_name;
     public String url;
     public String imgUrl;
 

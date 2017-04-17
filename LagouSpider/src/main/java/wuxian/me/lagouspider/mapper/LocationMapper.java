@@ -1,8 +1,22 @@
 package wuxian.me.lagouspider.mapper;
 
+import org.apache.ibatis.annotations.Param;
+import wuxian.me.lagouspider.model.Location;
+
+import java.util.List;
+
 /**
  * Created by wuxian on 13/4/2017.
- * Todo:根据公司id取到多个地址
  */
 public interface LocationMapper {
+
+    void deleteTable(Location location);
+
+    void createNewTableIfNeed(Location location);
+
+    void createIndex(Location location);
+
+    void insertLocation(Location location);
+
+    List<Location> loadLocation(@Param("tableName") String tableName, long company_id);
 }

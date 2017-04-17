@@ -53,29 +53,15 @@ public class Company {
     public String toString() {
 
         if (detail_location == null) {
-            return "Company: {id: " + company_id + " name: " + company_fullname + " stage: " +
+            return "Company: {id: " + company_id + " product_name: " + company_fullname + " stage: " +
                     financeStage + " industry: " + industryField + " companySize :" + company_size + "}";
 
         } else {
-            return "Company: {id: " + company_id + " name: " + company_fullname + " stage: " +
+            return "Company: {id: " + company_id + " product_name: " + company_fullname + " stage: " +
                     financeStage + " industry: " + industryField + " companySize :" + company_size +
                     " logo: " + logo + " detail_location: " + detail_location + " finaceStage: " + financeStage +
                     " description: " + description + "}";
 
         }
-
     }
 }
-
-
-/**
- * "company_id":51881,
- * "companyShortName":"浙江小融网络科技股份有限公司",
- * "companyLogo":"i/image/M00/00/31/Cgp3O1YxznqAF4NhAAAR4jC1h5E922.jpg",
- * "financeStage":"成长型(A轮)",
- * "industryField":"金融",
- * "companySize":"50-150人",
- * "companyLabelList":["年底双薪","绩效奖金","年度旅游","岗位晋升"],
- * "companyFullName":"浙江小融网络科技股份有限公司",
- * "businessZones":["西溪","古墩路","古荡"],
- **/

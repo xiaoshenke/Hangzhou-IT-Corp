@@ -5,5 +5,5 @@ package wuxian.me.lagouspider.model;
  * 职位
  */
 public class Position {
-    private Company company;
+
 }

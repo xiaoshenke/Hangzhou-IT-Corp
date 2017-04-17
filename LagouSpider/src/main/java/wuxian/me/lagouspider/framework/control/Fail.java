@@ -3,7 +3,7 @@ package wuxian.me.lagouspider.framework.control;
 /**
  * Created by wuxian on 7/4/2017.
  * <p>
- * Todo:不同的网站的Fail应该有不同的判断
+ * Fixme:不同的网站的Fail应该有不同的判断
  */
 public class Fail {
 

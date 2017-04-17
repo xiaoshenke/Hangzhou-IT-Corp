@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="wuxian.me.lagouspider.mapper.ProductMapper">
+
+    <delete id="deleteTable" parameterType="wuxian.me.lagouspider.model.Product">
+        drop table if exists ${tableName}
+    </delete>
+
+    <update id="createNewTableIfNeed" parameterType="wuxian.me.lagouspider.model.Product">
+        create table if not exists ${tableName} (product_id INT AUTO_INCREMENT,company_id INTEGER,
+        product_name VARCHAR(20), url VARCHAR(30),labelString VARCHAR(20), imgUrl VARCHAR(50),
+        description VARCHAR(150),
+        PRIMARY KEY (product_id))
+        DEFAULT CHARSET = utf8,
+        ENGINE = InnoDB;
+    </update>
+
+    <update id="createIndex" parameterType="wuxian.me.lagouspider.model.Product">
+        CREATE INDEX idx_company_id ON ${tableName} (company_id);
+    </update>
+
+    <insert id="insertProduct" parameterType="wuxian.me.lagouspider.model.Product">
+        insert into ${tableName} (company_id,product_name,url,labelString,imgUrl,description)
+        values (#{company_id},#{product_name},#{url},#{labelString},#{imgUrl},#{description});
+    </insert>
+
+    <select id="loadProduct" resultType="wuxian.me.lagouspider.model.Product">
+        select * from ${tableName} where company_id = #{company_id}
+    </select>
+
+</mapper>

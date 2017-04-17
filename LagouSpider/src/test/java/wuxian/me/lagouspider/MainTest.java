@@ -32,7 +32,7 @@ import static wuxian.me.lagouspider.util.ModuleProvider.*;
 public class MainTest {
 
     //Todo: 切换IP,重试队列的联合测试
-    //id: 128631 name: 广州市仁创通讯科技有限公司 stage: 不需要融资 industry: 生活服务,金融 companySize :150-500人 logo: //www.lgstatic.com/thumbnail_300x300/i/image/M00/29/76/CgqKkVcv-KmAGEssAABfu0Hq3Wk960.jpg detail_location: multi finaceStage: 不需要融资 description: 让生活更便捷。}
+    //id: 128631 product_name: 广州市仁创通讯科技有限公司 stage: 不需要融资 industry: 生活服务,金融 companySize :150-500人 logo: //www.lgstatic.com/thumbnail_300x300/i/image/M00/29/76/CgqKkVcv-KmAGEssAABfu0Hq3Wk960.jpg detail_location: multi finaceStage: 不需要融资 description: 让生活更便捷。}
 
     @Test
     public void testCompanyDB() {
@@ -105,7 +105,7 @@ public class MainTest {
         }
     }
 
-    //todo：将AreaSpider --> AreaPageSpider(saveDB) --> CompanySpider(saveDB)串起来测试一下
+
     //疑似拉勾会爬取代理网站的ip,若是则立马进行屏蔽...
     @Test
     public void testAreaSpider() {
