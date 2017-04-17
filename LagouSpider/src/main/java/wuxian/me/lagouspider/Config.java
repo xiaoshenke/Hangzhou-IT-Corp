@@ -15,9 +15,9 @@ public class Config {
 
     public static boolean ENABLE_PRINT_PARSED_COMPANY = false;
 
-    public static boolean ENABLE_SAVE_PRODUCT_DB = false;
+    public static boolean ENABLE_SAVE_PRODUCT_DB = true;
 
-    public static boolean ENABLE_SAVE_LOCATION_DB = false;
+    public static boolean ENABLE_SAVE_LOCATION_DB = true;
 
     public static boolean ENABLE_SAVE_COMPANY_DB = true;
 

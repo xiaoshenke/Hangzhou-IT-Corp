@@ -12,10 +12,14 @@ import wuxian.me.lagouspider.core.AreaSpider;
 import wuxian.me.lagouspider.framework.job.IJob;
 import wuxian.me.lagouspider.mapper.AreaMapper;
 import wuxian.me.lagouspider.mapper.CompanyMapper;
+import wuxian.me.lagouspider.mapper.LocationMapper;
+import wuxian.me.lagouspider.mapper.ProductMapper;
 import wuxian.me.lagouspider.model.Area;
 import wuxian.me.lagouspider.framework.IPProxyTool;
 import wuxian.me.lagouspider.framework.OkhttpProvider;
 import wuxian.me.lagouspider.model.Company;
+import wuxian.me.lagouspider.model.Location;
+import wuxian.me.lagouspider.model.Product;
 import wuxian.me.lagouspider.save.CompanySaver;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.ModuleProvider;
@@ -32,7 +36,46 @@ import static wuxian.me.lagouspider.util.ModuleProvider.*;
 public class MainTest {
 
     //Todo: 切换IP,重试队列的联合测试
-    //id: 128631 product_name: 广州市仁创通讯科技有限公司 stage: 不需要融资 industry: 生活服务,金融 companySize :150-500人 logo: //www.lgstatic.com/thumbnail_300x300/i/image/M00/29/76/CgqKkVcv-KmAGEssAABfu0Hq3Wk960.jpg detail_location: multi finaceStage: 不需要融资 description: 让生活更便捷。}
+
+    @Test
+    public void testProductDB() {
+        Config.IS_TEST = true;
+
+        ProductMapper productMapper = ModuleProvider.productMapper();
+        LocationMapper locationMapper = ModuleProvider.locationMapper();
+
+        //Helper.updateNewGrab();
+        String tableName = Helper.getCompanyTableName();
+
+        Company.tableName = tableName;
+        Product.tableName = Helper.getProductTableName();
+        Location.tableName = Helper.getLocationTableName();
+
+        logger().info("begin create product table");
+        productMapper.deleteTable(new Product(-1));
+        productMapper.createNewTableIfNeed(new Product(-1));
+
+        logger().info("begin create location table");
+        locationMapper.deleteTable(new Location(-1));
+        locationMapper.createNewTableIfNeed(new Location(-1));
+
+        logger().info("begin insert product table");
+        Product product = new Product(123);
+        product.imgUrl = "http://dafdsafsdaf";
+        product.url = "http://xxxx";
+        product.labelString = "app,web";
+        product.description = "hello world";
+        productMapper.insertProduct(product);
+
+        logger().info("begin insert location table");
+        Location location = new Location(32342);
+        location.location = "杭州西湖文二路162号";
+        locationMapper.insertLocation(location);
+
+        while (true) {
+
+        }
+    }
 
     @Test
     public void testCompanyDB() {

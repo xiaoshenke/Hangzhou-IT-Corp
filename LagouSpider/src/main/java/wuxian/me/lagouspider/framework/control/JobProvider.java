@@ -25,10 +25,6 @@ public class JobProvider {
     private static Random random = new Random();
 
     public static IJob getNextJob(@NotNull IJob job) {
-        if (Config.IS_TEST) {
-            return job;
-        }
-
         int time = job.getFailTimes();
         IJob next = new DelayJob(time * time * 1000);
         next.setRealRunnable(job.getRealRunnable());

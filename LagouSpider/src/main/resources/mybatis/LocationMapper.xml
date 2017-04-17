@@ -9,7 +9,7 @@
 
     <update id="createNewTableIfNeed" parameterType="wuxian.me.lagouspider.model.Location">
         create table if not exists ${tableName} (location_id INT AUTO_INCREMENT,company_id INTEGER,
-        location VARCHAR(30)
+        location VARCHAR(30),
         PRIMARY KEY (location_id))
         DEFAULT CHARSET = utf8,
         ENGINE = InnoDB;

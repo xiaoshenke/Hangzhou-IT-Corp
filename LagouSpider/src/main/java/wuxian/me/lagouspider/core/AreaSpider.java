@@ -41,10 +41,6 @@ public class AreaSpider extends BaseLagouSpider {
             IJob job = JobProvider.getJob();
             job.setRealRunnable(new AreaPageSpider(area, i));
             JobQueue.getInstance().putJob(job);
-            if (Config.IS_TEST) {
-                logger().info("BEGIN spider index: " + i + " ," + toString());
-                break;
-            }
         }
     }
 

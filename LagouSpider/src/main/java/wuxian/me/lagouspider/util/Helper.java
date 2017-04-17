@@ -78,6 +78,14 @@ public class Helper {
         return Config.TABLE_COMPANY + getDatabasePost();
     }
 
+    public static String getProductTableName() {
+        return Config.TABLE_PRODUCT + getDatabasePost();
+    }
+
+    public static String getLocationTableName() {
+        return Config.TABLE_LOCATION + getDatabasePost();
+    }
+
     /**
      * 用于数据库"根据不同时间"分表:分表的目的用于后续研究公司变迁的数据：比如说某块区域的公司迁移数据 某个公司的招聘岗位的变化等
      * <p>

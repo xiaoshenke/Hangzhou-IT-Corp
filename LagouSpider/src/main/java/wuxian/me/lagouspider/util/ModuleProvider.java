@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import wuxian.me.lagouspider.Main;
 import wuxian.me.lagouspider.mapper.AreaMapper;
 import wuxian.me.lagouspider.mapper.CompanyMapper;
+import wuxian.me.lagouspider.mapper.LocationMapper;
+import wuxian.me.lagouspider.mapper.ProductMapper;
 
 import static wuxian.me.lagouspider.util.Helper.getLog4jPropFilePath;
 
@@ -42,6 +44,20 @@ public class ModuleProvider {
     public static CompanyMapper companyMapper() {
         return instance.companyMapper;
     }
+
+    public static ProductMapper productMapper() {
+        return instance.productMapper;
+    }
+
+    public static LocationMapper locationMapper() {
+        return instance.locationMapper;
+    }
+
+    @Autowired
+    LocationMapper locationMapper;
+
+    @Autowired
+    ProductMapper productMapper;
 
     @Autowired
     AreaMapper areaMapper;

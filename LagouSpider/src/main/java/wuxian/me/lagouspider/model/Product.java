@@ -1,6 +1,5 @@
 package wuxian.me.lagouspider.model;
 
-import com.google.gson.Gson;
 import com.sun.istack.internal.NotNull;
 import wuxian.me.lagouspider.core.DistinctSpider;
 
@@ -12,6 +11,7 @@ import java.util.List;
  * 产品来看 IT橙子的数据会更加靠谱
  */
 public class Product {
+    public static String tableName;
 
     public long company_id;
 
