@@ -1,16 +1,17 @@
 package wuxian.me.lagouspider.save;
 
 import com.sun.istack.internal.NotNull;
+import wuxian.me.lagouspider.model.BaseModel;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
 /**
  * Created by wuxian on 8/4/2017.
- * Todo: better log
  */
-public class SaveModelThread<T> extends Thread {
+public class SaveModelThread<T extends BaseModel> extends Thread {
 
     private Map<Long, T> model;
     private int interval;
@@ -41,17 +42,21 @@ public class SaveModelThread<T> extends Thread {
                     model.clear();
                 }
 
+                Class claz = null;
                 for (T model : modelMap.values()) {
-                    if (insert) {
-                        logger().info("SaveModelThread: Insert");
-
-                        if (operator != null) {
-                            operator.insert(model);
+                    if (claz == null) {
+                        claz = model.getClass();
+                        if (insert) {
+                            logger().info(getName() + "-->Insert count: " + modelMap.values().size());
+                        } else {
+                            logger().info(getName() + "-->Update count: " + modelMap.values().size());
                         }
+                    }
 
-                    } else {
-                        logger().info("SaveModelThread: Update");
-                        if (operator != null) {
+                    if (operator != null) {
+                        if (insert) {
+                            operator.insert(model);
+                        } else {
                             operator.update(model);
                         }
                     }

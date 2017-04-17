@@ -1,10 +1,7 @@
 package wuxian.me.lagouspider.framework.control;
 
 import com.sun.istack.internal.NotNull;
-import okhttp3.Headers;
-import okhttp3.HttpUrl;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
 import wuxian.me.lagouspider.Config;
 import wuxian.me.lagouspider.framework.BaseSpider;
 import wuxian.me.lagouspider.framework.job.IJob;
@@ -27,9 +24,9 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 /**
  * Created by wuxian on 9/4/2017.
  * 根据失败的情况判断是否ip被屏蔽了
- *
+ * <p>
  * 只暴露给 @JobMonitor
- *
+ * <p>
  * 日志级别规定:
  * 1 监控整个项目运行的info级别 比如切换ip,job状态切换:开始运行,成功,失败,重试等
  * 2 Job出错的error级
@@ -40,6 +37,7 @@ public class FailureManager {
     private FutureTask<String> switchIPFuture;
 
     private long startTime = System.currentTimeMillis();
+
     private FailureManager() {
         HttpUrl.Builder urlBuilder = HttpUrl.parse("http://www.ip138.com/ip2city.asp").newBuilder();
         Headers.Builder builder = new Headers.Builder();
@@ -76,7 +74,7 @@ public class FailureManager {
     AtomicInteger failNum = new AtomicInteger(0);
 
     public void success(@NotNull IJob job) {
-        logger().info("Success: " + ((BaseSpider) job).name());
+        logger().info("Job Success: " + ((BaseSpider) job).name());
         successNum.getAndIncrement();
 
         if (todoSpiderList.contains(job)) {
@@ -103,7 +101,6 @@ public class FailureManager {
     }
 
 
-    //Todo: 不同的网站的判定被判定被屏蔽的策略应该是不一样的
     public void fail(@NotNull IJob job, @NotNull Fail fail) {
         if (isSwitchingIP.get()) {  //失败的延迟任务还是会被dispatch到FailMonitor,这里直接丢弃
             return;
@@ -135,13 +132,26 @@ public class FailureManager {
         }
 
         if (isBlocked(fail)) {
-            logger().error("WE ARE BLOCKED! Until Now we have success " + successNum.get() +
+            logger().error("WE ARE BLOCKED! Until now We have success " + successNum.get() +
                     " jobs, we have run " + (System.currentTimeMillis() - startTime) / 1000 + " seconds");
+
             if (Config.ENABLE_SWITCH_IPPROXY) {
+                logger().info("We begin to switch IP...");
                 doSwitchIp();
             } else {        //被block后就停止了
                 isSwitchingIP.set(true);
-                OkhttpProvider.getClient().dispatcher().cancelAll();
+                Dispatcher dispatcher = OkhttpProvider.getClient().dispatcher();
+
+                logger().info("We will not switch IP ");
+
+                logger().info("We have total " + JobMonitor.getInstance().getWholeJobNum() + " jobs, we have "
+                        + JobQueue.getInstance().getJobNum() + " jobs in JobQueue, we have "
+                        + todoSpiderList.size() + "jobs in todoSpiderList");
+
+                logger().info("We have " + dispatcher.runningCallsCount() +
+                        " request running and " + dispatcher.queuedCallsCount() + " request queue in OkHttpClient");
+
+                dispatcher.cancelAll();
                 WorkThread.getInstance().pauseWhenSwitchIP();
             }
         }
@@ -173,16 +183,25 @@ public class FailureManager {
         WorkThread.getInstance().pauseWhenSwitchIP();
         reset();
         int times = 0;
-        while (true) {
-            if (times > 10) {
-                throw new RuntimeException("No Proxy available!");
-            }
+        while (true) {  //每个ip尝试三次 直到成功或没有proxy
             IPProxyTool.Proxy proxy = IPProxyTool.switchNextProxy();
-            if (ensureIpSwitched(proxy)) {
+            if (proxy == null) {
+                throw new RuntimeException("Proxy is not available!");
+            }
+
+            logger().info("We try to switch to Ip: " + proxy.ip + " Port: " + proxy.port);
+            int ensure = 0;
+            boolean success = false;
+            while (!(success = ensureIpSwitched(proxy)) && ensure < 3) {  //每个IP尝试三次
+                ensure++;
+            }
+            if (success) {
+                logger().info("Switch Proxy success");
                 break;
             }
             times++;
         }
+
         OkhttpProvider.getClient().dispatcher().cancelAll();
 
         for (BaseSpider spider : todoSpiderList) {
@@ -200,6 +219,7 @@ public class FailureManager {
     private void reset() {
         fail404Num.set(0);
         failNetErrNum.set(0);
+        failMaybeBlockNum.set(0);
     }
 
     private boolean ensureIpSwitched(final IPProxyTool.Proxy proxy) {

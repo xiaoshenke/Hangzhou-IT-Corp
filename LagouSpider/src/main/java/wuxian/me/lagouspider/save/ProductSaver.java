@@ -37,7 +37,7 @@ public class ProductSaver implements IModelSaver<Product> {
                 //
             }
         });
-        thread.setName("save_product");
+        thread.setName("SaveProductThread");
         thread.start();
     }
 

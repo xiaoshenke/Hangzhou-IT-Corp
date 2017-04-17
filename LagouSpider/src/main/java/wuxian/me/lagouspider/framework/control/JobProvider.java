@@ -24,35 +24,56 @@ public class JobProvider {
 
     private static Random random = new Random();
 
+    private static AtomicInteger sindex = new AtomicInteger(0);
+
     public static IJob getNextJob(@NotNull IJob job) {
+
+        if (Config.USE_FIXED_DELAY_NEXT_JOB) {
+            return getFixedDelayNextJob(job);
+        }
+
         int time = job.getFailTimes();
         IJob next = new DelayJob(time * time * 1000);
         next.setRealRunnable(job.getRealRunnable());
         return next;
     }
 
-    private static AtomicInteger sindex = new AtomicInteger(0);
+    private static IJob getFixedDelayNextJob(@NotNull IJob job) {
+        return getFixedDelayJob(Config.FIXED_DELAYJOB_INTERVAL, job);
+    }
 
-    public static IJob getFixedDelayJob() {
+    private static IJob getFixedDelayJob() {
         return getFixedDelayJob(Config.FIXED_DELAYJOB_INTERVAL);
     }
 
-    public static IJob getFixedDelayJob(long delay) {
+    private static IJob getFixedDelayJob(long delay) {
         if (delay == 0) {
             return new ImmediateJob();
         }
 
         IJob job = new DelayJob(sindex.get() * delay);
-        sindex.set(sindex.get());
+        sindex.set(sindex.get() + 1);
         return job;
     }
 
-    public static IJob getDelayJob(long delay) {
+    private static IJob getFixedDelayJob(long delay, @NotNull IJob job) {
+        if (delay == 0) {
+            return new ImmediateJob();
+        }
+
+        IJob job1 = new DelayJob(sindex.get() * delay);
+        job1.setRealRunnable(job.getRealRunnable());
+        sindex.set(sindex.get() + 1);
+        return job1;
+    }
+
+    private static IJob getDelayJob(long delay) {
         return new DelayJob(delay);
     }
 
     public static IJob getJob() {
-        if (Config.IS_TEST) {
+
+        if (Config.USE_FIXED_DELAY_JOB) {
             return getFixedDelayJob();
         }
 

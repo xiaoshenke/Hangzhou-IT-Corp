@@ -18,21 +18,17 @@ public class IPProxyTool {
     static {
         ipPortList = new ArrayList<Proxy>();
 
-        ipPortList.add(new Proxy("104.154.197.241", 80));
-        ipPortList.add(new Proxy("121.204.165.246", 8118));
-        ipPortList.add(new Proxy("36.249.25.72", 808));
-        ipPortList.add(new Proxy("115.230.11.193", 808));
-        ipPortList.add(new Proxy("1.83.120.48", 80));
-        ipPortList.add(new Proxy("35.185.44.214", 80));
-        ipPortList.add(new Proxy("110.170.201.227", 8080));
-        ipPortList.add(new Proxy("171.13.36.161", 808));
-        ipPortList.add(new Proxy("183.184.167.89", 31915));
+        ipPortList.add(new Proxy("162.243.76.169", 3128));
+        ipPortList.add(new Proxy("111.13.7.121", 80));
+        ipPortList.add(new Proxy("157.0.25.178", 808));
 
-        current = new AtomicInteger(ipPortList.size() - 1);
+        current = new AtomicInteger(-1);
     }
 
-    //Fixme:2017-04-14 代理ip一直不可用
     public static Proxy switchNextProxy() {
+        if (current.get() + 1 == ipPortList.size()) {
+            return null;
+        }
         current.set((current.get() + 1) % ipPortList.size());
 
         Proxy proxy = ipPortList.get(current.get());

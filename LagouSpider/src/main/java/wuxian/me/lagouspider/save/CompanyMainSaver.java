@@ -40,7 +40,7 @@ public class CompanyMainSaver implements IModelSaver<Company> {
 
             }
         }, false);
-        thread.setName("save_company_main");
+        thread.setName("SaveCompanyMainThread");
         thread.start();
     }
 

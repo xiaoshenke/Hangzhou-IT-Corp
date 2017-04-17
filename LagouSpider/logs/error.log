@@ -1,1 +1,11 @@
 2017-04-17 13:57:34 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:238) switch ip fail
+2017-04-17 19:07:47 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:167) switch ip fail
+2017-04-17 19:08:04 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:167) switch ip fail
+2017-04-17 19:08:20 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:167) switch ip fail
+2017-04-17 19:08:38 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:167) switch ip fail
+2017-04-17 19:08:55 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:167) switch ip fail
+2017-04-17 19:09:24 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:167) switch ip fail
+2017-04-17 19:09:47 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:167) switch ip fail
+2017-04-17 19:10:04 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:167) switch ip fail
+2017-04-17 19:10:19 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:167) switch ip fail
+2017-04-17 19:28:26 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.core.LagouSpiderCallback.onFailure(LagouSpiderCallback.java:25) onFailure: spider: AreaSpider: {Area: {area_name: 西溪 ,distinct_name: 西湖区}}

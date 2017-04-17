@@ -21,6 +21,7 @@ import wuxian.me.lagouspider.model.Location;
 import wuxian.me.lagouspider.model.Product;
 import wuxian.me.lagouspider.save.CompanySaver;
 import wuxian.me.lagouspider.util.Helper;
+import wuxian.me.lagouspider.util.LoggerSpider;
 import wuxian.me.lagouspider.util.ModuleProvider;
 
 import java.io.IOException;
@@ -34,7 +35,60 @@ import static wuxian.me.lagouspider.util.ModuleProvider.*;
  */
 public class MainTest {
 
-    //Todo: 切换IP,重试队列的联合测试
+    @Test
+    public void testAreaSpider() {
+        Config.IS_TEST = true;
+
+        IPProxyTool.Proxy proxy = IPProxyTool.switchNextProxy();
+        logger().info("Using proxy ip: " + proxy.ip + " port: " + proxy.port);
+        ensureIpSwitched(proxy);
+
+        AreaMapper areaMapper = ModuleProvider.areaMapper();
+        CompanyMapper companyMapper = ModuleProvider.companyMapper();
+        ProductMapper productMapper = ModuleProvider.productMapper();
+        LocationMapper locationMapper = ModuleProvider.locationMapper();
+
+        Company.tableName = Helper.getCompanyTableName();
+        Product.tableName = Helper.getProductTableName();
+        Location.tableName = Helper.getLocationTableName();
+
+        Company company = new Company(-1);
+        companyMapper.deleteTable(company);
+        companyMapper.createNewTableIfNeed(company);
+        companyMapper.createIndex(company);
+
+        Product product = new Product(-1);
+        productMapper.deleteTable(product);
+        productMapper.createNewTableIfNeed(product);
+        productMapper.createIndex(product);
+
+        Location location = new Location(-1, "2r3");
+        locationMapper.deleteTable(location);
+        locationMapper.createNewTableIfNeed(location);
+        locationMapper.createIndex(location);
+
+        logger().info("begin to load area of 西湖区");
+        List<Area> areas = areaMapper.loadAreaOfDistinct("西湖区");
+        assertTrue(areas.size() != 0);
+
+        for (Area area : areas) {
+            logger().info(area.toString());
+
+            IJob job = JobProvider.getJob();
+            job.setRealRunnable(LoggerSpider.from(new AreaSpider(area)));
+            JobQueue.getInstance().putJob(job);
+
+            logger().info("BEGIN AreaSpider " + area.toString());
+            break;
+        }
+
+        logger().info("Start workThread...");
+        WorkThread.getInstance().start();
+
+        while (true) {
+            //never stop //http://www.cnblogs.com/yanphet/p/5774291.html
+        }
+    }
 
     @Test
     public void testCompanyMain() {
@@ -61,7 +115,7 @@ public class MainTest {
         locationMapper.createNewTableIfNeed(new Location(-1, "11"));
 
 
-        IJob job = JobProvider.getFixedDelayJob(0);
+        IJob job = JobProvider.getJob();
         job.setRealRunnable(new CompanySpider(37974, ""));
         JobQueue.getInstance().putJob(job);
 
@@ -69,77 +123,6 @@ public class MainTest {
         WorkThread.getInstance().start();
 
         while (true) {
-
-        }
-    }
-
-
-    //疑似拉勾会爬取代理网站的ip,若是则立马进行屏蔽...
-    @Test
-    public void testAreaSpider() {
-        Config.IS_TEST = true;
-
-        String tableName = Helper.getCompanyTableName();
-        logger().info("TableName: " + tableName);
-        Company.tableName = tableName;
-        CompanyMapper companyMapper = ModuleProvider.companyMapper();
-        companyMapper.createNewTableIfNeed(new Company(-1));
-
-        //IPProxyTool.Proxy proxy = IPProxyTool.switchNextProxy();
-        //logger().info("Using proxy ip: " + proxy.ip + " port: " + proxy.port);
-        //ensureIpSwitched(proxy);
-
-        AreaMapper areaMapper = areaMapper();
-        logger().info("begin to load area of 西湖区");
-        List<Area> areas = areaMapper.loadAreaOfDistinct("西湖区");
-        assertTrue(areas.size() != 0);
-
-        for (Area area : areas) {
-            logger().info(area.toString());
-
-            IJob job = JobProvider.getFixedDelayJob();
-            job.setRealRunnable(new AreaSpider(area));
-            JobQueue.getInstance().putJob(job);
-
-            logger().info("BEGIN AreaSpider " + area.toString());
-            break;
-        }
-
-        logger().info("Start workThread...");
-        WorkThread.getInstance().start();
-
-        while (true) {
-            //never stop //http://www.cnblogs.com/yanphet/p/5774291.html
-        }
-    }
-
-    @Test
-    public void testSuspendWorkThread() {
-        Config.IS_TEST = true;
-
-        AreaMapper areaMapper = areaMapper();
-        List<Area> areas = areaMapper.loadAll();
-        assertTrue(areas.size() != 0);
-
-        for (Area area : areas) {
-            IJob job = JobProvider.getFixedDelayJob(0);
-            job.setRealRunnable(new AreaSpider(area));
-            JobQueue.getInstance().putJob(job);
-        }
-
-        WorkThread thread = WorkThread.getInstance();
-        thread.start();
-        try {
-            Thread.sleep(100);
-            logger().info("begin to pauseWhenSwitchIP");
-            thread.pauseWhenSwitchIP();
-
-            Thread.sleep(1000);
-            logger().info("begin to resume");
-            thread.resumeNow();
-
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
 
         }
     }
@@ -152,7 +135,7 @@ public class MainTest {
         logger().info("using proxy ip: " + proxy.ip + " port: " + proxy.port);
         ensureIpSwitched(proxy);
 
-        IJob job = JobProvider.getFixedDelayJob(0);
+        IJob job = JobProvider.getJob();
         job.setRealRunnable(new SearchSpider(33618, "微贷（杭州）金融信息服务有限公司"));
         JobQueue.getInstance().putJob(job);
 

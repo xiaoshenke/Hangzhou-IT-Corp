@@ -22,7 +22,7 @@ public class LagouSpiderCallback extends SpiderCallback {
 
     //拉勾返回onFailure可能就是被屏蔽了
     public final void onFailure(Call call, IOException e) {
-        logger().error("onFailure: spider: " + getSpider().name());
+        logger().error("onFailure: " + getSpider().name());
         JobMonitor.getInstance().fail(getSpider(), Fail.MAYBE_BLOCK);
         getSpider().serializeFullLog();
     }

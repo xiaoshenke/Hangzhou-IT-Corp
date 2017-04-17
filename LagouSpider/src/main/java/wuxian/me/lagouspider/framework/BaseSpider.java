@@ -101,11 +101,9 @@ public abstract class BaseSpider implements Runnable {
             builder.append(LINTFEED + "Body: " + callback.getBody());
         }
 
-        //Todo 规范一下name()的取值
         String name = name().length() > 15 ? name().substring(0, 15) : name();
         String fileName = fullLogSdf.format(date) + name; //simpleName只有一个类名
 
-        //Fixme:framework包下引入了一个非framework的Helper类 --> 间接引用了一些配置项 不过这个类移植起来还是很容易的
         FileUtil.writeToFile(Helper.getFullLogFilePath(fileName), builder.toString());
     }
 

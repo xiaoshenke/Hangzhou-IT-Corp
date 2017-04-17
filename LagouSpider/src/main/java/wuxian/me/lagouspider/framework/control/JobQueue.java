@@ -52,4 +52,8 @@ public class JobQueue {
     public boolean isEmpty() {
         return queue.isEmpty();
     }
+
+    public int getJobNum() {
+        return queue.size();
+    }
 }

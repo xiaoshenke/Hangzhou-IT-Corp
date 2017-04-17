@@ -27,6 +27,10 @@ public class Config {
 
     public static boolean ENABLE_SWITCH_IPPROXY = true;
 
+    public static boolean USE_FIXED_DELAY_NEXT_JOB = true;
+
+    public static boolean USE_FIXED_DELAY_JOB = true;
+
     public static int SINGLEJOB_MAX_FAIL_TIME = 4;  //单个job的最大失败次数
 
     public static final String URL_LAGOU_COMPANY_MAIN = "https://www.lagou.com/gongsi/";

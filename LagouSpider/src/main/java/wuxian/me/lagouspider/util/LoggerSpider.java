@@ -24,4 +24,19 @@ public class LoggerSpider implements Runnable {
         logger().info("Run spider: " + runnable.name());
         runnable.run();
     }
+
+    @Override
+    public int hashCode() {
+        return runnable.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return runnable.equals(obj);
+    }
+
+    @Override
+    public String toString() {
+        return runnable.toString();
+    }
 }

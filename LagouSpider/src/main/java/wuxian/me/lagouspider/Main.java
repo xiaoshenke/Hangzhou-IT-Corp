@@ -69,6 +69,7 @@ public class Main {
                 productMapper.createIndex(product);
 
                 Location location = new Location(-1, "2r3");
+                locationMapper.deleteTable(location);
                 locationMapper.createNewTableIfNeed(location);
                 locationMapper.createIndex(location);
 

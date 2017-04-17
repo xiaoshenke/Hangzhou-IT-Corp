@@ -31,7 +31,7 @@ public class CompanyJsonSaver implements IModelSaver<Company> {
 
             }
         });
-        thread.setName("save_company_json");
+        thread.setName("SaveCompanyThread");
         thread.start();
     }
 

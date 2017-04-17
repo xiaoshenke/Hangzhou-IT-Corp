@@ -3,9 +3,7 @@ package wuxian.me.lagouspider.save;
 import com.sun.istack.internal.NotNull;
 import wuxian.me.lagouspider.Config;
 import wuxian.me.lagouspider.mapper.LocationMapper;
-import wuxian.me.lagouspider.mapper.ProductMapper;
 import wuxian.me.lagouspider.model.Location;
-import wuxian.me.lagouspider.model.Product;
 import wuxian.me.lagouspider.util.ModuleProvider;
 
 import java.util.Map;
@@ -16,7 +14,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * <p>
  */
 public class LocationSaver implements IModelSaver<Location> {
+
     private static LocationSaver instance = null;
+    private Map<Long, Location> companyMap = new ConcurrentHashMap<Long, Location>();
+    private SaveModelThread thread;
 
     private LocationMapper mapper = ModuleProvider.locationMapper();
 
@@ -38,12 +39,9 @@ public class LocationSaver implements IModelSaver<Location> {
                 //
             }
         });
-        thread.setName("save_location");
+        thread.setName("SaveLocationThread");
         thread.start();
     }
-
-    private Map<Long, Location> companyMap = new ConcurrentHashMap<Long, Location>();
-    private SaveModelThread thread;
 
     public boolean saveModel(@NotNull Location location) {
         companyMap.put(location.company_id, location);

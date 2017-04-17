@@ -8,6 +8,8 @@ import wuxian.me.lagouspider.framework.job.IJob;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static wuxian.me.lagouspider.util.ModuleProvider.logger;
+
 /**
  * Created by wuxian on 7/4/2017.
  *
@@ -42,7 +44,6 @@ public class JobMonitor {
         failureMonitor.register(spider);
     }
 
-
     public void success(Runnable runnable) {
         IJob job = getJob(runnable);
         if (job != null) {
@@ -64,13 +65,19 @@ public class JobMonitor {
             failureMonitor.fail(job, fail);
 
             if (job.getFailTimes() >= Config.SINGLEJOB_MAX_FAIL_TIME) { //是否进行重试
-                return;
-            }
-            if (!Config.ENABLE_RETRY_SPIDER || !retry) {
+                logger().error("Job: " + job.toString() + " fail " + job.getFailTimes() + "times, abandon it");
                 return;
             }
 
+            if (!Config.ENABLE_RETRY_SPIDER || !retry) {
+                logger().error("Job: " + job.toString() + " fail, will not retry");
+                return;
+            }
+
+            logger().info("Retry Job: " + job.toString());
+
             IJob next = JobProvider.getNextJob(job);  //重新制定爬虫策略 放入jobQueue
+
             next.setCurrentState(IJob.STATE_RETRY);
             JobQueue.getInstance().putJob(next, IJob.STATE_RETRY);
         }
@@ -90,5 +97,9 @@ public class JobMonitor {
             return jobMap.get(runnable);
         }
         return null;
+    }
+
+    public int getWholeJobNum() {
+        return set.size();
     }
 }
