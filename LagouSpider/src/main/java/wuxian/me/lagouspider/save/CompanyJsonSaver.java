@@ -68,7 +68,6 @@ public class CompanyJsonSaver implements IModelSaver<Company> {
 
                 tmp.detail_location = company.detail_location;
 
-                logger().info("After merge: " + tmp.toString());
                 companyMap.put(company.company_id, tmp);
                 return true;
             }

@@ -43,7 +43,8 @@ public class Product extends BaseModel {
     }
 
     public String name() {
-        return "Product: {company_id: " + company_id + " product_name: " + product_name + " url: " + url + " labelstring: " + labelString + "}";
+        return "Product: {company_id: " + company_id + " ,product_name: "
+                + product_name + " ,url: " + url + " ,labelstring: " + labelString + "}";
     }
 
 }

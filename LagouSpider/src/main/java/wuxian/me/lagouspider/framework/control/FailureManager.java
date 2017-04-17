@@ -29,6 +29,11 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
  * 根据失败的情况判断是否ip被屏蔽了
  *
  * 只暴露给 @JobMonitor
+ *
+ * 日志级别规定:
+ * 1 监控整个项目运行的info级别 比如切换ip,job状态切换:开始运行,成功,失败,重试等
+ * 2 Job出错的error级
+ * 3 其他debug级别 比如parsing什么的
  */
 public class FailureManager {
 
@@ -71,7 +76,7 @@ public class FailureManager {
     AtomicInteger failNum = new AtomicInteger(0);
 
     public void success(@NotNull IJob job) {
-        logger().info("Success: " + ((BaseSpider) job.getRealRunnable()).name());
+        logger().info("Success: " + ((BaseSpider) job).name());
         successNum.getAndIncrement();
 
         if (todoSpiderList.contains(job)) {
@@ -130,7 +135,7 @@ public class FailureManager {
         }
 
         if (isBlocked(fail)) {
-            logger().info("WE ARE BLOCKED! Until Now we have success " + successNum.get() +
+            logger().error("WE ARE BLOCKED! Until Now we have success " + successNum.get() +
                     " jobs, we have run " + (System.currentTimeMillis() - startTime) / 1000 + " seconds");
             if (Config.ENABLE_SWITCH_IPPROXY) {
                 doSwitchIp();

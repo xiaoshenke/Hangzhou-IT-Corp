@@ -8,6 +8,7 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
 /**
  * Created by wuxian on 8/4/2017.
+ * Todo: better log
  */
 public class SaveModelThread<T> extends Thread {
 

@@ -13,11 +13,9 @@ public class Config {
 
     public static boolean ENABLE_SPIDER_AREAPAGE = true;
 
-    public static boolean ENABLE_PRINT_PARSED_COMPANY = false;
+    public static boolean ENABLE_SAVE_PRODUCT_DB = true;
 
-    public static boolean ENABLE_SAVE_PRODUCT_DB = false;
-
-    public static boolean ENABLE_SAVE_LOCATION_DB = false;
+    public static boolean ENABLE_SAVE_LOCATION_DB = true;
 
     public static boolean ENABLE_SAVE_COMPANY_DB = true;
 
@@ -25,9 +23,9 @@ public class Config {
 
     public static boolean ENABLE_SPIDER_ITCHENGZI_SEARCH = false;
 
-    public static boolean ENABLE_RETRY_SPIDER = false;
+    public static boolean ENABLE_RETRY_SPIDER = true;
 
-    public static boolean ENABLE_SWITCH_IPPROXY = false;
+    public static boolean ENABLE_SWITCH_IPPROXY = true;
 
     public static int SINGLEJOB_MAX_FAIL_TIME = 4;  //单个job的最大失败次数
 

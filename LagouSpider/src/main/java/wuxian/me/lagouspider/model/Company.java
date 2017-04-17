@@ -51,13 +51,13 @@ public class Company extends BaseModel {
 
     public String name() {
         if (detail_location == null) {
-            return "Company: {id: " + company_id + " product_name: " + company_fullname + " stage: " +
-                    financeStage + " industry: " + industryField + " companySize :" + company_size + "}";
+            return "Company: {id: " + company_id + " ,name: " + company_fullname + " ,industry: "
+                    + industryField + " companySize :" + company_size + "}";
         } else {
-            return "Company: {id: " + company_id + " product_name: " + company_fullname + " stage: " +
-                    financeStage + " industry: " + industryField + " companySize :" + company_size +
-                    " logo: " + logo + " detail_location: " + detail_location + " finaceStage: " + financeStage +
-                    " description: " + description + "}";
+            return "Company: {id: " + company_id + " name: " + company_fullname + " stage: " + " lagouAuthen: " +
+                    lagouAuthentic + financeStage + " industry: " + industryField + " companySize :" + company_size
+                    + " description: " + description + "}";
         }
     }
+
 }

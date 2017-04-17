@@ -31,13 +31,10 @@ public class CompanySaver implements IModelSaver<Company> {
     }
 
     public boolean saveModel(@NotNull Company company) {
-        logger().info("CompanySaver.saveModel company: " + company.toString());
         if (company.detail_location != null) {  //这是一个location类型的company 先看看json类型里有没有
             if (jsonSaver.saveModel(company)) {
-                logger().info("jsonSaver return true");
                 return true;
             }
-            logger().info("jsonSaver return false");
             locationSaver.saveModel(company);
             return true;
         }

@@ -27,7 +27,7 @@ public class Area extends BaseModel {
     }
 
     public String name() {
-        return "area_name: " + name + " ,distinct_name: " + distinct_name;
+        return "Area: {area_name: " + name + " ,distinct_name: " + distinct_name + "}";
     }
 
 }

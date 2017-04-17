@@ -16,6 +16,7 @@ import wuxian.me.lagouspider.framework.control.JobProvider;
 import wuxian.me.lagouspider.framework.control.JobQueue;
 import wuxian.me.lagouspider.model.Area;
 import wuxian.me.lagouspider.util.Helper;
+import wuxian.me.lagouspider.util.LoggerSpider;
 
 import static wuxian.me.lagouspider.Config.URL_LAGOU_JAVA;
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
@@ -83,14 +84,14 @@ public class AreaSpider extends BaseLagouSpider {
     public void beginSpiderAreaPage() {
         for (int i = 1; i < pageNum; i++) {
             IJob job = JobProvider.getJob();
-            job.setRealRunnable(new AreaPageSpider(area, i));
+            job.setRealRunnable(LoggerSpider.from(new AreaPageSpider(area, i)));
             JobQueue.getInstance().putJob(job);
         }
     }
 
     @Override
     public String name() {
-        return "AreaSpider " + area.name();
+        return "AreaSpider: {" + area.name() + "}";
     }
 
 }

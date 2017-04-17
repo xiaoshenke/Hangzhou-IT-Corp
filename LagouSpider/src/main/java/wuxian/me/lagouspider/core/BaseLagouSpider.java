@@ -20,6 +20,7 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
  * 1 Request buildRequest()
  * 2 parseRealData(String data)
  * 3 product_name(),fullName();
+ * 4 override toString()方法来规范命名
  */
 public abstract class BaseLagouSpider extends BaseSpider {
 

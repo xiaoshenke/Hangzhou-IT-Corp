@@ -17,6 +17,7 @@ import wuxian.me.lagouspider.model.Area;
 import wuxian.me.lagouspider.model.Company;
 import wuxian.me.lagouspider.save.CompanySaver;
 import wuxian.me.lagouspider.util.Helper;
+import wuxian.me.lagouspider.util.LoggerSpider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,16 +93,10 @@ public class AreaPageSpider extends BaseLagouSpider {
             }
         }
 
-        if (Config.ENABLE_PRINT_PARSED_COMPANY) {
-            for (Company company : companyList) {
-                logger().info("SaveCompany: " + company.toString());
-            }
-        }
-
         if (Config.ENABLE_SPIDER_COMPANY_MAIN) {
             for (Company company : companyList) {
                 IJob job = JobProvider.getJob();
-                job.setRealRunnable(new CompanySpider(company.company_id, company.company_fullname));
+                job.setRealRunnable(LoggerSpider.from(new CompanySpider(company.company_id, company.company_fullname)));
                 JobQueue.getInstance().putJob(job);
             }
         }
@@ -153,13 +148,6 @@ public class AreaPageSpider extends BaseLagouSpider {
         } else {
             throw new MaybeBlockedException();
         }
-        /*
-        if (!object.get("financeStage").isJsonNull()) {
-            company.financeStage = object.get("financeStage").getAsString().trim();
-        } else {
-            throw new MaybeBlockedException();
-        }
-        */
         if (!object.get("industryField").isJsonNull()) {
             company.industryField = object.get("industryField").getAsString().trim();
         } else {
@@ -180,7 +168,8 @@ public class AreaPageSpider extends BaseLagouSpider {
     }
 
     public String name() {
-        return "AreaPageSpider index:" + pageIndex + " " + area.name();
+        return "AreaPageSpider: {index: " +
+                pageIndex + " ," + area.name();
     }
 
 }

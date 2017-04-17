@@ -20,6 +20,7 @@ import wuxian.me.lagouspider.model.Company;
 import wuxian.me.lagouspider.model.Location;
 import wuxian.me.lagouspider.model.Product;
 import wuxian.me.lagouspider.util.Helper;
+import wuxian.me.lagouspider.util.LoggerSpider;
 import wuxian.me.lagouspider.util.ModuleProvider;
 
 import java.sql.DriverManager;
@@ -49,23 +50,29 @@ public class Main {
             spider.beginSpider();
         } else {
             if (Helper.shouldStartNewGrab()) {     //每过7天开始一次全新抓取
-                logger().info("begin a new total grab");
+                logger().info("Begin a new total grab");
                 Helper.updateNewGrab();
 
+                logger().info("Create new Tables");
                 Company.tableName = Helper.getCompanyTableName();
                 Product.tableName = Helper.getProductTableName();
                 Location.tableName = Helper.getLocationTableName();
 
-                companyMapper.createNewTableIfNeed(new Company(-1));
-                companyMapper.createIndex(new Company(-1));
+                Company company = new Company(-1);
+                companyMapper.deleteTable(company);
+                companyMapper.createNewTableIfNeed(company);
+                companyMapper.createIndex(company);
 
-                productMapper.createNewTableIfNeed(new Product(-1));
-                productMapper.createIndex(new Product(-1));
+                Product product = new Product(-1);
+                productMapper.deleteTable(product);
+                productMapper.createNewTableIfNeed(product);
+                productMapper.createIndex(product);
 
-                locationMapper.createNewTableIfNeed(new Location(-1, "11"));
-                locationMapper.createIndex(new Location(-1, "11"));
+                Location location = new Location(-1, "2r3");
+                locationMapper.createNewTableIfNeed(location);
+                locationMapper.createIndex(location);
 
-                logger().info("load areas from database");
+                logger().info("Load areas from database");
                 List<Area> areas = areaMapper.loadAll();
                 if (areas == null || areas.size() == 0) {
                     areas = parseAreasFromFile();
@@ -76,16 +83,16 @@ public class Main {
                     areas = areaMapper.loadAll();
                 }
 
-                logger().info("add job to jobqueue...");
+                logger().info("Add AreaSpider to JobQueue...");
                 for (Area area : areas) {
                     IJob job = JobProvider.getJob();
-                    job.setRealRunnable(new AreaSpider(area));
+                    job.setRealRunnable(LoggerSpider.from(new AreaSpider(area)));
                     JobQueue.getInstance().putJob(job);
 
                 }
 
+                logger().info("Start workThread...");
                 WorkThread.getInstance().start();
-                logger().info("start workThread...");
             }
         }
     }

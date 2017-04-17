@@ -24,6 +24,7 @@ import wuxian.me.lagouspider.save.CompanySaver;
 import wuxian.me.lagouspider.save.LocationSaver;
 import wuxian.me.lagouspider.save.ProductSaver;
 import wuxian.me.lagouspider.util.Helper;
+import wuxian.me.lagouspider.util.LoggerSpider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,7 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 public class CompanySpider extends BaseLagouSpider {
     private NodeList trees = null;
 
+    Company company;
     long company_id = -1;
     private String companyName;
 
@@ -79,7 +81,6 @@ public class CompanySpider extends BaseLagouSpider {
     }
 
     public int parseRealData(String data) {
-        logger().info("CompanySpider, received htmlData,begin to pase");
         try {
             Parser parser = new Parser(data);
             parser.setEncoding("utf-8");
@@ -95,29 +96,14 @@ public class CompanySpider extends BaseLagouSpider {
             Company company = buildCompany();
             if (Config.ENABLE_SAVE_COMPANY_DB) {
                 saveCompany(company);
-                //logger().info("SAVE company MAIN: " + company.toString());
-            } else {
-                logger().info("Company main: " + company.toString());
             }
 
             if (Config.ENABLE_SAVE_PRODUCT_DB) {
                 saveProduct();
-            } else {
-                StringBuilder str = new StringBuilder("");
-                for (Product product : productList) {
-                    str.append(product.toString() + ", ");
-                }
-                logger().info("ProductList: " + str.toString());
             }
 
             if (Config.ENABLE_SAVE_LOCATION_DB) {
                 saveLocation();
-            } else {
-                StringBuilder str = new StringBuilder("");
-                for (String location : locationList) {
-                    str.append(location.toString() + ", ");
-                }
-                logger().info("LocationList: ");
             }
 
             if (Config.ENABLE_SPIDER_ITCHENGZI_SEARCH) {
@@ -163,14 +149,11 @@ public class CompanySpider extends BaseLagouSpider {
         ret = list.extractAllNodesThatMatch(f12, true);
         //logger().info("BEGIN to parse company product_name");
         if (ret != null && ret.size() != 0) {
-            //companyName = ((LinkTag) ret.elementAt(0)).getAttribute("title").trim();
-            //logger().info("companyName: " + companyName);
-
             webLink = ((LinkTag) ret.elementAt(0)).getLink().trim();
 
             if (Config.ENABLE_SPIDER_ITCHENGZI_SEARCH) {
                 IJob iJob = JobProvider.getJob();
-                iJob.setRealRunnable(new SearchSpider(company_id, companyName));
+                iJob.setRealRunnable(LoggerSpider.from(new SearchSpider(company_id, companyName)));
                 JobQueue.getInstance().putJob(iJob);
             }
         }
@@ -179,7 +162,6 @@ public class CompanySpider extends BaseLagouSpider {
         HasAttributeFilter f3 = new HasAttributeFilter("class", "company_word");
         ret = list.extractAllNodesThatMatch(f3, true);
         if (ret != null && ret.size() != 0) {
-            //printChildrenOfNode(ret.elementAt(0));
             description = ret.elementAt(0).toPlainTextString().trim();
         }
 
@@ -233,23 +215,6 @@ public class CompanySpider extends BaseLagouSpider {
 
             if (child.getChildren() != null && child.getChildren().size() != 0) {
 
-                /*  //和@AreaPageSpider重复
-                HasAttributeFilter f6 = new HasAttributeFilter("class", "type");  //type
-                list = child.getChildren().extractAllNodesThatMatch(f6, true);
-                if (list != null && list.size() != 0) {
-                    Node type = list.elementAt(0);
-                    type = type.getNextSibling();
-                    while (type != null) {
-                        if (type instanceof Span) {
-                            companyBussiness = ((Span) type).getStringText().trim();
-                            logger().info("companyBussiness: " + companyBussiness);
-                            break;
-                        }
-                        type = type.getNextSibling();
-                    }
-                }
-                */
-
                 HasAttributeFilter f7 = new HasAttributeFilter("class", "process");
                 list = child.getChildren().extractAllNodesThatMatch(f7, true);
 
@@ -259,29 +224,11 @@ public class CompanySpider extends BaseLagouSpider {
                     while (type != null) {
                         if (type instanceof Span) {
                             financeStage = ((Span) type).getStringText().trim();
-                            //logger().info("financeStage: " + financeStage);
                             break;
                         }
                         type = type.getNextSibling();
                     }
                 }
-
-                /*  //和@AreaPageSpider重复
-                HasAttributeFilter f8 = new HasAttributeFilter("class", "number");
-                list = child.getChildren().extractAllNodesThatMatch(f8, true);
-                if (list != null && list.size() != 0) {
-                    Node type = list.elementAt(0);
-                    type = type.getNextSibling();
-                    while (type != null) {
-                        if (type instanceof Span) {
-                            companySize = ((Span) type).getStringText().trim();
-                            logger().info("companySize: " + companySize);
-                            break;
-                        }
-                        type = type.getNextSibling();
-                    }
-                }
-                */
             }
         }
 
@@ -443,7 +390,10 @@ public class CompanySpider extends BaseLagouSpider {
     }
 
     private Company buildCompany() {
-        Company company = new Company(company_id);
+        if (company != null) {
+            return company;
+        }
+        company = new Company(company_id);
 
         company.webLink = webLink;
         company.logo = logo;
@@ -472,15 +422,18 @@ public class CompanySpider extends BaseLagouSpider {
         CompanySaver.getInstance().saveModel(company);
     }
 
-    //Todo
-    public String name() {
-        return null;
-    }
-
     //Todo:判断是A轮以上 那么进行IT桔子搜索
     private void beginITJuziSearchSpider() {
         ;
     }
 
+    public String name() {
+        StringBuilder str = new StringBuilder("");
+        for (String location : locationList) {
+            str.append(location + ";");
+        }
+        return "CompanySpider: { " + buildCompany().name() + " location: " + str + " ,招聘岗位: "
+                + positionNum + " 面试个数: " + interviewNum + " 面试评分: " + score + "}";
+    }
 
 }
