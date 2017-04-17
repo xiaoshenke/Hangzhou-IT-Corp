@@ -1,6 +1,5 @@
 package wuxian.me.lagouspider;
 
-import wuxian.me.lagouspider.framework.control.JobMonitor;
 import wuxian.me.lagouspider.core.AreaSpider;
 import wuxian.me.lagouspider.framework.control.JobProvider;
 import wuxian.me.lagouspider.framework.control.JobQueue;
@@ -9,6 +8,8 @@ import wuxian.me.lagouspider.core.DistinctSpider;
 import wuxian.me.lagouspider.mapper.AreaMapper;
 import wuxian.me.lagouspider.framework.job.IJob;
 import wuxian.me.lagouspider.mapper.CompanyMapper;
+import wuxian.me.lagouspider.mapper.LocationMapper;
+import wuxian.me.lagouspider.mapper.ProductMapper;
 import wuxian.me.lagouspider.model.Area;
 
 import static wuxian.me.lagouspider.framework.FileUtil.*;
@@ -16,8 +17,11 @@ import static wuxian.me.lagouspider.util.Helper.getAreaFilePath;
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
 import wuxian.me.lagouspider.model.Company;
+import wuxian.me.lagouspider.model.Location;
+import wuxian.me.lagouspider.model.Product;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.ModuleProvider;
+
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -29,6 +33,8 @@ import java.util.List;
 public class Main {
     AreaMapper areaMapper = ModuleProvider.areaMapper();
     CompanyMapper companyMapper = ModuleProvider.companyMapper();
+    ProductMapper productMapper = ModuleProvider.productMapper();
+    LocationMapper locationMapper = ModuleProvider.locationMapper();
 
     public Main() {
     }
@@ -46,11 +52,18 @@ public class Main {
                 logger().info("begin a new total grab");
                 Helper.updateNewGrab();
 
-                logger().info("create new company table");
-                String tableName = Helper.getCompanyTableName();
-                Company.tableName = tableName;
+                Company.tableName = Helper.getCompanyTableName();
+                Product.tableName = Helper.getProductTableName();
+                Location.tableName = Helper.getLocationTableName();
+
                 companyMapper.createNewTableIfNeed(new Company(-1));
                 companyMapper.createIndex(new Company(-1));
+
+                productMapper.createNewTableIfNeed(new Product(-1));
+                productMapper.createIndex(new Product(-1));
+
+                locationMapper.createNewTableIfNeed(new Location(-1, "11"));
+                locationMapper.createIndex(new Location(-1, "11"));
 
                 logger().info("load areas from database");
                 List<Area> areas = areaMapper.loadAll();
@@ -104,7 +117,7 @@ public class Main {
         return false;
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Main main = new Main();
         main.run();
     }

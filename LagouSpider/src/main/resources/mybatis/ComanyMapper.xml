@@ -9,10 +9,10 @@
 
     <update id="createNewTableIfNeed" parameterType="wuxian.me.lagouspider.model.Company">
         create table if not exists ${tableName} (company_id INTEGER,area_id INT,company_fullname
-        VARCHAR(40),industryField VARCHAR(20),company_size VARCHAR(90),logo VARCHAR(220),
-        detail_location VARCHAR(20),financeStage VARCHAR(30), webLink VARCHAR(20), lagouAuthentic VARCHAR(5),
-        description VARCHAR(30), positionNum VARCHAR(10),resumeRate VARCHAR(10),interviewNum VARCHAR(5),
-         score VARCHAR(5),accordSore VARCHAR(5),interviewerScore VARCHAR(5),environmentScore VARCHAR(5),
+        VARCHAR(40),industryField VARCHAR(20),company_size VARCHAR(90),logo VARCHAR(128),
+        detail_location VARCHAR(20),financeStage VARCHAR(30), webLink VARCHAR(128), lagouAuthentic VARCHAR(5),
+        description VARCHAR(100), positionNum VARCHAR(5),resumeRate VARCHAR(5),interviewNum VARCHAR(5),
+        score VARCHAR(3),accordSore VARCHAR(3),interviewerScore VARCHAR(3),environmentScore VARCHAR(3),
         PRIMARY KEY (company_id))
         DEFAULT CHARSET = utf8,
         ENGINE = InnoDB;

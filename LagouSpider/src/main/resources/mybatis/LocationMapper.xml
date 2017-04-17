@@ -20,8 +20,7 @@
     </update>
 
     <insert id="insertLocation" parameterType="wuxian.me.lagouspider.model.Location">
-        insert into ${tableName} (company_id,location)
-        values (#{company_id},#{location});
+        insert into ${tableName} (company_id,location) values (#{company_id},#{location});
     </insert>
 
     <select id="loadLocation" resultType="wuxian.me.lagouspider.model.Location">

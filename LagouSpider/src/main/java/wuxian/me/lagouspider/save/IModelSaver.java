@@ -6,10 +6,9 @@ import wuxian.me.lagouspider.model.Company;
 /**
  * Created by wuxian on 8/4/2017.
  */
-public interface ICompanySaver {
-
+public interface IModelSaver<T> {
     /**
      * @return datachanged
      */
-    boolean saveCompany(@NotNull Company company);
+    boolean saveModel(@NotNull T model);
 }

@@ -4,7 +4,6 @@ import okhttp3.*;
 import org.junit.Test;
 import wuxian.me.lagouspider.core.CompanySpider;
 import wuxian.me.lagouspider.core.itjuzi.SearchSpider;
-import wuxian.me.lagouspider.framework.control.JobMonitor;
 import wuxian.me.lagouspider.framework.control.JobProvider;
 import wuxian.me.lagouspider.framework.control.JobQueue;
 import wuxian.me.lagouspider.framework.control.WorkThread;
@@ -38,103 +37,29 @@ public class MainTest {
     //Todo: 切换IP,重试队列的联合测试
 
     @Test
-    public void testProductDB() {
+    public void testCompanyMain() {
         Config.IS_TEST = true;
+        //IPProxyTool.Proxy proxy = IPProxyTool.switchNextProxy();
+        //logger().info("using proxy ip: " + proxy.ip + " port: " + proxy.port);
+        //ensureIpSwitched(proxy);
 
-        ProductMapper productMapper = ModuleProvider.productMapper();
-        LocationMapper locationMapper = ModuleProvider.locationMapper();
-
-        //Helper.updateNewGrab();
         String tableName = Helper.getCompanyTableName();
 
         Company.tableName = tableName;
         Product.tableName = Helper.getProductTableName();
         Location.tableName = Helper.getLocationTableName();
 
+        ProductMapper productMapper = ModuleProvider.productMapper();
+        LocationMapper locationMapper = ModuleProvider.locationMapper();
+
         logger().info("begin create product table");
         productMapper.deleteTable(new Product(-1));
         productMapper.createNewTableIfNeed(new Product(-1));
 
         logger().info("begin create location table");
-        locationMapper.deleteTable(new Location(-1));
-        locationMapper.createNewTableIfNeed(new Location(-1));
+        locationMapper.deleteTable(new Location(-1, "11"));
+        locationMapper.createNewTableIfNeed(new Location(-1, "11"));
 
-        logger().info("begin insert product table");
-        Product product = new Product(123);
-        product.imgUrl = "http://dafdsafsdaf";
-        product.url = "http://xxxx";
-        product.labelString = "app,web";
-        product.description = "hello world";
-        productMapper.insertProduct(product);
-
-        logger().info("begin insert location table");
-        Location location = new Location(32342);
-        location.location = "杭州西湖文二路162号";
-        locationMapper.insertLocation(location);
-
-        while (true) {
-
-        }
-    }
-
-    @Test
-    public void testCompanyDB() {
-        Config.IS_TEST = true;
-
-        CompanyMapper companyMapper = ModuleProvider.companyMapper();
-
-        Helper.updateNewGrab();
-        logger().info("create new company table");
-        String tableName = Helper.getCompanyTableName();
-        logger().info("TableName: " + tableName);
-        Company.tableName = tableName;
-        companyMapper.deleteTable(new Company(-1));
-        companyMapper.createNewTableIfNeed(new Company(-1));
-        //companyMapper.createIndex(new Company(-1));
-        Company company = new Company(128631);
-        company.area_id = 3;
-        company.company_fullname = "广州市仁创通讯科技有限公司";
-        company.financeStage = "不需要融资";
-        company.industryField = "生活服务,金融";
-        company.company_size = "150-500人";
-        company.logo = null;//"//www.lgstatic.com/thumbnail_300x300/i/image/M00/29/76/CgqKkVcv-KmAGEssAABfu0Hq3Wk960.jpg";
-
-        company.detail_location = "multi";
-        company.financeStage = "不需要融资";
-        CompanySaver saver = CompanySaver.getInstance();
-        saver.saveCompany(company);
-
-        while (true) {
-
-        }
-    }
-
-    //Todo
-    @Test
-    public void testITChengziSearch() {
-        Config.IS_TEST = true;
-        IPProxyTool.Proxy proxy = IPProxyTool.switchNextProxy();
-        logger().info("using proxy ip: " + proxy.ip + " port: " + proxy.port);
-        ensureIpSwitched(proxy);
-
-        IJob job = JobProvider.getFixedDelayJob(0);
-        job.setRealRunnable(new SearchSpider(33618, "微贷（杭州）金融信息服务有限公司"));
-        JobQueue.getInstance().putJob(job);
-
-        logger().info("start workThread...");
-        WorkThread.getInstance().start();
-
-        while (true) {
-
-        }
-    }
-
-    @Test
-    public void testCompanyMain() {
-        Config.IS_TEST = true;
-        IPProxyTool.Proxy proxy = IPProxyTool.switchNextProxy();
-        logger().info("using proxy ip: " + proxy.ip + " port: " + proxy.port);
-        ensureIpSwitched(proxy);
 
         IJob job = JobProvider.getFixedDelayJob(0);
         job.setRealRunnable(new CompanySpider(37974, ""));
@@ -219,6 +144,26 @@ public class MainTest {
         }
     }
 
+    //Todo
+    @Test
+    public void testITChengziSearch() {
+        Config.IS_TEST = true;
+        IPProxyTool.Proxy proxy = IPProxyTool.switchNextProxy();
+        logger().info("using proxy ip: " + proxy.ip + " port: " + proxy.port);
+        ensureIpSwitched(proxy);
+
+        IJob job = JobProvider.getFixedDelayJob(0);
+        job.setRealRunnable(new SearchSpider(33618, "微贷（杭州）金融信息服务有限公司"));
+        JobQueue.getInstance().putJob(job);
+
+        logger().info("start workThread...");
+        WorkThread.getInstance().start();
+
+        while (true) {
+        }
+    }
+
+
     private void ensureIpSwitched(IPProxyTool.Proxy proxy) {
         HttpUrl.Builder urlBuilder = HttpUrl.parse("http://www.ip138.com/ip2city.asp").newBuilder();
         Headers.Builder builder = new Headers.Builder();
@@ -243,34 +188,6 @@ public class MainTest {
             if (response != null && response.body() != null) {
                 response.body().close();
             }
-        }
-    }
-
-    @Test
-    public void testSwitchIp() {
-        final IPProxyTool.Proxy proxy = IPProxyTool.switchNextProxy();
-        logger().info("proxy ip: " + proxy.ip + " port: " + proxy.port);
-        ensureIpSwitched(proxy);
-    }
-
-    @Test
-    public void testDelayJob() {
-        Config.IS_TEST = true;
-
-        Runnable runnable = new Runnable() {
-            public void run() {
-                logger().info("real run at: " + System.currentTimeMillis());
-            }
-        };
-        IJob job = JobProvider.getDelayJob(1000 * 2);
-        job.setRealRunnable(runnable);
-
-        JobQueue.getInstance().putJob(job);
-        logger().info("put runnable at: " + System.currentTimeMillis());
-
-        WorkThread.getInstance().start();
-
-        while (true) {
         }
     }
 

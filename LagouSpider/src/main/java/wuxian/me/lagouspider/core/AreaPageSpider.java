@@ -44,7 +44,7 @@ public class AreaPageSpider extends BaseLagouSpider {
 
     private void saveCompany(@Nullable Company company) {
         if (company != null) {
-            CompanySaver.getInstance().saveCompany(company);
+            CompanySaver.getInstance().saveModel(company);
         }
     }
 
@@ -183,11 +183,6 @@ public class AreaPageSpider extends BaseLagouSpider {
                 IJob job = JobProvider.getJob();
                 job.setRealRunnable(new CompanySpider(company.company_id, company.company_fullname));
                 JobQueue.getInstance().putJob(job);
-
-                if (Config.IS_TEST) {
-                    logger().info("BEGIN spider MainPage of " + company.company_fullname + " ,id: " + company.company_id);
-                    break;
-                }
             }
         }
 

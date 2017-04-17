@@ -18,8 +18,11 @@ import wuxian.me.lagouspider.framework.control.JobQueue;
 import wuxian.me.lagouspider.framework.control.MaybeBlockedException;
 import wuxian.me.lagouspider.framework.job.IJob;
 import wuxian.me.lagouspider.model.Company;
+import wuxian.me.lagouspider.model.Location;
 import wuxian.me.lagouspider.model.Product;
 import wuxian.me.lagouspider.save.CompanySaver;
+import wuxian.me.lagouspider.save.LocationSaver;
+import wuxian.me.lagouspider.save.ProductSaver;
 import wuxian.me.lagouspider.util.Helper;
 
 import java.util.ArrayList;
@@ -428,14 +431,19 @@ public class CompanySpider extends BaseLagouSpider {
         ;
     }
 
-    //Todo
+
     private void saveLocation() {
-        ;
+        for (String location : locationList) {
+            LocationSaver.getInstance().saveModel(new Location(company_id, location));
+        }
+
     }
 
-    //Todo
+
     private void saveProduct() {
-        ;
+        for (Product product : productList) {
+            ProductSaver.getInstance().saveModel(product);
+        }
     }
 
     private Company buildCompany() {
@@ -465,7 +473,7 @@ public class CompanySpider extends BaseLagouSpider {
     }
 
     private void saveCompany(@NotNull Company company) {
-        CompanySaver.getInstance().saveCompany(company);
+        CompanySaver.getInstance().saveModel(company);
     }
 
     protected Request buildRequest() {

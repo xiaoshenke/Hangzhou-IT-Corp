@@ -2,23 +2,35 @@ package wuxian.me.lagouspider.save;
 
 import com.sun.istack.internal.NotNull;
 import wuxian.me.lagouspider.Config;
+import wuxian.me.lagouspider.mapper.CompanyMapper;
 import wuxian.me.lagouspider.model.Company;
+import wuxian.me.lagouspider.util.ModuleProvider;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
 /**
  * Created by wuxian on 8/4/2017.
  */
-public class CompanyJsonSaver implements ICompanySaver {
+public class CompanyJsonSaver implements IModelSaver<Company> {
 
-    private SaveCompanyThread thread;
+    private SaveModelThread thread;
+    private CompanyMapper mapper = ModuleProvider.companyMapper();
 
     private CompanyJsonSaver() {
-        thread = new SaveCompanyThread(companyMap, Config.SAVE_COMPANY_INTERVAL, true);
+        thread = new SaveModelThread<Company>(companyMap, Config.SAVE_COMPANY_INTERVAL, new SaveModelThread.IDatabaseOperator<Company>() {
+
+            public void insert(Company model) {
+                mapper.insertCompany(model);
+            }
+
+            public void update(Company model) {
+                mapper.updateCompany(model);
+
+            }
+        });
         thread.setName("save_company_json");
         thread.start();
     }
@@ -35,7 +47,7 @@ public class CompanyJsonSaver implements ICompanySaver {
     private Map<Long, Company> companyMap = new ConcurrentHashMap<Long, Company>();
 
 
-    public boolean saveCompany(@NotNull Company company) {
+    public boolean saveModel(@NotNull Company company) {
         synchronized (companyMap) {
             if (company.detail_location != null && companyMap.keySet().contains(company.company_id)) {
                 Company tmp = companyMap.get(company.company_id);

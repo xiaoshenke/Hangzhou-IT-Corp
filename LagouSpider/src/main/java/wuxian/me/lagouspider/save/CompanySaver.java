@@ -13,7 +13,7 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
  * 因此这里设计一个缓冲机制
  *
  */
-public class CompanySaver implements ICompanySaver {
+public class CompanySaver implements IModelSaver<Company> {
 
     private static CompanySaver instance = null;
 
@@ -30,18 +30,18 @@ public class CompanySaver implements ICompanySaver {
     private CompanySaver() {
     }
 
-    public boolean saveCompany(@NotNull Company company) {
-        logger().info("CompanySaver.saveCompany company: " + company.toString());
+    public boolean saveModel(@NotNull Company company) {
+        logger().info("CompanySaver.saveModel company: " + company.toString());
         if (company.detail_location != null) {  //这是一个location类型的company 先看看json类型里有没有
-            if (jsonSaver.saveCompany(company)) {
+            if (jsonSaver.saveModel(company)) {
                 logger().info("jsonSaver return true");
                 return true;
             }
             logger().info("jsonSaver return false");
-            locationSaver.saveCompany(company);
+            locationSaver.saveModel(company);
             return true;
         }
-        jsonSaver.saveCompany(company);
+        jsonSaver.saveModel(company);
         return true;
     }
 }

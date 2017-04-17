@@ -15,9 +15,9 @@ public class Config {
 
     public static boolean ENABLE_PRINT_PARSED_COMPANY = false;
 
-    public static boolean ENABLE_SAVE_PRODUCT_DB = true;
+    public static boolean ENABLE_SAVE_PRODUCT_DB = false;
 
-    public static boolean ENABLE_SAVE_LOCATION_DB = true;
+    public static boolean ENABLE_SAVE_LOCATION_DB = false;
 
     public static boolean ENABLE_SAVE_COMPANY_DB = true;
 
@@ -48,9 +48,13 @@ public class Config {
 
     //每1分钟存储一次数据库
 
-    public static int SAVE_COMPANY_INTERVAL = 1000 * 1 * 30;
+    public static int SAVE_COMPANY_INTERVAL = 1000 * 1 * 5;
 
-    public static int SAVE_COMPANY_MAIN_INTERVAL = (int) (1000 * 30 * 1.5);
+    public static int SAVE_COMPANY_MAIN_INTERVAL = (int) (1000 * 5 * 1);
+
+    public static int SAVE_PRODUCT_INTERVAL = 1000 * 1 * 5;
+
+    public static int SAVE_LOCATION_INTERVAL = 1000 * 1 * 5;
 
     //7天全面抓一次
     public static final long GRAB_INTERNAL = 1000 * 60 * 60 * 24 * 7;
