@@ -27,19 +27,34 @@ public class JobProvider {
     private static AtomicInteger sindex = new AtomicInteger(0);
 
     public static IJob getNextJob(@NotNull IJob job) {
-
         if (Config.USE_FIXED_DELAY_NEXT_JOB) {
             return getFixedDelayNextJob(job);
         }
 
-        int time = job.getFailTimes();
-        IJob next = new DelayJob(time * time * 1000);
-        next.setRealRunnable(job.getRealRunnable());
-        return next;
+        return job; //Todo: better stratogy？？
     }
 
     private static IJob getFixedDelayNextJob(@NotNull IJob job) {
         return getFixedDelayJob(Config.FIXED_DELAYJOB_INTERVAL, job);
+    }
+
+    private static IJob getFixedDelayJob(long delay, @NotNull IJob job) {
+        if (delay == 0) {
+            return new ImmediateJob();
+        }
+
+        IJob job1 = new DelayJob(sindex.get() * delay);
+        job1.setRealRunnable(job.getRealRunnable());
+        sindex.set(sindex.get() + 1);
+        return job1;
+    }
+
+    public static IJob getJob() {
+        if (Config.USE_FIXED_DELAY_JOB) {
+            return getFixedDelayJob();
+        }
+
+        return new ImmediateJob(); //Todo: better stratogy？？
     }
 
     private static IJob getFixedDelayJob() {
@@ -54,32 +69,5 @@ public class JobProvider {
         IJob job = new DelayJob(sindex.get() * delay);
         sindex.set(sindex.get() + 1);
         return job;
-    }
-
-    private static IJob getFixedDelayJob(long delay, @NotNull IJob job) {
-        if (delay == 0) {
-            return new ImmediateJob();
-        }
-
-        IJob job1 = new DelayJob(sindex.get() * delay);
-        job1.setRealRunnable(job.getRealRunnable());
-        sindex.set(sindex.get() + 1);
-        return job1;
-    }
-
-    private static IJob getDelayJob(long delay) {
-        return new DelayJob(delay);
-    }
-
-    public static IJob getJob() {
-
-        if (Config.USE_FIXED_DELAY_JOB) {
-            return getFixedDelayJob();
-        }
-
-        if (random.nextDouble() * 100 > 20) {
-            return new DelayJob((long) random.nextDouble() * 1000 + 200);
-        }
-        return new ImmediateJob();
     }
 }

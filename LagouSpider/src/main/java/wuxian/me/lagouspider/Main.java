@@ -87,7 +87,7 @@ public class Main {
                 logger().info("Add AreaSpider to JobQueue...");
                 for (Area area : areas) {
                     IJob job = JobProvider.getJob();
-                    job.setRealRunnable(LoggerSpider.from(new AreaSpider(area)));
+                    job.setRealRunnable((new AreaSpider(area)));
                     JobQueue.getInstance().putJob(job);
 
                 }

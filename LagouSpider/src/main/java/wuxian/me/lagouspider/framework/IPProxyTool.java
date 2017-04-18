@@ -20,7 +20,7 @@ public class IPProxyTool {
     static {
         ipPortList = new ArrayList<Proxy>();
 
-        ipPortList.add(new Proxy("115.213.252.110", 38549));
+        ipPortList.add(new Proxy("223.245.183.144", 49101));
         ipPortList.add(new Proxy("111.13.7.121", 80));
         ipPortList.add(new Proxy("157.0.25.178", 808));
 

@@ -7,9 +7,13 @@ public class Config {
 
     public static boolean IS_TEST = true;
 
-    public static long FIXED_DELAYJOB_INTERVAL = 500 * 1;
-
     public static int SOCKET_READ_TIMEOUT = 10 * 1000; //10s
+
+    public static boolean USE_FIXED_DELAY_NEXT_JOB = true;
+
+    public static boolean USE_FIXED_DELAY_JOB = true;
+
+    public static long FIXED_DELAYJOB_INTERVAL = 100;
 
     public static boolean ENABLE_SPIDER_AREAPAGE = true;
 
@@ -27,9 +31,6 @@ public class Config {
 
     public static boolean ENABLE_SWITCH_IPPROXY = true;
 
-    public static boolean USE_FIXED_DELAY_NEXT_JOB = true;
-
-    public static boolean USE_FIXED_DELAY_JOB = true;
 
     public static int SINGLEJOB_MAX_FAIL_TIME = 4;  //单个job的最大失败次数
 

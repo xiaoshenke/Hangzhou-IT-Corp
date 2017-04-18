@@ -2,6 +2,7 @@ package wuxian.me.lagouspider;
 
 import okhttp3.*;
 import org.junit.Test;
+import wuxian.me.lagouspider.core.AreaPageSpider;
 import wuxian.me.lagouspider.core.BaseLagouSpider;
 import wuxian.me.lagouspider.core.CompanySpider;
 import wuxian.me.lagouspider.core.itjuzi.SearchSpider;
@@ -37,20 +38,26 @@ import static wuxian.me.lagouspider.util.ModuleProvider.*;
 public class MainTest {
 
     @Test
-    public void testSpiderEquals(){
+    public void testSpiderEquals() {
         IJob job = JobProvider.getJob();
         Area area = new Area();
-        area.distinct_name = "123";
-        area.name = "3232";
-        BaseLagouSpider spider = new AreaSpider(area);
-        job.setRealRunnable(spider);
-        JobMonitor.getInstance().putJob(job, IJob.STATE_INIT);
+        area.distinct_name = "西湖区";
+        area.name = "西溪";
 
-        //IJob job1 = JobMonitor.getInstance().getJob(spider);
-        //assertTrue(job1 != null);
+        BaseLagouSpider spider1 = new AreaSpider(area);
+        IJob iJob = JobProvider.getJob();
+        iJob.setRealRunnable(spider1);
+        JobMonitor.getInstance().putJob(iJob, IJob.STATE_INIT);
+
+        BaseLagouSpider spider = new AreaPageSpider(area, 5);
+        job.setRealRunnable(LoggerSpider.from(spider));
+        JobMonitor.getInstance().putJob(job, IJob.STATE_INIT);
 
         assertTrue(JobMonitor.getInstance().contains(job));
         logger().info(job);
+
+        IJob job1 = JobMonitor.getInstance().getJob(spider);
+        assertTrue(job1 != null);
 
         job = JobProvider.getNextJob(job);
         JobMonitor.getInstance().putJob(job, IJob.STATE_RETRY);
@@ -67,6 +74,10 @@ public class MainTest {
         IPProxyTool.Proxy proxy = IPProxyTool.switchNextProxy();
         logger().info("Using proxy ip: " + proxy.ip + " port: " + proxy.port);
         ensureIpSwitched(proxy);
+
+        if (Config.USE_FIXED_DELAY_JOB) {
+            logger().info("Current fixed delay job interval: " + Config.FIXED_DELAYJOB_INTERVAL);
+        }
 
         AreaMapper areaMapper = ModuleProvider.areaMapper();
         CompanyMapper companyMapper = ModuleProvider.companyMapper();
@@ -97,10 +108,8 @@ public class MainTest {
         assertTrue(areas.size() != 0);
 
         for (Area area : areas) {
-            logger().info(area.toString());
-
             IJob job = JobProvider.getJob();
-            job.setRealRunnable(LoggerSpider.from(new AreaSpider(area)));
+            job.setRealRunnable((new AreaSpider(area)));
             JobQueue.getInstance().putJob(job);
 
             break;
@@ -186,7 +195,7 @@ public class MainTest {
             response = OkhttpProvider.getClient().newCall(request).execute();
             assertTrue(response.isSuccessful());
             String msg = response.body().string();
-            logger().info(msg);
+            logger().debug(msg);
             assertTrue(msg.contains(proxy.ip));
         } catch (IOException e) {
             logger().error("switch ip fail");  //使用代理会有些不大稳定...

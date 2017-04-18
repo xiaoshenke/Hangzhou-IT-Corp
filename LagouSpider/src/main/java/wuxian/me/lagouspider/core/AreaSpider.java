@@ -84,7 +84,7 @@ public class AreaSpider extends BaseLagouSpider {
     public void beginSpiderAreaPage() {
         for (int i = 1; i < pageNum; i++) {
             IJob job = JobProvider.getJob();
-            job.setRealRunnable(LoggerSpider.from(new AreaPageSpider(area, i)));
+            job.setRealRunnable((new AreaPageSpider(area, i)));
             JobQueue.getInstance().putJob(job);
         }
     }

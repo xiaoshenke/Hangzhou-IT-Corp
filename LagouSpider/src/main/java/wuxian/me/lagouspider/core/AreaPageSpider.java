@@ -96,7 +96,7 @@ public class AreaPageSpider extends BaseLagouSpider {
         if (Config.ENABLE_SPIDER_COMPANY_MAIN) {
             for (Company company : companyList) {
                 IJob job = JobProvider.getJob();
-                job.setRealRunnable(LoggerSpider.from(new CompanySpider(company.company_id, company.company_fullname)));
+                job.setRealRunnable((new CompanySpider(company.company_id, company.company_fullname)));
                 JobQueue.getInstance().putJob(job);
             }
         }
@@ -169,7 +169,7 @@ public class AreaPageSpider extends BaseLagouSpider {
 
     public String name() {
         return "AreaPageSpider: {index: " +
-                pageIndex + " ," + area.name();
+                pageIndex + " ," + area.name() + "}";
     }
 
 }

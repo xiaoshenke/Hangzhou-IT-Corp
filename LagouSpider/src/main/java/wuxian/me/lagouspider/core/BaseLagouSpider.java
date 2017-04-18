@@ -55,5 +55,4 @@ public abstract class BaseLagouSpider extends BaseSpider {
     public String fullName() {
         return name();
     }
-
 }

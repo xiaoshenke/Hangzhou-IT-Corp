@@ -6,6 +6,8 @@ import wuxian.me.lagouspider.framework.job.IJob;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static wuxian.me.lagouspider.util.ModuleProvider.logger;
+
 /**
  * Created by wuxian on 7/4/2017.
  * 保存了所有Job的状态 --> 监视表
@@ -34,6 +36,7 @@ public class JobMonitor {
     }
 
     public IJob getJob(@NotNull Runnable runnable) {
+
         if (jobMap.containsKey(runnable)) {
             return jobMap.get(runnable);
         }

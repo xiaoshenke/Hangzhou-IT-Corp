@@ -102,7 +102,7 @@ public abstract class BaseSpider implements Runnable {
             builder.append(LINTFEED + "Body: " + callback.getBody());
         }
 
-        String name = name().length() > 15 ? name().substring(0, 15) : name();
+        String name = name().length() > 25 ? name().substring(0, 25) : name();
         String fileName = fullLogSdf.format(date) + name; //simpleName只有一个类名
 
         FileUtil.writeToFile(Helper.getFullLogFilePath(fileName), builder.toString());
@@ -120,8 +120,8 @@ public abstract class BaseSpider implements Runnable {
 
     @Override
     public final boolean equals(Object obj) {
-        if (obj instanceof BaseLagouSpider) {
-            return fullName().equals(((BaseLagouSpider) obj).fullName());
+        if (obj instanceof BaseSpider) {
+            return fullName().equals(((BaseSpider) obj).fullName());
         }
         return super.equals(obj);
     }

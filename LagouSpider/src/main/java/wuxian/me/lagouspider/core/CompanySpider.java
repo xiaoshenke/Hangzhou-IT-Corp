@@ -153,7 +153,7 @@ public class CompanySpider extends BaseLagouSpider {
 
             if (Config.ENABLE_SPIDER_ITCHENGZI_SEARCH) {
                 IJob iJob = JobProvider.getJob();
-                iJob.setRealRunnable(LoggerSpider.from(new SearchSpider(company_id, companyName)));
+                iJob.setRealRunnable((new SearchSpider(company_id, companyName)));
                 JobQueue.getInstance().putJob(iJob);
             }
         }
