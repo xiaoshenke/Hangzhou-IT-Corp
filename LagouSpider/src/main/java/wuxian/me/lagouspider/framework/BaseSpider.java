@@ -3,6 +3,7 @@ package wuxian.me.lagouspider.framework;
 import com.sun.istack.internal.NotNull;
 import okhttp3.Request;
 import okhttp3.Response;
+import wuxian.me.lagouspider.core.BaseLagouSpider;
 import wuxian.me.lagouspider.util.Helper;
 
 import java.io.IOException;
@@ -105,6 +106,24 @@ public abstract class BaseSpider implements Runnable {
         String fileName = fullLogSdf.format(date) + name; //simpleName只有一个类名
 
         FileUtil.writeToFile(Helper.getFullLogFilePath(fileName), builder.toString());
+    }
+
+    @Override
+    public final String toString() {
+        return fullName();
+    }
+
+    @Override
+    public final int hashCode() {
+        return fullName().hashCode();
+    }
+
+    @Override
+    public final boolean equals(Object obj) {
+        if (obj instanceof BaseLagouSpider) {
+            return fullName().equals(((BaseLagouSpider) obj).fullName());
+        }
+        return super.equals(obj);
     }
 
 }

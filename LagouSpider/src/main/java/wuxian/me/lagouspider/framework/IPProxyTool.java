@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * http://www.ip181.com/
  * http://www.us-proxy.org/
  *
- * Todo: IP代理网站似乎行不通...
+ * Todo: 靠谱的IP代理网站...
  */
 public class IPProxyTool {
 

@@ -7,13 +7,12 @@ import wuxian.me.lagouspider.framework.job.IJob;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
 /**
  * Created by wuxian on 7/4/2017.
  *
- * 保存了所有Job的状态 --> 可以看作是一张监视表
+ * 保存了所有Job的状态 --> 监视表
  *
  * 现在的做法是这样的
  * 1 放到@JobQueue队列里的时候 无需调用JobMonitor.put
@@ -54,6 +53,7 @@ public class JobMonitor {
         }
     }
 
+    //Todo: 这部分的功能应该放到@FailureManager里面 这个类应该只作为一个job monitor
     //Fail并且判断是否应该进行job重试 若是则放入重试队列
     public void fail(@NotNull Runnable runnable, @NotNull Fail fail, boolean retry) {
         IJob job = getJob(runnable);
@@ -92,8 +92,6 @@ public class JobMonitor {
         jobMap.put(job.getRealRunnable(), job);
     }
 
-    //Fixme: runnable没有override @hashCode,equals...
-    //这里有bug
     public IJob getJob(@NotNull Runnable runnable) {
         if (jobMap.containsKey(runnable)) {
             return jobMap.get(runnable);

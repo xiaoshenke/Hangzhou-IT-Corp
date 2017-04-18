@@ -56,8 +56,4 @@ public abstract class BaseLagouSpider extends BaseSpider {
         return name();
     }
 
-    @Override
-    public final String toString() {
-        return fullName();
-    }
 }

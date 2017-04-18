@@ -2,8 +2,10 @@ package wuxian.me.lagouspider;
 
 import okhttp3.*;
 import org.junit.Test;
+import wuxian.me.lagouspider.core.BaseLagouSpider;
 import wuxian.me.lagouspider.core.CompanySpider;
 import wuxian.me.lagouspider.core.itjuzi.SearchSpider;
+import wuxian.me.lagouspider.framework.control.JobMonitor;
 import wuxian.me.lagouspider.framework.control.JobProvider;
 import wuxian.me.lagouspider.framework.control.JobQueue;
 import wuxian.me.lagouspider.framework.control.WorkThread;
@@ -19,7 +21,6 @@ import wuxian.me.lagouspider.framework.OkhttpProvider;
 import wuxian.me.lagouspider.model.Company;
 import wuxian.me.lagouspider.model.Location;
 import wuxian.me.lagouspider.model.Product;
-import wuxian.me.lagouspider.save.CompanySaver;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.LoggerSpider;
 import wuxian.me.lagouspider.util.ModuleProvider;
@@ -35,10 +36,19 @@ import static wuxian.me.lagouspider.util.ModuleProvider.*;
  */
 public class MainTest {
 
-    //Todo:
     @Test
     public void testSpiderEquals(){
-        ;
+        IJob job = JobProvider.getJob();
+        Area area = new Area();
+        area.distinct_name = "123";
+        area.name = "3232";
+        BaseLagouSpider spider = new AreaSpider(area);
+        job.setRealRunnable(spider);
+        JobMonitor.getInstance().putJob(job, IJob.STATE_INIT);
+
+        IJob job1 = JobMonitor.getInstance().getJob(spider);
+
+        assertTrue(job1 != null);
     }
 
     @Test
