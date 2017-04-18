@@ -29,7 +29,6 @@ public class Location extends BaseModel {
     }
 
     public long index() {
-        return company_id;
+        return company_id + hashCode();
     }
-
 }

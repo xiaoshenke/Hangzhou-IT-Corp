@@ -13,7 +13,4 @@ public abstract class BaseModel {
     public final String toString() {
         return name();
     }
-
-    //Used in @SaveModelThread
-    public abstract long index();
 }

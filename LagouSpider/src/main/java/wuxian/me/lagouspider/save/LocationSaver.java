@@ -44,7 +44,7 @@ public class LocationSaver implements IModelSaver<Location> {
     }
 
     public boolean saveModel(@NotNull Location location) {
-        companyMap.put(location.company_id, location);
+        companyMap.put(location.index(), location);
         return true;
     }
 }

@@ -1,5 +1,6 @@
 package wuxian.me.lagouspider.framework.control;
 
+import com.sun.istack.internal.NotNull;
 import wuxian.me.lagouspider.framework.job.IJob;
 
 import java.util.concurrent.BlockingQueue;
@@ -16,6 +17,7 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
  */
 public class JobQueue {
 
+    private JobMonitor monitor = JobMonitor.getInstance();
     private static JobQueue instance = new JobQueue();
 
     public static JobQueue getInstance() {
@@ -35,7 +37,10 @@ public class JobQueue {
         return queue.offer(job);
     }
 
-    public boolean putJob(IJob job) {
+    public boolean putJob(@NotNull IJob job) {
+        if (monitor.contains(job)) {  //这个任务已经存在了,直接返回
+            return true;
+        }
         return putJob(job, IJob.STATE_INIT);
     }
 

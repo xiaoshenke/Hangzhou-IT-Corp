@@ -6,7 +6,9 @@ import wuxian.me.lagouspider.mapper.CompanyMapper;
 import wuxian.me.lagouspider.model.Company;
 import wuxian.me.lagouspider.util.ModuleProvider;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
@@ -46,10 +48,24 @@ public class CompanyJsonSaver implements IModelSaver<Company> {
 
     private Map<Long, Company> companyMap = new ConcurrentHashMap<Long, Company>();
 
+    private Set<Long> savedComany = new HashSet<Long>();  //解决插入company重复问题
 
     public boolean saveModel(@NotNull Company company) {
         synchronized (companyMap) {
-            if (company.detail_location != null && companyMap.keySet().contains(company.company_id)) {
+
+            if (company.detail_location == null) {
+                if (savedComany.contains(company.company_id)) {  //重复数据 直接把这个数据丢了
+                    return true;
+                } else {
+                    companyMap.put(company.company_id, company); //放入待插入数据队列
+                    savedComany.add(company.company_id);
+                    return true;
+                }
+
+            } else {             //这是从company main抓的数据,若要放入待插入数据除非满足本身已经在被插入队列
+                if (!companyMap.keySet().contains(company.company_id)) {
+                    return false;
+                }
                 Company tmp = companyMap.get(company.company_id);
                 tmp.detail_location = company.detail_location;
 
@@ -68,13 +84,12 @@ public class CompanyJsonSaver implements IModelSaver<Company> {
 
                 tmp.detail_location = company.detail_location;
 
-                companyMap.put(company.index(), tmp);
+                companyMap.put(company.company_id, tmp);
+
+                savedComany.add(company.company_id);
                 return true;
             }
         }
-
-        companyMap.put(company.index(), company);
-        return false;
     }
 
 }

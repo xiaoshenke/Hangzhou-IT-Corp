@@ -45,7 +45,7 @@ public class ProductSaver implements IModelSaver<Product> {
     private SaveModelThread thread;
 
     public boolean saveModel(@NotNull Product product) {
-        companyMap.put(product.company_id, product);
+        companyMap.put(product.index(), product);
         return true;
     }
 }

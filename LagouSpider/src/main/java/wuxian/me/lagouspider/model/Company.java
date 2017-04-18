@@ -60,8 +60,4 @@ public class Company extends BaseModel {
         }
     }
 
-    public long index() {
-        return company_id;
-    }
-
 }
