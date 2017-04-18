@@ -49,7 +49,7 @@ public class CompanyMainSaver implements IModelSaver<Company> {
 
 
     public boolean saveModel(@NotNull Company company) {
-        companyMap.put(company.index(), company);
+        companyMap.put(company.company_id, company);
         return true;
     }
 }
