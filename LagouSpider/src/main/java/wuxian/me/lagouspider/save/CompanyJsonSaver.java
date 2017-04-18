@@ -31,7 +31,7 @@ public class CompanyJsonSaver implements IModelSaver<Company> {
 
             }
         });
-        thread.setName("SaveCompanyThread");
+        thread.setName("SaveCompanyThreadJson");
         thread.start();
     }
 
@@ -68,12 +68,12 @@ public class CompanyJsonSaver implements IModelSaver<Company> {
 
                 tmp.detail_location = company.detail_location;
 
-                companyMap.put(company.company_id, tmp);
+                companyMap.put(company.index(), tmp);
                 return true;
             }
         }
 
-        companyMap.put(company.company_id, company);
+        companyMap.put(company.index(), company);
         return false;
     }
 

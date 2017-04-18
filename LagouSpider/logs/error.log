@@ -1,94 +1,10 @@
-2017-04-17 13:57:34 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:238) switch ip fail
-2017-04-17 19:07:47 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:167) switch ip fail
-2017-04-17 19:08:04 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:167) switch ip fail
-2017-04-17 19:08:20 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:167) switch ip fail
-2017-04-17 19:08:38 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:167) switch ip fail
-2017-04-17 19:08:55 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:167) switch ip fail
-2017-04-17 19:09:24 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:167) switch ip fail
-2017-04-17 19:09:47 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:167) switch ip fail
-2017-04-17 19:10:04 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:167) switch ip fail
-2017-04-17 19:10:19 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:167) switch ip fail
-2017-04-17 19:28:26 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.core.LagouSpiderCallback.onFailure(LagouSpiderCallback.java:25) onFailure: spider: AreaSpider: {Area: {area_name: 西溪 ,distinct_name: 西湖区}}
-2017-04-17 21:27:49 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.core.LagouSpiderCallback.onFailure(LagouSpiderCallback.java:25) onFailure: AreaSpider: {Area: {area_name: 西溪 ,distinct_name: 西湖区}}
-2017-04-17 21:28:26 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.core.LagouSpiderCallback.onFailure(LagouSpiderCallback.java:25) onFailure: AreaSpider: {Area: {area_name: 西溪 ,distinct_name: 西湖区}}
-2017-04-17 21:29:00 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:29:14 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.core.LagouSpiderCallback.onFailure(LagouSpiderCallback.java:25) onFailure: AreaSpider: {Area: {area_name: 西溪 ,distinct_name: 西湖区}}
-2017-04-17 21:29:58 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:30:14 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:30:39 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:30:51 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:30:56 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:31:02 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:31:08 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:31:14 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:31:20 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:36:35 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:36:46 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:36:58 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:37:08 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:37:50 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.core.LagouSpiderCallback.onFailure(LagouSpiderCallback.java:25) onFailure: AreaSpider: {Area: {area_name: 西溪 ,distinct_name: 西湖区}}
-2017-04-17 21:38:27 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:38:44 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:39:00 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:39:17 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:40:28 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:44:11 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:44:26 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:44:42 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:45:24 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:47:31 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.core.LagouSpiderCallback.onFailure(LagouSpiderCallback.java:25) onFailure: AreaSpider: {Area: {area_name: 西溪 ,distinct_name: 西湖区}}
-2017-04-17 21:48:52 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:49:09 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:49:36 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:50:40 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:50:46 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:50:51 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:50:56 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:51:10 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:51:15 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:51:56 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.core.LagouSpiderCallback.onFailure(LagouSpiderCallback.java:25) onFailure: AreaSpider: {Area: {area_name: 西溪 ,distinct_name: 西湖区}}
-2017-04-17 21:53:28 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:53:34 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:53:40 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:53:47 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:53:59 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:54:04 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:54:09 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:54:15 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:54:38 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:54:44 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:55:01 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:55:06 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:55:11 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:55:16 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:55:47 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:56:03 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:56:17 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:57:37 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:57:53 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:58:09 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:58:28 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 21:58:46 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 22:01:56 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 22:02:13 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 22:02:29 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 22:02:46 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 22:03:12 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:168) switch ip fail
-2017-04-17 22:03:54 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.core.LagouSpiderCallback.onFailure(LagouSpiderCallback.java:25) onFailure: AreaSpider: {Area: {area_name: 西溪 ,distinct_name: 西湖区}}
-2017-04-17 22:04:57 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.core.LagouSpiderCallback.onFailure(LagouSpiderCallback.java:25) onFailure: AreaSpider: {Area: {area_name: 西溪 ,distinct_name: 西湖区}}
-2017-04-17 22:08:23 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.core.LagouSpiderCallback.onFailure(LagouSpiderCallback.java:25) onFailure: AreaSpider: {Area: {area_name: 西溪 ,distinct_name: 西湖区}}
-2017-04-17 22:09:40 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:167) switch ip fail
-2017-04-17 22:10:00 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:167) switch ip fail
-2017-04-17 22:10:39 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:167) switch ip fail
-2017-04-17 22:10:47 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:167) switch ip fail
-2017-04-17 22:10:54 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:167) switch ip fail
-2017-04-17 22:11:12 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:167) switch ip fail
-2017-04-17 22:11:18 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:167) switch ip fail
-2017-04-17 22:11:24 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:167) switch ip fail
-2017-04-17 22:11:31 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:167) switch ip fail
-2017-04-17 22:12:25 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.core.LagouSpiderCallback.onFailure(LagouSpiderCallback.java:25) onFailure: AreaSpider: {Area: {area_name: 西溪 ,distinct_name: 西湖区}}
-2017-04-17 22:13:48 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:167) switch ip fail
-2017-04-17 22:14:08 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.core.LagouSpiderCallback.onFailure(LagouSpiderCallback.java:25) onFailure: AreaSpider: {Area: {area_name: 西溪 ,distinct_name: 西湖区}}
-2017-04-17 22:14:53 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:167) switch ip fail
-2017-04-17 22:15:12 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:167) switch ip fail
-2017-04-17 22:15:39 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.core.LagouSpiderCallback.onFailure(LagouSpiderCallback.java:25) onFailure: AreaSpider: {Area: {area_name: 西溪 ,distinct_name: 西湖区}}
+2017-04-18 12:34:46 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.core.LagouSpiderCallback.onFailure(LagouSpiderCallback.java:25) onFailure: AreaSpider: {Area: {area_name: 西溪 ,distinct_name: 西湖区}}
+2017-04-18 12:43:27 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.core.LagouSpiderCallback.onFailure(LagouSpiderCallback.java:25) onFailure: AreaSpider: {Area: {area_name: 西溪 ,distinct_name: 西湖区}}
+2017-04-18 12:45:11 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:183) switch ip fail
+2017-04-18 12:45:17 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:183) switch ip fail
+2017-04-18 12:45:24 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:183) switch ip fail
+2017-04-18 12:45:29 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:183) switch ip fail
+2017-04-18 12:45:34 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:183) switch ip fail
+2017-04-18 12:45:40 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:183) switch ip fail
+2017-04-18 12:46:04 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.core.LagouSpiderCallback.onFailure(LagouSpiderCallback.java:25) onFailure: AreaSpider: {Area: {area_name: 西溪 ,distinct_name: 西湖区}}
+2017-04-18 12:52:44 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.core.LagouSpiderCallback.onFailure(LagouSpiderCallback.java:25) onFailure: CompanySpider: { Company: {id: 65313 name: null stage:  lagouAuthen: falsenull industry: null companySize :null description: null} location:  ,招聘岗位: null 面试个数: null 面试评分: null}

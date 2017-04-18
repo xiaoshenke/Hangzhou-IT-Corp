@@ -28,4 +28,8 @@ public class Location extends BaseModel {
         return "Location: {" + "company_id: " + company_id + " location: " + location + "}";
     }
 
+    public long index() {
+        return company_id;
+    }
+
 }

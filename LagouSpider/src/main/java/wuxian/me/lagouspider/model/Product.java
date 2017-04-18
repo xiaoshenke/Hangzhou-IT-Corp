@@ -47,4 +47,8 @@ public class Product extends BaseModel {
                 + product_name + " ,url: " + url + " ,labelstring: " + labelString + "}";
     }
 
+    public long index() {
+        return company_id;
+    }
+
 }

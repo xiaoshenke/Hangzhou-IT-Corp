@@ -50,14 +50,18 @@ public class Company extends BaseModel {
     }
 
     public String name() {
-        if (detail_location == null) {
+        if (detail_location == null || detail_location.equals("")) {
             return "Company: {id: " + company_id + " ,name: " + company_fullname + " ,industry: "
                     + industryField + " companySize :" + company_size + "}";
         } else {
-            return "Company: {id: " + company_id + " name: " + company_fullname + " stage: " + " lagouAuthen: " +
-                    lagouAuthentic + financeStage + " industry: " + industryField + " companySize :" + company_size
+            return "Company: {id: " + company_id + " name: " + company_fullname + " lagouAuthen: " +
+                    lagouAuthentic + " ,financeStage: " + financeStage + " industry: " + industryField + " companySize :" + company_size
                     + " description: " + description + "}";
         }
+    }
+
+    public long index() {
+        return company_id;
     }
 
 }

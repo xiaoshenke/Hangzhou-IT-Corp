@@ -4,7 +4,9 @@ import com.sun.istack.internal.NotNull;
 import wuxian.me.lagouspider.model.BaseModel;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
@@ -13,6 +15,7 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
  */
 public class SaveModelThread<T extends BaseModel> extends Thread {
 
+    private Set<Long> savedModel = new HashSet<Long>();  //解决插入重复的值 Fixme:如何防止二次插入？？
     private Map<Long, T> model;
     private int interval;
     private boolean insert;

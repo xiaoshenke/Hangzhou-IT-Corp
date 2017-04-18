@@ -6,7 +6,7 @@ import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import wuxian.me.lagouspider.framework.SpiderCallback;
 import wuxian.me.lagouspider.framework.control.Fail;
-import wuxian.me.lagouspider.framework.control.JobMonitor;
+import wuxian.me.lagouspider.framework.control.JobResultManager;
 import wuxian.me.lagouspider.framework.BaseSpider;
 
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
@@ -40,7 +40,7 @@ public abstract class BaseLagouSpider extends BaseSpider {
             NodeList list = parser.extractAllNodesThatMatch(filter);
             if (list != null && list.size() != 0) {
                 logger().error("We got BLOCKED, " + name());
-                JobMonitor.getInstance().fail(BaseLagouSpider.this, Fail.BLOCK);
+                JobResultManager.getInstance().fail(BaseLagouSpider.this, Fail.BLOCK);
                 return true;
             }
 

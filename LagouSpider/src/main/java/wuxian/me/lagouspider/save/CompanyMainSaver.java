@@ -40,7 +40,7 @@ public class CompanyMainSaver implements IModelSaver<Company> {
 
             }
         }, false);
-        thread.setName("SaveCompanyMainThread");
+        thread.setName("SaveCompanyThreadMain");
         thread.start();
     }
 
@@ -49,7 +49,7 @@ public class CompanyMainSaver implements IModelSaver<Company> {
 
 
     public boolean saveModel(@NotNull Company company) {
-        companyMap.put(company.company_id, company);
+        companyMap.put(company.index(), company);
         return true;
     }
 }

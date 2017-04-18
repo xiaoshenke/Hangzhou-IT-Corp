@@ -5,7 +5,7 @@ import okhttp3.Call;
 import wuxian.me.lagouspider.framework.BaseSpider;
 import wuxian.me.lagouspider.framework.SpiderCallback;
 import wuxian.me.lagouspider.framework.control.Fail;
-import wuxian.me.lagouspider.framework.control.JobMonitor;
+import wuxian.me.lagouspider.framework.control.JobResultManager;
 
 import java.io.IOException;
 
@@ -23,7 +23,7 @@ public class LagouSpiderCallback extends SpiderCallback {
     //拉勾返回onFailure可能就是被屏蔽了
     public final void onFailure(Call call, IOException e) {
         logger().error("onFailure: " + getSpider().name());
-        JobMonitor.getInstance().fail(getSpider(), Fail.MAYBE_BLOCK);
+        JobResultManager.getInstance().fail(getSpider(), Fail.MAYBE_BLOCK);
         getSpider().serializeFullLog();
     }
 }

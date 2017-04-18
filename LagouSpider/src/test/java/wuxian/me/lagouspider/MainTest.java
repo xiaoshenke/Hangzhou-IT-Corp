@@ -46,9 +46,18 @@ public class MainTest {
         job.setRealRunnable(spider);
         JobMonitor.getInstance().putJob(job, IJob.STATE_INIT);
 
-        IJob job1 = JobMonitor.getInstance().getJob(spider);
+        //IJob job1 = JobMonitor.getInstance().getJob(spider);
+        //assertTrue(job1 != null);
 
-        assertTrue(job1 != null);
+        assertTrue(JobMonitor.getInstance().contains(job));
+        logger().info(job);
+
+        job = JobProvider.getNextJob(job);
+        JobMonitor.getInstance().putJob(job, IJob.STATE_RETRY);
+
+        assertTrue(JobMonitor.getInstance().contains(job));
+        logger().info(job);
+
     }
 
     @Test

@@ -6,10 +6,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by wuxian on 9/4/2017.
- * http://www.ip181.com/
- * http://www.us-proxy.org/
+ * http://www.xdaili.cn/freeproxy.html
  *
- * Todo: 靠谱的IP代理网站...
  */
 public class IPProxyTool {
 
@@ -17,12 +15,12 @@ public class IPProxyTool {
 
     private static AtomicInteger current;
 
-    //http://www.xicidaili.com/ 貌似已阵亡 --> 拉勾会屏蔽这个网站的ip
-    //http://www.ip181.com/ http://www.xicidaili.com/ --> 稳定性太差了 可能是国内用它的人太多？
+    //http://www.xicidaili.com/ http://www.kxdaili.com/ 貌似已阵亡 --> 拉勾会屏蔽这个网站的ip
+    //http://www.ip181.com/  --> 稳定性太差了 可能是国内用它的人太多？
     static {
         ipPortList = new ArrayList<Proxy>();
 
-        ipPortList.add(new Proxy("124.42.7.103", 80));
+        ipPortList.add(new Proxy("115.213.252.110", 38549));
         ipPortList.add(new Proxy("111.13.7.121", 80));
         ipPortList.add(new Proxy("157.0.25.178", 808));
 

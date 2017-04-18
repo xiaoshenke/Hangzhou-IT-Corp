@@ -23,22 +23,22 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
 /**
  * Created by wuxian on 9/4/2017.
- * 根据失败的情况判断是否ip被屏蔽了
- * <p>
- * 只暴露给 @JobMonitor
+ * 负责处理job的成功失败 根据失败的情况判断是否ip被屏蔽了
  * <p>
  * 日志级别规定:
  * 1 监控整个项目运行的info级别 比如切换ip,job状态切换:开始运行,成功,失败,重试等
  * 2 Job出错的error级
  * 3 其他debug级别 比如parsing什么的
  */
-public class FailureManager {
+public class JobResultManager {
+
+    JobMonitor monitor = JobMonitor.getInstance();
 
     private FutureTask<String> switchIPFuture;
 
     private long startTime = System.currentTimeMillis();
 
-    private FailureManager() {
+    private JobResultManager() {
         HttpUrl.Builder urlBuilder = HttpUrl.parse("http://www.ip138.com/ip2city.asp").newBuilder();
         Headers.Builder builder = new Headers.Builder();
         builder.add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36");
@@ -60,11 +60,11 @@ public class FailureManager {
         switchIPFuture = new FutureTask<String>(callable);
     }
 
-    private static FailureManager instance;
+    private static JobResultManager instance;
 
-    public static FailureManager getInstance() {
+    public static JobResultManager getInstance() {
         if (instance == null) {
-            instance = new FailureManager();
+            instance = new JobResultManager();
         }
         return instance;
     }
@@ -72,15 +72,6 @@ public class FailureManager {
     AtomicLong current404Time = new AtomicLong(0);
     AtomicInteger successNum = new AtomicInteger(0);
     AtomicInteger failNum = new AtomicInteger(0);
-
-    public void success(@NotNull IJob job) {
-        logger().info("Job Success: " + ((BaseSpider) job).name());
-        successNum.getAndIncrement();
-
-        if (todoSpiderList.contains(job)) {
-            todoSpiderList.remove(job);
-        }
-    }
 
     private AtomicInteger fail404Num = new AtomicInteger(0);
     private AtomicLong last404Time = new AtomicLong(0);
@@ -93,6 +84,7 @@ public class FailureManager {
     private AtomicLong lastMaybeBlockTime = new AtomicLong(0);
     private AtomicLong currentMaybeBlockTime = new AtomicLong(0);
 
+    //OkHttpClient.enqueue的spider 还有一部分delayJob是没办法拿到的...
     //记录单次(单个ip)的spiderList
     private List<BaseSpider> todoSpiderList = Collections.synchronizedList(new ArrayList<BaseSpider>());
 
@@ -100,8 +92,55 @@ public class FailureManager {
         todoSpiderList.add(spider);
     }
 
+    public void success(Runnable runnable) {
+        IJob job = monitor.getJob(runnable);
+        if (job != null) {
+            job.setCurrentState(IJob.STATE_SUCCESS);
+            monitor.putJob(job, IJob.STATE_SUCCESS);
 
-    public void fail(@NotNull IJob job, @NotNull Fail fail) {
+            success(job);
+        }
+    }
+
+    private void success(@NotNull IJob job) {
+        logger().info("Job Success: " + ((BaseSpider) job).name());
+        successNum.getAndIncrement();
+
+        if (todoSpiderList.contains(job)) {
+            todoSpiderList.remove(job);
+        }
+    }
+
+    public void fail(@NotNull Runnable runnable, @NotNull Fail fail) {
+        fail(runnable, fail, true);
+    }
+
+    //Fail并且判断是否应该进行job重试 若是则放入重试队列
+    public void fail(@NotNull Runnable runnable, @NotNull Fail fail, boolean retry) {
+        IJob job = monitor.getJob(runnable);
+        if (job != null) {
+            job.setCurrentState(IJob.STATE_FAIL);
+            job.fail(fail);
+            monitor.putJob(job, IJob.STATE_FAIL);  //更新JobQueue里的job状态
+
+            if (retry && Config.ENABLE_RETRY_SPIDER) { //处理重试
+                if (job.getFailTimes() >= Config.SINGLEJOB_MAX_FAIL_TIME) { //是否进行重试
+                    logger().error("Job: " + job.toString() + " fail " + job.getFailTimes() + "times, abandon it");
+                } else {
+                    logger().info("Retry Job: " + job.toString());
+
+                    IJob next = JobProvider.getNextJob(job);  //重新制定爬虫策略 放入jobQueue
+
+                    next.setCurrentState(IJob.STATE_RETRY);
+                    JobQueue.getInstance().putJob(next, IJob.STATE_RETRY);
+                }
+            }
+
+            fail(job, fail);
+        }
+    }
+
+    private void fail(@NotNull IJob job, @NotNull Fail fail) {
         if (isSwitchingIP.get()) {  //失败的延迟任务还是会被dispatch到FailMonitor,这里直接丢弃
             return;
         }

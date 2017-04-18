@@ -123,7 +123,7 @@ public class CompanySpider extends BaseLagouSpider {
 
         HasAttributeFilter f1 = new HasAttributeFilter("class", "top_info_wrap");
         NodeList list = trees.extractAllNodesThatMatch(f1, true);
-        if (list == null) {
+        if (list == null || list.size() == 0) {
             return true;
         }
 

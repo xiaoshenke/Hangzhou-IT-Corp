@@ -72,16 +72,16 @@ public abstract class BaseJob implements IJob {
     @Override
     public String toString() {
         if (realJob == null) {
-            return "invalid job";
+            return "Invalid Job";
         }
 
         if (state == STATE_FAIL) {
-            return "Job fail,fail times: " + getFailTimes() + " " + realJob.toString();
+            return "Job Fail,fail times: " + getFailTimes() + " " + realJob.toString();
         } else if (state == STATE_SUCCESS) {
-            return "Job success " + realJob.toString();
+            return "Job Success " + realJob.toString();
         } else if (state == STATE_INIT) {
-            return "Job: " + realJob.toString();
+            return "Job Inited: " + realJob.toString();
         }
-        return "Job state: " + state + " " + realJob.toString();
+        return "Job State: " + state + " " + realJob.toString();
     }
 }

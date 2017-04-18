@@ -10,7 +10,7 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 /**
  * Created by wuxian on 1/4/2017.
  *
- * 任务队列:这个任务队列是要进行的任务队列,任务一旦开始后就会被踢出并被保存在@FailureManager.todoSpiderList中
+ * 任务队列:这个任务队列是要进行的任务队列,任务一旦开始后就会被踢出并被保存在@JobResultManager.todoSpiderList中
  *
  * 所有任务的状态会被更新到@JobMonitor
  */
