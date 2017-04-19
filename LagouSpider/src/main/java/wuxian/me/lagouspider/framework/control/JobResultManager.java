@@ -32,8 +32,28 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
  */
 public class JobResultManager {
 
+    AtomicLong current404Time = new AtomicLong(0);
+    AtomicInteger successNum = new AtomicInteger(0);
+    AtomicInteger failNum = new AtomicInteger(0);
+
+    private AtomicInteger fail404Num = new AtomicInteger(0);
+    private AtomicLong last404Time = new AtomicLong(0);
+
+    private AtomicInteger failNetErrNum = new AtomicInteger(0);
+    private AtomicLong lastNetErrTime = new AtomicLong(0);
+    private AtomicLong currentNetErrTime = new AtomicLong(0);
+
+    private AtomicInteger failMaybeBlockNum = new AtomicInteger(0);
+    private AtomicLong lastMaybeBlockTime = new AtomicLong(0);
+    private AtomicLong currentMaybeBlockTime = new AtomicLong(0);
+
+    //OkHttpClient.enqueue的spider 还有一部分delayJob是没办法拿到的...
+    //记录单次(单个ip)的spiderList
+    private List<BaseSpider> todoSpiderList = Collections.synchronizedList(new ArrayList<BaseSpider>());
+
     JobMonitor monitor = JobMonitor.getInstance();
 
+    private AtomicBoolean isSwitchingIP = new AtomicBoolean(false);
     private FutureTask<String> switchIPFuture;
 
     private long startTime = System.currentTimeMillis();
@@ -69,25 +89,6 @@ public class JobResultManager {
         return instance;
     }
 
-    AtomicLong current404Time = new AtomicLong(0);
-    AtomicInteger successNum = new AtomicInteger(0);
-    AtomicInteger failNum = new AtomicInteger(0);
-
-    private AtomicInteger fail404Num = new AtomicInteger(0);
-    private AtomicLong last404Time = new AtomicLong(0);
-
-    private AtomicInteger failNetErrNum = new AtomicInteger(0);
-    private AtomicLong lastNetErrTime = new AtomicLong(0);
-    private AtomicLong currentNetErrTime = new AtomicLong(0);
-
-    private AtomicInteger failMaybeBlockNum = new AtomicInteger(0);
-    private AtomicLong lastMaybeBlockTime = new AtomicLong(0);
-    private AtomicLong currentMaybeBlockTime = new AtomicLong(0);
-
-    //OkHttpClient.enqueue的spider 还有一部分delayJob是没办法拿到的...
-    //记录单次(单个ip)的spiderList
-    private List<BaseSpider> todoSpiderList = Collections.synchronizedList(new ArrayList<BaseSpider>());
-
     public void register(@NotNull BaseSpider spider) {
         todoSpiderList.add(spider);
     }
@@ -95,7 +96,6 @@ public class JobResultManager {
     public void success(Runnable runnable) {
         IJob job = monitor.getJob(runnable);
         if (job != null) {
-            job.setCurrentState(IJob.STATE_SUCCESS);
             monitor.putJob(job, IJob.STATE_SUCCESS);
 
             success(job);
@@ -119,7 +119,6 @@ public class JobResultManager {
     public void fail(@NotNull Runnable runnable, @NotNull Fail fail, boolean retry) {
         IJob job = monitor.getJob(runnable);
         if (job != null) {
-            job.setCurrentState(IJob.STATE_FAIL);
             job.fail(fail);
             monitor.putJob(job, IJob.STATE_FAIL);  //更新JobQueue里的job状态
 
@@ -192,6 +191,7 @@ public class JobResultManager {
 
                 dispatcher.cancelAll();
                 WorkThread.getInstance().pauseWhenSwitchIP();
+                JobMonitor.getInstance().printAllJobStatus();
             }
         }
     }
@@ -214,12 +214,11 @@ public class JobResultManager {
         return false;
     }
 
-    private AtomicBoolean isSwitchingIP = new AtomicBoolean(false);
-
     private void doSwitchIp() {
         isSwitchingIP.set(true);
         OkhttpProvider.getClient().dispatcher().cancelAll();
         WorkThread.getInstance().pauseWhenSwitchIP();
+        JobMonitor.getInstance().printAllJobStatus();
         reset();
         int times = 0;
         while (true) {  //每个ip尝试三次 直到成功或没有proxy

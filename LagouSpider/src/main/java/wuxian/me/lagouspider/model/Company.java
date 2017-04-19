@@ -51,7 +51,7 @@ public class Company extends BaseModel {
 
     public String name() {
         if (detail_location == null || detail_location.equals("")) {
-            return "Company: {id: " + company_id + " ,name: " + company_fullname + " ,industry: "
+            return "Company: {id: " + company_id + " ,industry: "
                     + industryField + " companySize :" + company_size + "}";
         } else {
             return "Company: {id: " + company_id + " name: " + company_fullname + " lagouAuthen: " +

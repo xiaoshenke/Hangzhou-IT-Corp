@@ -7,6 +7,8 @@ import wuxian.me.lagouspider.framework.control.Fail;
 import java.util.ArrayList;
 import java.util.List;
 
+import static wuxian.me.lagouspider.util.ModuleProvider.logger;
+
 /**
  * Created by wuxian on 31/3/2017.
  */
@@ -39,7 +41,9 @@ public abstract class BaseJob implements IJob {
         this.state = state;
 
         if (state == STATE_INIT) { //初始化一下
-            fails.clear();
+            if (fails != null) {
+                fails.clear();
+            }
         }
     }
 
@@ -64,7 +68,9 @@ public abstract class BaseJob implements IJob {
     @Override
     public boolean equals(Object obj) {
         if (obj != null && obj instanceof BaseJob) {
-            return realJob.equals(((BaseJob) obj).realJob);
+            boolean ret = realJob.equals(((BaseJob) obj).realJob);
+            logger().info("BaseJob equals return " + ret);
+            return ret;
         }
         return super.equals(obj);
     }

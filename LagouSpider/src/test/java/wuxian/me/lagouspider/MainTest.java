@@ -2,8 +2,6 @@ package wuxian.me.lagouspider;
 
 import okhttp3.*;
 import org.junit.Test;
-import wuxian.me.lagouspider.core.AreaPageSpider;
-import wuxian.me.lagouspider.core.BaseLagouSpider;
 import wuxian.me.lagouspider.core.CompanySpider;
 import wuxian.me.lagouspider.core.itjuzi.SearchSpider;
 import wuxian.me.lagouspider.framework.control.JobMonitor;
@@ -23,7 +21,6 @@ import wuxian.me.lagouspider.model.Company;
 import wuxian.me.lagouspider.model.Location;
 import wuxian.me.lagouspider.model.Product;
 import wuxian.me.lagouspider.util.Helper;
-import wuxian.me.lagouspider.util.LoggerSpider;
 import wuxian.me.lagouspider.util.ModuleProvider;
 
 import java.io.IOException;
@@ -38,33 +35,57 @@ import static wuxian.me.lagouspider.util.ModuleProvider.*;
 public class MainTest {
 
     @Test
-    public void testSpiderEquals() {
+    public void testJobMonitorPrint() {
+        CompanySpider spider = new CompanySpider(-1, "dafda");
         IJob job = JobProvider.getJob();
-        Area area = new Area();
-        area.distinct_name = "西湖区";
-        area.name = "西溪";
-
-        BaseLagouSpider spider1 = new AreaSpider(area);
-        IJob iJob = JobProvider.getJob();
-        iJob.setRealRunnable(spider1);
-        JobMonitor.getInstance().putJob(iJob, IJob.STATE_INIT);
-
-        BaseLagouSpider spider = new AreaPageSpider(area, 5);
-        job.setRealRunnable(LoggerSpider.from(spider));
+        job.setRealRunnable(spider);
         JobMonitor.getInstance().putJob(job, IJob.STATE_INIT);
 
-        assertTrue(JobMonitor.getInstance().contains(job));
-        logger().info(job);
-
-        IJob job1 = JobMonitor.getInstance().getJob(spider);
-        assertTrue(job1 != null);
-
-        job = JobProvider.getNextJob(job);
+        spider = new CompanySpider(23434, "dafda");
+        job = JobProvider.getJob();
+        job.setRealRunnable(spider);
         JobMonitor.getInstance().putJob(job, IJob.STATE_RETRY);
 
-        assertTrue(JobMonitor.getInstance().contains(job));
-        logger().info(job);
+        spider = new CompanySpider(234, "dafda");
+        job = JobProvider.getNextJob(job);
+        job.setRealRunnable(spider);
+        JobMonitor.getInstance().putJob(job, IJob.STATE_SUCCESS);
 
+        spider = new CompanySpider(23434, "dafda");
+        job = JobProvider.getJob();
+        job.setRealRunnable(spider);
+        logger().info("Set companyspider to state fail");
+        JobMonitor.getInstance().putJob(job, IJob.STATE_FAIL);
+
+        logger().info(JobMonitor.getInstance().printAllJobStatus());
+    }
+
+    @Test
+    public void testProxyStablity() {
+        Config.IS_TEST = true;
+
+        IPProxyTool.Proxy proxy = IPProxyTool.switchNextProxy();
+        logger().info("Using proxy ip: " + proxy.ip + " port: " + proxy.port);
+        ensureIpSwitched(proxy);
+
+        int sleep = 5000;
+        int inc = 1;
+        int i = 0;
+        while (true) {
+
+            if (i == 3) {
+                //inc++;
+                i = 0;
+            }
+            try {
+                Thread.sleep(sleep * inc);
+            } catch (InterruptedException e) {
+                ;
+            }
+            ++i;
+            logger().info("heartBeat: " + (i + (inc - 1) * 3));
+            ensureIpSwitched(proxy);
+        }
     }
 
     @Test
@@ -126,27 +147,6 @@ public class MainTest {
     @Test
     public void testCompanyMain() {
         Config.IS_TEST = true;
-        //IPProxyTool.Proxy proxy = IPProxyTool.switchNextProxy();
-        //logger().info("using proxy ip: " + proxy.ip + " port: " + proxy.port);
-        //ensureIpSwitched(proxy);
-
-        String tableName = Helper.getCompanyTableName();
-
-        Company.tableName = tableName;
-        Product.tableName = Helper.getProductTableName();
-        Location.tableName = Helper.getLocationTableName();
-
-        ProductMapper productMapper = ModuleProvider.productMapper();
-        LocationMapper locationMapper = ModuleProvider.locationMapper();
-
-        logger().info("begin create product table");
-        productMapper.deleteTable(new Product(-1));
-        productMapper.createNewTableIfNeed(new Product(-1));
-
-        logger().info("begin create location table");
-        locationMapper.deleteTable(new Location(-1, "11"));
-        locationMapper.createNewTableIfNeed(new Location(-1, "11"));
-
 
         IJob job = JobProvider.getJob();
         job.setRealRunnable(new CompanySpider(37974, ""));
@@ -179,7 +179,6 @@ public class MainTest {
         }
     }
 
-
     private void ensureIpSwitched(IPProxyTool.Proxy proxy) {
         HttpUrl.Builder urlBuilder = HttpUrl.parse("http://www.ip138.com/ip2city.asp").newBuilder();
         Headers.Builder builder = new Headers.Builder();
@@ -198,7 +197,7 @@ public class MainTest {
             logger().debug(msg);
             assertTrue(msg.contains(proxy.ip));
         } catch (IOException e) {
-            logger().error("switch ip fail");  //使用代理会有些不大稳定...
+            logger().error("switch ip fail");
             assertTrue(false);
         } finally {
             if (response != null && response.body() != null) {

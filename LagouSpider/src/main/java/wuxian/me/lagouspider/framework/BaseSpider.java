@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static wuxian.me.lagouspider.util.ModuleProvider.logger;
+
 /**
  * Created by wuxian on 13/4/2017.
  */
@@ -121,7 +123,9 @@ public abstract class BaseSpider implements Runnable {
     @Override
     public final boolean equals(Object obj) {
         if (obj instanceof BaseSpider) {
-            return fullName().equals(((BaseSpider) obj).fullName());
+            boolean ret = fullName().equals(((BaseSpider) obj).fullName());
+            logger().info("BaseSpider equals return " + ret);
+            return ret;
         }
         return super.equals(obj);
     }

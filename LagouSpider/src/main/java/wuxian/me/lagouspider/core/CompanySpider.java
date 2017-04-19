@@ -24,8 +24,6 @@ import wuxian.me.lagouspider.save.CompanySaver;
 import wuxian.me.lagouspider.save.LocationSaver;
 import wuxian.me.lagouspider.save.ProductSaver;
 import wuxian.me.lagouspider.util.Helper;
-import wuxian.me.lagouspider.util.LoggerSpider;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -244,16 +242,12 @@ public class CompanySpider extends BaseLagouSpider {
                     for (int i = 0; i < list.size(); i++) {
                         if (i == 0) {
                             score = ((Span) list.elementAt(i)).getStringText().trim();  //面试得分
-                            //logger().info("面试得分: " + score);
                         } else if (i == 1) {
                             accordSore = ((Span) list.elementAt(i)).getStringText().trim();
-                            //logger().info("面试符合: " + accordSore);
                         } else if (i == 2) {
                             interviewerScore = ((Span) list.elementAt(i)).getStringText().trim();
-                            //logger().info("面试官评分: " + interviewerScore);
                         } else if (i == 3) {
                             environmentScore = ((Span) list.elementAt(i)).getStringText().trim();
-                            //logger().info("环境得分: " + environmentScore);
                         }
                     }
                 }
@@ -264,17 +258,13 @@ public class CompanySpider extends BaseLagouSpider {
     }
 
     private void parseProductList() throws ParserException {
-        //logger().info("Begin to parse ProductList");
         HasAttributeFilter f1 = new HasAttributeFilter("id", "company_products");
         NodeList list = trees.extractAllNodesThatMatch(f1, true);//parser.extractAllNodesThatMatch(f1);
         if (list == null || list.size() == 0) {
-            //logger().info("No company_products found");
             return;
-            //throw new ParserException("No Company_products found");
         }
 
         Node product = list.elementAt(0);
-        //printNodeOnly(product);
         HasAttributeFilter f2 = new HasAttributeFilter("class", "item_content");
         NodeList ret = product.getChildren().extractAllNodesThatMatch(f2, true);
         if (ret != null && ret.size() != 0) {
@@ -282,12 +272,9 @@ public class CompanySpider extends BaseLagouSpider {
             ret = product.getChildren();
             if (ret != null && ret.size() != 0) {
                 for (int i = 0; i < ret.size(); i++) {
-                    //logger().info("Begin to parse Product: " + i);
                     parseProduct(ret.elementAt(i)); //解析每一个item 存入到类变量
                 }
             }
-        } else {
-            //logger().info("No item_content node found");
         }
 
     }
@@ -296,41 +283,32 @@ public class CompanySpider extends BaseLagouSpider {
         Product product = new Product(company_id);
         NodeList list = node.getChildren();
         if (list == null) {
-            //logger().info("Node has no children, return");
             return;
         }
         for (int i = 0; i < list.size(); i++) {
             Node child = list.elementAt(i);
-            //printNodeOnly(child);
             if ((child instanceof ImageTag)) {
                 product.imgUrl = ((ImageTag) child).getImageURL(); //产品logo --> success
-                //logger().info("Product logo: " + product.imgUrl);
                 break;
             }
         }
 
         Node child = null;
-        //logger().info("BEGIN to parse product_url");
         HasAttributeFilter f1 = new HasAttributeFilter("class", "product_url");
         NodeList ret = list.extractAllNodesThatMatch(f1, true);
         if (ret != null && ret.size() != 0) {
             child = ret.elementAt(0);  //这是product_url node
-            //printChildrenOfNode(child);
             ret = child.getChildren();
             for (int i = 0; i < ret.size(); i++) {
                 child = ret.elementAt(i);
                 if (child instanceof LinkTag) {
                     product.url = ((LinkTag) child).getLink();
                     product.product_name = child.toPlainTextString().trim();
-
-                    //logger().info("product url: " + product.url);
-                    //logger().info("product product_name: " + product.product_name);
                     break;
                 }
             }
         }
 
-        //logger().info("BEGIN to parse clearfix");
         HasAttributeFilter f2 = new HasAttributeFilter("class", "clearfix");
         ret = list.extractAllNodesThatMatch(f2, true);  //product type
         if (ret != null && ret.size() != 0) {
@@ -342,20 +320,16 @@ public class CompanySpider extends BaseLagouSpider {
                     if (child2 instanceof Bullet) {
                         String productType = child2.toPlainTextString().trim();
                         product.addLabel(productType);
-                        //logger().info("product type: " + productType);
                     }
                 }
             }
         }
 
-        //logger().info("BEGIN to parse product_profile");//解析product description
         HasAttributeFilter f3 = new HasAttributeFilter("class", "product_profile");
         ret = list.extractAllNodesThatMatch(f3, true);
         if (ret != null && ret.size() != 0) {
             child = ret.elementAt(0);
             product.description = child.toPlainTextString().trim();
-
-            //logger().info("product description: " + product.description);
         }
 
         productList.add(product);
@@ -365,10 +339,8 @@ public class CompanySpider extends BaseLagouSpider {
         HasAttributeFilter f1 = new HasAttributeFilter("class", "mlist_li_desc");
         NodeList list = trees.extractAllNodesThatMatch(f1, true);
 
-        //logger().info("BEGIN to parse location");
         if (list != null && list.size() != 0) {
             for (int i = 0; i < list.size(); i++) {
-                //printChildrenOfNode(list.elementAt(i));  //<p />
                 locationList.add(list.elementAt(i).toPlainTextString().trim());
             }
             return;
