@@ -69,7 +69,6 @@ public abstract class BaseJob implements IJob {
     public boolean equals(Object obj) {
         if (obj != null && obj instanceof BaseJob) {
             boolean ret = realJob.equals(((BaseJob) obj).realJob);
-            logger().info("BaseJob equals return " + ret);
             return ret;
         }
         return super.equals(obj);

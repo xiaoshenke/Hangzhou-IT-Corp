@@ -23,15 +23,21 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
 /**
  * Created by wuxian on 9/4/2017.
- * 负责处理job的成功失败 根据失败的情况判断是否ip被屏蔽了
+ * <p>
+ * 统筹管理所有job,
+ * 1 管理WorkThread,JobQueue,JobMonitor
+ * 2 负责处理job的成功失败 --> 失败是否重试
+ * 3 负责处理ip被屏蔽 --> 是则停止现有job,切换ip,打监控日志,重启workThread等等
+ * <p>
  * <p>
  * 日志级别规定:
  * 1 监控整个项目运行的info级别 比如切换ip,job状态切换:开始运行,成功,失败,重试等
  * 2 Job出错的error级
  * 3 其他debug级别 比如parsing什么的
  */
-public class JobResultManager {
+public class JobManager {
 
+    //Todo: 监控优化 不要用这些AtomicLong值了
     AtomicLong current404Time = new AtomicLong(0);
     AtomicInteger successNum = new AtomicInteger(0);
     AtomicInteger failNum = new AtomicInteger(0);
@@ -47,18 +53,28 @@ public class JobResultManager {
     private AtomicLong lastMaybeBlockTime = new AtomicLong(0);
     private AtomicLong currentMaybeBlockTime = new AtomicLong(0);
 
-    //OkHttpClient.enqueue的spider 还有一部分delayJob是没办法拿到的...
-    //记录单次(单个ip)的spiderList
+    //记录单次(单个ip)的spiderList --> OkHttpClient.enqueue的spider 还有一部分delayJob是没办法拿到的...
     private List<BaseSpider> todoSpiderList = Collections.synchronizedList(new ArrayList<BaseSpider>());
 
-    JobMonitor monitor = JobMonitor.getInstance();
+    private JobMonitor monitor = new JobMonitor();
+    private JobQueue queue = new JobQueue(monitor);
+    private WorkThread workThread = new WorkThread();
 
     private AtomicBoolean isSwitchingIP = new AtomicBoolean(false);
     private FutureTask<String> switchIPFuture;
 
     private long startTime = System.currentTimeMillis();
 
-    private JobResultManager() {
+    private static JobManager instance;
+
+    public static JobManager getInstance() {
+        if (instance == null) {
+            instance = new JobManager();
+        }
+        return instance;
+    }
+
+    private JobManager() {
         HttpUrl.Builder urlBuilder = HttpUrl.parse("http://www.ip138.com/ip2city.asp").newBuilder();
         Headers.Builder builder = new Headers.Builder();
         builder.add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36");
@@ -80,13 +96,21 @@ public class JobResultManager {
         switchIPFuture = new FutureTask<String>(callable);
     }
 
-    private static JobResultManager instance;
+    //单独调用
+    public void start() {
+        workThread.start();
+    }
 
-    public static JobResultManager getInstance() {
-        if (instance == null) {
-            instance = new JobResultManager();
-        }
-        return instance;
+    public boolean putJob(@NotNull IJob job) {
+        return queue.putJob(job);
+    }
+
+    public IJob getJob() {
+        return queue.getJob();
+    }
+
+    public boolean isEmpty() {
+        return queue.isEmpty();
     }
 
     public void register(@NotNull BaseSpider spider) {
@@ -131,7 +155,7 @@ public class JobResultManager {
                     IJob next = JobProvider.getNextJob(job);  //重新制定爬虫策略 放入jobQueue
 
                     next.setCurrentState(IJob.STATE_RETRY);
-                    JobQueue.getInstance().putJob(next, IJob.STATE_RETRY);
+                    queue.putJob(next, IJob.STATE_RETRY);
                 }
             }
 
@@ -182,16 +206,16 @@ public class JobResultManager {
 
                 logger().info("We will not switch IP ");
 
-                logger().info("We have total " + JobMonitor.getInstance().getWholeJobNum() + " jobs, we have "
-                        + JobQueue.getInstance().getJobNum() + " jobs in JobQueue, we have "
+                logger().info("We have total " + monitor.getWholeJobNum() + " jobs, we have "
+                        + queue.getJobNum() + " jobs in JobQueue, we have "
                         + todoSpiderList.size() + "jobs in todoSpiderList");
 
                 logger().info("We have " + dispatcher.runningCallsCount() +
                         " request running and " + dispatcher.queuedCallsCount() + " request queue in OkHttpClient");
 
                 dispatcher.cancelAll();
-                WorkThread.getInstance().pauseWhenSwitchIP();
-                JobMonitor.getInstance().printAllJobStatus();
+                workThread.pauseWhenSwitchIP();
+                monitor.printAllJobStatus();
             }
         }
     }
@@ -217,8 +241,8 @@ public class JobResultManager {
     private void doSwitchIp() {
         isSwitchingIP.set(true);
         OkhttpProvider.getClient().dispatcher().cancelAll();
-        WorkThread.getInstance().pauseWhenSwitchIP();
-        JobMonitor.getInstance().printAllJobStatus();
+        workThread.pauseWhenSwitchIP();
+        monitor.printAllJobStatus();
         reset();
         int times = 0;
         while (true) {  //每个ip尝试三次 直到成功或没有proxy
@@ -241,16 +265,15 @@ public class JobResultManager {
         }
 
         OkhttpProvider.getClient().dispatcher().cancelAll();
-
         for (BaseSpider spider : todoSpiderList) {
-            IJob job = JobMonitor.getInstance().getJob(spider);
+            IJob job = monitor.getJob(spider);
             job.setCurrentState(IJob.STATE_INIT);
 
-            JobQueue.getInstance().putJob(job, IJob.STATE_INIT); //会同步跟新JobMonitor的状态
+            queue.putJob(job, IJob.STATE_INIT); //会同步跟新JobMonitor的状态
         }
 
         todoSpiderList.clear();
-        WorkThread.getInstance().resumeNow();
+        workThread.resumeNow();
         isSwitchingIP.set(false);
     }
 
@@ -263,8 +286,7 @@ public class JobResultManager {
     private boolean ensureIpSwitched(final IPProxyTool.Proxy proxy) {
         new Thread(switchIPFuture).start();
         try {
-            return switchIPFuture.get() == null ?
-                    false : switchIPFuture.get().contains(proxy.ip);
+            return switchIPFuture.get() == null ? false : switchIPFuture.get().contains(proxy.ip);
         } catch (InterruptedException e1) {
             return false;
         } catch (ExecutionException e) {

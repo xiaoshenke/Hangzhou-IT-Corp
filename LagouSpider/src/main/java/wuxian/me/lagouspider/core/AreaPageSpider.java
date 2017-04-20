@@ -9,6 +9,7 @@ import okhttp3.*;
 import org.htmlparser.util.ParserException;
 import wuxian.me.lagouspider.Config;
 import wuxian.me.lagouspider.framework.BaseSpider;
+import wuxian.me.lagouspider.framework.control.JobManager;
 import wuxian.me.lagouspider.framework.control.JobProvider;
 import wuxian.me.lagouspider.framework.control.JobQueue;
 import wuxian.me.lagouspider.framework.control.MaybeBlockedException;
@@ -97,7 +98,7 @@ public class AreaPageSpider extends BaseLagouSpider {
             for (Company company : companyList) {
                 IJob job = JobProvider.getJob();
                 job.setRealRunnable((new CompanySpider(company.company_id, company.company_fullname)));
-                JobQueue.getInstance().putJob(job);
+                JobManager.getInstance().putJob(job);
             }
         }
 

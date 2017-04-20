@@ -19,21 +19,12 @@ public class JobMonitor {
 
     private Map<Runnable, IJob> jobMap = new ConcurrentHashMap<Runnable, IJob>();
 
-    private JobMonitor() {
-    }
-
-    private static JobMonitor instance;
-
-    public static JobMonitor getInstance() {
-        if (instance == null) {
-            instance = new JobMonitor();
-        }
-        return instance;
+    public JobMonitor() {
     }
 
     public void putJob(@NotNull IJob job, int state) {
         job.setCurrentState(state);
-        set.put(job, state);  //目前的设计(job.equals全都delegate给了runnable(spider).equals)会导致bug:
+        set.put(job, state);  //Fixme:目前的设计(job.equals全都delegate给了runnable(spider).equals)会导致bug:
         // 没办法更改key的状态 也就是job的状态
         //所以我print状态的时候不能用job里的state,必须用set的value值
         jobMap.put(job.getRealRunnable(), job);
@@ -103,7 +94,6 @@ public class JobMonitor {
             }
             return "Init Jobs: " + printMap(init) + " Success Jobs: " + printMap(success)
                     + " Fail Jobs: " + printMap(fail) + " Retry Jobs: " + printMap(retry);
-
         }
     }
 }

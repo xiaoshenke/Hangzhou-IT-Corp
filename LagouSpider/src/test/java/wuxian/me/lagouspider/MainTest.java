@@ -39,25 +39,25 @@ public class MainTest {
         CompanySpider spider = new CompanySpider(-1, "dafda");
         IJob job = JobProvider.getJob();
         job.setRealRunnable(spider);
-        JobMonitor.getInstance().putJob(job, IJob.STATE_INIT);
+        //JobMonitor.getInstance().putJob(job, IJob.STATE_INIT);
 
         spider = new CompanySpider(23434, "dafda");
         job = JobProvider.getJob();
         job.setRealRunnable(spider);
-        JobMonitor.getInstance().putJob(job, IJob.STATE_RETRY);
+        //JobMonitor.getInstance().putJob(job, IJob.STATE_RETRY);
 
         spider = new CompanySpider(234, "dafda");
         job = JobProvider.getNextJob(job);
         job.setRealRunnable(spider);
-        JobMonitor.getInstance().putJob(job, IJob.STATE_SUCCESS);
+        //JobMonitor.getInstance().putJob(job, IJob.STATE_SUCCESS);
 
         spider = new CompanySpider(23434, "dafda");
         job = JobProvider.getJob();
         job.setRealRunnable(spider);
         logger().info("Set companyspider to state fail");
-        JobMonitor.getInstance().putJob(job, IJob.STATE_FAIL);
+        //JobMonitor.getInstance().putJob(job, IJob.STATE_FAIL);
 
-        logger().info(JobMonitor.getInstance().printAllJobStatus());
+        //logger().info(JobMonitor.getInstance().printAllJobStatus());
     }
 
     @Test
@@ -131,13 +131,13 @@ public class MainTest {
         for (Area area : areas) {
             IJob job = JobProvider.getJob();
             job.setRealRunnable((new AreaSpider(area)));
-            JobQueue.getInstance().putJob(job);
+            //JobQueue.getInstance().putJob(job);
 
             break;
         }
 
         logger().info("Start workThread...");
-        WorkThread.getInstance().start();
+        //WorkThread.getInstance().start();
 
         while (true) {
             //never stop //http://www.cnblogs.com/yanphet/p/5774291.html
@@ -150,10 +150,10 @@ public class MainTest {
 
         IJob job = JobProvider.getJob();
         job.setRealRunnable(new CompanySpider(37974, ""));
-        JobQueue.getInstance().putJob(job);
+        //JobQueue.getInstance().putJob(job);
 
         logger().info("start workThread...");
-        WorkThread.getInstance().start();
+        //WorkThread.getInstance().start();
 
         while (true) {
 
@@ -170,10 +170,10 @@ public class MainTest {
 
         IJob job = JobProvider.getJob();
         job.setRealRunnable(new SearchSpider(33618, "微贷（杭州）金融信息服务有限公司"));
-        JobQueue.getInstance().putJob(job);
+        //JobQueue.getInstance().putJob(job);
 
         logger().info("start workThread...");
-        WorkThread.getInstance().start();
+        //WorkThread.getInstance().start();
 
         while (true) {
         }

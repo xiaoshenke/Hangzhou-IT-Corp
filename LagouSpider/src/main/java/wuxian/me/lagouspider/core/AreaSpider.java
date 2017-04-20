@@ -10,6 +10,7 @@ import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import wuxian.me.lagouspider.Config;
 import wuxian.me.lagouspider.framework.BaseSpider;
+import wuxian.me.lagouspider.framework.control.JobManager;
 import wuxian.me.lagouspider.framework.control.MaybeBlockedException;
 import wuxian.me.lagouspider.framework.job.IJob;
 import wuxian.me.lagouspider.framework.control.JobProvider;
@@ -85,7 +86,7 @@ public class AreaSpider extends BaseLagouSpider {
         for (int i = 1; i < pageNum; i++) {
             IJob job = JobProvider.getJob();
             job.setRealRunnable((new AreaPageSpider(area, i)));
-            JobQueue.getInstance().putJob(job);
+            JobManager.getInstance().putJob(job);
         }
     }
 

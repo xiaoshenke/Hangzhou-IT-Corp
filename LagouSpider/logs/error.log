@@ -200,7 +200,7 @@
 2017-04-18 16:35:22 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:202) switch ip fail
 2017-04-18 16:35:28 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:202) switch ip fail
 2017-04-18 16:36:01 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.core.LagouSpiderCallback.onFailure(LagouSpiderCallback.java:25) onFailure: AreaSpider: {Area: {area_name: 西溪 ,distinct_name: 西湖区}}
-2017-04-18 16:36:01 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.framework.control.JobResultManager.fail(JobResultManager.java:176) WE ARE BLOCKED! Until now We have success 0 jobs, we have run 10 seconds
+2017-04-18 16:36:01 [OkHttp https://www.lagou.com/...] wuxian.me.lagouspider.framework.control.JobManager.fail(JobResultManager.java:176) WE ARE BLOCKED! Until now We have success 0 jobs, we have run 10 seconds
 2017-04-18 19:13:55 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:177) switch ip fail
 2017-04-18 19:15:31 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:177) switch ip fail
 2017-04-18 19:16:17 [main] wuxian.me.lagouspider.MainTest.ensureIpSwitched(MainTest.java:177) switch ip fail

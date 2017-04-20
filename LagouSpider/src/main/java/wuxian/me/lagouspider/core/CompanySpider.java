@@ -13,6 +13,7 @@ import org.htmlparser.util.ParserException;
 import wuxian.me.lagouspider.Config;
 import wuxian.me.lagouspider.core.itjuzi.SearchSpider;
 import wuxian.me.lagouspider.framework.BaseSpider;
+import wuxian.me.lagouspider.framework.control.JobManager;
 import wuxian.me.lagouspider.framework.control.JobProvider;
 import wuxian.me.lagouspider.framework.control.JobQueue;
 import wuxian.me.lagouspider.framework.control.MaybeBlockedException;
@@ -152,10 +153,9 @@ public class CompanySpider extends BaseLagouSpider {
             if (Config.ENABLE_SPIDER_ITCHENGZI_SEARCH) {
                 IJob iJob = JobProvider.getJob();
                 iJob.setRealRunnable((new SearchSpider(company_id, companyName)));
-                JobQueue.getInstance().putJob(iJob);
+                JobManager.getInstance().putJob(iJob);
             }
         }
-
 
         HasAttributeFilter f3 = new HasAttributeFilter("class", "company_word");
         ret = list.extractAllNodesThatMatch(f3, true);

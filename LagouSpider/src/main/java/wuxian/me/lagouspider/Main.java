@@ -1,6 +1,7 @@
 package wuxian.me.lagouspider;
 
 import wuxian.me.lagouspider.core.AreaSpider;
+import wuxian.me.lagouspider.framework.control.JobManager;
 import wuxian.me.lagouspider.framework.control.JobProvider;
 import wuxian.me.lagouspider.framework.control.JobQueue;
 import wuxian.me.lagouspider.framework.control.WorkThread;
@@ -88,12 +89,12 @@ public class Main {
                 for (Area area : areas) {
                     IJob job = JobProvider.getJob();
                     job.setRealRunnable((new AreaSpider(area)));
-                    JobQueue.getInstance().putJob(job);
+                    JobManager.getInstance().putJob(job);
 
                 }
 
                 logger().info("Start workThread...");
-                WorkThread.getInstance().start();
+                JobManager.getInstance().start();
             }
         }
     }

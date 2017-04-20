@@ -124,7 +124,6 @@ public abstract class BaseSpider implements Runnable {
     public final boolean equals(Object obj) {
         if (obj instanceof BaseSpider) {
             boolean ret = fullName().equals(((BaseSpider) obj).fullName());
-            logger().info("BaseSpider equals return " + ret);
             return ret;
         }
         return super.equals(obj);

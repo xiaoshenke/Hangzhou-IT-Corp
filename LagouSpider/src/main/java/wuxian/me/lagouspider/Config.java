@@ -9,6 +9,8 @@ public class Config {
 
     public static int SOCKET_READ_TIMEOUT = 10 * 1000; //10s
 
+    public static int PROXY_HEARTBEAT_FREQUENCY = 5 * 1000; //暂定5秒好了
+
     public static boolean USE_FIXED_DELAY_NEXT_JOB = true;
 
     public static boolean USE_FIXED_DELAY_JOB = true;

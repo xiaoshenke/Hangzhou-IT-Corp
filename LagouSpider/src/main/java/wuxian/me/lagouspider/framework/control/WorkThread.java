@@ -4,25 +4,15 @@ import wuxian.me.lagouspider.framework.job.IJob;
 
 /**
  * Created by wuxian on 6/4/2017.
+ *
+ * 由@JobManager管理
  */
 public class WorkThread extends Thread {
     private static final long SLEEP_TIME = 1000;
+    private JobManager jobManager = JobManager.getInstance();
 
-    private WorkThread() {
+    public WorkThread() {
         ;
-    }
-
-    private static WorkThread instance;
-
-    public static WorkThread getInstance() {
-        if (instance == null) {
-            synchronized (WorkThread.class) {
-                if (instance == null) {
-                    instance = new WorkThread();
-                }
-            }
-        }
-        return instance;
     }
 
     private boolean pause = false;
@@ -50,9 +40,9 @@ public class WorkThread extends Thread {
     @Override
     public void run() {
         while (true) {
-            while (!JobQueue.getInstance().isEmpty()) {
+            while (!jobManager.isEmpty()) {
                 doIfShouldWait();
-                IJob job = JobQueue.getInstance().getJob();
+                IJob job = jobManager.getJob();
                 job.run();
             }
 
