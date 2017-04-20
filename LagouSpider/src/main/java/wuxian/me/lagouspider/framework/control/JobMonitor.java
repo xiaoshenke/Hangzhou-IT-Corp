@@ -15,8 +15,6 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
  */
 public class JobMonitor {
 
-    private Map<IJob, Integer> set = new ConcurrentHashMap<IJob, Integer>();
-
     private Map<Runnable, IJob> jobMap = new ConcurrentHashMap<Runnable, IJob>();
 
     public JobMonitor() {
@@ -24,9 +22,6 @@ public class JobMonitor {
 
     public void putJob(@NotNull IJob job, int state) {
         job.setCurrentState(state);
-        set.put(job, state);  //Fixme:目前的设计(job.equals全都delegate给了runnable(spider).equals)会导致bug:
-        // 没办法更改key的状态 也就是job的状态
-        //所以我print状态的时候不能用job里的state,必须用set的value值
         jobMap.put(job.getRealRunnable(), job);
     }
 
@@ -39,11 +34,11 @@ public class JobMonitor {
     }
 
     public boolean contains(@NotNull IJob job) {
-        return set.containsKey(job);
+        return jobMap.containsKey(job.getRealRunnable());
     }
 
     public int getWholeJobNum() {
-        return set.size();
+        return jobMap.size();
     }
 
     private String getClassNameOfJob(@NotNull IJob job) {
@@ -73,10 +68,11 @@ public class JobMonitor {
         Map<String, Integer> fail = new HashMap<String, Integer>();
         Map<String, Integer> retry = new HashMap<String, Integer>();
 
-        synchronized (set) {
-            for (IJob job : set.keySet()) {
+        synchronized (jobMap) {
+            for (Runnable runnable : jobMap.keySet()) {
+                IJob job = jobMap.get(runnable);
                 String name = getClassNameOfJob(job);
-                switch (set.get(job)) {
+                switch (job.getCurrentState()) {
                     case IJob.STATE_INIT:
                         increaseNum(init, name);
                         break;
