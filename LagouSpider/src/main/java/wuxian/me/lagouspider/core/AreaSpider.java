@@ -8,16 +8,13 @@ import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.tags.Span;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
-import wuxian.me.lagouspider.Config;
 import wuxian.me.lagouspider.framework.BaseSpider;
 import wuxian.me.lagouspider.framework.control.JobManager;
 import wuxian.me.lagouspider.framework.control.MaybeBlockedException;
 import wuxian.me.lagouspider.framework.job.IJob;
 import wuxian.me.lagouspider.framework.control.JobProvider;
-import wuxian.me.lagouspider.framework.control.JobQueue;
 import wuxian.me.lagouspider.model.Area;
 import wuxian.me.lagouspider.util.Helper;
-import wuxian.me.lagouspider.util.LoggerSpider;
 
 import static wuxian.me.lagouspider.Config.Spider.ENABLE_SPIDER_AREAPAGE;
 import static wuxian.me.lagouspider.Config.SpiderUrl.URL_LAGOU_JAVA;

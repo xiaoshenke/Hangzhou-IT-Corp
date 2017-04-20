@@ -49,7 +49,7 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
     private Dispatcher dispatcher = OkhttpProvider.getClient().dispatcher();
 
     private FailHelper failHelper = new FailHelper();
-    AtomicInteger successJobNum = new AtomicInteger(0);
+    private AtomicInteger successJobNum = new AtomicInteger(0);
     private long workThreadStartTime;//WorkThread线程开启的时间
 
     private boolean started = false;
@@ -74,6 +74,7 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
             started = true;
             heartbeatManager.addHeartBeat(this);
             workThreadStartTime = System.currentTimeMillis();
+            logger().info("WorkThread started");
             workThread.start();
         }
     }
@@ -95,66 +96,60 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
     }
 
     public void success(Runnable runnable) {
-        failHelper.removeFail(runnable);
-        IJob job = monitor.getJob(runnable);
-        if (job != null) {
-            monitor.putJob(job, IJob.STATE_SUCCESS);
-
-            success(job);
-        }
-    }
-
-    private void success(@NotNull IJob job) {
-        logger().info("Job Success: " + ((BaseSpider) job).name());
         successJobNum.getAndIncrement();
+        failHelper.removeFail(runnable);
 
-        if (todoSpiderList.contains(job)) {
-            todoSpiderList.remove(job);
+        IJob job = monitor.getJob(runnable);
+        if (job == null) { //SHOULD NEVER HAPPEN!
+            return;
         }
+        logger().info("Job Success: " + ((BaseSpider) job).name());
+        todoSpiderList.remove(job);
+        monitor.putJob(job, IJob.STATE_SUCCESS);
+
     }
 
     public void fail(@NotNull Runnable runnable, @NotNull Fail fail) {
         fail(runnable, fail, true);
     }
 
-    //该方法会被多个线程调用 注意线程安全处理
-    //Fail并且判断是否应该进行job重试 若是则放入重试队列
+    //注意实现线程安全
     public void fail(@NotNull Runnable runnable, @NotNull Fail fail, boolean retry) {
 
-        IJob job = monitor.getJob(runnable);
-        if (job != null) {
-            job.fail(fail);
-            monitor.putJob(job, IJob.STATE_FAIL);  //更新JobQueue里的job状态
-
-            if (retry && ENABLE_RETRY_SPIDER) { //处理重试
-                if (job.getFailTimes() >= SINGLEJOB_MAX_FAIL_TIME) { //是否进行重试
-                    logger().error("Job: " + job.toString() + " fail " + job.getFailTimes() + "times, abandon it");
-                } else {
-                    logger().info("Retry Job: " + job.toString());
-
-                    IJob next = JobProvider.getNextJob(job);  //重新制定爬虫策略 放入jobQueue
-
-                    next.setCurrentState(IJob.STATE_RETRY);
-                    queue.putJob(next, IJob.STATE_RETRY);
-                }
+        if (isSwitchingIP.get()) {
+            IJob job = monitor.getJob(runnable);
+            if (job != null) {
+                //FailHelper不用做什么 因为已知被block
+                //TodoSpiderList不做remove 这些job会被重新丢入到jobQueue
+                //不用调job.fail来增加失败次数 因为没有意义
+                monitor.putJob(job, IJob.STATE_FAIL);
             }
-
-            if (isSwitchingIP.get()) {  //失败的延迟任务还是会被dispatch到FailMonitor,这里直接丢弃
-                return;
-            }
+        } else {
             failHelper.addFail(runnable, fail);
 
-            if (todoSpiderList.contains(job)) {
-                todoSpiderList.remove(job);
-            }
+            IJob job = monitor.getJob(runnable);
+            if (job != null) {
+                todoSpiderList.remove(job);  //这里先remove掉 因为在OkHttpClient.enqueue的时候会被重新加入
 
+                job.fail(fail);
+                monitor.putJob(job, IJob.STATE_FAIL);
+
+                if (retry && ENABLE_RETRY_SPIDER) {
+                    if (job.getFailTimes() >= SINGLEJOB_MAX_FAIL_TIME) { //重试处理
+                        logger().error("Job: " + job.toString() + " fail " + job.getFailTimes() + "times, abandon it");
+                    } else {
+                        logger().info("Retry Job: " + job.toString());
+                        IJob next = JobProvider.getNextJob(job);
+                        queue.putJob(next, IJob.STATE_RETRY);
+                    }
+                }
+            }
             if (failHelper.isBlock()) {
-                //Todo: logger优化
-                logger().error("WE ARE BLOCKED! Until now We have success " + successJobNum.get() +
-                        " jobs, we have run " + (System.currentTimeMillis() - workThreadStartTime) / 1000 + " seconds");
+                logger().error("WE ARE BLOCKED!");
+                logger().error("Until now, We have success " + successJobNum.get() +
+                        " jobs, We have run " + (System.currentTimeMillis() - workThreadStartTime) / 1000 + "seconds");
                 heartbeatManager.stopHeartBeat();
                 dealBlock();
-
             }
         }
     }
@@ -163,7 +158,7 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
         if (ENABLE_SWITCH_IPPROXY) {
             logger().info("We begin to switch IP...");
             doSwitchIp();
-        } else {        //被block后就停止了
+        } else {        //被block后就停止了 --> 主要用于测试
             isSwitchingIP.set(true);
 
             logger().info("We will not switch IP ");
@@ -181,11 +176,21 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
 
     private void doSwitchIp() {
         isSwitchingIP.set(true);
-        dispatcher.cancelAll();
         workThread.pauseWhenSwitchIP();
-        monitor.printAllJobStatus();
-        failHelper.reInit();
-        int times = 0;
+        logger().info("WorkThread paused");
+
+        dispatcher.cancelAll();
+
+        logger().info("We will not switch IP ");
+        logger().info("We have total " + monitor.getWholeJobNum() + " jobs, we have "
+                + queue.getJobNum() + " jobs in JobQueue, we have "
+                + todoSpiderList.size() + "jobs in todoSpiderList");
+        logger().info("We have " + dispatcher.runningCallsCount() +
+                " request running and " + dispatcher.queuedCallsCount() +
+                " request queue in OkHttpClient");
+
+        monitor.printAllJobStatus();  //监控用
+
         while (true) {  //每个ip尝试三次 直到成功或没有proxy
             IPProxyTool.Proxy proxy = ipProxyTool.switchNextProxy();
             if (proxy == null) {
@@ -202,20 +207,26 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
                 logger().info("Switch Proxy success");
                 break;
             }
-            times++;
         }
 
         dispatcher.cancelAll();
         for (BaseSpider spider : todoSpiderList) {
             IJob job = monitor.getJob(spider);
-            job.setCurrentState(IJob.STATE_INIT);
-
-            queue.putJob(job, IJob.STATE_INIT); //会同步跟新JobMonitor的状态
+            if (job != null) {
+                queue.putJob(job, IJob.STATE_INIT);
+            }
         }
-
         todoSpiderList.clear();
+
+        failHelper.reInit();
+        workThreadStartTime = System.currentTimeMillis();
+        logger().info("WorkThread resumed");
         workThread.resumeNow();
         isSwitchingIP.set(false);
+    }
+
+    public IPProxyTool.Proxy switchProxy() {
+        return ipProxyTool.switchNextProxy();
     }
 
     private boolean ensureIpSwitched(final IPProxyTool.Proxy proxy)

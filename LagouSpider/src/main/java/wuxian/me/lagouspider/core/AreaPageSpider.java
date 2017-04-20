@@ -7,18 +7,15 @@ import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 import okhttp3.*;
 import org.htmlparser.util.ParserException;
-import wuxian.me.lagouspider.Config;
 import wuxian.me.lagouspider.framework.BaseSpider;
 import wuxian.me.lagouspider.framework.control.JobManager;
 import wuxian.me.lagouspider.framework.control.JobProvider;
-import wuxian.me.lagouspider.framework.control.JobQueue;
 import wuxian.me.lagouspider.framework.control.MaybeBlockedException;
 import wuxian.me.lagouspider.framework.job.IJob;
 import wuxian.me.lagouspider.model.Area;
 import wuxian.me.lagouspider.model.Company;
 import wuxian.me.lagouspider.save.CompanySaver;
 import wuxian.me.lagouspider.util.Helper;
-import wuxian.me.lagouspider.util.LoggerSpider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +24,6 @@ import static wuxian.me.lagouspider.Config.EnableSaveDB.ENABLE_SAVE_COMPANY_DB;
 import static wuxian.me.lagouspider.Config.Spider.ENABLE_SPIDER_COMPANY_MAIN;
 import static wuxian.me.lagouspider.Config.SpiderUrl.URL_LAGOU_JAVA;
 import static wuxian.me.lagouspider.Config.SpiderUrl.URL_LAGOU_POSITION_JSON;
-import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
 /**
  * Created by wuxian on 7/4/2017.

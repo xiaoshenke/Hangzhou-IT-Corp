@@ -9,7 +9,9 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * Created by wuxian on 20/4/2017.
  * <p>
+ * 用于判断是否被block
  * 注意实现线程安全
+ *
  */
 public class FailHelper {
 

@@ -3,8 +3,6 @@ package wuxian.me.lagouspider;
 import wuxian.me.lagouspider.core.AreaSpider;
 import wuxian.me.lagouspider.framework.control.JobManager;
 import wuxian.me.lagouspider.framework.control.JobProvider;
-import wuxian.me.lagouspider.framework.control.JobQueue;
-import wuxian.me.lagouspider.framework.control.WorkThread;
 import wuxian.me.lagouspider.core.DistinctSpider;
 import wuxian.me.lagouspider.mapper.AreaMapper;
 import wuxian.me.lagouspider.framework.job.IJob;
@@ -21,7 +19,6 @@ import wuxian.me.lagouspider.model.Company;
 import wuxian.me.lagouspider.model.Location;
 import wuxian.me.lagouspider.model.Product;
 import wuxian.me.lagouspider.util.Helper;
-import wuxian.me.lagouspider.util.LoggerSpider;
 import wuxian.me.lagouspider.util.ModuleProvider;
 
 import java.sql.DriverManager;
@@ -50,7 +47,7 @@ public class Main {
             DistinctSpider spider = new DistinctSpider();
             spider.beginSpider();
         } else {
-            if (Helper.shouldStartNewGrab()) {     //每过7天开始一次全新抓取
+            if (Helper.shouldStartNewGrab()) {
                 logger().info("Begin a new total grab");
                 Helper.updateNewGrab();
 
@@ -90,7 +87,6 @@ public class Main {
                     IJob job = JobProvider.getJob();
                     job.setRealRunnable((new AreaSpider(area)));
                     JobManager.getInstance().putJob(job);
-
                 }
 
                 logger().info("Start workThread...");

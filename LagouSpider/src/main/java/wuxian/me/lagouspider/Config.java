@@ -3,7 +3,6 @@ package wuxian.me.lagouspider;
 /**
  * Created by wuxian on 1/4/2017.
  * <p>
- * Todo:重构 不要用class
  */
 public interface Config {
 
@@ -13,7 +12,7 @@ public interface Config {
 
     interface ProxyControl {
 
-        int PROXY_HEARTBEAT_FREQUENCY = 5 * 1000; //暂定5秒好了
+        int PROXY_HEARTBEAT_FREQUENCY = 5 * 1000; //proxy的心跳频率 暂定5秒好了
 
         boolean ENABLE_SWITCH_IPPROXY = true;
 
@@ -25,7 +24,7 @@ public interface Config {
 
         boolean USE_FIXED_DELAY_JOB = true;
 
-        long FIXED_DELAYJOB_INTERVAL = 100;
+        long FIXED_DELAYJOB_INTERVAL = 1000 * 3;  //3秒一个request
     }
 
 
@@ -83,13 +82,13 @@ public interface Config {
     interface SaveDBThread {
 
         //每1分钟存储一次数据库
-        int SAVE_COMPANY_INTERVAL = 1000 * 1 * 5;
+        int SAVE_COMPANY_INTERVAL = 1000 * 60 * 1;
 
-        int SAVE_COMPANY_MAIN_INTERVAL = (int) (1000 * 5 * 1);
+        int SAVE_COMPANY_MAIN_INTERVAL = (int) (1000 * 60 * 1);
 
-        int SAVE_PRODUCT_INTERVAL = 1000 * 1 * 5;
+        int SAVE_PRODUCT_INTERVAL = 1000 * 60 * 1;
 
-        int SAVE_LOCATION_INTERVAL = 1000 * 1 * 5;
+        int SAVE_LOCATION_INTERVAL = 1000 * 60 * 1;
     }
 
 
