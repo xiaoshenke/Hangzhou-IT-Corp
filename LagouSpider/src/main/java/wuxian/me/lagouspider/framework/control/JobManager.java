@@ -4,21 +4,22 @@ import com.sun.istack.internal.NotNull;
 import okhttp3.*;
 import wuxian.me.lagouspider.Config;
 import wuxian.me.lagouspider.framework.BaseSpider;
+import wuxian.me.lagouspider.framework.HeartbeatManager;
 import wuxian.me.lagouspider.framework.job.IJob;
 import wuxian.me.lagouspider.framework.IPProxyTool;
 import wuxian.me.lagouspider.framework.OkhttpProvider;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static wuxian.me.lagouspider.Config.ProxyControl.ENABLE_SWITCH_IPPROXY;
+import static wuxian.me.lagouspider.Config.RetryControl.ENABLE_RETRY_SPIDER;
+import static wuxian.me.lagouspider.Config.RetryControl.SINGLEJOB_MAX_FAIL_TIME;
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
 /**
@@ -35,7 +36,7 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
  * 2 Job出错的error级
  * 3 其他debug级别 比如parsing什么的
  */
-public class JobManager {
+public class JobManager implements HeartbeatManager.IHeartBeat {
 
     //Todo: 监控优化 不要用这些AtomicLong值了
     AtomicLong current404Time = new AtomicLong(0);
@@ -60,10 +61,11 @@ public class JobManager {
     private JobQueue queue = new JobQueue(monitor);
     private WorkThread workThread = new WorkThread();
 
+    private HeartbeatManager heartbeatManager = new HeartbeatManager();
+    private IPProxyTool ipProxyTool = new IPProxyTool();
     private AtomicBoolean isSwitchingIP = new AtomicBoolean(false);
-    private FutureTask<String> switchIPFuture;
-
     private long startTime = System.currentTimeMillis();
+    private boolean started = false;
 
     private static JobManager instance;
 
@@ -75,30 +77,23 @@ public class JobManager {
     }
 
     private JobManager() {
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://www.ip138.com/ip2city.asp").newBuilder();
-        Headers.Builder builder = new Headers.Builder();
-        builder.add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36");
-        final Request request = new Request.Builder()
-                .headers(builder.build())
-                .url(urlBuilder.build().toString())
-                .build();
+        setInitparam();
+    }
 
-        Callable<String> callable = new Callable<String>() {
-            public String call() throws Exception {
-                try {
-                    Response response = OkhttpProvider.getClient().newCall(request).execute();
-                    return response.body().string();
-                } catch (IOException e) {
-                    return null;
-                }
-            }
-        };
-        switchIPFuture = new FutureTask<String>(callable);
+    private void setInitparam() {
+        fail404Num.set(0);
+        failNetErrNum.set(0);
+        failMaybeBlockNum.set(0);
     }
 
     //单独调用
+    //MUST be called!
     public void start() {
-        workThread.start();
+        if (!started) {
+            started = true;
+            heartbeatManager.addHeartBeat(this);
+            workThread.start();
+        }
     }
 
     public boolean putJob(@NotNull IJob job) {
@@ -139,6 +134,7 @@ public class JobManager {
         fail(runnable, fail, true);
     }
 
+    //该方法会被多个线程调用 注意线程安全处理
     //Fail并且判断是否应该进行job重试 若是则放入重试队列
     public void fail(@NotNull Runnable runnable, @NotNull Fail fail, boolean retry) {
         IJob job = monitor.getJob(runnable);
@@ -146,8 +142,8 @@ public class JobManager {
             job.fail(fail);
             monitor.putJob(job, IJob.STATE_FAIL);  //更新JobQueue里的job状态
 
-            if (retry && Config.ENABLE_RETRY_SPIDER) { //处理重试
-                if (job.getFailTimes() >= Config.SINGLEJOB_MAX_FAIL_TIME) { //是否进行重试
+            if (retry && ENABLE_RETRY_SPIDER) { //处理重试
+                if (job.getFailTimes() >= SINGLEJOB_MAX_FAIL_TIME) { //是否进行重试
                     logger().error("Job: " + job.toString() + " fail " + job.getFailTimes() + "times, abandon it");
                 } else {
                     logger().info("Retry Job: " + job.toString());
@@ -197,26 +193,30 @@ public class JobManager {
             logger().error("WE ARE BLOCKED! Until now We have success " + successNum.get() +
                     " jobs, we have run " + (System.currentTimeMillis() - startTime) / 1000 + " seconds");
 
-            if (Config.ENABLE_SWITCH_IPPROXY) {
-                logger().info("We begin to switch IP...");
-                doSwitchIp();
-            } else {        //被block后就停止了
-                isSwitchingIP.set(true);
-                Dispatcher dispatcher = OkhttpProvider.getClient().dispatcher();
+            heartbeatManager.stopHeartBeat();
+            dealBlock();
 
-                logger().info("We will not switch IP ");
+        }
+    }
 
-                logger().info("We have total " + monitor.getWholeJobNum() + " jobs, we have "
-                        + queue.getJobNum() + " jobs in JobQueue, we have "
-                        + todoSpiderList.size() + "jobs in todoSpiderList");
+    private void dealBlock() {
+        if (ENABLE_SWITCH_IPPROXY) {
+            logger().info("We begin to switch IP...");
+            doSwitchIp();
+        } else {        //被block后就停止了
+            isSwitchingIP.set(true);
+            Dispatcher dispatcher = OkhttpProvider.getClient().dispatcher();
 
-                logger().info("We have " + dispatcher.runningCallsCount() +
-                        " request running and " + dispatcher.queuedCallsCount() + " request queue in OkHttpClient");
+            logger().info("We will not switch IP ");
+            logger().info("We have total " + monitor.getWholeJobNum() + " jobs, we have "
+                    + queue.getJobNum() + " jobs in JobQueue, we have "
+                    + todoSpiderList.size() + "jobs in todoSpiderList");
+            logger().info("We have " + dispatcher.runningCallsCount() +
+                    " request running and " + dispatcher.queuedCallsCount() + " request queue in OkHttpClient");
 
-                dispatcher.cancelAll();
-                workThread.pauseWhenSwitchIP();
-                monitor.printAllJobStatus();
-            }
+            dispatcher.cancelAll();
+            workThread.pauseWhenSwitchIP();
+            monitor.printAllJobStatus();
         }
     }
 
@@ -243,10 +243,10 @@ public class JobManager {
         OkhttpProvider.getClient().dispatcher().cancelAll();
         workThread.pauseWhenSwitchIP();
         monitor.printAllJobStatus();
-        reset();
+        setInitparam();
         int times = 0;
         while (true) {  //每个ip尝试三次 直到成功或没有proxy
-            IPProxyTool.Proxy proxy = IPProxyTool.switchNextProxy();
+            IPProxyTool.Proxy proxy = ipProxyTool.switchNextProxy();
             if (proxy == null) {
                 throw new RuntimeException("Proxy is not available!");
             }
@@ -254,7 +254,7 @@ public class JobManager {
             logger().info("We try to switch to Ip: " + proxy.ip + " Port: " + proxy.port);
             int ensure = 0;
             boolean success = false;
-            while (!(success = ensureIpSwitched(proxy)) && ensure < 3) {  //每个IP尝试三次
+            while (!(success = ipSwitched(proxy)) && ensure < 3) {  //每个IP尝试三次
                 ensure++;
             }
             if (success) {
@@ -277,20 +277,44 @@ public class JobManager {
         isSwitchingIP.set(false);
     }
 
-    private void reset() {
-        fail404Num.set(0);
-        failNetErrNum.set(0);
-        failMaybeBlockNum.set(0);
+    public boolean ensureIpSwitched(final IPProxyTool.Proxy proxy)
+            throws InterruptedException, ExecutionException {
+        return ipProxyTool.ensureIpSwitched(proxy);
     }
 
-    private boolean ensureIpSwitched(final IPProxyTool.Proxy proxy) {
-        new Thread(switchIPFuture).start();
+    //外部统一调这个...
+    public boolean ipSwitched(final IPProxyTool.Proxy proxy) {
         try {
-            return switchIPFuture.get() == null ? false : switchIPFuture.get().contains(proxy.ip);
+            boolean ret = ensureIpSwitched(proxy);
+            if (ret) {
+                heartbeatManager.beginHeartBeat(proxy);
+            }
+
+            return ret;
         } catch (InterruptedException e1) {
             return false;
         } catch (ExecutionException e) {
             return false;
         }
+    }
+
+
+    public void onHeartBeatBegin() {
+        //暂时好像不用做什么
+    }
+
+    public void onHeartBeat(int time) {
+        logger().info("onHeartBeat " + time);
+    }
+
+
+    public void onHeartBeatFail() {
+        logger().info("onHeartBeatFail");
+        dealBlock();  //这里和block差不多等价
+    }
+
+    //JobManager主动调用HeartbeatManager.stopxxx
+    public void onHeartBeatInterrupt() {
+        logger().info("onHeartBeatInterrupt");
     }
 }

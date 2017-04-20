@@ -9,6 +9,8 @@ import wuxian.me.lagouspider.util.ModuleProvider;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static wuxian.me.lagouspider.Config.SaveDBThread.SAVE_PRODUCT_INTERVAL;
+
 /**
  * Created by wuxian on 17/4/2017.
  * <p>
@@ -27,7 +29,7 @@ public class ProductSaver implements IModelSaver<Product> {
 
 
     private ProductSaver() {
-        thread = new SaveModelThread(companyMap, Config.SAVE_PRODUCT_INTERVAL, new SaveModelThread.IDatabaseOperator<Product>() {
+        thread = new SaveModelThread(companyMap, SAVE_PRODUCT_INTERVAL, new SaveModelThread.IDatabaseOperator<Product>() {
 
             public void insert(Product model) {
                 mapper.insertProduct(model);

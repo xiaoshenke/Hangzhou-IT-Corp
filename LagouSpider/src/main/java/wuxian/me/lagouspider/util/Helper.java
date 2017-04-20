@@ -2,14 +2,18 @@ package wuxian.me.lagouspider.util;
 
 import com.sun.istack.internal.NotNull;
 import okhttp3.Headers;
-import wuxian.me.lagouspider.Config;
 import wuxian.me.lagouspider.framework.FileUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static wuxian.me.lagouspider.Config.*;
-import static wuxian.me.lagouspider.Config.CONF_LOG4J_PROPERTIES;
+import static wuxian.me.lagouspider.Config.File.*;
+import static wuxian.me.lagouspider.Config.FullLog.CONF_FULLLOG_TEXT;
+import static wuxian.me.lagouspider.Config.FullLog.CONF_FULLLOG_TEXT_POST;
+import static wuxian.me.lagouspider.Config.Grab.CONF_LASTGRAB;
+import static wuxian.me.lagouspider.Config.Grab.GRAB_INTERNAL;
+import static wuxian.me.lagouspider.Config.TableName.*;
 import static wuxian.me.lagouspider.framework.FileUtil.getCurrentPath;
 
 /**
@@ -75,15 +79,15 @@ public class Helper {
     }
 
     public static String getCompanyTableName() {
-        return Config.TABLE_COMPANY + getDatabasePost();
+        return TABLE_COMPANY + getDatabasePost();
     }
 
     public static String getProductTableName() {
-        return Config.TABLE_PRODUCT + getDatabasePost();
+        return TABLE_PRODUCT + getDatabasePost();
     }
 
     public static String getLocationTableName() {
-        return Config.TABLE_LOCATION + getDatabasePost();
+        return TABLE_LOCATION + getDatabasePost();
     }
 
     /**
@@ -114,7 +118,7 @@ public class Helper {
             return true;
         }
         long time = Long.parseLong(content);
-        return (System.currentTimeMillis() - time > Config.GRAB_INTERNAL);
+        return (System.currentTimeMillis() - time > GRAB_INTERNAL);
     }
 
     public static void updateNewGrab() {

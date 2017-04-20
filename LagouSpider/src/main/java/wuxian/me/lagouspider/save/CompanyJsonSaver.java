@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static wuxian.me.lagouspider.Config.SaveDBThread.SAVE_COMPANY_INTERVAL;
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
 /**
@@ -22,7 +23,7 @@ public class CompanyJsonSaver implements IModelSaver<Company> {
     private CompanyMapper mapper = ModuleProvider.companyMapper();
 
     private CompanyJsonSaver() {
-        thread = new SaveModelThread<Company>(companyMap, Config.SAVE_COMPANY_INTERVAL, new SaveModelThread.IDatabaseOperator<Company>() {
+        thread = new SaveModelThread<Company>(companyMap, SAVE_COMPANY_INTERVAL, new SaveModelThread.IDatabaseOperator<Company>() {
 
             public void insert(Company model) {
                 mapper.insertCompany(model);

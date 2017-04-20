@@ -1,7 +1,7 @@
 package wuxian.me.lagouspider.core;
 
 import static com.google.common.base.Preconditions.*;
-import static wuxian.me.lagouspider.Config.URL_LAGOU_JAVA;
+import static wuxian.me.lagouspider.Config.SpiderUrl.*;
 import static wuxian.me.lagouspider.util.Helper.*;
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 

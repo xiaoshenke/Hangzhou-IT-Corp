@@ -1,33 +1,34 @@
 package wuxian.me.lagouspider.framework;
 
+import okhttp3.Headers;
+import okhttp3.HttpUrl;
+import okhttp3.Request;
+import okhttp3.Response;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by wuxian on 9/4/2017.
- * http://www.xdaili.cn/freeproxy.html
- *
+ * http://www.xdaili.cn/freeproxy.html   --> 还行
+ * <p>
+ * http://www.xicidaili.com/ http://www.kxdaili.com/ 貌似已阵亡 --> 拉勾会屏蔽这个网站的ip
+ * http://www.ip181.com/  --> 稳定性太差了 可能是国内用它的人太多？
  */
 public class IPProxyTool {
 
-    private static List<Proxy> ipPortList;
+    private List<Proxy> ipPortList;
 
-    private static AtomicInteger current;
+    private AtomicInteger current;
 
-    //http://www.xicidaili.com/ http://www.kxdaili.com/ 貌似已阵亡 --> 拉勾会屏蔽这个网站的ip
-    //http://www.ip181.com/  --> 稳定性太差了 可能是国内用它的人太多？
-    static {
-        ipPortList = new ArrayList<Proxy>();
+    private FutureTask<String> switchIPFuture;
 
-        ipPortList.add(new Proxy("200.196.233.58", 8080));
-        ipPortList.add(new Proxy("111.13.7.121", 80));
-        ipPortList.add(new Proxy("157.0.25.178", 808));
-
-        current = new AtomicInteger(-1);
-    }
-
-    public static Proxy switchNextProxy() {
+    public Proxy switchNextProxy() {
         if (current.get() + 1 == ipPortList.size()) {
             return null;
         }
@@ -44,7 +45,44 @@ public class IPProxyTool {
         return proxy;
     }
 
-    private IPProxyTool() {
+    public boolean ensureIpSwitched(final IPProxyTool.Proxy proxy)
+            throws InterruptedException, ExecutionException {
+        new Thread(switchIPFuture).start();
+        return switchIPFuture.get() == null ? false : switchIPFuture.get().contains(proxy.ip);
+    }
+
+    public IPProxyTool() {
+        init();
+    }
+
+    private void init() {
+        ipPortList = new ArrayList<Proxy>();
+
+        ipPortList.add(new Proxy("200.196.233.58", 8080));
+        ipPortList.add(new Proxy("111.13.7.121", 80));
+        ipPortList.add(new Proxy("157.0.25.178", 808));
+
+        current = new AtomicInteger(-1);
+
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://www.ip138.com/ip2city.asp").newBuilder();
+        Headers.Builder builder = new Headers.Builder();
+        builder.add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36");
+        final Request request = new Request.Builder()
+                .headers(builder.build())
+                .url(urlBuilder.build().toString())
+                .build();
+
+        Callable<String> callable = new Callable<String>() {
+            public String call() throws Exception {
+                try {
+                    Response response = OkhttpProvider.getClient().newCall(request).execute();
+                    return response.body().string();
+                } catch (IOException e) {
+                    return null;
+                }
+            }
+        };
+        switchIPFuture = new FutureTask<String>(callable);
     }
 
     public static class Proxy {

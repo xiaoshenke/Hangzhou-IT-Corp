@@ -9,6 +9,8 @@ import wuxian.me.lagouspider.util.ModuleProvider;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static wuxian.me.lagouspider.Config.SaveDBThread.SAVE_COMPANY_MAIN_INTERVAL;
+
 /**
  * Created by wuxian on 8/4/2017.
  * <p>
@@ -29,7 +31,7 @@ public class CompanyMainSaver implements IModelSaver<Company> {
 
 
     private CompanyMainSaver() {
-        thread = new SaveModelThread(companyMap, Config.SAVE_COMPANY_MAIN_INTERVAL, new SaveModelThread.IDatabaseOperator<Company>() {
+        thread = new SaveModelThread(companyMap, SAVE_COMPANY_MAIN_INTERVAL, new SaveModelThread.IDatabaseOperator<Company>() {
 
             public void insert(Company model) {
                 mapper.insertCompany(model);

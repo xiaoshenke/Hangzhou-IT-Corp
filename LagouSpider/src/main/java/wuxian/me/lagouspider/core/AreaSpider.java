@@ -19,7 +19,8 @@ import wuxian.me.lagouspider.model.Area;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.LoggerSpider;
 
-import static wuxian.me.lagouspider.Config.URL_LAGOU_JAVA;
+import static wuxian.me.lagouspider.Config.Spider.ENABLE_SPIDER_AREAPAGE;
+import static wuxian.me.lagouspider.Config.SpiderUrl.URL_LAGOU_JAVA;
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
 /**
@@ -62,7 +63,7 @@ public class AreaSpider extends BaseLagouSpider {
             return BaseSpider.RET_MAYBE_BLOCK;
         }
         logger().debug("Parsed num: " + pageNum + " " + simpleName());
-        if (Config.ENABLE_SPIDER_AREAPAGE) {
+        if (ENABLE_SPIDER_AREAPAGE) {
             beginSpiderAreaPage();
         }
         return BaseSpider.RET_SUCCESS;

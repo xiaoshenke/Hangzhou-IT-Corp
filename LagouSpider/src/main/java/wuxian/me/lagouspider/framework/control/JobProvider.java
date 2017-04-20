@@ -1,13 +1,14 @@
 package wuxian.me.lagouspider.framework.control;
 
 import com.sun.istack.internal.NotNull;
-import wuxian.me.lagouspider.Config;
 import wuxian.me.lagouspider.framework.job.DelayJob;
 import wuxian.me.lagouspider.framework.job.IJob;
 import wuxian.me.lagouspider.framework.job.ImmediateJob;
 
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static wuxian.me.lagouspider.Config.JobProvider.*;
 
 /**
  * Created by wuxian on 31/3/2017.
@@ -27,7 +28,7 @@ public class JobProvider {
     private static AtomicInteger sindex = new AtomicInteger(0);
 
     public static IJob getNextJob(@NotNull IJob job) {
-        if (Config.USE_FIXED_DELAY_NEXT_JOB) {
+        if (USE_FIXED_DELAY_NEXT_JOB) {
             return getFixedDelayNextJob(job);
         }
 
@@ -35,7 +36,7 @@ public class JobProvider {
     }
 
     private static IJob getFixedDelayNextJob(@NotNull IJob job) {
-        return getFixedDelayJob(Config.FIXED_DELAYJOB_INTERVAL, job);
+        return getFixedDelayJob(FIXED_DELAYJOB_INTERVAL, job);
     }
 
     private static IJob getFixedDelayJob(long delay, @NotNull IJob job) {
@@ -50,7 +51,7 @@ public class JobProvider {
     }
 
     public static IJob getJob() {
-        if (Config.USE_FIXED_DELAY_JOB) {
+        if (USE_FIXED_DELAY_JOB) {
             return getFixedDelayJob();
         }
 
@@ -58,7 +59,7 @@ public class JobProvider {
     }
 
     private static IJob getFixedDelayJob() {
-        return getFixedDelayJob(Config.FIXED_DELAYJOB_INTERVAL);
+        return getFixedDelayJob(FIXED_DELAYJOB_INTERVAL);
     }
 
     private static IJob getFixedDelayJob(long delay) {

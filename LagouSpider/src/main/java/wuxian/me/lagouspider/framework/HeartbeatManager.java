@@ -1,18 +1,13 @@
 package wuxian.me.lagouspider.framework;
 
 import com.sun.istack.internal.NotNull;
-import okhttp3.Headers;
-import okhttp3.HttpUrl;
-import okhttp3.Request;
-import okhttp3.Response;
 import wuxian.me.lagouspider.Config;
+import wuxian.me.lagouspider.framework.control.JobManager;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
+
+import static wuxian.me.lagouspider.Config.ProxyControl.PROXY_HEARTBEAT_FREQUENCY;
 
 /**
  * Created by wuxian on 20/4/2017.
@@ -21,51 +16,19 @@ import java.util.concurrent.FutureTask;
  */
 public class HeartbeatManager implements Runnable {
 
-    long frequency = Config.PROXY_HEARTBEAT_FREQUENCY;
+    long frequency = PROXY_HEARTBEAT_FREQUENCY;
 
-    private FutureTask<String> switchIPFuture;
     private Thread heartbeatThread = null;
     private int heartBeatTime = 0;
     private IPProxyTool.Proxy proxy;
 
-    private HeartbeatManager() {
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://www.ip138.com/ip2city.asp").newBuilder();
-        Headers.Builder builder = new Headers.Builder();
-        builder.add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36");
-        final Request request = new Request.Builder()
-                .headers(builder.build())
-                .url(urlBuilder.build().toString())
-                .build();
+    public HeartbeatManager() {
 
-
-        Callable<String> callable = new Callable<String>() {
-            public String call() throws Exception {
-                try {
-                    Response response = OkhttpProvider.getClient().newCall(request).execute();
-                    return response.body().string();
-                } catch (IOException e) {
-                    return null;
-                }
-            }
-        };
-        switchIPFuture = new FutureTask<String>(callable);
-
-    }
-
-    private static HeartbeatManager instance;
-
-    public static HeartbeatManager getInstance() {
-        if (instance == null) {
-            instance = new HeartbeatManager();
-        }
-
-        return instance;
     }
 
     public void setHeartbeatFrequency(long frequency) {
         this.frequency = frequency;
     }
-
 
     public void beginHeartBeat(IPProxyTool.Proxy proxy) {
         this.proxy = proxy;
@@ -92,7 +55,6 @@ public class HeartbeatManager implements Runnable {
         heartBeatList.add(heartBeat);
     }
 
-    //Todo
     public void run() {
         boolean proxyLive = true;
         while (!Thread.interrupted()) {
@@ -108,17 +70,7 @@ public class HeartbeatManager implements Runnable {
                 heartBeat.onHeartBeat(heartBeatTime);
             }
 
-            new Thread(switchIPFuture).start();
-            try {
-                proxyLive = switchIPFuture.get() == null ? false : switchIPFuture.get().contains(proxy.ip);
-            } catch (InterruptedException e1) {
-                break;
-            } catch (ExecutionException e) {
-                //这个异常抛出的情况是你尝试去拿一个"被interrupt线程对应的"future.get
-                //目前不用考虑这个
-                break;
-            }
-
+            proxyLive = JobManager.getInstance().ipSwitched(proxy);
             if (!proxyLive) {
                 for (IHeartBeat heartBeat : heartBeatList) {
                     heartBeat.onHeartBeatFail();

@@ -9,6 +9,8 @@ import wuxian.me.lagouspider.util.ModuleProvider;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static wuxian.me.lagouspider.Config.SaveDBThread.SAVE_LOCATION_INTERVAL;
+
 /**
  * Created by wuxian on 17/4/2017.
  * <p>
@@ -30,7 +32,7 @@ public class LocationSaver implements IModelSaver<Location> {
 
 
     private LocationSaver() {
-        thread = new SaveModelThread(companyMap, Config.SAVE_LOCATION_INTERVAL, new SaveModelThread.IDatabaseOperator<Location>() {
+        thread = new SaveModelThread(companyMap, SAVE_LOCATION_INTERVAL, new SaveModelThread.IDatabaseOperator<Location>() {
             public void insert(Location model) {
                 mapper.insertLocation(model);
             }

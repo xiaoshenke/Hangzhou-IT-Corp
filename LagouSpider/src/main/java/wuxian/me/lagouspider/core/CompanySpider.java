@@ -28,6 +28,11 @@ import wuxian.me.lagouspider.util.Helper;
 import java.util.ArrayList;
 import java.util.List;
 
+import static wuxian.me.lagouspider.Config.EnableSaveDB.*;
+import static wuxian.me.lagouspider.Config.Location.LOCATION_MULTY;
+import static wuxian.me.lagouspider.Config.Location.LOCATION_NONE;
+import static wuxian.me.lagouspider.Config.Spider.*;
+import static wuxian.me.lagouspider.Config.SpiderUrl.URL_LAGOU_COMPANY_MAIN;
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
 /**
@@ -68,7 +73,7 @@ public class CompanySpider extends BaseLagouSpider {
     }
 
     private String getUrl(long companyId) {
-        return Config.URL_LAGOU_COMPANY_MAIN + companyId + ".html";
+        return URL_LAGOU_COMPANY_MAIN + companyId + ".html";
     }
 
     protected Request buildRequest() {
@@ -93,19 +98,19 @@ public class CompanySpider extends BaseLagouSpider {
             parseLocation();
 
             Company company = buildCompany();
-            if (Config.ENABLE_SAVE_COMPANY_DB) {
+            if (ENABLE_SAVE_COMPANY_DB) {
                 saveCompany(company);
             }
 
-            if (Config.ENABLE_SAVE_PRODUCT_DB) {
+            if (ENABLE_SAVE_PRODUCT_DB) {
                 saveProduct();
             }
 
-            if (Config.ENABLE_SAVE_LOCATION_DB) {
+            if (ENABLE_SAVE_LOCATION_DB) {
                 saveLocation();
             }
 
-            if (Config.ENABLE_SPIDER_ITCHENGZI_SEARCH) {
+            if (ENABLE_SPIDER_ITCHENGZI_SEARCH) {
                 beginITJuziSearchSpider();
             }
 
@@ -150,7 +155,7 @@ public class CompanySpider extends BaseLagouSpider {
         if (ret != null && ret.size() != 0) {
             webLink = ((LinkTag) ret.elementAt(0)).getLink().trim();
 
-            if (Config.ENABLE_SPIDER_ITCHENGZI_SEARCH) {
+            if (ENABLE_SPIDER_ITCHENGZI_SEARCH) {
                 IJob iJob = JobProvider.getJob();
                 iJob.setRealRunnable((new SearchSpider(company_id, companyName)));
                 JobManager.getInstance().putJob(iJob);
@@ -381,9 +386,9 @@ public class CompanySpider extends BaseLagouSpider {
         company.environmentScore = environmentScore;
 
         if (locationList.size() == 0) {
-            company.detail_location = Config.LOCATION_NONE;
+            company.detail_location = LOCATION_NONE;
         } else if (locationList.size() > 1) {
-            company.detail_location = Config.LOCATION_MULTY;
+            company.detail_location = LOCATION_MULTY;
         } else {
             company.detail_location = locationList.get(0);
         }
