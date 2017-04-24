@@ -4,6 +4,7 @@ import com.sun.istack.internal.NotNull;
 import okhttp3.Request;
 import okhttp3.Response;
 import wuxian.me.lagouspider.core.BaseLagouSpider;
+import wuxian.me.lagouspider.framework.control.JobManager;
 import wuxian.me.lagouspider.util.Helper;
 
 import java.io.IOException;
@@ -39,8 +40,12 @@ public abstract class BaseSpider implements Runnable {
     @NotNull
     protected abstract SpiderCallback getCallback();
 
-    public final void run() {
+    public void run() {
         Request request = getRequest();
+        if (request == null) {
+            return;
+        }
+        JobManager.getInstance().register(this);
         OkhttpProvider.getClient().newCall(request).enqueue(callback);
     }
 

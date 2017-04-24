@@ -36,7 +36,7 @@ public abstract class SpiderCallback implements Callback {
 
     public SpiderCallback(@NotNull BaseSpider spider) {
         this.spider = spider;
-        JobManager.getInstance().register(spider);
+        //JobManager.getInstance().register(spider);
     }
 
 

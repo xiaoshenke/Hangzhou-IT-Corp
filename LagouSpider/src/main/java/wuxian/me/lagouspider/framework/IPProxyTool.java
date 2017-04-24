@@ -22,7 +22,12 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class IPProxyTool {
 
-    private List<Proxy> ipPortList;
+    private static List<Proxy> ipPortList;
+
+    static {
+        ipPortList = new ArrayList<Proxy>();
+        ipPortList.add(new Proxy("180.115.1.81", 44204));
+    }
 
     private AtomicInteger current;
 
@@ -33,10 +38,6 @@ public class IPProxyTool {
     }
 
     private void init() {
-        ipPortList = new ArrayList<Proxy>();
-
-        ipPortList.add(new Proxy("113.121.181.99", 47573));
-
         current = new AtomicInteger(-1);
 
         HttpUrl.Builder urlBuilder = HttpUrl.parse("http://www.ip138.com/ip2city.asp").newBuilder();

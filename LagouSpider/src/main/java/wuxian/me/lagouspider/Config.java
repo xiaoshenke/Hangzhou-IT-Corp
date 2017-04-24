@@ -31,6 +31,20 @@ public interface Config {
         boolean ENABLE_SAVE_COMPANY_DB = true;
     }
 
+    interface JobScheduler {
+
+        long SLEEP_WHEN_QUEUE_EMPTY = 1000 * 10;
+
+        long SWITCH_SLEEP_JOB_NUMBER = 10;  //每10个任务休息
+
+        long SWITCH_SLEEP_SLEEP_TIME = 1000 * 15; //每10个任务休息10s
+
+        int SLEEP_TIME_MIN = 3;        //每个任务最小相隔1s
+
+        int SLEEP_TIME_MAX = 8;        //每个任务最大相隔5s
+
+    }
+
     interface ProxyControl {
 
         int PROXY_HEARTBEAT_FREQUENCY = 5 * 1000; //proxy的心跳频率 暂定5秒好了
@@ -38,16 +52,6 @@ public interface Config {
         boolean ENABLE_SWITCH_IPPROXY = true;
 
     }
-
-    interface JobProvider {
-
-        boolean USE_FIXED_DELAY_NEXT_JOB = true;
-
-        boolean USE_FIXED_DELAY_JOB = true;
-
-        long FIXED_DELAYJOB_INTERVAL = 1000 * 4;  //3秒一个request
-    }
-
 
     interface Spider {
 
@@ -119,4 +123,12 @@ public interface Config {
         String CONF_LOG4J_PROPERTIES = "/log4j.properties";
     }
 
+    interface JobProvider {
+
+        boolean USE_FIXED_DELAY_NEXT_JOB = true;
+
+        boolean USE_FIXED_DELAY_JOB = true;
+
+        long FIXED_DELAYJOB_INTERVAL = 1000 * 4;  //3秒一个request
+    }
 }

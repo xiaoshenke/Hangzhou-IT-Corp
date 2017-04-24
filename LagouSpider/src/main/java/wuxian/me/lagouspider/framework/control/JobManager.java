@@ -92,6 +92,7 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
     }
 
     public void register(@NotNull BaseSpider spider) {
+        logger().info("JobManager.register " + spider.name());
         todoSpiderList.add(spider);
     }
 

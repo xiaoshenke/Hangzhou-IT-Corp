@@ -1,8 +1,11 @@
 package wuxian.me.lagouspider;
 
+import okhttp3.Request;
 import org.junit.Test;
 import wuxian.me.lagouspider.core.CompanySpider;
 import wuxian.me.lagouspider.core.itjuzi.SearchSpider;
+import wuxian.me.lagouspider.framework.BaseSpider;
+import wuxian.me.lagouspider.framework.SpiderCallback;
 import wuxian.me.lagouspider.framework.control.*;
 import wuxian.me.lagouspider.core.AreaSpider;
 import wuxian.me.lagouspider.framework.job.IJob;
@@ -30,13 +33,12 @@ import static wuxian.me.lagouspider.util.ModuleProvider.*;
  */
 public class MainTest {
 
-    //Todo 压力测试
     @Test
     public void testAreaSpider() {
         JobManager manager = JobManager.getInstance();
-        IPProxyTool.Proxy proxy = manager.switchProxy();
-        logger().info("Using proxy ip: " + proxy.ip + " port: " + proxy.port);
-        assertTrue(manager.ipSwitched(proxy, true));
+        //IPProxyTool.Proxy proxy = manager.switchProxy();
+        //logger().info("Using proxy ip: " + proxy.ip + " port: " + proxy.port);
+        //assertTrue(manager.ipSwitched(proxy, true));
 
         if (USE_FIXED_DELAY_JOB) {
             logger().info("Current fixed delay job interval: " + FIXED_DELAYJOB_INTERVAL);
@@ -72,7 +74,7 @@ public class MainTest {
 
         for (Area area : areas) {
             IJob job = JobProvider.getJob();
-            job.setRealRunnable((new AreaSpider(area)));
+            job.setRealRunnable(new AreaSpider(area));
             manager.putJob(job);
             break;
         }
@@ -82,6 +84,22 @@ public class MainTest {
 
         while (true) {
             //http://www.cnblogs.com/yanphet/p/5774291.html
+        }
+    }
+
+    @Test
+    public void testWorkThread() {
+        JobManager manager = JobManager.getInstance();
+        for (int i = 0; i < 20; i++) {
+            BaseSpider spider = new DummySpider(i);
+            IJob job = JobProvider.getJob();
+            job.setRealRunnable(spider);
+
+            manager.putJob(job);
+        }
+        manager.start();
+        while ((true)) {
+            ;
         }
     }
 
@@ -114,5 +132,44 @@ public class MainTest {
     public void testITChengziSearch() {
         IJob job = JobProvider.getJob();
         job.setRealRunnable(new SearchSpider(33618, "微贷（杭州）金融信息服务有限公司"));
+    }
+
+    private class DummySpider extends BaseSpider {
+
+        private int i;
+
+        public DummySpider(int i) {
+            super();
+            this.i = i;
+        }
+
+        @Override
+        public void run() {
+            logger().info("run " + name());
+        }
+
+        protected SpiderCallback getCallback() {
+            return null;
+        }
+
+        protected Request buildRequest() {
+            return null;
+        }
+
+        public int parseRealData(String data) {
+            return 0;
+        }
+
+        protected boolean checkBlockAndFailThisSpider(String html) {
+            return false;
+        }
+
+        public String name() {
+            return "DummySpider" + i;
+        }
+
+        public String fullName() {
+            return "DummySpider" + i;
+        }
     }
 }
