@@ -74,7 +74,8 @@ public class JobMonitor {
             for (Runnable runnable : jobMap.keySet()) {
                 IJob job = jobMap.get(runnable);
                 if (job == null) {
-                    logger().error("Can't find job in JobMap for runnable: " + ((BaseSpider) runnable).name());
+                    logger().error("Can't find job in JobMap for runnable: "
+                            + ((BaseSpider) runnable).name());
                     continue;
                 }
                 String name = getClassNameOfJob(job);

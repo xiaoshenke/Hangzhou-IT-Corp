@@ -10,6 +10,8 @@ public interface Config {
 
     int OKHTTPCLIENT_SOCKET_READ_TIMEOUT = 10 * 1000; //10s
 
+    int SWITCH_AGENT_NUM = 3; //没3个请求更换一次agent
+
     interface SaveDBThread {
 
         //每1分钟存储一次数据库
@@ -37,11 +39,11 @@ public interface Config {
 
         long SWITCH_SLEEP_JOB_NUMBER = 10;  //每10个任务休息
 
-        long SWITCH_SLEEP_SLEEP_TIME = 1000 * 15; //每10个任务休息10s
+        long SWITCH_SLEEP_SLEEP_TIME = 1000 * 30; //每10个任务休息10s
 
-        int SLEEP_TIME_MIN = 3;        //每个任务最小相隔1s
+        int SLEEP_TIME_MIN = 4;        //每个任务最小相隔1s
 
-        int SLEEP_TIME_MAX = 8;        //每个任务最大相隔5s
+        int SLEEP_TIME_MAX = 18;        //每个任务最大相隔5s
 
     }
 

@@ -33,12 +33,18 @@ import static wuxian.me.lagouspider.util.ModuleProvider.*;
  */
 public class MainTest {
 
+    //Todo
+    @Test
+    public void testJobMonitPrintFunc() {
+        ;
+    }
+
     @Test
     public void testAreaSpider() {
         JobManager manager = JobManager.getInstance();
-        //IPProxyTool.Proxy proxy = manager.switchProxy();
-        //logger().info("Using proxy ip: " + proxy.ip + " port: " + proxy.port);
-        //assertTrue(manager.ipSwitched(proxy, true));
+        IPProxyTool.Proxy proxy = manager.switchProxy();
+        logger().info("Using proxy ip: " + proxy.ip + " port: " + proxy.port);
+        assertTrue(manager.ipSwitched(proxy, true));
 
         if (USE_FIXED_DELAY_JOB) {
             logger().info("Current fixed delay job interval: " + FIXED_DELAYJOB_INTERVAL);

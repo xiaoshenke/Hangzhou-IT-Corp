@@ -2,7 +2,9 @@ package wuxian.me.lagouspider.util;
 
 import com.sun.istack.internal.NotNull;
 import okhttp3.Headers;
+import wuxian.me.lagouspider.Config;
 import wuxian.me.lagouspider.framework.FileUtil;
+import wuxian.me.lagouspider.framework.SpiderUserAgentUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -58,10 +60,12 @@ public class Helper {
         builder.add("Connection", "keep_alive");
         builder.add("Host", "www.lagou.com");
         builder.add(HEADER_REFERER, "abd");
-        builder.add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36");
+        builder.add("User-Agent", "");
     }
 
     private static boolean cookieInit = false;
+
+    private static int index = 0;
 
     public static Headers getHeaderBySpecifyRef(@NotNull String reference) {
         if (!cookieInit) {
@@ -75,6 +79,11 @@ public class Helper {
         }
 
         builder.set(HEADER_REFERER, reference);
+        if (index == 0) {
+            builder.set("User-Agent", SpiderUserAgentUtil.next());
+            index = (++index) % Config.SWITCH_AGENT_NUM;
+        }
+
         return builder.build();
     }
 
