@@ -22,6 +22,10 @@ public class CompanyJsonSaver implements IModelSaver<Company> {
     private SaveModelThread thread;
     private CompanyMapper mapper = ModuleProvider.companyMapper();
 
+    private Map<Long, Company> companyMap = new ConcurrentHashMap<Long, Company>();
+    private Set<Long> savedComany = new HashSet<Long>();  //解决company插入db重复问题
+
+
     private CompanyJsonSaver() {
         thread = new SaveModelThread<Company>(companyMap, SAVE_COMPANY_INTERVAL, new SaveModelThread.IDatabaseOperator<Company>() {
 
@@ -46,10 +50,6 @@ public class CompanyJsonSaver implements IModelSaver<Company> {
         }
         return instance;
     }
-
-    private Map<Long, Company> companyMap = new ConcurrentHashMap<Long, Company>();
-
-    private Set<Long> savedComany = new HashSet<Long>();  //解决插入company重复问题
 
     public boolean saveModel(@NotNull Company company) {
         synchronized (companyMap) {

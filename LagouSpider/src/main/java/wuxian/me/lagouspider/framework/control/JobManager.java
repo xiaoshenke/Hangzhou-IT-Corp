@@ -38,7 +38,7 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
 
     private JobMonitor monitor = new JobMonitor();
     private JobQueue queue = new JobQueue(monitor);
-    private WorkThread workThread = new WorkThread();
+    private WorkThread workThread = new WorkThread(this);
 
     private HeartbeatManager heartbeatManager = new HeartbeatManager();
     private IPProxyTool ipProxyTool = new IPProxyTool();
@@ -103,7 +103,7 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
         if (job == null) { //SHOULD NEVER HAPPEN!
             return;
         }
-        logger().info("Job Success: " + ((BaseSpider) job).name());
+        logger().info("Job Success: " + ((BaseSpider) (job.getRealRunnable())).name());
         todoSpiderList.remove(job);
         monitor.putJob(job, IJob.STATE_SUCCESS);
 
@@ -184,7 +184,7 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
         logger().info("We will not switch IP ");
         logger().info("We have total " + monitor.getWholeJobNum() + " jobs, we have "
                 + queue.getJobNum() + " jobs in JobQueue, we have "
-                + todoSpiderList.size() + "jobs in todoSpiderList");
+                + todoSpiderList.size() + " jobs in todoSpiderList");
         logger().info("We have " + dispatcher.runningCallsCount() +
                 " request running and " + dispatcher.queuedCallsCount() +
                 " request queue in OkHttpClient");
@@ -236,9 +236,13 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
 
     //外部统一调这个...
     public boolean ipSwitched(final IPProxyTool.Proxy proxy) {
+        return this.ipSwitched(proxy, false);
+    }
+
+    public boolean ipSwitched(final IPProxyTool.Proxy proxy, boolean beginHeartBeat) {
         try {
             boolean ret = ensureIpSwitched(proxy);
-            if (ret) {
+            if (ret && beginHeartBeat) {
                 heartbeatManager.beginHeartBeat(proxy);
             }
             return ret;

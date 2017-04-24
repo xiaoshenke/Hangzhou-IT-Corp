@@ -28,29 +28,6 @@ public class IPProxyTool {
 
     private FutureTask<String> switchIPFuture;
 
-    public Proxy switchNextProxy() {
-        if (current.get() + 1 == ipPortList.size()) {
-            return null;
-        }
-        current.set((current.get() + 1) % ipPortList.size());
-
-        Proxy proxy = ipPortList.get(current.get());
-        System.setProperty("http.proxySet", "true");
-        System.getProperties().setProperty("http.proxyHost", proxy.ip);
-        System.getProperties().setProperty("http.proxyPort", String.valueOf(proxy.port));
-
-        System.getProperties().setProperty("https.proxyHost", proxy.ip);
-        System.getProperties().setProperty("https.proxyPort", String.valueOf(proxy.port));
-
-        return proxy;
-    }
-
-    public boolean ensureIpSwitched(final IPProxyTool.Proxy proxy)
-            throws InterruptedException, ExecutionException {
-        new Thread(switchIPFuture).start();
-        return switchIPFuture.get() == null ? false : switchIPFuture.get().contains(proxy.ip);
-    }
-
     public IPProxyTool() {
         init();
     }
@@ -58,9 +35,7 @@ public class IPProxyTool {
     private void init() {
         ipPortList = new ArrayList<Proxy>();
 
-        ipPortList.add(new Proxy("200.196.233.58", 8080));
-        ipPortList.add(new Proxy("111.13.7.121", 80));
-        ipPortList.add(new Proxy("157.0.25.178", 808));
+        ipPortList.add(new Proxy("113.121.181.99", 47573));
 
         current = new AtomicInteger(-1);
 
@@ -83,6 +58,34 @@ public class IPProxyTool {
             }
         };
         switchIPFuture = new FutureTask<String>(callable);
+    }
+
+    public Proxy switchNextProxy() {
+        if (current.get() + 1 == ipPortList.size()) {
+            return null;
+        }
+        current.set((current.get() + 1) % ipPortList.size());
+
+        Proxy proxy = ipPortList.get(current.get());
+        System.setProperty("http.proxySet", "true");
+        System.getProperties().setProperty("http.proxyHost", proxy.ip);
+        System.getProperties().setProperty("http.proxyPort", String.valueOf(proxy.port));
+
+        System.getProperties().setProperty("https.proxyHost", proxy.ip);
+        System.getProperties().setProperty("https.proxyPort", String.valueOf(proxy.port));
+
+        return proxy;
+    }
+
+    public boolean ensureIpSwitched(final IPProxyTool.Proxy proxy)
+            throws InterruptedException, ExecutionException {
+        new Thread(switchIPFuture).start();
+        if (switchIPFuture.get() == null) {
+            return false;
+        }
+
+        boolean b = switchIPFuture.get().contains(proxy.ip);
+        return b;
     }
 
     public static class Proxy {

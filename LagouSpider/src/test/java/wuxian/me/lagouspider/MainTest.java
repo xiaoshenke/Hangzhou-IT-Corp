@@ -30,19 +30,17 @@ import static wuxian.me.lagouspider.util.ModuleProvider.*;
  */
 public class MainTest {
 
-    //Todo 测试
+    //Todo 压力测试
     @Test
     public void testAreaSpider() {
         JobManager manager = JobManager.getInstance();
         IPProxyTool.Proxy proxy = manager.switchProxy();
         logger().info("Using proxy ip: " + proxy.ip + " port: " + proxy.port);
-        assertTrue(manager.ipSwitched(proxy));
-
+        assertTrue(manager.ipSwitched(proxy, true));
 
         if (USE_FIXED_DELAY_JOB) {
             logger().info("Current fixed delay job interval: " + FIXED_DELAYJOB_INTERVAL);
         }
-
 
         AreaMapper areaMapper = ModuleProvider.areaMapper();
         CompanyMapper companyMapper = ModuleProvider.companyMapper();
@@ -89,6 +87,16 @@ public class MainTest {
 
     @Test
     public void testCompanyMain() {
+
+        JobManager manager = JobManager.getInstance();
+        IPProxyTool.Proxy proxy = manager.switchProxy();
+        logger().info("Using proxy ip: " + proxy.ip + " port: " + proxy.port);
+        assertTrue(manager.ipSwitched(proxy));
+
+        Company.tableName = Helper.getCompanyTableName();
+        Product.tableName = Helper.getProductTableName();
+        Location.tableName = Helper.getLocationTableName();
+
         IJob job = JobProvider.getJob();
         job.setRealRunnable(new CompanySpider(37974, ""));
         JobManager.getInstance().putJob(job);

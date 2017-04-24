@@ -1,6 +1,7 @@
 package wuxian.me.lagouspider.framework.control;
 
 import com.sun.istack.internal.NotNull;
+import wuxian.me.lagouspider.framework.BaseSpider;
 import wuxian.me.lagouspider.framework.job.IJob;
 
 import java.util.HashMap;
@@ -22,6 +23,7 @@ public class JobMonitor {
 
     public void putJob(@NotNull IJob job, int state) {
         job.setCurrentState(state);
+        logger().info("JobMonitor putJob: "+((BaseSpider)(job.getRealRunnable())).name());
         jobMap.put(job.getRealRunnable(), job);
     }
 
@@ -71,6 +73,10 @@ public class JobMonitor {
         synchronized (jobMap) {
             for (Runnable runnable : jobMap.keySet()) {
                 IJob job = jobMap.get(runnable);
+                if (job == null) {
+                    logger().error("Can't find job in JobMap for runnable: " + ((BaseSpider) runnable).name());
+                    continue;
+                }
                 String name = getClassNameOfJob(job);
                 switch (job.getCurrentState()) {
                     case IJob.STATE_INIT:

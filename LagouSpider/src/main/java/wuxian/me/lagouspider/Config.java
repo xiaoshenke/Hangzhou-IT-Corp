@@ -10,6 +10,27 @@ public interface Config {
 
     int OKHTTPCLIENT_SOCKET_READ_TIMEOUT = 10 * 1000; //10s
 
+    interface SaveDBThread {
+
+        //每1分钟存储一次数据库
+        int SAVE_COMPANY_INTERVAL = 1000 * 60 * 1;
+
+        int SAVE_COMPANY_MAIN_INTERVAL = (int) (1000 * 60 * 1.5);
+
+        int SAVE_PRODUCT_INTERVAL = 1000 * 60 * 1;
+
+        int SAVE_LOCATION_INTERVAL = 1000 * 60 * 1;
+    }
+
+    interface EnableSaveDB {
+
+        boolean ENABLE_SAVE_PRODUCT_DB = true;
+
+        boolean ENABLE_SAVE_LOCATION_DB = true;
+
+        boolean ENABLE_SAVE_COMPANY_DB = true;
+    }
+
     interface ProxyControl {
 
         int PROXY_HEARTBEAT_FREQUENCY = 5 * 1000; //proxy的心跳频率 暂定5秒好了
@@ -24,7 +45,7 @@ public interface Config {
 
         boolean USE_FIXED_DELAY_JOB = true;
 
-        long FIXED_DELAYJOB_INTERVAL = 1000 * 3;  //3秒一个request
+        long FIXED_DELAYJOB_INTERVAL = 1000 * 4;  //3秒一个request
     }
 
 
@@ -35,15 +56,6 @@ public interface Config {
         boolean ENABLE_SPIDER_COMPANY_MAIN = true;
 
         boolean ENABLE_SPIDER_ITCHENGZI_SEARCH = false;
-    }
-
-    interface EnableSaveDB {
-
-        boolean ENABLE_SAVE_PRODUCT_DB = true;
-
-        boolean ENABLE_SAVE_LOCATION_DB = true;
-
-        boolean ENABLE_SAVE_COMPANY_DB = true;
     }
 
     interface RetryControl {
@@ -78,19 +90,6 @@ public interface Config {
 
         String LOCATION_NONE = "none";
     }
-
-    interface SaveDBThread {
-
-        //每1分钟存储一次数据库
-        int SAVE_COMPANY_INTERVAL = 1000 * 60 * 1;
-
-        int SAVE_COMPANY_MAIN_INTERVAL = (int) (1000 * 60 * 1);
-
-        int SAVE_PRODUCT_INTERVAL = 1000 * 60 * 1;
-
-        int SAVE_LOCATION_INTERVAL = 1000 * 60 * 1;
-    }
-
 
     interface Grab {
 
