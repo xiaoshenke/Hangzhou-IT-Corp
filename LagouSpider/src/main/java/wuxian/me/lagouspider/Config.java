@@ -37,13 +37,13 @@ public interface Config {
 
         long SLEEP_WHEN_QUEUE_EMPTY = 1000 * 10;
 
-        long SWITCH_SLEEP_JOB_NUMBER = 10;  //每10个任务休息
+        long SWITCH_SLEEP_JOB_NUMBER = 10;  //每x个任务休息
 
-        long SWITCH_SLEEP_SLEEP_TIME = 1000 * 30; //每10个任务休息10s
+        long SWITCH_SLEEP_SLEEP_TIME = 1000 * 30; //每x个任务休息xs
 
-        int SLEEP_TIME_MIN = 4;        //每个任务最小相隔1s
+        int SLEEP_TIME_MIN = 8;        //每个任务最小相隔xs
 
-        int SLEEP_TIME_MAX = 18;        //每个任务最大相隔5s
+        int SLEEP_TIME_MAX = 22;        //每个任务最大相隔xs
 
     }
 

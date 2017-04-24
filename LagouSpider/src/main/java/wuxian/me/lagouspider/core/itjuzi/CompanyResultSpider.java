@@ -28,7 +28,7 @@ public class CompanyResultSpider extends BaseSpider {
         return null;
     }
 
-    public String fullName() {
+    public String hashString() {
         return null;
     }
 

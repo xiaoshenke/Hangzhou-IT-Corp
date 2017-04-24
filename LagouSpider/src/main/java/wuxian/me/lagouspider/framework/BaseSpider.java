@@ -3,15 +3,11 @@ package wuxian.me.lagouspider.framework;
 import com.sun.istack.internal.NotNull;
 import okhttp3.Request;
 import okhttp3.Response;
-import wuxian.me.lagouspider.core.BaseLagouSpider;
 import wuxian.me.lagouspider.framework.control.JobManager;
 import wuxian.me.lagouspider.util.Helper;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
 /**
  * Created by wuxian on 13/4/2017.
@@ -89,7 +85,8 @@ public abstract class BaseSpider implements Runnable {
     //For Log
     public abstract String name();
 
-    public abstract String fullName();
+    //For hash code
+    public abstract String hashString();
 
     //将详细错误码包括Http Request,Response写到本地文件
     public final void serializeFullLog() {
@@ -117,18 +114,18 @@ public abstract class BaseSpider implements Runnable {
 
     @Override
     public final String toString() {
-        return fullName();
+        return hashString();
     }
 
     @Override
     public final int hashCode() {
-        return fullName().hashCode();
+        return hashString().hashCode();
     }
 
     @Override
     public final boolean equals(Object obj) {
         if (obj instanceof BaseSpider) {
-            boolean ret = fullName().equals(((BaseSpider) obj).fullName());
+            boolean ret = hashString().equals(((BaseSpider) obj).hashString());
             return ret;
         }
         return super.equals(obj);

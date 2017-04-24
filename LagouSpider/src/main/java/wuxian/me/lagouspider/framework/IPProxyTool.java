@@ -26,7 +26,7 @@ public class IPProxyTool {
 
     static {
         ipPortList = new ArrayList<Proxy>();
-        ipPortList.add(new Proxy("180.102.204.225", 49735));
+        ipPortList.add(new Proxy("61.145.33.110", 22894));
     }
 
     private AtomicInteger current;

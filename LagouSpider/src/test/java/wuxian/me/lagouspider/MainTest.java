@@ -1,11 +1,13 @@
 package wuxian.me.lagouspider;
 
+import okhttp3.Headers;
 import okhttp3.Request;
 import org.junit.Test;
 import wuxian.me.lagouspider.core.CompanySpider;
 import wuxian.me.lagouspider.core.itjuzi.SearchSpider;
 import wuxian.me.lagouspider.framework.BaseSpider;
 import wuxian.me.lagouspider.framework.SpiderCallback;
+import wuxian.me.lagouspider.framework.SpiderUserAgentUtil;
 import wuxian.me.lagouspider.framework.control.*;
 import wuxian.me.lagouspider.core.AreaSpider;
 import wuxian.me.lagouspider.framework.job.IJob;
@@ -33,10 +35,20 @@ import static wuxian.me.lagouspider.util.ModuleProvider.*;
  */
 public class MainTest {
 
-    //Todo
     @Test
-    public void testJobMonitPrintFunc() {
-        ;
+    public void testUserAgentValid() {
+        Headers.Builder builder = new Headers.Builder();
+
+        String agent;
+        while ((agent = SpiderUserAgentUtil.next(false)) != null) {
+            //logger().info(agent);
+            try {
+                builder.set("User-Agent", agent);
+                builder.build();
+            } catch (Exception e) {
+                logger().error(agent);
+            }
+        }
     }
 
     @Test
@@ -93,46 +105,6 @@ public class MainTest {
         }
     }
 
-    @Test
-    public void testWorkThread() {
-        JobManager manager = JobManager.getInstance();
-        for (int i = 0; i < 20; i++) {
-            BaseSpider spider = new DummySpider(i);
-            IJob job = JobProvider.getJob();
-            job.setRealRunnable(spider);
-
-            manager.putJob(job);
-        }
-        manager.start();
-        while ((true)) {
-            ;
-        }
-    }
-
-    @Test
-    public void testCompanyMain() {
-
-        JobManager manager = JobManager.getInstance();
-        IPProxyTool.Proxy proxy = manager.switchProxy();
-        logger().info("Using proxy ip: " + proxy.ip + " port: " + proxy.port);
-        assertTrue(manager.ipSwitched(proxy));
-
-        Company.tableName = Helper.getCompanyTableName();
-        Product.tableName = Helper.getProductTableName();
-        Location.tableName = Helper.getLocationTableName();
-
-        IJob job = JobProvider.getJob();
-        job.setRealRunnable(new CompanySpider(37974, ""));
-        JobManager.getInstance().putJob(job);
-
-        logger().info("start workThread...");
-        JobManager.getInstance().start();
-
-        while (true) {
-
-        }
-    }
-
     //Todo
     @Test
     public void testITChengziSearch() {
@@ -174,7 +146,7 @@ public class MainTest {
             return "DummySpider" + i;
         }
 
-        public String fullName() {
+        public String hashString() {
             return "DummySpider" + i;
         }
     }

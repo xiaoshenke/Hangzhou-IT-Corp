@@ -23,7 +23,7 @@ public class JobMonitor {
 
     public void putJob(@NotNull IJob job, int state) {
         job.setCurrentState(state);
-        logger().info("JobMonitor putJob: "+((BaseSpider)(job.getRealRunnable())).name());
+        //logger().info("JobMonitor putJob: "+((BaseSpider)(job.getRealRunnable())).name());
         jobMap.put(job.getRealRunnable(), job);
     }
 

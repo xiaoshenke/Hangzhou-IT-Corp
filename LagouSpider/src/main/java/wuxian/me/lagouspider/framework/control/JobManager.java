@@ -92,7 +92,7 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
     }
 
     public void register(@NotNull BaseSpider spider) {
-        logger().info("JobManager.register " + spider.name());
+        //logger().info("JobManager.register " + spider.name());
         todoSpiderList.add(spider);
     }
 
@@ -148,7 +148,7 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
             if (failHelper.isBlock()) {
                 logger().error("WE ARE BLOCKED!");
                 logger().error("Until now, We have success " + successJobNum.get() +
-                        " jobs, We have run " + (System.currentTimeMillis() - workThreadStartTime) / 1000 + "seconds");
+                        " jobs, We have run " + (System.currentTimeMillis() - workThreadStartTime) / 1000 + " seconds");
                 heartbeatManager.stopHeartBeat();
                 dealBlock();
             }

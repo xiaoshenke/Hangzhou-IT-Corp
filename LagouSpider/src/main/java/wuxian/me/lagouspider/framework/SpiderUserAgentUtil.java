@@ -16,8 +16,6 @@ public class SpiderUserAgentUtil {
 
         agentList.add("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36");
 
-        agentList.add("Baiduspider+(+http://www.baidu.com/search/spider.htm”)");
-
         agentList.add("Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; .NET4.0C; .NET4.0E; .NET CLR 2.0.50727; .NET CLR 3.0.30729; .NET CLR 3.5.30729; InfoPath.3; rv:11.0) like Gecko");
 
         agentList.add("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:2.0.1) Gecko/20100101 Firefox/4.0.1");
@@ -44,8 +42,6 @@ public class SpiderUserAgentUtil {
 
         agentList.add("Mozilla/5.0 (compatible; Yahoo! Slurp; http://help.yahoo.com/help/us/ysearch/slurp)");
 
-        agentList.add("iaskspider/2.0(+http://iask.com/help/help_index.html”)");
-
         agentList.add("Mozilla/5.0 (compatible; iaskspider/1.0; MSIE 6.0)");
 
         agentList.add("Sogou web spider/3.0(+http://www.sogou.com/docs/help/webmasters.htm#07)");
@@ -63,8 +59,21 @@ public class SpiderUserAgentUtil {
     private static Random random = new Random();
 
     public static String next() {
+        return next(true);
+    }
 
-        int pos = (int) (agentList.size() * random.nextDouble());
-        return agentList.get(pos);
+    private static int index = -1;
+
+    public static String next(boolean isRandom) {
+        if (isRandom) {
+            int pos = (int) (agentList.size() * random.nextDouble());
+            return agentList.get(pos);
+        } else {
+            ++index;
+            if (index >= agentList.size()) {
+                return null;
+            }
+            return agentList.get(index);
+        }
     }
 }

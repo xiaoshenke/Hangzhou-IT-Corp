@@ -72,7 +72,12 @@ public class WorkThread extends Thread {
 
                     doIfShouldWait();
                     IJob job = jobManager.getJob();
-                    job.run();
+                    try {
+                        job.run();
+                    } catch (IllegalArgumentException e) {
+                        //ignore
+                    }
+
                 }
             }
 

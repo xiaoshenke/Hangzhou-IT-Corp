@@ -413,4 +413,9 @@ public class CompanySpider extends BaseLagouSpider {
                 + positionNum + " 面试个数: " + interviewNum + " 面试评分: " + score + "}";
     }
 
+
+    @Override
+    public String hashString() {
+        return "CompanySpider: " + company_id;
+    }
 }
