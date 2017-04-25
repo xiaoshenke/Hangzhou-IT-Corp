@@ -10,7 +10,15 @@ public interface Config {
 
     int OKHTTPCLIENT_SOCKET_READ_TIMEOUT = 10 * 1000; //10s
 
-    int SWITCH_AGENT_NUM = 3; //没3个请求更换一次agent
+    int SWITCH_AGENT_NUM = 3; //每3个请求更换一次agent
+
+    interface Shell {
+        String OPENPROXY = "/shell/openproxy";
+
+        String CHECK_PROCESS_EXSIT = "/shell/processexist";
+
+        long SLEEP_TIME_CHECK_PROXY_INPUTED = 1000 * 10;
+    }
 
     interface SaveDBThread {
 
@@ -123,7 +131,10 @@ public interface Config {
         String CONF_COOKIE = "/conf/cookies";
 
         String CONF_LOG4J_PROPERTIES = "/log4j.properties";
+
+        String CONF_IPPROXY = "/conf/ipproxy.txt";
     }
+
 
     interface JobProvider {
 

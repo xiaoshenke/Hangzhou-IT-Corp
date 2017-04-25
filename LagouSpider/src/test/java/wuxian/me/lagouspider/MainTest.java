@@ -3,11 +3,8 @@ package wuxian.me.lagouspider;
 import okhttp3.Headers;
 import okhttp3.Request;
 import org.junit.Test;
-import wuxian.me.lagouspider.core.CompanySpider;
 import wuxian.me.lagouspider.core.itjuzi.SearchSpider;
-import wuxian.me.lagouspider.framework.BaseSpider;
-import wuxian.me.lagouspider.framework.SpiderCallback;
-import wuxian.me.lagouspider.framework.SpiderUserAgentUtil;
+import wuxian.me.lagouspider.framework.*;
 import wuxian.me.lagouspider.framework.control.*;
 import wuxian.me.lagouspider.core.AreaSpider;
 import wuxian.me.lagouspider.framework.job.IJob;
@@ -16,13 +13,15 @@ import wuxian.me.lagouspider.mapper.CompanyMapper;
 import wuxian.me.lagouspider.mapper.LocationMapper;
 import wuxian.me.lagouspider.mapper.ProductMapper;
 import wuxian.me.lagouspider.model.Area;
-import wuxian.me.lagouspider.framework.IPProxyTool;
 import wuxian.me.lagouspider.model.Company;
 import wuxian.me.lagouspider.model.Location;
 import wuxian.me.lagouspider.model.Product;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.ModuleProvider;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -34,6 +33,14 @@ import static wuxian.me.lagouspider.util.ModuleProvider.*;
  * Created by wuxian on 9/4/2017.
  */
 public class MainTest {
+
+    @Test
+    public void testReadShell() {
+
+        IPProxyTool tool = new IPProxyTool();
+
+        tool.openShellAndEnsureProxyInputed();
+    }
 
     @Test
     public void testUserAgentValid() {

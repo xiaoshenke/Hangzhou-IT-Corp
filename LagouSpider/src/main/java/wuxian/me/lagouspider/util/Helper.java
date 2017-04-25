@@ -9,7 +9,6 @@ import wuxian.me.lagouspider.framework.SpiderUserAgentUtil;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static wuxian.me.lagouspider.Config.*;
 import static wuxian.me.lagouspider.Config.File.*;
 import static wuxian.me.lagouspider.Config.FullLog.CONF_FULLLOG_TEXT;
 import static wuxian.me.lagouspider.Config.FullLog.CONF_FULLLOG_TEXT_POST;
@@ -25,6 +24,18 @@ public class Helper {
 
     public static String getFullLogFilePath(String filename) {
         return getCurrentPath() + CONF_FULLLOG_TEXT + filename + CONF_FULLLOG_TEXT_POST;
+    }
+
+    public static String getCheckProcessShellPath() {
+        return getCurrentPath() + Config.Shell.CHECK_PROCESS_EXSIT;
+    }
+
+    public static String getOpenProxyShellPath() {
+        return getCurrentPath() + Config.Shell.OPENPROXY;
+    }
+
+    public static String getProxyFilePath() {
+        return getCurrentPath() + CONF_IPPROXY;
     }
 
     public static String getAreaFilePath() {
