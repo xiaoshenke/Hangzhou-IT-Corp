@@ -15,6 +15,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static wuxian.me.lagouspider.Config.ProxyControl.ENABLE_RUNTIME_INPUT_PROXY;
 import static wuxian.me.lagouspider.Config.ProxyControl.ENABLE_SWITCH_IPPROXY;
 import static wuxian.me.lagouspider.Config.RetryControl.ENABLE_RETRY_SPIDER;
 import static wuxian.me.lagouspider.Config.RetryControl.SINGLEJOB_MAX_FAIL_TIME;
@@ -195,7 +196,15 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
         while (true) {  //每个ip尝试三次 直到成功或没有proxy
             IPProxyTool.Proxy proxy = ipProxyTool.switchNextProxy();
             if (proxy == null) {
-                throw new RuntimeException("Proxy is not available!");
+
+                if (ENABLE_RUNTIME_INPUT_PROXY) {
+                    ipProxyTool.openShellAndEnsureProxyInputed();
+
+                    proxy = ipProxyTool.switchNextProxy();
+                } else {
+                    throw new RuntimeException("Proxy is not available!");
+                }
+
             }
 
             logger().info("We try to switch to Ip: " + proxy.ip + " Port: " + proxy.port);

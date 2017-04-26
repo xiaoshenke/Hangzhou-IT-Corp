@@ -29,10 +29,16 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 public class AreaSpider extends BaseLagouSpider {
     Area area;
     private int pageNum = -1;
+    private String agent = null;
 
     public AreaSpider(@NotNull Area area) {
         super();
         this.area = area;
+    }
+
+
+    public void setUserAgent(@NotNull String agent) {
+        this.agent = agent;
     }
 
     protected Request buildRequest() {
@@ -43,8 +49,12 @@ public class AreaSpider extends BaseLagouSpider {
         final String referer = urlBuilder.build().toString();
 
         urlBuilder.addQueryParameter("bizArea", area.name);
+        Headers headers = Helper.getHeaderBySpecifyRef(referer);
+        if (agent != null) {
+            headers = headers.newBuilder().set("User-Agent", agent).build();
+        }
         Request request = new Request.Builder()
-                .headers(Helper.getHeaderBySpecifyRef(referer))
+                .headers(headers)
                 .url(urlBuilder.build().toString())
                 .build();
         return request;

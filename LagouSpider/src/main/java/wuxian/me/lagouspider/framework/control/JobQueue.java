@@ -1,6 +1,7 @@
 package wuxian.me.lagouspider.framework.control;
 
 import com.sun.istack.internal.NotNull;
+import wuxian.me.lagouspider.Config;
 import wuxian.me.lagouspider.framework.job.IJob;
 
 import java.util.ArrayList;
@@ -34,19 +35,24 @@ public class JobQueue {
         logger().debug("putJob: " + job.toString());
 
         //通过检查job防止重复:比如说重复进行company主页的抓取
-        if (monitor.contains(job) && state != IJob.STATE_RETRY) {
+        if (!Config.Queue.ENABLE_DUPLICATE_INSERT && monitor.contains(job) && state != IJob.STATE_RETRY) {
             return true;
         }
         monitor.putJob(job, state);
 
         synchronized (queue) {
-            if (queue.size() == 0) {
-                queue.add(job);
+            if (Config.Queue.ENABLE_RANDOM_INSERT) {
+                if (queue.size() == 0) {
+                    queue.add(job);
+                } else {
+                    //随机插入
+                    int index = (int) random.nextDouble() * queue.size();
+                    queue.add(index, job);
+                }
             } else {
-                //随机插入
-                int index = (int) random.nextDouble() * queue.size();
-                queue.add(index, job);
+                queue.add(job);
             }
+
         }
         return true;
     }

@@ -10,7 +10,7 @@ public interface Config {
 
     int OKHTTPCLIENT_SOCKET_READ_TIMEOUT = 10 * 1000; //10s
 
-    int SWITCH_AGENT_NUM = 3; //每3个请求更换一次agent
+    int SWITCH_AGENT_NUM = 3; //每3个请求更换一次agent_
 
     interface Shell {
         String OPENPROXY = "/shell/openproxy";
@@ -18,6 +18,18 @@ public interface Config {
         String CHECK_PROCESS_EXSIT = "/shell/processexist";
 
         long SLEEP_TIME_CHECK_PROXY_INPUTED = 1000 * 10;
+    }
+
+    interface ProxyControl {
+
+        int PROXY_HEARTBEAT_FREQUENCY = 5 * 1000; //proxy的心跳频率 暂定5秒好了
+
+        boolean ENABLE_SWITCH_IPPROXY = true;
+
+        boolean ENABLE_RUNTIME_INPUT_PROXY = true;
+
+        boolean ENABLE_READ_PROXY_FROM_FILE = true;
+
     }
 
     interface SaveDBThread {
@@ -41,7 +53,15 @@ public interface Config {
         boolean ENABLE_SAVE_COMPANY_DB = true;
     }
 
+    interface Queue {
+        boolean ENABLE_RANDOM_INSERT = true;
+
+        boolean ENABLE_DUPLICATE_INSERT = false;
+    }
+
     interface JobScheduler {
+
+        boolean SCHEDULE_IMMEDIATELY = false;
 
         long SLEEP_WHEN_QUEUE_EMPTY = 1000 * 10;
 
@@ -52,14 +72,6 @@ public interface Config {
         int SLEEP_TIME_MIN = 8;        //每个任务最小相隔xs
 
         int SLEEP_TIME_MAX = 22;        //每个任务最大相隔xs
-
-    }
-
-    interface ProxyControl {
-
-        int PROXY_HEARTBEAT_FREQUENCY = 5 * 1000; //proxy的心跳频率 暂定5秒好了
-
-        boolean ENABLE_SWITCH_IPPROXY = true;
 
     }
 

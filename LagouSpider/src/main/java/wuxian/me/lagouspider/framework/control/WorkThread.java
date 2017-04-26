@@ -49,6 +49,14 @@ public class WorkThread extends Thread {
     public void run() {
         while (true) {
             while (!jobManager.isEmpty()) {
+
+                //不使用任何策略 立即分发job模式
+                if (Config.JobScheduler.SCHEDULE_IMMEDIATELY) {
+                    doIfShouldWait();
+                    IJob job = jobManager.getJob();
+                    job.run();
+                    continue;
+                }
                 if (i >= Config.JobScheduler.SWITCH_SLEEP_JOB_NUMBER) {  //每隔10个任务休息10s
                     try {
                         sleep(Config.JobScheduler.SWITCH_SLEEP_SLEEP_TIME);

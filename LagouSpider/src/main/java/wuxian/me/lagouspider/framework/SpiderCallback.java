@@ -43,7 +43,13 @@ public abstract class SpiderCallback implements Callback {
     public final void onResponse(Call call, Response response) throws IOException {
         this.response = response;
         if (response.body() != null) {
-            this.body = response.body().string();
+            try {
+                this.body = response.body().string();
+            } catch (java.net.SocketException e) {
+                //Fixme: 偶现的bug Todo: 重试
+                return;
+            }
+
         }
 
         if (!response.isSuccessful()) {

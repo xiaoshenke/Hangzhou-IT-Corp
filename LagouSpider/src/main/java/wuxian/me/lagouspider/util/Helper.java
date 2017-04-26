@@ -58,6 +58,18 @@ public class Helper {
         return getCurrentPath() + CONF_LOG4J_PROPERTIES;
     }
 
+    public static String getCompanyTableName() {
+        return TABLE_COMPANY + getDatabasePost();
+    }
+
+    public static String getProductTableName() {
+        return TABLE_PRODUCT + getDatabasePost();
+    }
+
+    public static String getLocationTableName() {
+        return TABLE_LOCATION + getDatabasePost();
+    }
+
 
     private Helper() {
     }
@@ -71,12 +83,10 @@ public class Helper {
         builder.add("Connection", "keep_alive");
         builder.add("Host", "www.lagou.com");
         builder.add(HEADER_REFERER, "abd");
-        builder.add("User-Agent", "");
+        builder.add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36");
     }
 
     private static boolean cookieInit = false;
-
-    private static int index = 0;
 
     public static Headers getHeaderBySpecifyRef(@NotNull String reference) {
         if (!cookieInit) {
@@ -90,24 +100,7 @@ public class Helper {
         }
 
         builder.set(HEADER_REFERER, reference);
-        if (index == 0) {
-            builder.set("User-Agent", SpiderUserAgentUtil.next());
-            index = (++index) % Config.SWITCH_AGENT_NUM;
-        }
-
         return builder.build();
-    }
-
-    public static String getCompanyTableName() {
-        return TABLE_COMPANY + getDatabasePost();
-    }
-
-    public static String getProductTableName() {
-        return TABLE_PRODUCT + getDatabasePost();
-    }
-
-    public static String getLocationTableName() {
-        return TABLE_LOCATION + getDatabasePost();
     }
 
     /**

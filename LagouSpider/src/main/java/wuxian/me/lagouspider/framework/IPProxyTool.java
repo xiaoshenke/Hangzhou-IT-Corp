@@ -38,6 +38,7 @@ public class IPProxyTool {
 
     static {
         ipPortList = new ArrayList<Proxy>();
+        ipPortList.add(new Proxy("114.237.6.178", 40430));
 
         FileUtil.writeToFile(Helper.getOpenProxyShellPath(), "open -t " + Helper.getProxyFilePath());
     }
@@ -77,8 +78,11 @@ public class IPProxyTool {
         };
         switchIPFuture = new FutureTask<String>(callable);
 
-        readProxyFromFile();
-        FileUtil.writeToFile(Helper.getProxyFilePath(), "");  //清空文件
+        if (Config.ProxyControl.ENABLE_READ_PROXY_FROM_FILE) {
+            ipPortList.clear();
+            readProxyFromFile();
+            FileUtil.writeToFile(Helper.getProxyFilePath(), "");  //清空文件
+        }
     }
 
     private void readProxyFromFile() {

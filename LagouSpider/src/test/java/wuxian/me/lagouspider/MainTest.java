@@ -1,6 +1,5 @@
 package wuxian.me.lagouspider;
 
-import okhttp3.Headers;
 import okhttp3.Request;
 import org.junit.Test;
 import wuxian.me.lagouspider.core.itjuzi.SearchSpider;
@@ -18,10 +17,6 @@ import wuxian.me.lagouspider.model.Location;
 import wuxian.me.lagouspider.model.Product;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.ModuleProvider;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -34,27 +29,45 @@ import static wuxian.me.lagouspider.util.ModuleProvider.*;
  */
 public class MainTest {
 
+    //测试特定的userAgent是不是真的容易被反爬虫识别出来
     @Test
-    public void testReadShell() {
+    public void testUserAgent() {
 
-        IPProxyTool tool = new IPProxyTool();
+        final JobManager manager = JobManager.getInstance();
+        IPProxyTool.Proxy proxy = manager.switchProxy();
+        logger().info("Using proxy ip: " + proxy.ip + " port: " + proxy.port);
+        assertTrue(manager.ipSwitched(proxy, true));
 
-        tool.openShellAndEnsureProxyInputed();
-    }
+        AreaMapper areaMapper = ModuleProvider.areaMapper();
+        List<Area> areas = areaMapper.loadAreaOfDistinct("西湖区");
+        final Area area = areas.get(0);
+        final IJob job = JobProvider.getJob();
 
-    @Test
-    public void testUserAgentValid() {
-        Headers.Builder builder = new Headers.Builder();
+        final String agent = SpiderUserAgentUtil.nextMobileAgent();
+        logger().info("User-Agent: " + agent);
+        new Thread() {
+            @Override
+            public void run() {
 
-        String agent;
-        while ((agent = SpiderUserAgentUtil.next(false)) != null) {
-            //logger().info(agent);
-            try {
-                builder.set("User-Agent", agent);
-                builder.build();
-            } catch (Exception e) {
-                logger().error(agent);
+                while (true) {
+                    logger().info("putJob");
+                    AreaSpider spider = new AreaSpider(area);
+                    spider.setUserAgent(agent);
+                    job.setRealRunnable(spider);
+                    manager.putJob(job);
+                    try {
+                        sleep(1000 * 6);
+                    } catch (InterruptedException e) {
+                        ;
+                    }
+                }
+
             }
+        }.start();
+
+        manager.start();
+        while (true) {
+
         }
     }
 
