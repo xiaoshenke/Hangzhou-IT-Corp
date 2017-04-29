@@ -2,8 +2,10 @@ package wuxian.me.lagouspider.framework.control;
 
 import com.sun.istack.internal.NotNull;
 import okhttp3.*;
+import wuxian.me.lagouspider.Config;
 import wuxian.me.lagouspider.framework.BaseSpider;
 import wuxian.me.lagouspider.framework.HeartbeatManager;
+import wuxian.me.lagouspider.framework.job.BaseJob;
 import wuxian.me.lagouspider.framework.job.IJob;
 import wuxian.me.lagouspider.framework.IPProxyTool;
 import wuxian.me.lagouspider.framework.OkhttpProvider;
@@ -85,7 +87,9 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
     }
 
     public IJob getJob() {
-        return queue.getJob();
+        IJob job = queue.getJob();
+        //logger().info("getJob: " + ((BaseSpider) (job.getRealRunnable())).name());
+        return job;
     }
 
     public boolean isEmpty() {
@@ -210,7 +214,7 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
             logger().info("We try to switch to Ip: " + proxy.ip + " Port: " + proxy.port);
             int ensure = 0;
             boolean success = false;
-            while (!(success = ipSwitched(proxy)) && ensure < 3) {  //每个IP尝试三次
+            while (!(success = ipSwitched(proxy)) && ensure < Config.ProxyControl.TRY_TIME_EVERY_PROXY) {  //每个IP尝试三次
                 ensure++;
             }
             if (success) {

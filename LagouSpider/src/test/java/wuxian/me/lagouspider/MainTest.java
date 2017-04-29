@@ -29,58 +29,13 @@ import static wuxian.me.lagouspider.util.ModuleProvider.*;
  */
 public class MainTest {
 
-    //测试特定的userAgent是不是真的容易被反爬虫识别出来
-    @Test
-    public void testUserAgent() {
-
-        final JobManager manager = JobManager.getInstance();
-        IPProxyTool.Proxy proxy = manager.switchProxy();
-        logger().info("Using proxy ip: " + proxy.ip + " port: " + proxy.port);
-        assertTrue(manager.ipSwitched(proxy, true));
-
-        AreaMapper areaMapper = ModuleProvider.areaMapper();
-        List<Area> areas = areaMapper.loadAreaOfDistinct("西湖区");
-        final Area area = areas.get(0);
-        final IJob job = JobProvider.getJob();
-
-        final String agent = SpiderUserAgentUtil.nextMobileAgent();
-        logger().info("User-Agent: " + agent);
-        new Thread() {
-            @Override
-            public void run() {
-
-                while (true) {
-                    logger().info("putJob");
-                    AreaSpider spider = new AreaSpider(area);
-                    spider.setUserAgent(agent);
-                    job.setRealRunnable(spider);
-                    manager.putJob(job);
-                    try {
-                        sleep(1000 * 6);
-                    } catch (InterruptedException e) {
-                        ;
-                    }
-                }
-
-            }
-        }.start();
-
-        manager.start();
-        while (true) {
-
-        }
-    }
-
     @Test
     public void testAreaSpider() {
+        Helper.updateNewGrab();
         JobManager manager = JobManager.getInstance();
-        IPProxyTool.Proxy proxy = manager.switchProxy();
-        logger().info("Using proxy ip: " + proxy.ip + " port: " + proxy.port);
-        assertTrue(manager.ipSwitched(proxy, true));
-
-        if (USE_FIXED_DELAY_JOB) {
-            logger().info("Current fixed delay job interval: " + FIXED_DELAYJOB_INTERVAL);
-        }
+        //IPProxyTool.Proxy proxy = manager.switchProxy();
+        //logger().info("Using proxy ip: " + proxy.ip + " port: " + proxy.port);
+        //assertTrue(manager.ipSwitched(proxy, true));
 
         AreaMapper areaMapper = ModuleProvider.areaMapper();
         CompanyMapper companyMapper = ModuleProvider.companyMapper();
@@ -114,7 +69,6 @@ public class MainTest {
             IJob job = JobProvider.getJob();
             job.setRealRunnable(new AreaSpider(area));
             manager.putJob(job);
-            break;
         }
 
         logger().info("Start workThread...");

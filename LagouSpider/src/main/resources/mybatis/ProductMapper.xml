@@ -9,7 +9,7 @@
 
     <update id="createNewTableIfNeed" parameterType="wuxian.me.lagouspider.model.Product">
         create table if not exists ${tableName} (product_id INT AUTO_INCREMENT,company_id INTEGER,
-        product_name VARCHAR(20), url VARCHAR(100),labelString VARCHAR(20), imgUrl VARCHAR(100),
+        product_name VARCHAR(20), url VARCHAR(100),labelString VARCHAR(20), imgUrl VARCHAR(128),
         description VARCHAR(255),
         PRIMARY KEY (product_id))
         DEFAULT CHARSET = utf8,

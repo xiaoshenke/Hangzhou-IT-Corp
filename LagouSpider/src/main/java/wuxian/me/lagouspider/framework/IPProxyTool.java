@@ -38,8 +38,6 @@ public class IPProxyTool {
 
     static {
         ipPortList = new ArrayList<Proxy>();
-        ipPortList.add(new Proxy("114.237.6.178", 40430));
-
         FileUtil.writeToFile(Helper.getOpenProxyShellPath(), "open -t " + Helper.getProxyFilePath());
     }
 

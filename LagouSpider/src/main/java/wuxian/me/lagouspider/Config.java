@@ -28,7 +28,9 @@ public interface Config {
 
         boolean ENABLE_RUNTIME_INPUT_PROXY = true;
 
-        boolean ENABLE_READ_PROXY_FROM_FILE = true;
+        boolean ENABLE_READ_PROXY_FROM_FILE = false;
+
+        int TRY_TIME_EVERY_PROXY = 4;
 
     }
 
@@ -54,7 +56,7 @@ public interface Config {
     }
 
     interface Queue {
-        boolean ENABLE_RANDOM_INSERT = true;
+        boolean ENABLE_RANDOM_INSERT = false;
 
         boolean ENABLE_DUPLICATE_INSERT = false;
     }
@@ -67,11 +69,11 @@ public interface Config {
 
         long SWITCH_SLEEP_JOB_NUMBER = 10;  //每x个任务休息
 
-        long SWITCH_SLEEP_SLEEP_TIME = 1000 * 30; //每x个任务休息xs
+        long SWITCH_SLEEP_SLEEP_TIME = 1000 * 20; //每x个任务休息xs
 
-        int SLEEP_TIME_MIN = 8;        //每个任务最小相隔xs
+        int SLEEP_TIME_MIN = 4;        //每个任务最小相隔xs
 
-        int SLEEP_TIME_MAX = 22;        //每个任务最大相隔xs
+        int SLEEP_TIME_MAX = 12;        //每个任务最大相隔xs
 
     }
 
@@ -82,6 +84,16 @@ public interface Config {
         boolean ENABLE_SPIDER_COMPANY_MAIN = true;
 
         boolean ENABLE_SPIDER_ITCHENGZI_SEARCH = false;
+    }
+
+    interface FailHelper{
+        int CONSIDER_BLOCK_BLOCK = 1;
+
+        int CONSIDER_BLOCK_404 = 1;
+
+        int CONSIDER_BLOCK_MAYBLOCK = 3;
+
+        int CONSIDER_BLOCK_NETERR = 10;
     }
 
     interface RetryControl {
