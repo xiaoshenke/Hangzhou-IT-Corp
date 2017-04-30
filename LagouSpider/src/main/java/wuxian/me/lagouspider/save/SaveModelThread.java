@@ -58,9 +58,19 @@ public class SaveModelThread<T extends BaseModel> extends Thread {
 
                     if (operator != null) {
                         if (insert) {
-                            operator.insert(model);
+                            try {
+                                operator.insert(model);
+                            } catch (Exception e) {
+                                logger().error(getName() + " insertModel: " + model.name() + " error: " + e.getMessage() + " we will ignore");
+                            }
+
                         } else {
-                            operator.update(model);
+                            try {
+                                operator.update(model);
+                            } catch (Exception e) {
+                                logger().error(getName() + " updateModel: " + model.name() + " error: " + e.getMessage() + " we will ignore");
+                            }
+
                         }
                     }
                 }

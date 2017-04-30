@@ -2,6 +2,7 @@ package wuxian.me.lagouspider;
 
 import okhttp3.Request;
 import org.junit.Test;
+import wuxian.me.lagouspider.core.CompanySpider;
 import wuxian.me.lagouspider.core.itjuzi.SearchSpider;
 import wuxian.me.lagouspider.framework.*;
 import wuxian.me.lagouspider.framework.control.*;
@@ -20,14 +21,48 @@ import wuxian.me.lagouspider.util.ModuleProvider;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static wuxian.me.lagouspider.Config.JobProvider.FIXED_DELAYJOB_INTERVAL;
-import static wuxian.me.lagouspider.Config.JobProvider.USE_FIXED_DELAY_JOB;
 import static wuxian.me.lagouspider.util.ModuleProvider.*;
 
 /**
  * Created by wuxian on 9/4/2017.
  */
 public class MainTest {
+
+    @Test
+    public void testCompanySpider() {
+
+        JobManager manager = JobManager.getInstance();
+        CompanyMapper companyMapper = ModuleProvider.companyMapper();
+
+        Company.tableName = Helper.getCompanyTableName();
+        Product.tableName = Helper.getProductTableName();
+        Location.tableName = Helper.getLocationTableName();
+
+        /*
+        Company company = new Company(-1);
+        companyMapper.createNewTableIfNeed(company);
+        Product product = new Product(-1);
+        productMapper.createNewTableIfNeed(product);
+        Location location = new Location(-1, "2r3");
+        locationMapper.createNewTableIfNeed(location);
+        */
+
+        List<Company> companyList = companyMapper.loadAllCompanies(Company.tableName);
+
+        for (Company company : companyList) {
+            IJob job = JobProvider.getJob();
+            job.setRealRunnable(new CompanySpider(company.company_id, company.company_fullname));
+            manager.putJob(job);
+        }
+
+        logger().info("Start workThread...");
+        manager.start();
+
+        while (true) {
+
+        }
+
+    }
 
     @Test
     public void testAreaSpider() {

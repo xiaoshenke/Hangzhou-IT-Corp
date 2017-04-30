@@ -1,7 +1,6 @@
 package wuxian.me.lagouspider.framework.control;
 
 import com.sun.istack.internal.NotNull;
-import wuxian.me.lagouspider.Config;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -82,18 +81,18 @@ public class FailHelper {
     }
 
     public boolean isBlock() {
-        if (failBlockMap.size() >= Config.FailHelper.CONSIDER_BLOCK_BLOCK) {
+        if (failBlockMap.size() >= JobManager.getInstance().getConfig().considerBlockedBlockNum) {
             return true;
         }
-        if (fail404Map.size() >= Config.FailHelper.CONSIDER_BLOCK_404) {
-            return true;
-        }
-
-        if (failMayblockMap.size() >= Config.FailHelper.CONSIDER_BLOCK_MAYBLOCK) {
+        if (fail404Map.size() >= JobManager.getInstance().getConfig().considerBlocked404Num) {
             return true;
         }
 
-        if (failNeterrMap.size() >= Config.FailHelper.CONSIDER_BLOCK_NETERR) {
+        if (failMayblockMap.size() >= JobManager.getInstance().getConfig().considerBlockedMayblockNum) {
+            return true;
+        }
+
+        if (failNeterrMap.size() >= JobManager.getInstance().getConfig().considerBlockedNeterr) {
             return true;
         }
         return false;

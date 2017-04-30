@@ -4,6 +4,8 @@ import wuxian.me.lagouspider.core.AreaSpider;
 import wuxian.me.lagouspider.framework.control.JobManager;
 import wuxian.me.lagouspider.framework.control.JobProvider;
 import wuxian.me.lagouspider.core.DistinctSpider;
+import wuxian.me.lagouspider.framework.log.ILog;
+import wuxian.me.lagouspider.framework.log.LogManager;
 import wuxian.me.lagouspider.mapper.AreaMapper;
 import wuxian.me.lagouspider.framework.job.IJob;
 import wuxian.me.lagouspider.mapper.CompanyMapper;
@@ -30,12 +32,34 @@ import java.util.List;
  * Created by wuxian on 29/3/2017.
  */
 public class Main {
+
     AreaMapper areaMapper = ModuleProvider.areaMapper();
     CompanyMapper companyMapper = ModuleProvider.companyMapper();
     ProductMapper productMapper = ModuleProvider.productMapper();
     LocationMapper locationMapper = ModuleProvider.locationMapper();
 
     public Main() {
+
+        LogManager.setRealLogImpl(new ILog() {
+            public void debug(String message) {
+                logger().debug(message);
+            }
+
+            public void info(String message) {
+                logger().info(message);
+
+            }
+
+            public void error(String message) {
+                logger().info(message);
+
+            }
+
+            public void warn(String message) {
+                logger().info(message);
+
+            }
+        });
     }
 
     public void run() {

@@ -24,6 +24,7 @@ import static wuxian.me.lagouspider.Config.EnableSaveDB.ENABLE_SAVE_COMPANY_DB;
 import static wuxian.me.lagouspider.Config.Spider.ENABLE_SPIDER_COMPANY_MAIN;
 import static wuxian.me.lagouspider.Config.SpiderUrl.URL_LAGOU_JAVA;
 import static wuxian.me.lagouspider.Config.SpiderUrl.URL_LAGOU_POSITION_JSON;
+import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
 /**
  * Created by wuxian on 7/4/2017.

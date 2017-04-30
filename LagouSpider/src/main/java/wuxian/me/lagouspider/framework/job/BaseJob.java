@@ -7,8 +7,6 @@ import wuxian.me.lagouspider.framework.control.Fail;
 import java.util.ArrayList;
 import java.util.List;
 
-import static wuxian.me.lagouspider.util.ModuleProvider.logger;
-
 /**
  * Created by wuxian on 31/3/2017.
  */

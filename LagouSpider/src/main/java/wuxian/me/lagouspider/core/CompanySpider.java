@@ -31,6 +31,7 @@ import java.util.List;
 import static wuxian.me.lagouspider.Config.EnableSaveDB.*;
 import static wuxian.me.lagouspider.Config.Location.LOCATION_MULTY;
 import static wuxian.me.lagouspider.Config.Location.LOCATION_NONE;
+import static wuxian.me.lagouspider.Config.Location.LOCATION_SINGLE;
 import static wuxian.me.lagouspider.Config.Spider.*;
 import static wuxian.me.lagouspider.Config.SpiderUrl.URL_LAGOU_COMPANY_MAIN;
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
@@ -390,7 +391,7 @@ public class CompanySpider extends BaseLagouSpider {
         } else if (locationList.size() > 1) {
             company.detail_location = LOCATION_MULTY;
         } else {
-            company.detail_location = locationList.get(0);
+            company.detail_location = LOCATION_SINGLE;  //先做这样的简化
         }
         return company;
     }
@@ -409,7 +410,7 @@ public class CompanySpider extends BaseLagouSpider {
         for (String location : locationList) {
             str.append(location + ";");
         }
-        return "CompanySpider: { " + buildCompany().name() + " location: " + str + " ,招聘岗位: "
+        return "CompanySpider: { " + "companyId: " + company_id + " " + companyName + " location: " + str + " ,招聘岗位: "
                 + positionNum + " 面试个数: " + interviewNum + " 面试评分: " + score + "}";
     }
 

@@ -1,13 +1,10 @@
 package wuxian.me.lagouspider.framework;
 
 import com.sun.istack.internal.NotNull;
-import wuxian.me.lagouspider.Config;
 import wuxian.me.lagouspider.framework.control.JobManager;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static wuxian.me.lagouspider.Config.ProxyControl.PROXY_HEARTBEAT_FREQUENCY;
 
 /**
  * Created by wuxian on 20/4/2017.
@@ -16,13 +13,14 @@ import static wuxian.me.lagouspider.Config.ProxyControl.PROXY_HEARTBEAT_FREQUENC
  */
 public class HeartbeatManager implements Runnable {
 
-    long frequency = PROXY_HEARTBEAT_FREQUENCY;
+    long frequency;
 
     private Thread heartbeatThread = null;
     private int heartBeatTime = 0;
     private IPProxyTool.Proxy proxy;
 
     public HeartbeatManager() {
+        frequency = JobManager.getInstance().getConfig().proxyHeartbeatInterval;
 
     }
 

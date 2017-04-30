@@ -14,8 +14,8 @@ public class Fail {
 
     public static final int FAIL_404 = 404;
 
-    int httpCode;
-    String message;
+    private int httpCode;
+    private String message;
 
     long millis;
 

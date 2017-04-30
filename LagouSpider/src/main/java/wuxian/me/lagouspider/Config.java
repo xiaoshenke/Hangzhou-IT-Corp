@@ -6,40 +6,12 @@ package wuxian.me.lagouspider;
  */
 public interface Config {
 
-    boolean IS_TEST = true;
-
-    int OKHTTPCLIENT_SOCKET_READ_TIMEOUT = 10 * 1000; //10s
-
-    int SWITCH_AGENT_NUM = 3; //每3个请求更换一次agent_
-
-    interface Shell {
-        String OPENPROXY = "/shell/openproxy";
-
-        String CHECK_PROCESS_EXSIT = "/shell/processexist";
-
-        long SLEEP_TIME_CHECK_PROXY_INPUTED = 1000 * 10;
-    }
-
-    interface ProxyControl {
-
-        int PROXY_HEARTBEAT_FREQUENCY = 5 * 1000; //proxy的心跳频率 暂定5秒好了
-
-        boolean ENABLE_SWITCH_IPPROXY = true;
-
-        boolean ENABLE_RUNTIME_INPUT_PROXY = true;
-
-        boolean ENABLE_READ_PROXY_FROM_FILE = false;
-
-        int TRY_TIME_EVERY_PROXY = 4;
-
-    }
-
     interface SaveDBThread {
 
         //每1分钟存储一次数据库
-        int SAVE_COMPANY_INTERVAL = 1000 * 60 * 1;
+        int SAVE_COMPANY_INTERVAL = 1000 * 30 * 1;
 
-        int SAVE_COMPANY_MAIN_INTERVAL = (int) (1000 * 60 * 1.5);
+        int SAVE_COMPANY_MAIN_INTERVAL = (int) (1000 * 40 * 1);
 
         int SAVE_PRODUCT_INTERVAL = 1000 * 60 * 1;
 
@@ -48,60 +20,20 @@ public interface Config {
 
     interface EnableSaveDB {
 
-        boolean ENABLE_SAVE_PRODUCT_DB = true;
+        boolean ENABLE_SAVE_PRODUCT_DB = false;
 
-        boolean ENABLE_SAVE_LOCATION_DB = true;
+        boolean ENABLE_SAVE_LOCATION_DB = false;
 
         boolean ENABLE_SAVE_COMPANY_DB = true;
-    }
-
-    interface Queue {
-        boolean ENABLE_RANDOM_INSERT = false;
-
-        boolean ENABLE_DUPLICATE_INSERT = false;
-    }
-
-    interface JobScheduler {
-
-        boolean SCHEDULE_IMMEDIATELY = false;
-
-        long SLEEP_WHEN_QUEUE_EMPTY = 1000 * 10;
-
-        long SWITCH_SLEEP_JOB_NUMBER = 10;  //每x个任务休息
-
-        long SWITCH_SLEEP_SLEEP_TIME = 1000 * 20; //每x个任务休息xs
-
-        int SLEEP_TIME_MIN = 4;        //每个任务最小相隔xs
-
-        int SLEEP_TIME_MAX = 12;        //每个任务最大相隔xs
-
     }
 
     interface Spider {
 
         boolean ENABLE_SPIDER_AREAPAGE = true;
 
-        boolean ENABLE_SPIDER_COMPANY_MAIN = true;
+        boolean ENABLE_SPIDER_COMPANY_MAIN = false;
 
         boolean ENABLE_SPIDER_ITCHENGZI_SEARCH = false;
-    }
-
-    interface FailHelper{
-        int CONSIDER_BLOCK_BLOCK = 1;
-
-        int CONSIDER_BLOCK_404 = 1;
-
-        int CONSIDER_BLOCK_MAYBLOCK = 3;
-
-        int CONSIDER_BLOCK_NETERR = 10;
-    }
-
-    interface RetryControl {
-
-        boolean ENABLE_RETRY_SPIDER = true;
-
-        int SINGLEJOB_MAX_FAIL_TIME = 4;  //单个job的最大失败次数
-
     }
 
     interface SpiderUrl {
@@ -127,6 +59,8 @@ public interface Config {
         String LOCATION_MULTY = "multi";
 
         String LOCATION_NONE = "none";
+
+        String LOCATION_SINGLE = "single";
     }
 
     interface Grab {
@@ -136,13 +70,6 @@ public interface Config {
 
         //上一次爬虫抓取的时间
         String CONF_LASTGRAB = "/conf/lastgrab.txt";
-    }
-
-    interface FullLog {
-        String CONF_FULLLOG_TEXT = "/htmls/";
-
-        String CONF_FULLLOG_TEXT_POST = ".html";
-
     }
 
     interface File {
@@ -156,16 +83,6 @@ public interface Config {
 
         String CONF_LOG4J_PROPERTIES = "/log4j.properties";
 
-        String CONF_IPPROXY = "/conf/ipproxy.txt";
     }
 
-
-    interface JobProvider {
-
-        boolean USE_FIXED_DELAY_NEXT_JOB = true;
-
-        boolean USE_FIXED_DELAY_JOB = true;
-
-        long FIXED_DELAYJOB_INTERVAL = 1000 * 4;  //3秒一个request
-    }
 }

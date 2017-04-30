@@ -3,12 +3,11 @@ package wuxian.me.lagouspider.framework.control;
 import com.sun.istack.internal.NotNull;
 import wuxian.me.lagouspider.framework.BaseSpider;
 import wuxian.me.lagouspider.framework.job.IJob;
+import wuxian.me.lagouspider.framework.log.LogManager;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
 /**
  * Created by wuxian on 7/4/2017.
@@ -74,7 +73,7 @@ public class JobMonitor {
             for (Runnable runnable : jobMap.keySet()) {
                 IJob job = jobMap.get(runnable);
                 if (job == null) {
-                    logger().error("Can't find job in JobMap for runnable: "
+                    LogManager.error("Can't find job in JobMap for runnable: "
                             + ((BaseSpider) runnable).name());
                     continue;
                 }

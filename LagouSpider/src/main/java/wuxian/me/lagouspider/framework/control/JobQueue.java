@@ -1,16 +1,12 @@
 package wuxian.me.lagouspider.framework.control;
 
 import com.sun.istack.internal.NotNull;
-import wuxian.me.lagouspider.Config;
 import wuxian.me.lagouspider.framework.job.IJob;
+import wuxian.me.lagouspider.framework.log.LogManager;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-
-import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
 /**
  * Created by wuxian on 1/4/2017.
@@ -32,16 +28,16 @@ public class JobQueue {
     }
 
     public boolean putJob(IJob job, int state) {
-        logger().debug("putJob: " + job.toString());
+        LogManager.debug("putJob: " + job.toString());
 
         //通过检查job防止重复:比如说重复进行company主页的抓取
-        if (!Config.Queue.ENABLE_DUPLICATE_INSERT && monitor.contains(job) && state != IJob.STATE_RETRY) {
+        if (!JobManager.getInstance().getConfig().enableInsertDuplicateJob && monitor.contains(job) && state != IJob.STATE_RETRY) {
             return true;
         }
         monitor.putJob(job, state);
 
         synchronized (queue) {
-            if (Config.Queue.ENABLE_RANDOM_INSERT) {
+            if (JobManager.getInstance().getConfig().enableRadomInsertJob) {
                 if (queue.size() == 0) {
                     queue.add(job);
                 } else {

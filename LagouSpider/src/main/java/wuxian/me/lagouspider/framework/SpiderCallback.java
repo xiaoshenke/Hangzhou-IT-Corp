@@ -6,10 +6,9 @@ import okhttp3.Callback;
 import okhttp3.Response;
 import wuxian.me.lagouspider.framework.control.Fail;
 import wuxian.me.lagouspider.framework.control.JobManager;
+import wuxian.me.lagouspider.framework.log.LogManager;
 
 import java.io.IOException;
-
-import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
 /**
  * Created by wuxian on 10/4/2017.
@@ -53,10 +52,10 @@ public abstract class SpiderCallback implements Callback {
         }
 
         if (!response.isSuccessful()) {
-            logger().error("HttpCode: " + response.code() + " spider: " + spider.name()); //console尽量少log
+            LogManager.error("HttpCode: " + response.code() + " spider: " + spider.name()); //console尽量少log
 
             if (spider.checkBlockAndFailThisSpider(response.code())) {
-                logger().error("We got BLOCKED, " + spider.name());
+                LogManager.error("We got BLOCKED, " + spider.name());
                 JobManager.getInstance().fail(spider, Fail.BLOCK);
             } else {
                 JobManager.getInstance().fail(spider, new Fail(response.code(), response.message()));
@@ -79,7 +78,7 @@ public abstract class SpiderCallback implements Callback {
             } else if (result == BaseSpider.RET_MAYBE_BLOCK) {
 
                 if (spider.checkBlockAndFailThisSpider(body)) {
-                    logger().error("We got BLOCKED, " + spider.name());
+                    LogManager.error("We got BLOCKED, " + spider.name());
                     JobManager.getInstance().fail(spider, Fail.BLOCK);
                     spider.serializeFullLog();
                 } else {

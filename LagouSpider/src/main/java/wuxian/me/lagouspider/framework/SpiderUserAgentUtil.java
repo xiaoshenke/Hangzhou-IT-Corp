@@ -2,7 +2,6 @@ package wuxian.me.lagouspider.framework;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by wuxian on 24/4/2017.

@@ -1,6 +1,4 @@
 package wuxian.me.lagouspider.framework.control;
-
-import wuxian.me.lagouspider.Config;
 import wuxian.me.lagouspider.framework.job.IJob;
 
 import java.util.Random;
@@ -51,15 +49,15 @@ public class WorkThread extends Thread {
             while (!jobManager.isEmpty()) {
 
                 //不使用任何策略 立即分发job模式
-                if (Config.JobScheduler.SCHEDULE_IMMEDIATELY) {
+                if (jobManager.getConfig().enableScheduleImmediately) {
                     doIfShouldWait();
                     IJob job = jobManager.getJob();
                     job.run();
                     continue;
                 }
-                if (i >= Config.JobScheduler.SWITCH_SLEEP_JOB_NUMBER) {  //每隔10个任务休息10s
+                if (i >= jobManager.getConfig().jobNumToSleep) {  //每隔10个任务休息10s
                     try {
-                        sleep(Config.JobScheduler.SWITCH_SLEEP_SLEEP_TIME);
+                        sleep(jobManager.getConfig().jobSleepTimeToSleep);
                     } catch (InterruptedException e) {
                         ;
                     }
@@ -69,8 +67,8 @@ public class WorkThread extends Thread {
                     i = 0;
                 } else {
                     i++;
-                    int min = Config.JobScheduler.SLEEP_TIME_MIN;
-                    int max = Config.JobScheduler.SLEEP_TIME_MAX;
+                    int min = jobManager.getConfig().jobSchedulerTimeMin;
+                    int max = jobManager.getConfig().jobSchedulerTimeMax;
                     int sleepTime = (int) (min + random.nextDouble() * (max - min)) * 1000;
                     try {
                         sleep(sleepTime);
@@ -90,7 +88,7 @@ public class WorkThread extends Thread {
             }
 
             try {
-                sleep(Config.JobScheduler.SLEEP_WHEN_QUEUE_EMPTY);
+                sleep(jobManager.getConfig().jobQueueEmptySleepTime);
             } catch (InterruptedException e) {
                 ;  //ignore
             }

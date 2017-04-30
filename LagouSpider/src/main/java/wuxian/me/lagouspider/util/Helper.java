@@ -2,16 +2,12 @@ package wuxian.me.lagouspider.util;
 
 import com.sun.istack.internal.NotNull;
 import okhttp3.Headers;
-import wuxian.me.lagouspider.Config;
 import wuxian.me.lagouspider.framework.FileUtil;
-import wuxian.me.lagouspider.framework.SpiderUserAgentUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static wuxian.me.lagouspider.Config.File.*;
-import static wuxian.me.lagouspider.Config.FullLog.CONF_FULLLOG_TEXT;
-import static wuxian.me.lagouspider.Config.FullLog.CONF_FULLLOG_TEXT_POST;
 import static wuxian.me.lagouspider.Config.Grab.CONF_LASTGRAB;
 import static wuxian.me.lagouspider.Config.Grab.GRAB_INTERNAL;
 import static wuxian.me.lagouspider.Config.TableName.*;
@@ -21,22 +17,6 @@ import static wuxian.me.lagouspider.framework.FileUtil.getCurrentPath;
  * Created by wuxian on 1/4/2017.
  */
 public class Helper {
-
-    public static String getFullLogFilePath(String filename) {
-        return getCurrentPath() + CONF_FULLLOG_TEXT + filename + CONF_FULLLOG_TEXT_POST;
-    }
-
-    public static String getCheckProcessShellPath() {
-        return getCurrentPath() + Config.Shell.CHECK_PROCESS_EXSIT;
-    }
-
-    public static String getOpenProxyShellPath() {
-        return getCurrentPath() + Config.Shell.OPENPROXY;
-    }
-
-    public static String getProxyFilePath() {
-        return getCurrentPath() + CONF_IPPROXY;
-    }
 
     public static String getAreaFilePath() {
         return getCurrentPath() + CONF_AREA;

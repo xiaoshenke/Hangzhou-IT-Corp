@@ -4,8 +4,8 @@ import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
-import wuxian.me.lagouspider.Config;
-import wuxian.me.lagouspider.util.Helper;
+import wuxian.me.lagouspider.framework.control.JobManager;
+import wuxian.me.lagouspider.framework.log.LogManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,7 +17,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
-import static wuxian.me.lagouspider.util.ModuleProvider.logger;
+import static wuxian.me.lagouspider.framework.FileUtil.getCurrentPath;
 
 /**
  * Created by wuxian on 9/4/2017.
@@ -38,7 +38,6 @@ public class IPProxyTool {
 
     static {
         ipPortList = new ArrayList<Proxy>();
-        FileUtil.writeToFile(Helper.getOpenProxyShellPath(), "open -t " + Helper.getProxyFilePath());
     }
 
     private FutureTask<String> switchIPFuture;
@@ -53,8 +52,9 @@ public class IPProxyTool {
         if (inited) {
             return;
         }
-
         inited = true;
+
+        FileUtil.writeToFile(getOpenProxyShellPath(), "open -t " + getProxyFilePath());
 
         HttpUrl.Builder urlBuilder = HttpUrl.parse("http://www.ip138.com/ip2city.asp").newBuilder();
         Headers.Builder builder = new Headers.Builder();
@@ -76,15 +76,19 @@ public class IPProxyTool {
         };
         switchIPFuture = new FutureTask<String>(callable);
 
-        if (Config.ProxyControl.ENABLE_READ_PROXY_FROM_FILE) {
+        if (JobManager.getInstance().getConfig().enableInitProxyFromFile) {
             ipPortList.clear();
             readProxyFromFile();
-            FileUtil.writeToFile(Helper.getProxyFilePath(), "");  //清空文件
+            FileUtil.writeToFile(getProxyFilePath(), "");  //清空文件
         }
     }
 
+    String getProxyFilePath() {
+        return getCurrentPath() + JobManager.getInstance().getConfig().ipproxyFile;
+    }
+
     private void readProxyFromFile() {
-        String content = FileUtil.readFromFile(Helper.getProxyFilePath());
+        String content = FileUtil.readFromFile(getProxyFilePath());
         if (content != null) {
             String[] proxys = content.split(CUT);
             if (proxys == null) {
@@ -139,9 +143,13 @@ public class IPProxyTool {
         }
     }
 
-    public static boolean isTextEditRunning() throws IOException {
+    private String getCheckProcessShellPath() {
+        return getCurrentPath() + JobManager.getInstance().getConfig().shellCheckprocessFile;
+    }
+
+    public boolean isTextEditRunning() throws IOException {
         Runtime runtime = Runtime.getRuntime();
-        String check = Helper.getCheckProcessShellPath();
+        String check = getCheckProcessShellPath();
         String[] args = new String[]{check, "TextEdit"};
         Process pc = null;
         pc = runtime.exec(args);
@@ -160,12 +168,17 @@ public class IPProxyTool {
     private boolean openTextEdit() {
         Runtime runtime = Runtime.getRuntime();
         try {
-            Process proc = runtime.exec(FileUtil.readFromFile(Helper.getOpenProxyShellPath()));
+            Process proc = runtime.exec(FileUtil.readFromFile(
+                    getOpenProxyShellPath()));
             int exit = proc.waitFor();
             return true;
         } catch (Exception e) {
             return false;
         }
+    }
+
+    private String getOpenProxyShellPath() {
+        return getCurrentPath() + JobManager.getInstance().getConfig().shellOpenProxyFile;
     }
 
     //支持运行时手工输入最新的proxy
@@ -183,7 +196,7 @@ public class IPProxyTool {
                     //没有调用open命令但是TextEdit进程正在运行 睡眠处理
                     try {
                         sleep(2000);
-                        logger().warn("Try To Open TextEdit.exe For Writting IpProxy,but it's already running,wait...");
+                        LogManager.warn("Try To Open TextEdit.exe For Writting IpProxy,but it's already running,wait...");
                     } catch (InterruptedException e) {
                         ;
                     }
@@ -195,7 +208,7 @@ public class IPProxyTool {
                 boolean b = true;
                 do {
                     try {
-                        sleep(Config.Shell.SLEEP_TIME_CHECK_PROXY_INPUTED);    //每过10s检测文件是否有新的proxy ip写入,若没有,一直重试直到成功
+                        sleep(JobManager.getInstance().getConfig().shellCheckProxyFileSleepTime);    //每过10s检测文件是否有新的proxy ip写入,若没有,一直重试直到成功
                     } catch (InterruptedException e) {
                         ;
                     }
@@ -208,7 +221,7 @@ public class IPProxyTool {
                     }
                 } while (b);
 
-                FileUtil.writeToFile(Helper.getProxyFilePath(), "");  //清空文件
+                FileUtil.writeToFile(getProxyFilePath(), "");  //清空文件
                 countDownLatch.countDown();
             }
         }.start();

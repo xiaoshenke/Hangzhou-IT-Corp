@@ -4,10 +4,11 @@ import com.sun.istack.internal.NotNull;
 import okhttp3.Request;
 import okhttp3.Response;
 import wuxian.me.lagouspider.framework.control.JobManager;
-import wuxian.me.lagouspider.util.Helper;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static wuxian.me.lagouspider.framework.FileUtil.getCurrentPath;
 
 /**
  * Created by wuxian on 13/4/2017.
@@ -109,7 +110,11 @@ public abstract class BaseSpider implements Runnable {
         String name = name().length() > 25 ? name().substring(0, 25) : name();
         String fileName = fullLogSdf.format(date) + name; //simpleName只有一个类名
 
-        FileUtil.writeToFile(Helper.getFullLogFilePath(fileName), builder.toString());
+        FileUtil.writeToFile(getFullLogFilePath(fileName), builder.toString());
+    }
+
+    private String getFullLogFilePath(String filename) {
+        return getCurrentPath() + JobManager.getInstance().getConfig().fulllogFile + filename + JobManager.getInstance().getConfig().fulllogPost;
     }
 
     @Override

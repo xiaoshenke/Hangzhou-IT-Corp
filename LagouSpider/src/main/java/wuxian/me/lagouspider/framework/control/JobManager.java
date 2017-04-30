@@ -2,13 +2,10 @@ package wuxian.me.lagouspider.framework.control;
 
 import com.sun.istack.internal.NotNull;
 import okhttp3.*;
-import wuxian.me.lagouspider.Config;
-import wuxian.me.lagouspider.framework.BaseSpider;
-import wuxian.me.lagouspider.framework.HeartbeatManager;
+import wuxian.me.lagouspider.framework.*;
 import wuxian.me.lagouspider.framework.job.BaseJob;
 import wuxian.me.lagouspider.framework.job.IJob;
-import wuxian.me.lagouspider.framework.IPProxyTool;
-import wuxian.me.lagouspider.framework.OkhttpProvider;
+import wuxian.me.lagouspider.framework.log.LogManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,12 +13,6 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static wuxian.me.lagouspider.Config.ProxyControl.ENABLE_RUNTIME_INPUT_PROXY;
-import static wuxian.me.lagouspider.Config.ProxyControl.ENABLE_SWITCH_IPPROXY;
-import static wuxian.me.lagouspider.Config.RetryControl.ENABLE_RETRY_SPIDER;
-import static wuxian.me.lagouspider.Config.RetryControl.SINGLEJOB_MAX_FAIL_TIME;
-import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
 /**
  * Created by wuxian on 9/4/2017.
@@ -57,6 +48,8 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
 
     private boolean started = false;
 
+    private JobManagerConfig config = new JobManagerConfig();
+
     private static JobManager instance;
 
     public static JobManager getInstance() {
@@ -70,6 +63,14 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
 
     }
 
+    public JobManagerConfig getConfig() {
+        return config;
+    }
+
+    public void setConfig(@NotNull JobManagerConfig config) {
+        this.config = config;
+    }
+
     //单独调用
     //MUST BE CALLED MANUALLY!
     public void start() {
@@ -77,7 +78,7 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
             started = true;
             heartbeatManager.addHeartBeat(this);
             workThreadStartTime = System.currentTimeMillis();
-            logger().info("WorkThread started");
+            LogManager.info("WorkThread started");
             workThread.start();
         }
     }
@@ -88,7 +89,7 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
 
     public IJob getJob() {
         IJob job = queue.getJob();
-        //logger().info("getJob: " + ((BaseSpider) (job.getRealRunnable())).name());
+        //LogManager.info("getJob: " + ((BaseSpider) (job.getRealRunnable())).name());
         return job;
     }
 
@@ -97,7 +98,7 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
     }
 
     public void register(@NotNull BaseSpider spider) {
-        //logger().info("JobManager.register " + spider.name());
+        //LogManager.info("JobManager.register " + spider.name());
         todoSpiderList.add(spider);
     }
 
@@ -109,7 +110,7 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
         if (job == null) { //SHOULD NEVER HAPPEN!
             return;
         }
-        logger().info("Job Success: " + ((BaseSpider) (job.getRealRunnable())).name());
+        LogManager.info("Job Success: " + ((BaseSpider) (job.getRealRunnable())).name());
         todoSpiderList.remove(job);
         monitor.putJob(job, IJob.STATE_SUCCESS);
 
@@ -140,19 +141,19 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
                 job.fail(fail);
                 monitor.putJob(job, IJob.STATE_FAIL);
 
-                if (retry && ENABLE_RETRY_SPIDER) {
-                    if (job.getFailTimes() >= SINGLEJOB_MAX_FAIL_TIME) { //重试处理
-                        logger().error("Job: " + job.toString() + " fail " + job.getFailTimes() + "times, abandon it");
+                if (retry && getConfig().enableRetrySpider) {
+                    if (job.getFailTimes() >= getConfig().singleJobMaxFailTimes) { //重试处理
+                        LogManager.error("Job: " + job.toString() + " fail " + job.getFailTimes() + "times, abandon it");
                     } else {
-                        logger().info("Retry Job: " + job.toString());
+                        LogManager.info("Retry Job: " + job.toString());
                         IJob next = JobProvider.getNextJob(job);
                         queue.putJob(next, IJob.STATE_RETRY);
                     }
                 }
             }
             if (failHelper.isBlock()) {
-                logger().error("WE ARE BLOCKED!");
-                logger().error("Until now, We have success " + successJobNum.get() +
+                LogManager.error("WE ARE BLOCKED!");
+                LogManager.error("Until now, We have success " + successJobNum.get() +
                         " jobs, We have run " + (System.currentTimeMillis() - workThreadStartTime) / 1000 + " seconds");
                 heartbeatManager.stopHeartBeat();
                 dealBlock();
@@ -161,17 +162,17 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
     }
 
     private void dealBlock() {
-        if (ENABLE_SWITCH_IPPROXY) {
-            logger().info("We begin to switch IP...");
+        if (getConfig().enableSwitchProxy) {
+            LogManager.info("We begin to switch IP...");
             doSwitchIp();
         } else {        //被block后就停止了 --> 主要用于测试
             isSwitchingIP.set(true);
 
-            logger().info("We will not switch IP ");
-            logger().info("We have total " + monitor.getWholeJobNum() + " jobs, we have "
+            LogManager.info("We will not switch IP ");
+            LogManager.info("We have total " + monitor.getWholeJobNum() + " jobs, we have "
                     + queue.getJobNum() + " jobs in JobQueue, we have "
                     + todoSpiderList.size() + "jobs in todoSpiderList");
-            logger().info("We have " + dispatcher.runningCallsCount() +
+            LogManager.info("We have " + dispatcher.runningCallsCount() +
                     " request running and " + dispatcher.queuedCallsCount() + " request queue in OkHttpClient");
 
             dispatcher.cancelAll();
@@ -183,15 +184,15 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
     private void doSwitchIp() {
         isSwitchingIP.set(true);
         workThread.pauseWhenSwitchIP();
-        logger().info("WorkThread paused");
+        LogManager.info("WorkThread paused");
 
         dispatcher.cancelAll();
 
-        logger().info("We will not switch IP ");
-        logger().info("We have total " + monitor.getWholeJobNum() + " jobs, we have "
+        LogManager.info("We will not switch IP ");
+        LogManager.info("We have total " + monitor.getWholeJobNum() + " jobs, we have "
                 + queue.getJobNum() + " jobs in JobQueue, we have "
                 + todoSpiderList.size() + " jobs in todoSpiderList");
-        logger().info("We have " + dispatcher.runningCallsCount() +
+        LogManager.info("We have " + dispatcher.runningCallsCount() +
                 " request running and " + dispatcher.queuedCallsCount() +
                 " request queue in OkHttpClient");
 
@@ -201,7 +202,7 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
             IPProxyTool.Proxy proxy = ipProxyTool.switchNextProxy();
             if (proxy == null) {
 
-                if (ENABLE_RUNTIME_INPUT_PROXY) {
+                if (getConfig().enableRuntimeInputProxy) {
                     ipProxyTool.openShellAndEnsureProxyInputed();
 
                     proxy = ipProxyTool.switchNextProxy();
@@ -211,14 +212,14 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
 
             }
 
-            logger().info("We try to switch to Ip: " + proxy.ip + " Port: " + proxy.port);
+            LogManager.info("We try to switch to Ip: " + proxy.ip + " Port: " + proxy.port);
             int ensure = 0;
             boolean success = false;
-            while (!(success = ipSwitched(proxy)) && ensure < Config.ProxyControl.TRY_TIME_EVERY_PROXY) {  //每个IP尝试三次
+            while (!(success = ipSwitched(proxy)) && ensure < getConfig().everyProxyTryTime) {  //每个IP尝试三次
                 ensure++;
             }
             if (success) {
-                logger().info("Switch Proxy success");
+                LogManager.info("Switch Proxy success");
                 break;
             }
         }
@@ -234,7 +235,7 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
 
         failHelper.reInit();
         workThreadStartTime = System.currentTimeMillis();
-        logger().info("WorkThread resumed");
+        LogManager.info("WorkThread resumed");
         workThread.resumeNow();
         isSwitchingIP.set(false);
     }
@@ -273,17 +274,17 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
     }
 
     public void onHeartBeat(int time) {
-        logger().info("onHeartBeat " + time);
+        LogManager.info("onHeartBeat " + time);
     }
 
 
     public void onHeartBeatFail() {
-        logger().info("onHeartBeatFail");
+        LogManager.info("onHeartBeatFail");
         dealBlock();  //这里和block差不多等价
     }
 
     //JobManager主动调用HeartbeatManager.stopxxx
     public void onHeartBeatInterrupt() {
-        logger().info("onHeartBeatInterrupt");
+        LogManager.info("onHeartBeatInterrupt");
     }
 }
