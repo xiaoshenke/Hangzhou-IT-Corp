@@ -1,4 +1,4 @@
-package wuxian.me.lagouspider.framework;
+package wuxian.me.lagouspider.framework.control;
 
 /**
  * Created by wuxian on 30/4/2017.

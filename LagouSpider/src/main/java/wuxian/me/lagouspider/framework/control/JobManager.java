@@ -3,7 +3,6 @@ package wuxian.me.lagouspider.framework.control;
 import com.sun.istack.internal.NotNull;
 import okhttp3.*;
 import wuxian.me.lagouspider.framework.*;
-import wuxian.me.lagouspider.framework.job.BaseJob;
 import wuxian.me.lagouspider.framework.job.IJob;
 import wuxian.me.lagouspider.framework.log.LogManager;
 
@@ -27,6 +26,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 1 监控整个项目运行的info级别 比如切换ip,job状态切换:开始运行,成功,失败,重试等
  * 2 Job出错的error级
  * 3 其他debug级别 比如parsing什么的
+ *
+ * Fixme: JobManager里的很多组件需要依赖JobManagerConfig,注意这里的初始化配置时序
  */
 public class JobManager implements HeartbeatManager.IHeartBeat {
 
