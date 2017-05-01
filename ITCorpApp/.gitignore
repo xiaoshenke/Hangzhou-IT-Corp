@@ -7,3 +7,6 @@
 /build
 /captures
 .externalNativeBuild
+android.keystore
+.idea
+.idea/vcs.xml

@@ -9,7 +9,7 @@
 
     <update id="createNewTableIfNeed" parameterType="wuxian.me.lagouspider.model.Location">
         create table if not exists ${tableName} (location_id INT AUTO_INCREMENT,company_id INTEGER,
-        location VARCHAR(100),
+        location VARCHAR(100),longitude varchar(10),latitude varchar(10),
         PRIMARY KEY (location_id))
         DEFAULT CHARSET = utf8,
         ENGINE = InnoDB;
@@ -22,6 +22,11 @@
     <insert id="insertLocation" parameterType="wuxian.me.lagouspider.model.Location">
         insert into ${tableName} (company_id,location) values (#{company_id},#{location});
     </insert>
+
+    <update id="updateLocation" parameterType="wuxian.me.lagouspider.model.Location">
+        update ${tableName} set longitude=#{longitude},lantitude=#{lantitude}
+        where company_id=#{company_id}
+    </update>
 
     <select id="loadLocation" resultType="wuxian.me.lagouspider.model.Location">
         select * from ${tableName} where company_id = #{company_id}

@@ -8,6 +8,8 @@ public class Location extends BaseModel {
 
     public String location;
     public long company_id;
+    public String longitude;
+    public String latitude;
 
     public Location(long company_id, String location) {
         this.company_id = company_id;

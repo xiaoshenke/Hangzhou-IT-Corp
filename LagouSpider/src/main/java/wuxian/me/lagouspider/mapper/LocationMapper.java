@@ -18,5 +18,7 @@ public interface LocationMapper {
 
     void insertLocation(Location location);
 
+    void updateLocation(Location location);
+
     List<Location> loadLocation(@Param("tableName") String tableName, long company_id);
 }
