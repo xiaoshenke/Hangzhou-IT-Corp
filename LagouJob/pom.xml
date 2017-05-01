@@ -10,7 +10,7 @@
 
     <properties>
         <spring.version>4.2.0.RELEASE</spring.version>
-        <jackson.version>2.7.3</jackson.version>
+        <jackson.version>2.6.3</jackson.version>
     </properties>
 
     <dependencies>
@@ -132,14 +132,11 @@
             <type>bundle</type>
         </dependency>
 
-
-        <!--
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.17</version>
         </dependency>
-        -->
 
         <dependency>
             <groupId>com.google.code.gson</groupId>
