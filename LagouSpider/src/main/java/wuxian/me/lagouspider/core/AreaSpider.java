@@ -13,12 +13,12 @@ import wuxian.me.lagouspider.framework.control.JobManager;
 import wuxian.me.lagouspider.framework.control.MaybeBlockedException;
 import wuxian.me.lagouspider.framework.job.IJob;
 import wuxian.me.lagouspider.framework.control.JobProvider;
+import wuxian.me.lagouspider.framework.log.LogManager;
 import wuxian.me.lagouspider.model.Area;
 import wuxian.me.lagouspider.util.Helper;
 
 import static wuxian.me.lagouspider.Config.Spider.ENABLE_SPIDER_AREAPAGE;
 import static wuxian.me.lagouspider.Config.SpiderUrl.URL_LAGOU_JAVA;
-import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
 /**
  * Created by wuxian on 30/3/2017.
@@ -69,7 +69,7 @@ public class AreaSpider extends BaseLagouSpider {
         } catch (MaybeBlockedException e) {
             return BaseSpider.RET_MAYBE_BLOCK;
         }
-        logger().debug("Parsed num: " + pageNum + " " + simpleName());
+        LogManager.debug("Parsed num: " + pageNum + " " + simpleName());
         if (ENABLE_SPIDER_AREAPAGE) {
             beginSpiderAreaPage();
         }

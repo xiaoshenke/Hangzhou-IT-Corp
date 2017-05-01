@@ -5,6 +5,7 @@ import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
 import wuxian.me.lagouspider.framework.control.JobManager;
+import wuxian.me.lagouspider.framework.control.JobManagerConfig;
 import wuxian.me.lagouspider.framework.log.LogManager;
 
 import java.io.BufferedReader;
@@ -76,7 +77,7 @@ public class IPProxyTool {
         };
         switchIPFuture = new FutureTask<String>(callable);
 
-        if (JobManager.getInstance().getConfig().enableInitProxyFromFile) {
+        if (JobManagerConfig.enableInitProxyFromFile) {
             ipPortList.clear();
             readProxyFromFile();
             FileUtil.writeToFile(getProxyFilePath(), "");  //清空文件
@@ -84,7 +85,7 @@ public class IPProxyTool {
     }
 
     String getProxyFilePath() {
-        return getCurrentPath() + JobManager.getInstance().getConfig().ipproxyFile;
+        return getCurrentPath() + JobManagerConfig.ipproxyFile;
     }
 
     private void readProxyFromFile() {
@@ -144,7 +145,7 @@ public class IPProxyTool {
     }
 
     private String getCheckProcessShellPath() {
-        return getCurrentPath() + JobManager.getInstance().getConfig().shellCheckprocessFile;
+        return getCurrentPath() + JobManagerConfig.shellCheckprocessFile;
     }
 
     public boolean isTextEditRunning() throws IOException {
@@ -178,7 +179,7 @@ public class IPProxyTool {
     }
 
     private String getOpenProxyShellPath() {
-        return getCurrentPath() + JobManager.getInstance().getConfig().shellOpenProxyFile;
+        return getCurrentPath() + JobManagerConfig.shellOpenProxyFile;
     }
 
     //支持运行时手工输入最新的proxy
@@ -208,7 +209,7 @@ public class IPProxyTool {
                 boolean b = true;
                 do {
                     try {
-                        sleep(JobManager.getInstance().getConfig().shellCheckProxyFileSleepTime);    //每过10s检测文件是否有新的proxy ip写入,若没有,一直重试直到成功
+                        sleep(JobManagerConfig.shellCheckProxyFileSleepTime);    //每过10s检测文件是否有新的proxy ip写入,若没有,一直重试直到成功
                     } catch (InterruptedException e) {
                         ;
                     }

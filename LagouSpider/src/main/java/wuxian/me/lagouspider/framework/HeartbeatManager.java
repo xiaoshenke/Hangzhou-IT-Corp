@@ -2,6 +2,7 @@ package wuxian.me.lagouspider.framework;
 
 import com.sun.istack.internal.NotNull;
 import wuxian.me.lagouspider.framework.control.JobManager;
+import wuxian.me.lagouspider.framework.control.JobManagerConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class HeartbeatManager implements Runnable {
     private IPProxyTool.Proxy proxy;
 
     public HeartbeatManager() {
-        frequency = JobManager.getInstance().getConfig().proxyHeartbeatInterval;
+        frequency = JobManagerConfig.proxyHeartbeatInterval;
 
     }
 

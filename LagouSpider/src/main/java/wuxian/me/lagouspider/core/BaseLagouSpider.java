@@ -4,12 +4,11 @@ import org.htmlparser.Parser;
 import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
+import wuxian.me.lagouspider.framework.BaseSpider;
 import wuxian.me.lagouspider.framework.SpiderCallback;
 import wuxian.me.lagouspider.framework.control.Fail;
 import wuxian.me.lagouspider.framework.control.JobManager;
-import wuxian.me.lagouspider.framework.BaseSpider;
-
-import static wuxian.me.lagouspider.util.ModuleProvider.logger;
+import wuxian.me.lagouspider.framework.log.LogManager;
 
 /**
  * Created by wuxian on 9/4/2017.
@@ -39,7 +38,7 @@ public abstract class BaseLagouSpider extends BaseSpider {
 
             NodeList list = parser.extractAllNodesThatMatch(filter);
             if (list != null && list.size() != 0) {
-                logger().error("We got BLOCKED, " + name());
+                LogManager.error("We got BLOCKED, " + name());
                 JobManager.getInstance().fail(BaseLagouSpider.this, Fail.BLOCK);
                 return true;
             }

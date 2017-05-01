@@ -2,6 +2,7 @@ package wuxian.me.lagouspider.framework;
 
 import okhttp3.OkHttpClient;
 import wuxian.me.lagouspider.framework.control.JobManager;
+import wuxian.me.lagouspider.framework.control.JobManagerConfig;
 
 import java.util.concurrent.TimeUnit;
 
@@ -18,8 +19,7 @@ public class OkhttpProvider {
     public static OkHttpClient getClient() {
 
         if (client == null) {
-            client = new OkHttpClient.Builder().readTimeout(JobManager.getInstance()
-                            .getConfig().okhttpClientSocketReadTimeout,
+            client = new OkHttpClient.Builder().readTimeout(JobManagerConfig.okhttpClientSocketReadTimeout,
                     TimeUnit.MILLISECONDS).build();
         }
         return client;

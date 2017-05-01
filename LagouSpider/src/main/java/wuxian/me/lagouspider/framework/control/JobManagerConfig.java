@@ -1,66 +1,210 @@
 package wuxian.me.lagouspider.framework.control;
 
+import com.sun.istack.internal.NotNull;
+import com.sun.istack.internal.Nullable;
+import wuxian.me.lagouspider.framework.FileUtil;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
+
 /**
  * Created by wuxian on 30/4/2017.
  */
 public class JobManagerConfig {
 
-    public boolean isTest = false;
+    public static boolean isTest = false;
 
-    public long okhttpClientSocketReadTimeout = 10 * 1000; //10s
+    public static long okhttpClientSocketReadTimeout;
 
-    public String shellOpenProxyFile = "/shell/openproxy";
+    public static String shellOpenProxyFile;
 
-    public String shellCheckprocessFile = "/shell/processexist";
+    public static String shellCheckprocessFile;
 
-    public long shellCheckProxyFileSleepTime = 1000 * 10;
+    public static long shellCheckProxyFileSleepTime;
 
-    public int proxyHeartbeatInterval = 5 * 1000; //proxy的心跳频率 暂定5秒好了;
+    public static int proxyHeartbeatInterval;
 
-    public String ipproxyFile = "/conf/ipproxy.txt";
+    public static String ipproxyFile;
 
-    public boolean enableSwitchProxy = true;
+    public static boolean enableSwitchProxy;
 
-    public boolean enableRuntimeInputProxy = true;
+    public static boolean enableRuntimeInputProxy;
 
-    public boolean enableInitProxyFromFile = false;
+    public static boolean enableInitProxyFromFile;
 
-    public int everyProxyTryTime = 4;
+    public static int everyProxyTryTime;
 
-    public boolean enableRadomInsertJob = false;
+    public static boolean enableRadomInsertJob;
 
-    public boolean enableInsertDuplicateJob = false;
+    public static boolean enableInsertDuplicateJob;
 
-    public boolean enableScheduleImmediately = false;
+    public static boolean enableScheduleImmediately;
 
-    public long jobQueueEmptySleepTime = 1000 * 10;
+    public static long jobQueueEmptySleepTime;
 
-    public int jobNumToSleep = 10;  //每10个job休息一下 降并发
+    public static int jobNumToSleep;
 
-    public int jobSleepTimeToSleep = 1000 * 20; //每x个任务休息xs
+    public static int jobSleepTimeToSleep;
 
-    public int jobSchedulerTimeMin = 4;        //每个任务最小相隔xs
+    public static int jobSchedulerTimeMin;
 
-    public int jobSchedulerTimeMax = 12;
+    public static int jobSchedulerTimeMax;
 
-    public int considerBlockedBlockNum = 1;
+    public static int considerBlockedBlockNum;
 
-    public int considerBlocked404Num = 1;
+    public static int considerBlocked404Num;
 
-    public int considerBlockedMayblockNum = 3;
+    public static int considerBlockedMayblockNum;
 
-    public int considerBlockedNeterr = 10;
+    public static int considerBlockedNeterr;
 
-    public boolean enableRetrySpider = true;
+    public static boolean enableRetrySpider;
 
-    public int singleJobMaxFailTimes = 4;
+    public static int singleJobMaxFailTimes;
 
-    public String fulllogFile = "/htmls/";
+    public static String fulllogFile;
 
-    public String fulllogPost = ".html";
+    public static String fulllogPost;
 
-    //Todo: 从指定路径读入configuration
-    private void readConfigFromFile() {
+    static {
+        readConfigFromFile();
+    }
+
+    private JobManagerConfig() {
         ;
+    }
+
+    public static void readConfigFromFile() {
+        Properties pro = new Properties();
+        FileInputStream in = null;
+        boolean success = false;
+        try {
+            in = new FileInputStream(FileUtil.getCurrentPath() + "/jobmanager.properties");
+            pro.load(in);
+            success = true;
+        } catch (FileNotFoundException e) {
+
+        } catch (IOException e) {
+            ;
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e1) {
+                    ;
+                }
+
+            }
+        }
+
+        if (!success) {
+            pro = null; //确保一定会初始化
+        }
+        okhttpClientSocketReadTimeout = parse(pro, "okhttpClientSocketReadTimeout", (long) 10 * 1000);
+
+        shellOpenProxyFile = parse(pro, "shellOpenProxyFile", "/shell/openproxy");
+
+        shellCheckprocessFile = parse(pro, "shellCheckprocessFile", "/shell/processexist");
+
+        shellCheckProxyFileSleepTime = parse(pro, "shellCheckProxyFileSleepTime", (long) 1000 * 10);
+
+        proxyHeartbeatInterval = parse(pro, "proxyHeartbeatInterval", 5 * 1000);
+
+        ipproxyFile = parse(pro, "ipproxyFile", "/conf/ipproxy.txt");
+
+        enableSwitchProxy = parse(pro, "enableSwitchProxy", true);
+
+        enableRuntimeInputProxy = parse(pro, "enableRuntimeInputProxy", true);
+
+        enableInitProxyFromFile = parse(pro, "enableInitProxyFromFile", false);
+
+        everyProxyTryTime = parse(pro, "everyProxyTryTime", 4);
+
+        enableRadomInsertJob = parse(pro, "enableRadomInsertJob", false);
+
+        enableInsertDuplicateJob = parse(pro, "enableInsertDuplicateJob", false);
+
+        enableScheduleImmediately = parse(pro, "enableScheduleImmediately", false);
+
+        jobQueueEmptySleepTime = parse(pro, "jobQueueEmptySleepTime", (long) 1000 * 10);
+
+        jobNumToSleep = parse(pro, "jobNumToSleep", 10);
+
+        jobSleepTimeToSleep = parse(pro, "jobSleepTimeToSleep", 1000 * 20);
+
+        jobSchedulerTimeMin = parse(pro, "jobSchedulerTimeMin", 4);
+
+        jobSchedulerTimeMax = parse(pro, "jobSchedulerTimeMax", 12);
+
+        considerBlockedBlockNum = parse(pro, "considerBlockedBlockNum", 1);
+
+        considerBlocked404Num = parse(pro, "considerBlocked404Num", 1);
+
+        considerBlockedMayblockNum = parse(pro, "considerBlockedMayblockNum", 3);
+
+        considerBlockedNeterr = parse(pro, "considerBlockedNeterr", 10);
+
+        enableRetrySpider = parse(pro, "enableRetrySpider", true);
+
+        singleJobMaxFailTimes = parse(pro, "singleJobMaxFailTimes", 4);
+
+        fulllogFile = parse(pro, "fulllogFile", "/htmls/");
+
+        fulllogPost = parse(pro, "fulllogPost", ".html");
+
+    }
+
+    private static String parse(@NotNull Properties pro, String key, String defValue) {
+        if (pro == null) {
+            return defValue;
+        }
+
+        try {
+            return pro.getProperty(
+                    key, defValue);
+        } catch (Exception e) {
+            return defValue;
+        }
+    }
+
+    private static long parse(@Nullable Properties pro, String key, long defValue) {
+        if (pro == null) {
+            return defValue;
+        }
+
+        try {
+            return Long.parseLong(pro.getProperty(
+                    key, String.valueOf(defValue)));
+        } catch (Exception e) {
+            return defValue;
+        }
+    }
+
+    private static int parse(@Nullable Properties pro, String key, int defValue) {
+        if (pro == null) {
+            return defValue;
+        }
+
+        try {
+            return Integer.parseInt(pro.getProperty(
+                    key, String.valueOf(defValue)));
+        } catch (Exception e) {
+            return defValue;
+        }
+    }
+
+    private static boolean parse(@Nullable Properties pro, String key, boolean defValue) {
+        if (pro == null) {
+            return defValue;
+        }
+
+        try {
+            return Boolean.parseBoolean(pro.getProperty(
+                    key, String.valueOf(defValue)));
+        } catch (Exception e) {
+            return defValue;
+        }
     }
 }

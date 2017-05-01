@@ -57,7 +57,6 @@ public class Main {
 
             public void warn(String message) {
                 logger().info(message);
-
             }
         });
     }
@@ -72,10 +71,10 @@ public class Main {
             spider.beginSpider();
         } else {
             if (Helper.shouldStartNewGrab()) {
-                logger().info("Begin a new total grab");
+                LogManager.info("Begin a new total grab");
                 Helper.updateNewGrab();
 
-                logger().info("Create new Tables");
+                LogManager.info("Create new Tables");
                 Company.tableName = Helper.getCompanyTableName();
                 Product.tableName = Helper.getProductTableName();
                 Location.tableName = Helper.getLocationTableName();
@@ -95,7 +94,7 @@ public class Main {
                 locationMapper.createNewTableIfNeed(location);
                 locationMapper.createIndex(location);
 
-                logger().info("Load areas from database");
+                LogManager.info("Load areas from database");
                 List<Area> areas = areaMapper.loadAll();
                 if (areas == null || areas.size() == 0) {
                     areas = parseAreasFromFile();
@@ -106,14 +105,14 @@ public class Main {
                     areas = areaMapper.loadAll();
                 }
 
-                logger().info("Add AreaSpider to JobQueue...");
+                LogManager.info("Add AreaSpider to JobQueue...");
                 for (Area area : areas) {
                     IJob job = JobProvider.getJob();
                     job.setRealRunnable((new AreaSpider(area)));
                     JobManager.getInstance().putJob(job);
                 }
 
-                logger().info("Start workThread...");
+                LogManager.info("Start workThread...");
                 JobManager.getInstance().start();
             }
         }
@@ -129,7 +128,7 @@ public class Main {
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            logger().error("no jdbc driver");
+            LogManager.error("no jdbc driver");
             return false;
         }
 
@@ -141,7 +140,7 @@ public class Main {
             DriverManager.getConnection(url, username, password);
             return true;
         } catch (SQLException e) {
-            logger().error("db check connection fail");
+            LogManager.error("db check connection fail");
         }
         return false;
     }

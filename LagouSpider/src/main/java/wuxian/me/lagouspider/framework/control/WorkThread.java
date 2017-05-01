@@ -49,15 +49,15 @@ public class WorkThread extends Thread {
             while (!jobManager.isEmpty()) {
 
                 //不使用任何策略 立即分发job模式
-                if (jobManager.getConfig().enableScheduleImmediately) {
+                if (JobManagerConfig.enableScheduleImmediately) {
                     doIfShouldWait();
                     IJob job = jobManager.getJob();
                     job.run();
                     continue;
                 }
-                if (i >= jobManager.getConfig().jobNumToSleep) {  //每隔10个任务休息10s
+                if (i >= JobManagerConfig.jobNumToSleep) {  //每隔10个任务休息10s
                     try {
-                        sleep(jobManager.getConfig().jobSleepTimeToSleep);
+                        sleep(JobManagerConfig.jobSleepTimeToSleep);
                     } catch (InterruptedException e) {
                         ;
                     }
@@ -67,8 +67,8 @@ public class WorkThread extends Thread {
                     i = 0;
                 } else {
                     i++;
-                    int min = jobManager.getConfig().jobSchedulerTimeMin;
-                    int max = jobManager.getConfig().jobSchedulerTimeMax;
+                    int min = JobManagerConfig.jobSchedulerTimeMin;
+                    int max = JobManagerConfig.jobSchedulerTimeMax;
                     int sleepTime = (int) (min + random.nextDouble() * (max - min)) * 1000;
                     try {
                         sleep(sleepTime);
@@ -88,7 +88,7 @@ public class WorkThread extends Thread {
             }
 
             try {
-                sleep(jobManager.getConfig().jobQueueEmptySleepTime);
+                sleep(JobManagerConfig.jobQueueEmptySleepTime);
             } catch (InterruptedException e) {
                 ;  //ignore
             }

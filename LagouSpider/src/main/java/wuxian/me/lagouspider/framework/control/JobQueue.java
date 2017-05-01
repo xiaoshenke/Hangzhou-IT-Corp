@@ -31,13 +31,13 @@ public class JobQueue {
         LogManager.debug("putJob: " + job.toString());
 
         //通过检查job防止重复:比如说重复进行company主页的抓取
-        if (!JobManager.getInstance().getConfig().enableInsertDuplicateJob && monitor.contains(job) && state != IJob.STATE_RETRY) {
+        if (!JobManagerConfig.enableInsertDuplicateJob && monitor.contains(job) && state != IJob.STATE_RETRY) {
             return true;
         }
         monitor.putJob(job, state);
 
         synchronized (queue) {
-            if (JobManager.getInstance().getConfig().enableRadomInsertJob) {
+            if (JobManagerConfig.enableRadomInsertJob) {
                 if (queue.size() == 0) {
                     queue.add(job);
                 } else {

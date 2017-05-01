@@ -1,6 +1,7 @@
 package wuxian.me.lagouspider.save;
 
 import com.sun.istack.internal.NotNull;
+import wuxian.me.lagouspider.framework.log.LogManager;
 import wuxian.me.lagouspider.model.BaseModel;
 
 import java.util.HashMap;
@@ -50,9 +51,9 @@ public class SaveModelThread<T extends BaseModel> extends Thread {
                     if (claz == null) {
                         claz = model.getClass();
                         if (insert) {
-                            logger().info(getName() + "-->Insert count: " + modelMap.values().size());
+                            LogManager.info(getName() + "-->Insert count: " + modelMap.values().size());
                         } else {
-                            logger().info(getName() + "-->Update count: " + modelMap.values().size());
+                            LogManager.info(getName() + "-->Update count: " + modelMap.values().size());
                         }
                     }
 
@@ -61,14 +62,14 @@ public class SaveModelThread<T extends BaseModel> extends Thread {
                             try {
                                 operator.insert(model);
                             } catch (Exception e) {
-                                logger().error(getName() + " insertModel: " + model.name() + " error: " + e.getMessage() + " we will ignore");
+                                LogManager.error(getName() + " insertModel: " + model.name() + " error: " + e.getMessage() + " we will ignore");
                             }
 
                         } else {
                             try {
                                 operator.update(model);
                             } catch (Exception e) {
-                                logger().error(getName() + " updateModel: " + model.name() + " error: " + e.getMessage() + " we will ignore");
+                                LogManager.error(getName() + " updateModel: " + model.name() + " error: " + e.getMessage() + " we will ignore");
                             }
 
                         }

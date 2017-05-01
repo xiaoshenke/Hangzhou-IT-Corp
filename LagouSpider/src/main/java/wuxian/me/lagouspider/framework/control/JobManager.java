@@ -48,9 +48,6 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
     private long workThreadStartTime;//WorkThread线程开启的时间
 
     private boolean started = false;
-
-    private JobManagerConfig config = new JobManagerConfig();
-
     private static JobManager instance;
 
     public static JobManager getInstance() {
@@ -60,16 +57,8 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
         return instance;
     }
 
+
     private JobManager() {
-
-    }
-
-    public JobManagerConfig getConfig() {
-        return config;
-    }
-
-    public void setConfig(@NotNull JobManagerConfig config) {
-        this.config = config;
     }
 
     //单独调用
@@ -142,8 +131,8 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
                 job.fail(fail);
                 monitor.putJob(job, IJob.STATE_FAIL);
 
-                if (retry && getConfig().enableRetrySpider) {
-                    if (job.getFailTimes() >= getConfig().singleJobMaxFailTimes) { //重试处理
+                if (retry && JobManagerConfig.enableRetrySpider) {
+                    if (job.getFailTimes() >= JobManagerConfig.singleJobMaxFailTimes) { //重试处理
                         LogManager.error("Job: " + job.toString() + " fail " + job.getFailTimes() + "times, abandon it");
                     } else {
                         LogManager.info("Retry Job: " + job.toString());
@@ -163,7 +152,7 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
     }
 
     private void dealBlock() {
-        if (getConfig().enableSwitchProxy) {
+        if (JobManagerConfig.enableSwitchProxy) {
             LogManager.info("We begin to switch IP...");
             doSwitchIp();
         } else {        //被block后就停止了 --> 主要用于测试
@@ -203,7 +192,7 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
             IPProxyTool.Proxy proxy = ipProxyTool.switchNextProxy();
             if (proxy == null) {
 
-                if (getConfig().enableRuntimeInputProxy) {
+                if (JobManagerConfig.enableRuntimeInputProxy) {
                     ipProxyTool.openShellAndEnsureProxyInputed();
 
                     proxy = ipProxyTool.switchNextProxy();
@@ -216,7 +205,7 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
             LogManager.info("We try to switch to Ip: " + proxy.ip + " Port: " + proxy.port);
             int ensure = 0;
             boolean success = false;
-            while (!(success = ipSwitched(proxy)) && ensure < getConfig().everyProxyTryTime) {  //每个IP尝试三次
+            while (!(success = ipSwitched(proxy)) && ensure < JobManagerConfig.everyProxyTryTime) {  //每个IP尝试三次
                 ensure++;
             }
             if (success) {

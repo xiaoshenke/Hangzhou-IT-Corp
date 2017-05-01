@@ -3,8 +3,7 @@ package wuxian.me.lagouspider.util;
 import com.sun.istack.internal.NotNull;
 import org.htmlparser.Node;
 import org.htmlparser.util.NodeList;
-
-import static wuxian.me.lagouspider.util.ModuleProvider.logger;
+import wuxian.me.lagouspider.framework.log.LogManager;
 
 /**
  * Created by wuxian on 15/4/2017.
@@ -15,10 +14,10 @@ public class NodeLogUtil {
     }
 
     public static final void printNodeOnly(@NotNull Node node) {
-        logger().info("type: " + node.getClass().getSimpleName());
-        logger().info("getText: " + node.getText());
-        logger().info("toString: " + node.toString());
-        logger().info("toPlainTextString: " + node.toPlainTextString());
+        LogManager.info("type: " + node.getClass().getSimpleName());
+        LogManager.info("getText: " + node.getText());
+        LogManager.info("toString: " + node.toString());
+        LogManager.info("toPlainTextString: " + node.toPlainTextString());
     }
 
     public static final void printChildrenOfNode(@NotNull Node node) {
@@ -36,10 +35,10 @@ public class NodeLogUtil {
     public static final void printPreviousBrother(@NotNull Node node) {
         Node real = node.getPreviousSibling();
         while (real != null) {
-            logger().info("type: " + real.getClass().getSimpleName());
-            logger().info("getText: " + real.getText());
-            logger().info("toString: " + real.toString());
-            logger().info("toPlainTextString: " + real.toPlainTextString());
+            LogManager.info("type: " + real.getClass().getSimpleName());
+            LogManager.info("getText: " + real.getText());
+            LogManager.info("toString: " + real.toString());
+            LogManager.info("toPlainTextString: " + real.toPlainTextString());
 
             real = real.getPreviousSibling();
         }
@@ -49,10 +48,10 @@ public class NodeLogUtil {
     public static final void printNextBrother(@NotNull Node node) {
         Node real = node.getNextSibling();
         while (real != null) {
-            logger().info("type: " + real.getClass().getSimpleName());
-            logger().info("getText: " + real.getText());
-            logger().info("toString: " + real.toString());
-            logger().info("toPlainTextString: " + real.toPlainTextString());
+            LogManager.info("type: " + real.getClass().getSimpleName());
+            LogManager.info("getText: " + real.getText());
+            LogManager.info("toString: " + real.toString());
+            LogManager.info("toPlainTextString: " + real.toPlainTextString());
 
             real = real.getNextSibling();
         }

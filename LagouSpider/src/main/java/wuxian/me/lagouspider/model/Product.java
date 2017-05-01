@@ -1,6 +1,5 @@
 package wuxian.me.lagouspider.model;
 
-import com.sun.istack.internal.NotNull;
 import wuxian.me.lagouspider.core.DistinctSpider;
 
 /**
@@ -23,7 +22,7 @@ public class Product extends BaseModel {
         this.company_id = company_id;
     }
 
-    public void addLabel(@NotNull String label) {
+    public void addLabel(String label) {
         labelString += label + DistinctSpider.CUT;
     }
 

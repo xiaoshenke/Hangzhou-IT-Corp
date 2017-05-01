@@ -4,6 +4,7 @@ import com.sun.istack.internal.NotNull;
 import okhttp3.Request;
 import okhttp3.Response;
 import wuxian.me.lagouspider.framework.control.JobManager;
+import wuxian.me.lagouspider.framework.control.JobManagerConfig;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -114,7 +115,7 @@ public abstract class BaseSpider implements Runnable {
     }
 
     private String getFullLogFilePath(String filename) {
-        return getCurrentPath() + JobManager.getInstance().getConfig().fulllogFile + filename + JobManager.getInstance().getConfig().fulllogPost;
+        return getCurrentPath() + JobManagerConfig.fulllogFile + filename + JobManagerConfig.fulllogPost;
     }
 
     @Override

@@ -81,18 +81,18 @@ public class FailHelper {
     }
 
     public boolean isBlock() {
-        if (failBlockMap.size() >= JobManager.getInstance().getConfig().considerBlockedBlockNum) {
+        if (failBlockMap.size() >= JobManagerConfig.considerBlockedBlockNum) {
             return true;
         }
-        if (fail404Map.size() >= JobManager.getInstance().getConfig().considerBlocked404Num) {
-            return true;
-        }
-
-        if (failMayblockMap.size() >= JobManager.getInstance().getConfig().considerBlockedMayblockNum) {
+        if (fail404Map.size() >= JobManagerConfig.considerBlocked404Num) {
             return true;
         }
 
-        if (failNeterrMap.size() >= JobManager.getInstance().getConfig().considerBlockedNeterr) {
+        if (failMayblockMap.size() >= JobManagerConfig.considerBlockedMayblockNum) {
+            return true;
+        }
+
+        if (failNeterrMap.size() >= JobManagerConfig.considerBlockedNeterr) {
             return true;
         }
         return false;

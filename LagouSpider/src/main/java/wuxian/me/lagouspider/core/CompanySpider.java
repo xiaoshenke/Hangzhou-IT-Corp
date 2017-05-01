@@ -10,12 +10,10 @@ import org.htmlparser.nodes.TextNode;
 import org.htmlparser.tags.*;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
-import wuxian.me.lagouspider.Config;
 import wuxian.me.lagouspider.core.itjuzi.SearchSpider;
 import wuxian.me.lagouspider.framework.BaseSpider;
 import wuxian.me.lagouspider.framework.control.JobManager;
 import wuxian.me.lagouspider.framework.control.JobProvider;
-import wuxian.me.lagouspider.framework.control.JobQueue;
 import wuxian.me.lagouspider.framework.control.MaybeBlockedException;
 import wuxian.me.lagouspider.framework.job.IJob;
 import wuxian.me.lagouspider.model.Company;
@@ -34,7 +32,6 @@ import static wuxian.me.lagouspider.Config.Location.LOCATION_NONE;
 import static wuxian.me.lagouspider.Config.Location.LOCATION_SINGLE;
 import static wuxian.me.lagouspider.Config.Spider.*;
 import static wuxian.me.lagouspider.Config.SpiderUrl.URL_LAGOU_COMPANY_MAIN;
-import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
 /**
  * Created by wuxian on 30/3/2017.
