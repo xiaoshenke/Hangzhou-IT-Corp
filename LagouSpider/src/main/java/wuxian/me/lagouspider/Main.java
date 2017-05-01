@@ -1,27 +1,27 @@
 package wuxian.me.lagouspider;
 
 import wuxian.me.lagouspider.core.AreaSpider;
-import wuxian.me.lagouspider.framework.control.JobManager;
-import wuxian.me.lagouspider.framework.control.JobProvider;
 import wuxian.me.lagouspider.core.DistinctSpider;
-import wuxian.me.lagouspider.framework.log.ILog;
-import wuxian.me.lagouspider.framework.log.LogManager;
 import wuxian.me.lagouspider.mapper.AreaMapper;
-import wuxian.me.lagouspider.framework.job.IJob;
 import wuxian.me.lagouspider.mapper.CompanyMapper;
 import wuxian.me.lagouspider.mapper.LocationMapper;
 import wuxian.me.lagouspider.mapper.ProductMapper;
 import wuxian.me.lagouspider.model.Area;
 
-import static wuxian.me.lagouspider.framework.FileUtil.*;
 import static wuxian.me.lagouspider.util.Helper.getAreaFilePath;
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
+import static wuxian.me.spidersdk.FileUtil.readFromFile;
 
 import wuxian.me.lagouspider.model.Company;
 import wuxian.me.lagouspider.model.Location;
 import wuxian.me.lagouspider.model.Product;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.ModuleProvider;
+import wuxian.me.spidersdk.control.JobManager;
+import wuxian.me.spidersdk.control.JobProvider;
+import wuxian.me.spidersdk.job.IJob;
+import wuxian.me.spidersdk.log.ILog;
+import wuxian.me.spidersdk.log.LogManager;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;

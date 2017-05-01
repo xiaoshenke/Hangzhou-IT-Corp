@@ -1,8 +1,8 @@
 package wuxian.me.lagouspider.save;
 
 import com.sun.istack.internal.NotNull;
-import wuxian.me.lagouspider.framework.log.LogManager;
 import wuxian.me.lagouspider.model.BaseModel;
+import wuxian.me.spidersdk.log.LogManager;
 
 import java.util.HashMap;
 import java.util.HashSet;

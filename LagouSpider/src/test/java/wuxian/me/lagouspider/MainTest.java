@@ -4,10 +4,7 @@ import okhttp3.Request;
 import org.junit.Test;
 import wuxian.me.lagouspider.core.CompanySpider;
 import wuxian.me.lagouspider.core.itjuzi.SearchSpider;
-import wuxian.me.lagouspider.framework.*;
-import wuxian.me.lagouspider.framework.control.*;
 import wuxian.me.lagouspider.core.AreaSpider;
-import wuxian.me.lagouspider.framework.job.IJob;
 import wuxian.me.lagouspider.mapper.AreaMapper;
 import wuxian.me.lagouspider.mapper.CompanyMapper;
 import wuxian.me.lagouspider.mapper.LocationMapper;
@@ -18,6 +15,12 @@ import wuxian.me.lagouspider.model.Location;
 import wuxian.me.lagouspider.model.Product;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.ModuleProvider;
+import wuxian.me.spidersdk.BaseSpider;
+import wuxian.me.spidersdk.SpiderCallback;
+import wuxian.me.spidersdk.control.JobManager;
+import wuxian.me.spidersdk.control.JobProvider;
+import wuxian.me.spidersdk.job.IJob;
+
 import java.util.List;
 
 import static org.junit.Assert.*;

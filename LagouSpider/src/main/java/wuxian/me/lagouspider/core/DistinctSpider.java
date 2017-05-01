@@ -15,9 +15,9 @@ import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.tags.LinkTag;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
-import wuxian.me.lagouspider.framework.FileUtil;
 import wuxian.me.lagouspider.util.Helper;
-import wuxian.me.lagouspider.framework.OkhttpProvider;
+import wuxian.me.spidersdk.FileUtil;
+import wuxian.me.spidersdk.OkhttpProvider;
 
 /**
  * Created by wuxian on 30/3/2017.

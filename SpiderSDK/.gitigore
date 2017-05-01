@@ -1,0 +1,11 @@
+*.iml
+.idea
+lib
+target
+logs
+htmls
+logs/error.log
+out
+.idea/libraries
+.idea/artifacts
+.idea/vcs.xml

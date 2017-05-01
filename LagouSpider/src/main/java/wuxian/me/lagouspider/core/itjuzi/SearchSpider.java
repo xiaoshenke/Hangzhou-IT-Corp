@@ -2,8 +2,8 @@ package wuxian.me.lagouspider.core.itjuzi;
 
 import com.sun.istack.internal.NotNull;
 import okhttp3.Request;
-import wuxian.me.lagouspider.framework.BaseSpider;
-import wuxian.me.lagouspider.framework.SpiderCallback;
+import wuxian.me.spidersdk.BaseSpider;
+import wuxian.me.spidersdk.SpiderCallback;
 
 /**
  * Created by wuxian on 15/4/2017.

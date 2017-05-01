@@ -11,11 +11,7 @@ import org.htmlparser.tags.*;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import wuxian.me.lagouspider.core.itjuzi.SearchSpider;
-import wuxian.me.lagouspider.framework.BaseSpider;
-import wuxian.me.lagouspider.framework.control.JobManager;
-import wuxian.me.lagouspider.framework.control.JobProvider;
-import wuxian.me.lagouspider.framework.control.MaybeBlockedException;
-import wuxian.me.lagouspider.framework.job.IJob;
+
 import wuxian.me.lagouspider.model.Company;
 import wuxian.me.lagouspider.model.Location;
 import wuxian.me.lagouspider.model.Product;
@@ -23,6 +19,12 @@ import wuxian.me.lagouspider.save.CompanySaver;
 import wuxian.me.lagouspider.save.LocationSaver;
 import wuxian.me.lagouspider.save.ProductSaver;
 import wuxian.me.lagouspider.util.Helper;
+import wuxian.me.spidersdk.BaseSpider;
+import wuxian.me.spidersdk.control.JobManager;
+import wuxian.me.spidersdk.control.JobProvider;
+import wuxian.me.spidersdk.control.MaybeBlockedException;
+import wuxian.me.spidersdk.job.IJob;
+
 import java.util.ArrayList;
 import java.util.List;
 

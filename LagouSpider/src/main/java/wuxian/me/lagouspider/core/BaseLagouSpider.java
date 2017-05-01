@@ -4,11 +4,11 @@ import org.htmlparser.Parser;
 import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
-import wuxian.me.lagouspider.framework.BaseSpider;
-import wuxian.me.lagouspider.framework.SpiderCallback;
-import wuxian.me.lagouspider.framework.control.Fail;
-import wuxian.me.lagouspider.framework.control.JobManager;
-import wuxian.me.lagouspider.framework.log.LogManager;
+import wuxian.me.spidersdk.BaseSpider;
+import wuxian.me.spidersdk.SpiderCallback;
+import wuxian.me.spidersdk.control.Fail;
+import wuxian.me.spidersdk.control.JobManager;
+import wuxian.me.spidersdk.log.LogManager;
 
 /**
  * Created by wuxian on 9/4/2017.
