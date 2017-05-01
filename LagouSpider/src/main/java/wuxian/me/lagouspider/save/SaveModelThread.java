@@ -9,8 +9,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static wuxian.me.lagouspider.util.ModuleProvider.logger;
-
 /**
  * Created by wuxian on 8/4/2017.
  */

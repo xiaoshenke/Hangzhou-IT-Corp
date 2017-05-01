@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="wuxian.me.lagoujob.mapper.LocationMapper">
+
+    <update id="updateLocation" parameterType="wuxian.me.lagoujob.model.Location">
+        update ${tableName} set longitude=#{longitude},lantitude=#{lantitude}
+        where company_id=#{company_id}
+    </update>
+
+    <select id="loadLocation" resultType="wuxian.me.lagoujob.model.Location">
+        select * from ${tableName} where company_id = #{company_id}
+    </select>
+
+    <select id="loadAll" resultType="wuxian.me.lagoujob.model.Location">
+        select * from ${tableName}
+    </select>
+
+</mapper>
