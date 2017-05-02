@@ -2,11 +2,13 @@ package wuxian.me.lagouspider.util;
 
 import com.sun.istack.internal.NotNull;
 import okhttp3.Headers;
+import wuxian.me.lagouspider.Config;
 import wuxian.me.spidersdk.FileUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static wuxian.me.lagouspider.Config.*;
 import static wuxian.me.lagouspider.Config.File.*;
 import static wuxian.me.lagouspider.Config.Grab.CONF_LASTGRAB;
 import static wuxian.me.lagouspider.Config.Grab.GRAB_INTERNAL;
@@ -19,11 +21,11 @@ import static wuxian.me.spidersdk.FileUtil.getCurrentPath;
 public class Helper {
 
     public static String getAreaFilePath() {
-        return getCurrentPath() + CONF_AREA;
+        return getCurrentPath() + CONF + Config.CITY_TO_SPIDER + AREA;
     }
 
     public static String getDistinctsFilePath() {
-        return getCurrentPath() + CONF_DISTINTC;
+        return getCurrentPath() + CONF + CITY_TO_SPIDER + DISTINTC;
     }
 
     public static String getGrabFilePath() {
@@ -38,16 +40,17 @@ public class Helper {
         return getCurrentPath() + CONF_LOG4J_PROPERTIES;
     }
 
+    //每个城市一张表
     public static String getCompanyTableName() {
-        return TABLE_COMPANY + getDatabasePost();
+        return CITY_TO_SPIDER + TABLE_COMPANY + getDatabasePost();
     }
 
     public static String getProductTableName() {
-        return TABLE_PRODUCT + getDatabasePost();
+        return CITY_TO_SPIDER + TABLE_PRODUCT + getDatabasePost();
     }
 
     public static String getLocationTableName() {
-        return TABLE_LOCATION + getDatabasePost();
+        return CITY_TO_SPIDER + TABLE_LOCATION + getDatabasePost();
     }
 
 

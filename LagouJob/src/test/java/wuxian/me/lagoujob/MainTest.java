@@ -1,5 +1,9 @@
 package wuxian.me.lagoujob;
 
+import okhttp3.Headers;
+import okhttp3.HttpUrl;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +20,9 @@ import org.springframework.web.context.WebApplicationContext;
 import wuxian.me.lagoujob.mapper.LocationMapper;
 import wuxian.me.lagoujob.mapper.TableMapper;
 import wuxian.me.lagoujob.model.Location;
+import wuxian.me.lagoujob.util.OkhttpProvider;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -71,8 +77,6 @@ public class MainTest {
                 System.out.println(location.name());
             }
         }
-
-
     }
 
     @Test
@@ -85,6 +89,5 @@ public class MainTest {
             //logger.error("exception");
         }
     }
-
 
 }

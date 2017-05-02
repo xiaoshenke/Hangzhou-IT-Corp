@@ -12,7 +12,7 @@ import java.util.List;
 public interface ILagouJob {
 
     //7天抓一次 因此会有n个列表
-    List<Long> listDatesOfData();
+    List<Long> listTables();
 
     //杭州所有区的数据
     List<Company> loadAllCompanies(long date);
@@ -26,6 +26,6 @@ public interface ILagouJob {
     //Todo:
     List<Company> searchCompany();
 
-    //Todo: 提供类似统计分析之类的api？API设计？
+    //Todo: 提供类似统计分析之类的api？API设计？--> 调研一下api设计
 
 }

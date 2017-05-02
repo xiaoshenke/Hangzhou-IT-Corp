@@ -36,11 +36,6 @@ public class AreaSpider extends BaseLagouSpider {
         this.area = area;
     }
 
-
-    public void setUserAgent(@NotNull String agent) {
-        this.agent = agent;
-    }
-
     protected Request buildRequest() {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(URL_LAGOU_JAVA)
                 .newBuilder();

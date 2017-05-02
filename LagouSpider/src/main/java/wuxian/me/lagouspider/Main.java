@@ -1,6 +1,7 @@
 package wuxian.me.lagouspider;
 
 import wuxian.me.lagouspider.core.AreaSpider;
+import wuxian.me.lagouspider.core.CitySpider;
 import wuxian.me.lagouspider.core.DistinctSpider;
 import wuxian.me.lagouspider.mapper.AreaMapper;
 import wuxian.me.lagouspider.mapper.CompanyMapper;
@@ -8,7 +9,10 @@ import wuxian.me.lagouspider.mapper.LocationMapper;
 import wuxian.me.lagouspider.mapper.ProductMapper;
 import wuxian.me.lagouspider.model.Area;
 
+import static wuxian.me.lagouspider.Config.CUT;
+import static wuxian.me.lagouspider.Config.SEPRATE;
 import static wuxian.me.lagouspider.util.Helper.getAreaFilePath;
+import static wuxian.me.lagouspider.util.Helper.getDistinctsFilePath;
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 import static wuxian.me.spidersdk.FileUtil.readFromFile;
 
@@ -17,6 +21,7 @@ import wuxian.me.lagouspider.model.Location;
 import wuxian.me.lagouspider.model.Product;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.ModuleProvider;
+import wuxian.me.spidersdk.FileUtil;
 import wuxian.me.spidersdk.control.JobManager;
 import wuxian.me.spidersdk.control.JobProvider;
 import wuxian.me.spidersdk.job.IJob;
@@ -47,12 +52,10 @@ public class Main {
 
             public void info(String message) {
                 logger().info(message);
-
             }
 
             public void error(String message) {
                 logger().info(message);
-
             }
 
             public void warn(String message) {
@@ -66,59 +69,72 @@ public class Main {
             return;
         }
 
-        if (!DistinctSpider.areaFileValid()) {      //第一次运行进程的时候先拿到杭州所有的街道信息
-            DistinctSpider spider = new DistinctSpider();
-            spider.beginSpider();
+        if (Helper.shouldStartNewGrab()) {  //创建新表
+            Helper.updateNewGrab();
+
+            LogManager.info("Create new Tables");
+            Company.tableName = Helper.getCompanyTableName();
+            Product.tableName = Helper.getProductTableName();
+            Location.tableName = Helper.getLocationTableName();
+
+            Company company = new Company(-1);
+            companyMapper.deleteTable(company);
+            companyMapper.createNewTableIfNeed(company);
+            companyMapper.createIndex(company);
+
+            Product product = new Product(-1);
+            productMapper.deleteTable(product);
+            productMapper.createNewTableIfNeed(product);
+            productMapper.createIndex(product);
+
+            Location location = new Location(-1, "2r3");
+            locationMapper.deleteTable(location);
+            locationMapper.createNewTableIfNeed(location);
+            locationMapper.createIndex(location);
+        }
+
+        if (!FileUtil.checkFileExist(getDistinctsFilePath())) {
+
+            CitySpider citySpider = new CitySpider(Config.CITY_TO_SPIDER);
+            IJob job = JobProvider.getJob();
+            job.setRealRunnable(citySpider);
+            JobManager.getInstance().putJob(job);
+
+        } else if (!FileUtil.checkFileExist(getAreaFilePath())) {
+            String distincts = FileUtil.readFromFile(getDistinctsFilePath());
+            if (null == distincts) {
+                return;
+            }
+            String[] dis = distincts.split(CUT);  //编码问题带来分解失败...
+            for (int i = 0; i < dis.length; i++) {
+                DistinctSpider spider = new DistinctSpider(Config.CITY_TO_SPIDER, dis[i]);
+                IJob job = JobProvider.getJob();
+                job.setRealRunnable(spider);
+                JobManager.getInstance().putJob(job);
+            }
+
         } else {
-            if (Helper.shouldStartNewGrab()) {
-                LogManager.info("Begin a new total grab");
-                Helper.updateNewGrab();
-
-                LogManager.info("Create new Tables");
-                Company.tableName = Helper.getCompanyTableName();
-                Product.tableName = Helper.getProductTableName();
-                Location.tableName = Helper.getLocationTableName();
-
-                Company company = new Company(-1);
-                companyMapper.deleteTable(company);
-                companyMapper.createNewTableIfNeed(company);
-                companyMapper.createIndex(company);
-
-                Product product = new Product(-1);
-                productMapper.deleteTable(product);
-                productMapper.createNewTableIfNeed(product);
-                productMapper.createIndex(product);
-
-                Location location = new Location(-1, "2r3");
-                locationMapper.deleteTable(location);
-                locationMapper.createNewTableIfNeed(location);
-                locationMapper.createIndex(location);
-
-                LogManager.info("Load areas from database");
-                List<Area> areas = areaMapper.loadAll();
-                if (areas == null || areas.size() == 0) {
-                    areas = parseAreasFromFile();
-                    if (areas.size() == 0) {
-                        return;
-                    }
-                    insertAreaData(areas);
-                    areas = areaMapper.loadAll();
+            List<Area> areas = areaMapper.loadAll();
+            if (areas == null || areas.size() == 0) {
+                areas = parseAreasFromFile();
+                if (areas.size() == 0) {
+                    return;
                 }
+                insertAreaData(areas);
+                areas = areaMapper.loadAll();
+            }
 
-                LogManager.info("Add AreaSpider to JobQueue...");
-                for (Area area : areas) {
-                    IJob job = JobProvider.getJob();
-                    job.setRealRunnable((new AreaSpider(area)));
-                    JobManager.getInstance().putJob(job);
-                }
-
-                LogManager.info("Start workThread...");
-                JobManager.getInstance().start();
+            for (Area area : areas) {
+                IJob job = JobProvider.getJob();
+                job.setRealRunnable((new AreaSpider(area)));
+                JobManager.getInstance().putJob(job);
             }
         }
+
+        JobManager.getInstance().start();
     }
 
-    public void insertAreaData(List<Area> areas) {
+    private void insertAreaData(List<Area> areas) {
         for (Area area : areas) {
             areaMapper.insertArea(area.name, area.distinct_name);
         }
@@ -156,10 +172,10 @@ public class Main {
         if (areaString.equals("")) {
             return areaList;
         }
-        String[] areas = areaString.split(DistinctSpider.CUT);
+        String[] areas = areaString.split(CUT);
 
         for (int i = 0; i < areas.length; i++) {
-            String[] detail = areas[i].split(DistinctSpider.SEPRATE);
+            String[] detail = areas[i].split(SEPRATE);
             if (detail.length != 2) {
                 continue;
             }

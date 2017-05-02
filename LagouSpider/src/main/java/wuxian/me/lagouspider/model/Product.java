@@ -2,6 +2,8 @@ package wuxian.me.lagouspider.model;
 
 import wuxian.me.lagouspider.core.DistinctSpider;
 
+import static wuxian.me.lagouspider.Config.CUT;
+
 /**
  * Created by wuxian on 13/4/2017.
  * 产品来看 IT橙子的数据会更加靠谱
@@ -23,7 +25,7 @@ public class Product extends BaseModel {
     }
 
     public void addLabel(String label) {
-        labelString += label + DistinctSpider.CUT;
+        labelString += label + CUT;
     }
 
     @Override

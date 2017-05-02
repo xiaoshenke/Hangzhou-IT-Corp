@@ -6,6 +6,11 @@ package wuxian.me.lagouspider;
  */
 public interface Config {
 
+    String CITY_TO_SPIDER = "杭州";
+
+    String CUT = ";";
+    String SEPRATE = ":";
+
     interface SaveDBThread {
 
         //每1分钟存储一次数据库
@@ -73,11 +78,14 @@ public interface Config {
     }
 
     interface File {
+
+        String CONF = "/conf/";
+
         //存储区域的文件
-        String CONF_DISTINTC = "/conf/distinct.txt";
+        String DISTINTC = "distinct.txt";
 
         //存储街道的文件
-        String CONF_AREA = "/conf/area.txt";
+        String AREA = "area.txt";
 
         String CONF_COOKIE = "/conf/cookies";
 
