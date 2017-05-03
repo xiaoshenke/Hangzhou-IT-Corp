@@ -1,3 +1,5 @@
 LagouSpider/logs/error.log
 .DS_Store
 SpiderSDK/target
+SpiderSDK/.idea
+SpiderSDK/.idea/libraries

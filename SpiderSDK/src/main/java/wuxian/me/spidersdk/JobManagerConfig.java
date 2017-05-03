@@ -3,6 +3,7 @@ package wuxian.me.spidersdk;
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 import wuxian.me.spidersdk.util.FileUtil;
+import wuxian.me.spidersdk.util.ShellUtil;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,11 +15,15 @@ import java.util.Properties;
  */
 public class JobManagerConfig {
 
-    //Todo: 分布式爬虫
-    //若使用,判断redis-server有没有运行
-    public static boolean useRedis = false;
+    public static boolean useRedis;
+
+    public static String redisIp;
+
+    public static long redisPort;
 
     public static long okhttpClientSocketReadTimeout;
+
+    public static String shellCheckRedisServerFile;
 
     public static String shellOpenProxyFile;
 
@@ -104,7 +109,16 @@ public class JobManagerConfig {
         if (!success) {
             pro = null; //确保一定会初始化
         }
+
+        useRedis = parse(pro, "useRedis", false);
+
+        redisIp = parse(pro, "redisIp", "127.0.0.1");
+
+        redisPort = parse(pro, "redisPort", (long) 6379);
+
         okhttpClientSocketReadTimeout = parse(pro, "okhttpClientSocketReadTimeout", (long) 10 * 1000);
+
+        shellCheckRedisServerFile = parse(pro, "shellCheckRedisServerFile", "/shell/redisserverrunning");
 
         shellOpenProxyFile = parse(pro, "shellOpenProxyFile", "/shell/openproxy");
 
@@ -155,6 +169,32 @@ public class JobManagerConfig {
         fulllogFile = parse(pro, "fulllogFile", "/htmls/");
 
         fulllogPost = parse(pro, "fulllogPost", ".html");
+
+        doSomeInit();
+    }
+
+    private static void doSomeInit() {
+        String path = FileUtil.getCurrentPath() + shellOpenProxyFile;  //写shell文件
+        if (!FileUtil.checkFileExist(path)) {
+            String shell = "open -t " + FileUtil.getCurrentPath() + ipproxyFile;
+            FileUtil.writeToFile(path, shell);
+        }
+
+        ShellUtil.chmod(path, 0777);
+
+        path = FileUtil.getCurrentPath() + shellCheckprocessFile;
+        if (!FileUtil.checkFileExist(path)) {
+            String shell = "ps -ef | grep $1";
+            FileUtil.writeToFile(path, shell);
+        }
+        ShellUtil.chmod(path, 0777);
+
+        path = FileUtil.getCurrentPath() + shellCheckRedisServerFile;
+        if (!FileUtil.checkFileExist(path)) {
+            String shell = "redis-cli ping";
+            FileUtil.writeToFile(path, shell);
+        }
+        ShellUtil.chmod(path, 0777);
 
     }
 

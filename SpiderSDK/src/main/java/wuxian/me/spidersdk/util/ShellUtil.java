@@ -1,5 +1,7 @@
 package wuxian.me.spidersdk.util;
 
+import com.sun.jna.Library;
+import com.sun.jna.Native;
 import wuxian.me.spidersdk.JobManagerConfig;
 
 import java.io.BufferedReader;
@@ -13,11 +15,27 @@ import static wuxian.me.spidersdk.util.FileUtil.getCurrentPath;
  */
 public class ShellUtil {
 
-    private ShellUtil(){}
+    private ShellUtil() {
+    }
 
-    //Todo
-    public static boolean isRedisServerRunning(){
-        return false;
+
+    public static boolean isRedisServerRunning() throws IOException {
+        Runtime runtime = Runtime.getRuntime();
+        String check = getRedisServerShellPath();
+        String[] args = new String[]{check};
+        Process pc = null;
+        pc = runtime.exec(args);
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(pc.getInputStream()));
+
+        StringBuilder builder = new StringBuilder("");
+        String line;
+        while ((line = reader.readLine()) != null) {
+            builder.append(line);
+        }
+
+        return builder.toString().contains("PONG");
+
     }
 
     //0:running 1:not running -1:not known
@@ -26,11 +44,17 @@ public class ShellUtil {
             return isTextEditRunning() ? 0 : 1;
         } catch (IOException e) {
             return -1;
+        } catch (Exception e) {
+            return -1;
         }
     }
 
     private static String getCheckProcessShellPath() {
         return getCurrentPath() + JobManagerConfig.shellCheckprocessFile;
+    }
+
+    private static String getRedisServerShellPath() {
+        return getCurrentPath() + JobManagerConfig.shellCheckRedisServerFile;
     }
 
     private static boolean isTextEditRunning() throws IOException {
@@ -63,7 +87,18 @@ public class ShellUtil {
         }
     }
 
+    public static int chmod(String path, int mode) {
+        return libc.chmod(path, mode);
+    }
+
     public static String getOpenProxyShellPath() {
         return getCurrentPath() + JobManagerConfig.shellOpenProxyFile;
+    }
+
+    //http://stackoverflow.com/questions/664432/how-do-i-programmatically-change-file-permissions
+    public static CLibrary libc = (CLibrary) Native.loadLibrary("c", CLibrary.class);
+
+    public interface CLibrary extends Library {
+        int chmod(String path, int mode);
     }
 }
