@@ -1,12 +1,16 @@
-package wuxian.me.spidersdk.job;
+package wuxian.me.spidersdk;
 
-import wuxian.me.spidersdk.control.Fail;
+import wuxian.me.spidersdk.anti.Fail;
+import wuxian.me.spidersdk.job.IJob;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by wuxian on 31/3/2017.
+ * <p>
+ * 目前BaseJob的设计是:hashCode,equals都是调用的BaseSpider
+ * 这样的目的是为了能够统计某个Spider的失败次数。--> 然后这个值似乎并没有用上
  */
 public abstract class BaseJob implements IJob {
 
@@ -74,14 +78,6 @@ public abstract class BaseJob implements IJob {
     public String toString() {
         if (realJob == null) {
             return "Invalid Job";
-        }
-
-        if (state == STATE_FAIL) {
-            return "Job Fail,fail times: " + getFailTimes() + " " + realJob.toString();
-        } else if (state == STATE_SUCCESS) {
-            return "Job Success " + realJob.toString();
-        } else if (state == STATE_INIT) {
-            return "Job Inited: " + realJob.toString();
         }
         return "Job State: " + state + " " + realJob.toString();
     }

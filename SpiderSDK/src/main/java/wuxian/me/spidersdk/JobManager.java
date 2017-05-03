@@ -1,13 +1,16 @@
-package wuxian.me.spidersdk.control;
+package wuxian.me.spidersdk;
 
 import com.sun.istack.internal.NotNull;
 import okhttp3.*;
-import wuxian.me.spidersdk.BaseSpider;
-import wuxian.me.spidersdk.HeartbeatManager;
-import wuxian.me.spidersdk.IPProxyTool;
-import wuxian.me.spidersdk.OkhttpProvider;
+import wuxian.me.spidersdk.anti.Fail;
+import wuxian.me.spidersdk.anti.FailHelper;
+import wuxian.me.spidersdk.anti.HeartbeatManager;
+import wuxian.me.spidersdk.anti.IPProxyTool;
+import wuxian.me.spidersdk.control.*;
 import wuxian.me.spidersdk.job.IJob;
+import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.log.LogManager;
+import wuxian.me.spidersdk.util.OkhttpProvider;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,8 +32,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 1 监控整个项目运行的info级别 比如切换ip,job状态切换:开始运行,成功,失败,重试等
  * 2 Job出错的error级
  * 3 其他debug级别 比如parsing什么的
- *
- * Fixme: JobManager里的很多组件需要依赖JobManagerConfig,注意这里的初始化配置时序
  */
 public class JobManager implements HeartbeatManager.IHeartBeat {
 

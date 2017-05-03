@@ -32,6 +32,17 @@ import static wuxian.me.lagouspider.util.ModuleProvider.*;
 public class MainTest {
 
     @Test
+    public void testAreaDB() {
+        Area.tableName = Helper.getAreaTableName();
+
+        AreaMapper areaMapper = ModuleProvider.areaMapper();
+
+        Area area = new Area();
+        areaMapper.createNewTableIfNeed(area);
+        areaMapper.createIndex(area);
+    }
+
+    @Test
     public void testCompanySpider() {
 
         JobManager manager = JobManager.getInstance();

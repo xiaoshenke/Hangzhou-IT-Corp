@@ -9,7 +9,12 @@ import java.util.List;
  * Created by wuxian on 1/4/2017.
  */
 public interface AreaMapper {
+
+    void createNewTableIfNeed(Area area);
+
     Area getArea(@Param("product_name") String name);
+
+    void createIndex(Area area);
 
     void insertArea(@Param("areaName") String areaName, @Param("distinctName") String distinctName);
 

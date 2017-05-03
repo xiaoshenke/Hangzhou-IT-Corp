@@ -57,6 +57,8 @@ public interface Config {
         String TABLE_PRODUCT = "products";
 
         String TABLE_LOCATION = "locations";
+
+        String TABLE_AREA = "area";
     }
 
     interface Location {

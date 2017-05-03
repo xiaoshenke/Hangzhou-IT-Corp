@@ -1,10 +1,12 @@
-package wuxian.me.spidersdk;
+package wuxian.me.spidersdk.anti;
 
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
-import wuxian.me.spidersdk.control.JobManagerConfig;
+import wuxian.me.spidersdk.util.FileUtil;
+import wuxian.me.spidersdk.util.OkhttpProvider;
+import wuxian.me.spidersdk.JobManagerConfig;
 import wuxian.me.spidersdk.log.LogManager;
 
 import java.io.BufferedReader;
@@ -17,7 +19,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
-import static wuxian.me.spidersdk.FileUtil.getCurrentPath;
+import static wuxian.me.spidersdk.util.FileUtil.getCurrentPath;
+import static wuxian.me.spidersdk.util.ShellUtil.*;
 
 
 /**
@@ -101,7 +104,6 @@ public class IPProxyTool {
                     //Todo:正则检查ip和端口
                     ipPortList.add(new Proxy(proxy[0], Integer.parseInt(proxy[1])));
                 }
-
             }
         }
     }
@@ -133,53 +135,6 @@ public class IPProxyTool {
 
         boolean b = switchIPFuture.get().contains(proxy.ip);
         return b;
-    }
-
-    //0:running 1:not running -1:not known
-    private int textEditState() {
-        try {
-            return isTextEditRunning() ? 0 : 1;
-        } catch (IOException e) {
-            return -1;
-        }
-    }
-
-    private String getCheckProcessShellPath() {
-        return getCurrentPath() + JobManagerConfig.shellCheckprocessFile;
-    }
-
-    public boolean isTextEditRunning() throws IOException {
-        Runtime runtime = Runtime.getRuntime();
-        String check = getCheckProcessShellPath();
-        String[] args = new String[]{check, "TextEdit"};
-        Process pc = null;
-        pc = runtime.exec(args);
-        BufferedReader reader = new BufferedReader(
-                new InputStreamReader(pc.getInputStream()));
-
-        StringBuilder builder = new StringBuilder("");
-        String line;
-        while ((line = reader.readLine()) != null) {
-            builder.append(line);
-        }
-
-        return builder.toString().contains("/TextEdit");  //contains方法非正则 不用特殊处理
-    }
-
-    private boolean openTextEdit() {
-        Runtime runtime = Runtime.getRuntime();
-        try {
-            Process proc = runtime.exec(FileUtil.readFromFile(
-                    getOpenProxyShellPath()));
-            int exit = proc.waitFor();
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    private String getOpenProxyShellPath() {
-        return getCurrentPath() + JobManagerConfig.shellOpenProxyFile;
     }
 
     //支持运行时手工输入最新的proxy
@@ -258,6 +213,7 @@ public class IPProxyTool {
 
         }
 
+        //标准hashcode的实现
         @Override
         public int hashCode() {
             int result = ip != null ? ip.hashCode() : 0;

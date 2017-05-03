@@ -1,8 +1,8 @@
-package wuxian.me.spidersdk.control;
+package wuxian.me.spidersdk;
 
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
-import wuxian.me.spidersdk.FileUtil;
+import wuxian.me.spidersdk.util.FileUtil;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,7 +14,9 @@ import java.util.Properties;
  */
 public class JobManagerConfig {
 
-    public static boolean isTest = false;
+    //Todo: 分布式爬虫
+    //若使用,判断redis-server有没有运行
+    public static boolean useRedis = false;
 
     public static long okhttpClientSocketReadTimeout;
 

@@ -16,4 +16,17 @@
     <select id="loadAreaOfDistinct" resultMap="allArea">
         select * from area where distinct_name = #{distinctName}
     </select>
+
+    <update id="createNewTableIfNeed" parameterType="wuxian.me.lagouspider.model.Area">
+        create table if not exists ${tableName} (area_id INT AUTO_INCREMENT,name VARCHAR(30),
+        distinct_name VARCHAR(30),
+        PRIMARY KEY (area_id))
+        DEFAULT CHARSET = utf8,
+        ENGINE = InnoDB;
+
+    </update>
+
+    <update id="createIndex" parameterType="wuxian.me.lagouspider.model.Area">
+        CREATE INDEX idx_name ON ${tableName} (name);
+    </update>
 </mapper>

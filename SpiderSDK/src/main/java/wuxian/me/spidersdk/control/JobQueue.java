@@ -1,6 +1,7 @@
 package wuxian.me.spidersdk.control;
 
 import com.sun.istack.internal.NotNull;
+import wuxian.me.spidersdk.JobManagerConfig;
 import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.log.LogManager;
 

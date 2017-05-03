@@ -1,5 +1,7 @@
 package wuxian.me.spidersdk.control;
 
+import wuxian.me.spidersdk.JobManager;
+import wuxian.me.spidersdk.JobManagerConfig;
 import wuxian.me.spidersdk.job.IJob;
 
 import java.util.Random;

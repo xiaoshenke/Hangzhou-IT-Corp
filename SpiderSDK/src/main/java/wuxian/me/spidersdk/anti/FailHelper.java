@@ -1,6 +1,7 @@
-package wuxian.me.spidersdk.control;
+package wuxian.me.spidersdk.anti;
 
 import com.sun.istack.internal.NotNull;
+import wuxian.me.spidersdk.JobManagerConfig;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

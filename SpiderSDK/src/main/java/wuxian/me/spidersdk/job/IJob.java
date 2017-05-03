@@ -1,7 +1,7 @@
 package wuxian.me.spidersdk.job;
 
 import com.sun.istack.internal.NotNull;
-import wuxian.me.spidersdk.control.Fail;
+import wuxian.me.spidersdk.anti.Fail;
 
 import java.util.List;
 

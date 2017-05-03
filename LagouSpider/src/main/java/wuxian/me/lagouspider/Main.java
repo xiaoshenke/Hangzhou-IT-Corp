@@ -76,6 +76,11 @@ public class Main {
             Company.tableName = Helper.getCompanyTableName();
             Product.tableName = Helper.getProductTableName();
             Location.tableName = Helper.getLocationTableName();
+            Area.tableName = Helper.getAreaTableName();
+
+            Area area = new Area();
+            areaMapper.createNewTableIfNeed(area);
+            areaMapper.createIndex(area);
 
             Company company = new Company(-1);
             companyMapper.deleteTable(company);

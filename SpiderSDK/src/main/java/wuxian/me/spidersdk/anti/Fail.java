@@ -1,4 +1,4 @@
-package wuxian.me.spidersdk.control;
+package wuxian.me.spidersdk.anti;
 
 /**
  * Created by wuxian on 7/4/2017.
@@ -52,18 +52,8 @@ public class Fail {
 
     @Override
     public String toString() {
-        if (httpCode == FAIL_NETWORK_ERROR) {
-            return message;
-
-        } else if (httpCode == FAIL_BLOCK) {
-            return message;
-
-        } else if (httpCode == FAIL_MAYBE_BLOCK) {
-            return message;
-        }
         return "Httpcode: " + httpCode + " ,Message: " + message;
     }
-
 
     public final static Fail MAYBE_BLOCK = new Fail(FAIL_MAYBE_BLOCK, "Maybe Blocked");
 

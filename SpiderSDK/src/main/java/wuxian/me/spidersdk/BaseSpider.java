@@ -3,13 +3,13 @@ package wuxian.me.spidersdk;
 import com.sun.istack.internal.NotNull;
 import okhttp3.Request;
 import okhttp3.Response;
-import wuxian.me.spidersdk.control.JobManager;
-import wuxian.me.spidersdk.control.JobManagerConfig;
+import wuxian.me.spidersdk.util.FileUtil;
+import wuxian.me.spidersdk.util.OkhttpProvider;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static wuxian.me.spidersdk.FileUtil.getCurrentPath;
+import static wuxian.me.spidersdk.util.FileUtil.getCurrentPath;
 
 /**
  * Created by wuxian on 13/4/2017.

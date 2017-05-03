@@ -1,4 +1,4 @@
-package wuxian.me.spidersdk;
+package wuxian.me.spidersdk.anti;
 
 import java.util.ArrayList;
 import java.util.List;

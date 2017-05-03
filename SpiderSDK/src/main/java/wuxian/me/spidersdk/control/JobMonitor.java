@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by wuxian on 7/4/2017.
- * 保存了所有Job的状态 --> 监视表
+ * 所有Job的状态表
  */
 public class JobMonitor {
 
@@ -22,7 +22,6 @@ public class JobMonitor {
 
     public void putJob(@NotNull IJob job, int state) {
         job.setCurrentState(state);
-        //logger().info("JobMonitor putJob: "+((BaseSpider)(job.getRealRunnable())).name());
         jobMap.put(job.getRealRunnable(), job);
     }
 

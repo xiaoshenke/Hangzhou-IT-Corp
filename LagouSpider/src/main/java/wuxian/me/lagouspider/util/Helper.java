@@ -53,6 +53,9 @@ public class Helper {
         return CITY_TO_SPIDER + TABLE_LOCATION + getDatabasePost();
     }
 
+    public static String getAreaTableName() {
+        return CITY_TO_SPIDER + TABLE_AREA;
+    }
 
     private Helper() {
     }

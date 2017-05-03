@@ -1,12 +1,14 @@
-package wuxian.me.spidersdk;
+package wuxian.me.spidersdk.util;
 
 import okhttp3.OkHttpClient;
-import wuxian.me.spidersdk.control.JobManagerConfig;
+import wuxian.me.spidersdk.JobManagerConfig;
 
 import java.util.concurrent.TimeUnit;
 
 /**
  * Created by wuxian on 1/4/2017.
+ * <p>
+ * usage: OkHttpClient client = OkhttpProvider.getClent();
  */
 public class OkhttpProvider {
 
@@ -18,7 +20,8 @@ public class OkhttpProvider {
     public static OkHttpClient getClient() {
 
         if (client == null) {
-            client = new OkHttpClient.Builder().readTimeout(JobManagerConfig.okhttpClientSocketReadTimeout,
+            client = new OkHttpClient.Builder().readTimeout(
+                    JobManagerConfig.okhttpClientSocketReadTimeout,
                     TimeUnit.MILLISECONDS).build();
         }
         return client;

@@ -1,4 +1,4 @@
-package wuxian.me.spidersdk;
+package wuxian.me.spidersdk.util;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;

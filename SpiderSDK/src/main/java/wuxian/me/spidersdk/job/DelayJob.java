@@ -1,5 +1,7 @@
 package wuxian.me.spidersdk.job;
 
+import wuxian.me.spidersdk.BaseJob;
+
 import java.util.Timer;
 import java.util.TimerTask;
 

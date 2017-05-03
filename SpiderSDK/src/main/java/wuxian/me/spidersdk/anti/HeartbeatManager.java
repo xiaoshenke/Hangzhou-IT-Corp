@@ -1,8 +1,8 @@
-package wuxian.me.spidersdk;
+package wuxian.me.spidersdk.anti;
 
 import com.sun.istack.internal.NotNull;
-import wuxian.me.spidersdk.control.JobManager;
-import wuxian.me.spidersdk.control.JobManagerConfig;
+import wuxian.me.spidersdk.JobManager;
+import wuxian.me.spidersdk.JobManagerConfig;
 
 import java.util.ArrayList;
 import java.util.List;
