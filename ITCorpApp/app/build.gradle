@@ -1,16 +1,36 @@
 apply plugin: 'com.android.application'
 
+def keystoreFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystoreFile))
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "wuxian.me.itcorpapp"
-        minSdkVersion 15
-        targetSdkVersion 25
+        minSdkVersion 21
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    signingConfigs {
+        debug {
+            storeFile file(keystoreProperties['storeFile'])
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storePassword keystoreProperties['storePassword']
+        }
+        release {
+            storeFile file(keystoreProperties['storeFile'])
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -33,11 +53,9 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha7'
     testCompile 'junit:junit:4.12'
-    compile files('libs/AMap2DMap_4.2.0_AMapSearch_4.0.0_20170120.jar')
-
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-
     compile 'com.squareup.okhttp3:okhttp:3.7.0'
     compile 'com.squareup.okio:okio:1.12.0'
+    compile files('libs/AMap2DMap_4.2.0_AMapSearch_5.0.0_AMapLocation_3.4.0_20170427.jar')
 }
