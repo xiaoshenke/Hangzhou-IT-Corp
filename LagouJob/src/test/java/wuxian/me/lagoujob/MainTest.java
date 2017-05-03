@@ -17,6 +17,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import wuxian.me.lagoujob.geoapi.GeoResult;
+import wuxian.me.lagoujob.geoapi.GeoService;
 import wuxian.me.lagoujob.mapper.LocationMapper;
 import wuxian.me.lagoujob.mapper.TableMapper;
 import wuxian.me.lagoujob.model.Location;
@@ -67,14 +69,34 @@ public class MainTest {
     @Test
     public void testLocation() {
 
-        String tableName = "locations_2017_04_29";
+        String tableName = "locations";
+        Location.tableName = tableName;
         System.out.println("Hello");
 
         List<Location> locations = locationMapper.loadAll(tableName);
 
         if (locations != null) {
             for (Location location : locations) {
-                System.out.println(location.name());
+                System.out.println(location.name());  //company_id:40823
+                try {
+                    GeoResult result = GeoService.sendRequest(location.location);
+
+                    if (result.isSuccess()) {
+                        String s = result.geocodes.get(0).location;
+                        String[] ss = s.split(",");
+                        if (ss != null && ss.length == 2) {
+                            location.longitude = ss[0];
+                            location.lantitude = ss[1];
+
+                            locationMapper.updateLocation(location);
+                            System.out.print("Success");
+                        }
+                    }
+                } catch (IOException e) {
+                    ;
+                }
+
+                break;
             }
         }
     }

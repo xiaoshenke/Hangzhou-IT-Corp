@@ -9,7 +9,7 @@ public class Location extends BaseModel {
     public String location;
     public long company_id;
     public String longitude;
-    public String latitude;
+    public String lantitude;
 
     public Location() {
 
