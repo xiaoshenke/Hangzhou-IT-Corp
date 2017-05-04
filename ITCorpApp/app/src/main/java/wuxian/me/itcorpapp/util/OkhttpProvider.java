@@ -1,4 +1,4 @@
-package wuxian.me.itcorpapp;
+package wuxian.me.itcorpapp.util;
 
 import okhttp3.OkHttpClient;
 

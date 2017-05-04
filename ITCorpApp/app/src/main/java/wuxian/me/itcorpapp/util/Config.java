@@ -1,4 +1,4 @@
-package wuxian.me.itcorpapp;
+package wuxian.me.itcorpapp.util;
 
 /**
  * Created by wuxian on 3/5/2017.

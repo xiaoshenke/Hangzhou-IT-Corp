@@ -1,4 +1,4 @@
-package wuxian.me.itcorpapp;
+package wuxian.me.itcorpapp.map;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -11,9 +11,9 @@ import com.amap.api.location.AMapLocationListener;
  */
 
 public class MyAMapLocationListener implements AMapLocationListener {
-    private OnMapFirstLocatedListener listener;
+    private OnMapLocatedListener listener;
 
-    MyAMapLocationListener(@NonNull OnMapFirstLocatedListener listener) {
+    public MyAMapLocationListener(@NonNull OnMapLocatedListener listener) {
         this.listener = listener;
     }
 
@@ -21,7 +21,7 @@ public class MyAMapLocationListener implements AMapLocationListener {
     public void onLocationChanged(AMapLocation amapLocation) {
         if (amapLocation != null) {
             if (amapLocation.getErrorCode() == 0) {
-                listener.onMapFirstLocatedListener(amapLocation);
+                listener.onMapLocated(amapLocation);
             } else {
                 Log.e("AmapError", "location Error, ErrCode:"
                         + amapLocation.getErrorCode() + ", errInfo:"

@@ -1,4 +1,4 @@
-package wuxian.me.itcorpapp;
+package wuxian.me.itcorpapp.base;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,6 +13,7 @@ import android.widget.FrameLayout;
 import java.util.List;
 
 import wuxian.me.andbootstrap.BaseActivity;
+import wuxian.me.itcorpapp.R;
 
 /**
  * Created by wuxian on 4/3/2017.
