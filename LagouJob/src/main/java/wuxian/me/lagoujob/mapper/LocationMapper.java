@@ -12,7 +12,7 @@ public interface LocationMapper {
 
     void updateLocation(Location location);
 
-    List<Location> loadLocation(@Param("tableName") String tableName, long company_id);
+    List<Location> loadLocation(Location location);
 
     List<Location> loadAll(@Param("tableName") String tableName);
 }

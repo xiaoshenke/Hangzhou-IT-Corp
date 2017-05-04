@@ -15,15 +15,7 @@ import java.util.Properties;
  */
 public class JobManagerConfig {
 
-    public static boolean useRedis;
-
-    public static String redisIp;
-
-    public static long redisPort;
-
     public static long okhttpClientSocketReadTimeout;
-
-    public static String shellCheckRedisServerFile;
 
     public static String shellOpenProxyFile;
 
@@ -110,15 +102,7 @@ public class JobManagerConfig {
             pro = null; //确保一定会初始化
         }
 
-        useRedis = parse(pro, "useRedis", false);
-
-        redisIp = parse(pro, "redisIp", "127.0.0.1");
-
-        redisPort = parse(pro, "redisPort", (long) 6379);
-
         okhttpClientSocketReadTimeout = parse(pro, "okhttpClientSocketReadTimeout", (long) 10 * 1000);
-
-        shellCheckRedisServerFile = parse(pro, "shellCheckRedisServerFile", "/shell/redisserverrunning");
 
         shellOpenProxyFile = parse(pro, "shellOpenProxyFile", "/shell/openproxy");
 
@@ -188,14 +172,6 @@ public class JobManagerConfig {
             FileUtil.writeToFile(path, shell);
         }
         ShellUtil.chmod(path, 0777);
-
-        path = FileUtil.getCurrentPath() + shellCheckRedisServerFile;
-        if (!FileUtil.checkFileExist(path)) {
-            String shell = "redis-cli -h $1 -p $2 ping";
-            FileUtil.writeToFile(path, shell);
-        }
-        ShellUtil.chmod(path, 0777);
-
     }
 
     private static String parse(@NotNull Properties pro, String key, String defValue) {

@@ -6,8 +6,4 @@ import org.junit.Test;
  */
 public class BaseJobTest {
 
-    @Test
-    public void testGson() {
-    }
-
 }

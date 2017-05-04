@@ -19,26 +19,6 @@ public class ShellUtil {
     private ShellUtil() {
     }
 
-
-    public static boolean isRedisServerRunning() throws IOException {
-        Runtime runtime = Runtime.getRuntime();
-        String check = getRedisServerShellPath();
-        String[] args = new String[]{check, JobManagerConfig.redisIp, String.valueOf(JobManagerConfig.redisPort)};
-        Process pc = null;
-        pc = runtime.exec(args);
-        BufferedReader reader = new BufferedReader(
-                new InputStreamReader(pc.getInputStream()));
-
-        StringBuilder builder = new StringBuilder("");
-        String line;
-        while ((line = reader.readLine()) != null) {
-            builder.append(line);
-        }
-
-        return builder.toString().contains("PONG");
-
-    }
-
     //0:running 1:not running -1:not known
     public static int textEditState() {
         try {
@@ -52,10 +32,6 @@ public class ShellUtil {
 
     private static String getCheckProcessShellPath() {
         return getCurrentPath() + JobManagerConfig.shellCheckprocessFile;
-    }
-
-    private static String getRedisServerShellPath() {
-        return getCurrentPath() + JobManagerConfig.shellCheckRedisServerFile;
     }
 
     private static boolean isTextEditRunning() throws IOException {

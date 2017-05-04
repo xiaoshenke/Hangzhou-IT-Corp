@@ -1,9 +1,6 @@
 package wuxian.me.lagoujob;
 
-import okhttp3.Headers;
-import okhttp3.HttpUrl;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,9 +19,8 @@ import wuxian.me.lagoujob.geoapi.GeoService;
 import wuxian.me.lagoujob.mapper.LocationMapper;
 import wuxian.me.lagoujob.mapper.TableMapper;
 import wuxian.me.lagoujob.model.Location;
-import wuxian.me.lagoujob.util.OkhttpProvider;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,51 +51,50 @@ public class MainTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
     }
 
+    //Fixme:有些数据是不是有问题？
     @Test
-    public void testTable() {
-        List<String> tables = tableMapper.showTables();
-
-        if (tables != null) {
-            for (String tabel : tables) {
-                System.out.println(tabel);
-            }
-        }
-    }
-
-    @Test
-    public void testLocation() {
-
+    public void testChangeAll() {
         String tableName = "locations";
         Location.tableName = tableName;
-        System.out.println("Hello");
+        Location location = new Location(106310, "");
+        List<Location> locations = locationMapper.loadLocation(location);
 
-        List<Location> locations = locationMapper.loadAll(tableName);
+        for (Location location1 : locations) {
+            batchChange(location1);
+        }
 
-        if (locations != null) {
-            for (Location location : locations) {
-                System.out.println(location.name());  //company_id:40823
-                try {
-                    GeoResult result = GeoService.sendRequest(location.location);
+        while (true) {
 
-                    if (result.isSuccess()) {
-                        String s = result.geocodes.get(0).location;
-                        String[] ss = s.split(",");
-                        if (ss != null && ss.length == 2) {
-                            location.longitude = ss[0];
-                            location.lantitude = ss[1];
-
-                            locationMapper.updateLocation(location);
-                            System.out.print("Success");
-                        }
-                    }
-                } catch (IOException e) {
-                    ;
-                }
-
-                break;
-            }
         }
     }
+
+    private void batchChange(final Location location) {
+        List<String> addressList = new ArrayList<String>();
+        addressList.add(location.location);
+
+        GeoService.asyncSendRequest(addressList, new GeoService.IGeoResultCallback() {
+            public void onResult(GeoResult result) {
+
+                System.out.println(result);
+                for (int i = 0; i < result.count; i++) {
+                    String s = result.geocodes.get(i).location;
+                    String[] ss = s.split(",");
+
+                    if (ss != null && ss.length == 2) {
+
+                        location.longitude = ss[0];
+                        location.lantitude = ss[1];
+                        locationMapper.updateLocation(location);
+                    }
+                }
+
+            }
+
+            public void onNetFail() {
+            }
+        });
+    }
+
 
     @Test
     public void testMockMVC() {
@@ -109,6 +104,17 @@ public class MainTest {
                     .andReturn();
         } catch (Exception e) {
             //logger.error("exception");
+        }
+    }
+
+    @Test
+    public void testTable() {
+        List<String> tables = tableMapper.showTables();
+
+        if (tables != null) {
+            for (String tabel : tables) {
+                System.out.println(tabel);
+            }
         }
     }
 
