@@ -191,7 +191,7 @@ public class JobManagerConfig {
 
         path = FileUtil.getCurrentPath() + shellCheckRedisServerFile;
         if (!FileUtil.checkFileExist(path)) {
-            String shell = "redis-cli ping";
+            String shell = "redis-cli -h $1 -p $2 ping";
             FileUtil.writeToFile(path, shell);
         }
         ShellUtil.chmod(path, 0777);

@@ -2,6 +2,7 @@ package wuxian.me.spidersdk.util;
 
 import com.sun.jna.Library;
 import com.sun.jna.Native;
+import wuxian.me.spidersdk.JobManager;
 import wuxian.me.spidersdk.JobManagerConfig;
 
 import java.io.BufferedReader;
@@ -22,7 +23,7 @@ public class ShellUtil {
     public static boolean isRedisServerRunning() throws IOException {
         Runtime runtime = Runtime.getRuntime();
         String check = getRedisServerShellPath();
-        String[] args = new String[]{check};
+        String[] args = new String[]{check, JobManagerConfig.redisIp, String.valueOf(JobManagerConfig.redisPort)};
         Process pc = null;
         pc = runtime.exec(args);
         BufferedReader reader = new BufferedReader(
