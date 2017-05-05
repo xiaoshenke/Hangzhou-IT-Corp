@@ -14,19 +14,19 @@ import static wuxian.me.lagouspider.Config.SEPRATE;
 import static wuxian.me.lagouspider.util.Helper.getAreaFilePath;
 import static wuxian.me.lagouspider.util.Helper.getDistinctsFilePath;
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
-import static wuxian.me.spidersdk.FileUtil.readFromFile;
+import static wuxian.me.spidersdk.util.FileUtil.readFromFile;
 
 import wuxian.me.lagouspider.model.Company;
 import wuxian.me.lagouspider.model.Location;
 import wuxian.me.lagouspider.model.Product;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.ModuleProvider;
-import wuxian.me.spidersdk.FileUtil;
-import wuxian.me.spidersdk.control.JobManager;
-import wuxian.me.spidersdk.control.JobProvider;
+import wuxian.me.spidersdk.JobManager;
 import wuxian.me.spidersdk.job.IJob;
+import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.log.ILog;
 import wuxian.me.spidersdk.log.LogManager;
+import wuxian.me.spidersdk.util.FileUtil;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -106,7 +106,7 @@ public class Main {
             JobManager.getInstance().putJob(job);
 
         } else if (!FileUtil.checkFileExist(getAreaFilePath())) {
-            String distincts = FileUtil.readFromFile(getDistinctsFilePath());
+            String distincts = readFromFile(getDistinctsFilePath());
             if (null == distincts) {
                 return;
             }

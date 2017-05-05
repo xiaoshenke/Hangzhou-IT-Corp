@@ -11,10 +11,10 @@ import org.htmlparser.util.ParserException;
 import wuxian.me.lagouspider.model.Area;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.spidersdk.BaseSpider;
-import wuxian.me.spidersdk.control.JobManager;
-import wuxian.me.spidersdk.control.JobProvider;
-import wuxian.me.spidersdk.control.MaybeBlockedException;
+import wuxian.me.spidersdk.JobManager;
+import wuxian.me.spidersdk.anti.MaybeBlockedException;
 import wuxian.me.spidersdk.job.IJob;
+import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.log.LogManager;
 
 import static wuxian.me.lagouspider.Config.Spider.ENABLE_SPIDER_AREAPAGE;

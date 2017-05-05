@@ -49,12 +49,13 @@ public class MarkerUtil {
         addMarkerFrom(aMap, model, false);
     }
 
+    //Todo: Glide cache custom
     //最后一个参数为true：强制走网络请求,否则当check到失败request list时,直接使用头像生成
     public static void addMarkerFrom(AMap aMap, BaseModel model, boolean forceRemote) {
         if (!inited) {
             return;
         }
-        if (!forceRemote && failUris.contains(model.getIconUri())) {
+        if (true || !forceRemote && failUris.contains(model.getIconUri())) {
             addMarkerFrom(aMap, model, model.getTitle());  //文字生成头像
             return;
         }
@@ -63,6 +64,7 @@ public class MarkerUtil {
     }
 
     //文字生成marker图片
+    //Todo: better showing custom
     private static void addMarkerFrom(AMap aMap, BaseModel model, String text) {
         Bitmap bm = genBitmapFrom(text);
         MarkerOptions options = new MarkerOptions()
@@ -75,6 +77,7 @@ public class MarkerUtil {
     }
 
     //远程url生成marker图片
+    //icon file大小太大 没法显示...
     private static void addMarkerFrom(AMap aMap, BaseModel model, File file) {
         MarkerOptions options = new MarkerOptions()
                 .position(model.getLatLng())
@@ -113,9 +116,10 @@ public class MarkerUtil {
 
 
     private static Bitmap genBitmapFrom(String text) {
-        return genBitmapFrom(text, Helper.dp2px(15f));
+        return genBitmapFrom(text, Helper.dp2px(8f));
     }
 
+    //Todo: ui优化
     private static Bitmap genBitmapFrom(String text, float textSize) {
 
         TextPaint textPaint = new TextPaint();

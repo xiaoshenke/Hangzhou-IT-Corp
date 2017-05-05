@@ -5,9 +5,9 @@ import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import wuxian.me.spidersdk.BaseSpider;
+import wuxian.me.spidersdk.JobManager;
 import wuxian.me.spidersdk.SpiderCallback;
-import wuxian.me.spidersdk.control.Fail;
-import wuxian.me.spidersdk.control.JobManager;
+import wuxian.me.spidersdk.anti.Fail;
 import wuxian.me.spidersdk.log.LogManager;
 
 /**

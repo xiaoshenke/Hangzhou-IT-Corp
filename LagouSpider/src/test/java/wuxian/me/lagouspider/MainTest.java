@@ -16,10 +16,10 @@ import wuxian.me.lagouspider.model.Product;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.ModuleProvider;
 import wuxian.me.spidersdk.BaseSpider;
+import wuxian.me.spidersdk.JobManager;
 import wuxian.me.spidersdk.SpiderCallback;
-import wuxian.me.spidersdk.control.JobManager;
-import wuxian.me.spidersdk.control.JobProvider;
 import wuxian.me.spidersdk.job.IJob;
+import wuxian.me.spidersdk.job.JobProvider;
 
 import java.util.List;
 

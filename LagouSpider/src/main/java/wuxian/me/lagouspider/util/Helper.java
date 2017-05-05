@@ -3,7 +3,7 @@ package wuxian.me.lagouspider.util;
 import com.sun.istack.internal.NotNull;
 import okhttp3.Headers;
 import wuxian.me.lagouspider.Config;
-import wuxian.me.spidersdk.FileUtil;
+import wuxian.me.spidersdk.util.FileUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,7 +13,7 @@ import static wuxian.me.lagouspider.Config.File.*;
 import static wuxian.me.lagouspider.Config.Grab.CONF_LASTGRAB;
 import static wuxian.me.lagouspider.Config.Grab.GRAB_INTERNAL;
 import static wuxian.me.lagouspider.Config.TableName.*;
-import static wuxian.me.spidersdk.FileUtil.getCurrentPath;
+import static wuxian.me.spidersdk.util.FileUtil.getCurrentPath;
 
 /**
  * Created by wuxian on 1/4/2017.

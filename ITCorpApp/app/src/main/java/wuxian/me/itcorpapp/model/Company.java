@@ -11,6 +11,9 @@ public class Company extends BaseModel {
     //public int area_id = -1;
     public long company_id;
 
+    //Todo:用来显示的名字 需要修改爬虫抓下这个信息
+    public String shortName;
+
     public String name;
 
     public String industryField;  //公司主营业务

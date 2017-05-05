@@ -1,21 +1,15 @@
 package wuxian.me.itcorpapp;
 
 import android.Manifest;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.MapView;
-import com.amap.api.maps2d.model.BitmapDescriptorFactory;
-import com.amap.api.maps2d.model.LatLng;
-import com.amap.api.maps2d.model.MarkerOptions;
 
 import java.util.List;
 
@@ -25,14 +19,12 @@ import wuxian.me.itcorpapp.base.BaseActionbarActivity;
 import wuxian.me.itcorpapp.map.MapLoaderHelper;
 import wuxian.me.itcorpapp.map.MarkerUtil;
 import wuxian.me.itcorpapp.map.OnMapLocatedListener;
-import wuxian.me.itcorpapp.model.BaseModel;
 import wuxian.me.itcorpapp.model.Company;
 
 /**
  * @AMap:实际一个地图的控制器
  */
 public class MainActivity extends BaseActionbarActivity implements OnMapLocatedListener {
-    private static final int REQUEST_PERMISSIONS = 101;
 
     private static String TAG = "Main";
     private MapLoaderHelper mMapLoader;
@@ -40,7 +32,8 @@ public class MainActivity extends BaseActionbarActivity implements OnMapLocatedL
     @BindView(R.id.map)
     MapView mapView;
 
-    //MapView可以通过new MapView(context)出来。然后mAMap = mapView.getMap();因此这里可以做一个提前load。
+    //MapView可以通过new MapView(context)出来。
+    // 然后mAMap = mapView.getMap();因此这里可以做一个提前load。
     private AMap mAMap;
 
     private boolean mMapLocationed = false;
@@ -48,16 +41,16 @@ public class MainActivity extends BaseActionbarActivity implements OnMapLocatedL
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(isRequestingPermission()){
+            return;
+        }
 
         ButterKnife.bind(this);
         mapView.onCreate(savedInstanceState);// 此方法必须重写
         mAMap = mapView.getMap();
-
         mMapLoader = new MapLoaderHelper(this, mAMap, this);
 
-        if (checkPermission()) {
-            doLoadMap();
-        }
+        loadMap();
     }
 
     @Override
@@ -69,14 +62,14 @@ public class MainActivity extends BaseActionbarActivity implements OnMapLocatedL
         doMapDrawing();
     }
 
-    private void doLoadMap() {
+    private void loadMap() {
         mMapLoader.loadMap();
     }
 
     private void doMapDrawing() {
         Company company = new Company();
         company.company_id = 749;
-        company.name = "支付宝（中国）网络技术有限公";
+        company.name = "支付宝（中国）网络技术有限公司";
         company.logo = "http://www.lgstatic.com/thumbnail_300x300/image1/M00/00/04/CgYXBlTUV_6AdvqVAAApge7s8yA551.jpg";
         company.financeStage = "D轮及以上";
         company.webLink = "http://www.alipay.com";
@@ -90,38 +83,14 @@ public class MainActivity extends BaseActionbarActivity implements OnMapLocatedL
 
     }
 
-
-    private boolean checkPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
-            } else {
-
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_PERMISSIONS);
-            }
-
-            return false;
+    protected List<String> getRequestPermission(){
+        List<String> list = super.getRequestPermission();
+        if(!list.contains(Manifest.permission.ACCESS_COARSE_LOCATION)){
+            list.add(Manifest.permission.ACCESS_COARSE_LOCATION);
         }
-        return true;
+        return list;
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case REQUEST_PERMISSIONS: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    doLoadMap();
-                } else {
-                }
-                return;
-            }
-        }
-    }
 
     @Override
     protected void onDestroy() {

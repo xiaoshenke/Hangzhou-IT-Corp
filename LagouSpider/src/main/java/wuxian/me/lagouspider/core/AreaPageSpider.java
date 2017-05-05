@@ -12,10 +12,10 @@ import wuxian.me.lagouspider.model.Company;
 import wuxian.me.lagouspider.save.CompanySaver;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.spidersdk.BaseSpider;
-import wuxian.me.spidersdk.control.JobManager;
-import wuxian.me.spidersdk.control.JobProvider;
-import wuxian.me.spidersdk.control.MaybeBlockedException;
+import wuxian.me.spidersdk.JobManager;
+import wuxian.me.spidersdk.anti.MaybeBlockedException;
 import wuxian.me.spidersdk.job.IJob;
+import wuxian.me.spidersdk.job.JobProvider;
 
 import java.util.ArrayList;
 import java.util.List;

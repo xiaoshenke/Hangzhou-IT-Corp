@@ -3,7 +3,6 @@ package wuxian.me.lagouspider.save;
 import com.sun.istack.internal.NotNull;
 import wuxian.me.lagouspider.model.Company;
 
-import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
 /**
  * Created by wuxian on 8/4/2017.

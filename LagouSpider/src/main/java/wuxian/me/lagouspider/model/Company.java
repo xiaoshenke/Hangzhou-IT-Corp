@@ -31,7 +31,7 @@ public class Company extends BaseModel {
     public String environmentScore;
 
     //public String labelList; //lagou给的labelList 比如什么五险一金 年底双薪啦
-    
+
     public Company() {
     }
 
