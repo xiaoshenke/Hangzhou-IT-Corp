@@ -31,10 +31,7 @@ public class Company extends BaseModel {
     public String environmentScore;
 
     //public String labelList; //lagou给的labelList 比如什么五险一金 年底双薪啦
-
-    //Fixme:org.apache.ibatis.reflection.factory.DefaultObjectFactory.instantiateClass -->
-    // java.lang.NoSuchMethodException: wuxian.me.lagouspider.model.Company.<init>()
-    //Mybatis是有办法解决的
+    
     public Company() {
     }
 

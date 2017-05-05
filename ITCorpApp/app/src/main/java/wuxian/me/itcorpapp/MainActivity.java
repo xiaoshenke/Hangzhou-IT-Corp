@@ -8,10 +8,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.MapView;
+import com.amap.api.maps2d.model.BitmapDescriptorFactory;
+import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.MarkerOptions;
 
 import java.util.List;
 
@@ -19,7 +23,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import wuxian.me.itcorpapp.base.BaseActionbarActivity;
 import wuxian.me.itcorpapp.map.MapLoaderHelper;
+import wuxian.me.itcorpapp.map.MarkerUtil;
 import wuxian.me.itcorpapp.map.OnMapLocatedListener;
+import wuxian.me.itcorpapp.model.BaseModel;
+import wuxian.me.itcorpapp.model.Company;
 
 /**
  * @AMap:实际一个地图的控制器
@@ -27,6 +34,7 @@ import wuxian.me.itcorpapp.map.OnMapLocatedListener;
 public class MainActivity extends BaseActionbarActivity implements OnMapLocatedListener {
     private static final int REQUEST_PERMISSIONS = 101;
 
+    private static String TAG = "Main";
     private MapLoaderHelper mMapLoader;
 
     @BindView(R.id.map)
@@ -36,6 +44,7 @@ public class MainActivity extends BaseActionbarActivity implements OnMapLocatedL
     private AMap mAMap;
 
     private boolean mMapLocationed = false;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +64,8 @@ public class MainActivity extends BaseActionbarActivity implements OnMapLocatedL
     public void onMapLocated(Location location) {
         mMapLocationed = true;
 
+        Log.e(TAG, "location: " + location.getLongitude() + " ," + location.getLatitude());
+
         doMapDrawing();
     }
 
@@ -62,9 +73,21 @@ public class MainActivity extends BaseActionbarActivity implements OnMapLocatedL
         mMapLoader.loadMap();
     }
 
-    //Todo:real bussiness
     private void doMapDrawing() {
-        //Picasso.with(this).load().
+        Company company = new Company();
+        company.company_id = 749;
+        company.name = "支付宝（中国）网络技术有限公";
+        company.logo = "http://www.lgstatic.com/thumbnail_300x300/image1/M00/00/04/CgYXBlTUV_6AdvqVAAApge7s8yA551.jpg";
+        company.financeStage = "D轮及以上";
+        company.webLink = "http://www.alipay.com";
+        company.description = "支付宝（中国）网络技术有限公司是国内领先的第三方支付平台，2014年成为当前全球最大的移动支付厂商";
+
+        company.longitude = 120.125809;
+        company.lantitude = 30.272553;
+        company.location = "杭州西湖区江省杭州市黄龙时代广场B座";
+
+        MarkerUtil.addMarker(mAMap, company);
+
     }
 
 
