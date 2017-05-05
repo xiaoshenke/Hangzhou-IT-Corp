@@ -147,6 +147,11 @@ public class AreaPageSpider extends BaseLagouSpider {
         } else {
             throw new MaybeBlockedException();
         }
+        if (!object.get("companyShortName").isJsonNull()) {
+            company.company_shortname = object.get("companyShortName").getAsString().trim();
+        } else {
+            throw new MaybeBlockedException();
+        }
         if (!object.get("industryField").isJsonNull()) {
             company.industryField = object.get("industryField").getAsString().trim();
         } else {

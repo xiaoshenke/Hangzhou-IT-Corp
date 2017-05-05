@@ -19,6 +19,7 @@ import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.spidersdk.BaseSpider;
+import wuxian.me.spidersdk.log.LogManager;
 import wuxian.me.spidersdk.util.FileUtil;
 
 /**
@@ -87,24 +88,29 @@ public class DistinctSpider extends BaseLagouSpider {
         return "DistinctSpider: {" + city + " " + distinct + "}";
     }
 
-    private synchronized void writeArea(String distinct, List<String> areas) {
-        checkNotNull(distinct);
-        checkNotNull(areas);
+    private void writeArea(String distinct, List<String> areas) {
+        //LogManager.info("Begin to writeArea: " + areas.toString());
+        synchronized (DistinctSpider.class) {
+            checkNotNull(distinct);
+            checkNotNull(areas);
 
-        String former = "";
-        if (FileUtil.checkFileExist(getAreaFilePath())) {
-            former = FileUtil.readFromFile(getAreaFilePath());
+            String former = "";
+            if (FileUtil.checkFileExist(getAreaFilePath())) {
+                former = FileUtil.readFromFile(getAreaFilePath());
+            }
+
+            String content = former;
+            for (String area : areas) {
+                content += distinct + SEPRATE + area + CUT;
+            }
+
+            content += "\n";
+            if (!FileUtil.writeToFile(getAreaFilePath(), content)) {
+                //LogManager.error("Error write content, content: "+content +" path: "+getAreaFilePath());
+
+            }
         }
 
-        String content = former;
-        for (String area : areas) {
-            content += distinct + SEPRATE + area + CUT;
-        }
-
-        content += "\n";
-        if (!FileUtil.writeToFile(getAreaFilePath(), content)) {
-
-        }
     }
 
 }

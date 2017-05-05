@@ -2,7 +2,9 @@ package wuxian.me.lagouspider;
 
 import okhttp3.Request;
 import org.junit.Test;
+import wuxian.me.lagouspider.core.CitySpider;
 import wuxian.me.lagouspider.core.CompanySpider;
+import wuxian.me.lagouspider.core.DistinctSpider;
 import wuxian.me.lagouspider.core.itjuzi.SearchSpider;
 import wuxian.me.lagouspider.core.AreaSpider;
 import wuxian.me.lagouspider.mapper.AreaMapper;
@@ -20,11 +22,13 @@ import wuxian.me.spidersdk.JobManager;
 import wuxian.me.spidersdk.SpiderCallback;
 import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
+import wuxian.me.spidersdk.util.FileUtil;
 
 import java.util.List;
 
 import static org.junit.Assert.*;
 import static wuxian.me.lagouspider.util.ModuleProvider.*;
+import static wuxian.me.lagouspider.util.Helper.*;
 
 /**
  * Created by wuxian on 9/4/2017.
@@ -32,14 +36,35 @@ import static wuxian.me.lagouspider.util.ModuleProvider.*;
 public class MainTest {
 
     @Test
+    public void testCity() {
+        //CitySpider citySpider = new CitySpider();
+        //dispatchSpider(citySpider);
+
+        String content = FileUtil.readFromFile(Helper.getDistinctsFilePath());
+        String[] list = content.split(Config.CUT);
+
+        for (int i = 0; i < list.length; i++) {
+            DistinctSpider spider = new DistinctSpider(Config.CITY_TO_SPIDER, list[i]);
+
+            dispatchSpider(spider);
+        }
+        JobManager.getInstance().start();
+
+        while (true) {
+
+        }
+    }
+
+    @Test
     public void testAreaDB() {
         Area.tableName = Helper.getAreaTableName();
 
         AreaMapper areaMapper = ModuleProvider.areaMapper();
 
+
         Area area = new Area();
         areaMapper.createNewTableIfNeed(area);
-        areaMapper.createIndex(area);
+        //areaMapper.createIndex(area);
     }
 
     @Test

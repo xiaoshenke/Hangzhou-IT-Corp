@@ -80,9 +80,9 @@ public class CompanyJsonSaver implements IModelSaver<Company> {
                 tmp.resumeRate = company.resumeRate;
                 tmp.interviewNum = company.interviewNum;
                 tmp.score = company.score;
-                tmp.accordSore = company.accordSore;
-                tmp.interviewerScore = company.interviewerScore;
-                tmp.environmentScore = company.environmentScore;
+                //tmp.accordSore = company.accordSore;
+                //tmp.interviewerScore = company.interviewerScore;
+                //tmp.environmentScore = company.environmentScore;
 
                 tmp.detail_location = company.detail_location;
 

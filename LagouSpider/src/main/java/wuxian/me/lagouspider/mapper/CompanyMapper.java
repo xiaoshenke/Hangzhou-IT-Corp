@@ -12,13 +12,9 @@ import java.util.List;
  *
  * 这里可以重构一下 重构出来一个BaseMapper
  */
-public interface CompanyMapper {
+public interface CompanyMapper extends BaseMapper<Company> {
 
     void deleteTable(Company company);
-
-    void createNewTableIfNeed(Company company);
-
-    void createIndex(Company company);
 
     void insertCompany(Company company);
 

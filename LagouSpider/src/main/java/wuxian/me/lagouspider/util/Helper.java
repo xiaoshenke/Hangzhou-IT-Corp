@@ -3,6 +3,10 @@ package wuxian.me.lagouspider.util;
 import com.sun.istack.internal.NotNull;
 import okhttp3.Headers;
 import wuxian.me.lagouspider.Config;
+import wuxian.me.spidersdk.BaseSpider;
+import wuxian.me.spidersdk.JobManager;
+import wuxian.me.spidersdk.job.IJob;
+import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.util.FileUtil;
 
 import java.text.SimpleDateFormat;
@@ -122,6 +126,19 @@ public class Helper {
 
     public static void updateNewGrab() {
         FileUtil.writeToFile(getGrabFilePath(), String.valueOf(System.currentTimeMillis()));
+    }
+
+    private static JobManager jobManager;
+
+    static {
+        jobManager = JobManager.getInstance();
+    }
+
+    public static void dispatchSpider(@NotNull BaseSpider spider) {
+        IJob job = JobProvider.getJob();
+        job.setRealRunnable(spider);
+
+        jobManager.putJob(job);
     }
 
 }

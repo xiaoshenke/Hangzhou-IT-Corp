@@ -8,11 +8,11 @@
     </delete>
 
     <update id="createNewTableIfNeed" parameterType="wuxian.me.lagouspider.model.Company">
-        create table if not exists ${tableName} (company_id INTEGER,area_id INT,company_fullname
+        create table if not exists ${tableName} (company_id INTEGER,area_id INT,company_shortname VARCHAR(10),
+        company_fullname
         VARCHAR(40),industryField VARCHAR(20),company_size VARCHAR(90),logo VARCHAR(128),
         detail_location VARCHAR(20),financeStage VARCHAR(30), webLink VARCHAR(128), lagouAuthentic VARCHAR(5),
-        description VARCHAR(100), positionNum VARCHAR(5),resumeRate VARCHAR(5),interviewNum VARCHAR(5),
-        score VARCHAR(3),accordSore VARCHAR(3),interviewerScore VARCHAR(3),environmentScore VARCHAR(3),
+        positionNum VARCHAR(5),resumeRate VARCHAR(5),interviewNum VARCHAR(5),score VARCHAR(3),
         PRIMARY KEY (company_id))
         DEFAULT CHARSET = utf8,
         ENGINE = InnoDB;
@@ -24,14 +24,14 @@
     </update>
 
     <insert id="insertCompany" parameterType="wuxian.me.lagouspider.model.Company">
-        insert into ${tableName} (company_id,area_id,company_fullname,industryField,company_size
+        insert into ${tableName} (company_id,area_id,company_shortname,company_fullname,industryField,company_size
         <if test="detail_location != null">
-            ,logo,detail_location,financeStage,webLink,lagouAuthentic,description,positionNum,resumeRate,interviewNum,score,accordSore,interviewerScore,environmentScore
+            ,logo,detail_location,financeStage,webLink,lagouAuthentic,positionNum,resumeRate,interviewNum,score
         </if>
 
-        ) values (#{company_id},#{area_id},#{company_fullname},#{industryField},#{company_size}
+        ) values (#{company_id},#{area_id},#{company_shortname},#{company_fullname},#{industryField},#{company_size}
         <if test="detail_location != null">
-            ,#{logo},#{detail_location},#{financeStage},#{webLink},#{lagouAuthentic},#{description},#{positionNum},#{resumeRate},#{interviewNum},#{score},#{accordSore},#{interviewerScore},#{environmentScore}
+            ,#{logo},#{detail_location},#{financeStage},#{webLink},#{lagouAuthentic},#{positionNum},#{resumeRate},#{interviewNum},#{score}
         </if>
         );
     </insert>
@@ -47,3 +47,7 @@
         select * from ${tableName}
     </select>
 </mapper>
+
+        <!-- accordSore VARCHAR(3),interviewerScore VARCHAR(3),environmentScore VARCHAR(3), description VARCHAR(100), -->
+        <!-- ,accordSore,interviewerScore,environmentScore description, -->
+        <!-- ,#{accordSore},#{interviewerScore},#{environmentScore} #{description}, -->

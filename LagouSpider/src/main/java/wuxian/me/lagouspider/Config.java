@@ -34,6 +34,8 @@ public interface Config {
 
     interface Spider {
 
+        boolean ENABLE_SPIDER_DISTINCT = true;
+
         boolean ENABLE_SPIDER_AREAPAGE = true;
 
         boolean ENABLE_SPIDER_COMPANY_MAIN = false;

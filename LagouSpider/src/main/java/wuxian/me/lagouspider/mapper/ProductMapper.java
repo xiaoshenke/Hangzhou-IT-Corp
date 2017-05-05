@@ -9,13 +9,9 @@ import java.util.List;
  * Created by wuxian on 13/4/2017.
  * <p>
  */
-public interface ProductMapper {
+public interface ProductMapper extends BaseMapper<Product> {
 
     void deleteTable(Product product);
-
-    void createNewTableIfNeed(Product product);
-
-    void createIndex(Product product);
 
     void insertProduct(Product product);
 

@@ -1,13 +1,12 @@
 package wuxian.me.lagouspider.model;
 
-import wuxian.me.lagouspider.core.DistinctSpider;
-
 import static wuxian.me.lagouspider.Config.CUT;
 
 /**
  * Created by wuxian on 13/4/2017.
  * 产品来看 IT橙子的数据会更加靠谱
  * <p>
+ * Fixme:这张表准备弃了
  */
 public class Product extends BaseModel {
     public static String tableName;

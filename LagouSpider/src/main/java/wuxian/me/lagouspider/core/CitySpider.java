@@ -9,6 +9,7 @@ import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.tags.LinkTag;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
+import wuxian.me.lagouspider.Config;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.util.FileUtil;
@@ -28,6 +29,10 @@ import static wuxian.me.lagouspider.util.Helper.getDistinctsFilePath;
 public class CitySpider extends BaseLagouSpider {
 
     private String city;
+
+    public CitySpider() {
+        this(Config.CITY_TO_SPIDER);
+    }
 
     public CitySpider(@NotNull String city) {
         this.city = city;
@@ -81,12 +86,15 @@ public class CitySpider extends BaseLagouSpider {
                 FileUtil.writeToFile(getDistinctsFilePath(), content);
             }
 
-            if (!FileUtil.checkFileExist(getAreaFilePath())) {
-                //Todo: startDistinctSpider
+            if (!FileUtil.checkFileExist(getAreaFilePath()) && Config.Spider.ENABLE_SPIDER_DISTINCT) {
+                for (String dis : distincts) {
+                    DistinctSpider distinctSpider = new DistinctSpider(city, dis);
+                    Helper.dispatchSpider(distinctSpider);
+                }
+
             }
 
             return BaseSpider.RET_SUCCESS;
-
         } catch (ParserException e) {
             return BaseSpider.RET_PARSING_ERR;
         }
