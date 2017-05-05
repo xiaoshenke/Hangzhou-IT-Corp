@@ -12,8 +12,6 @@ import android.view.View;
 
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.MapView;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
