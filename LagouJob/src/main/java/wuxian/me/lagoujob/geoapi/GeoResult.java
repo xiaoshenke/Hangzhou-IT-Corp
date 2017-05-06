@@ -13,6 +13,7 @@ public class GeoResult {
 
     public String info;
 
+
     public int infocode;
 
     public int count;

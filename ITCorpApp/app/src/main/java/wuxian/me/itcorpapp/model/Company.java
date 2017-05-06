@@ -10,8 +10,6 @@ public class Company extends BaseModel {
 
     //public int area_id = -1;
     public long company_id;
-
-    //Todo:用来显示的名字 需要修改爬虫抓下这个信息
     public String shortName;
 
     public String name;
@@ -29,7 +27,6 @@ public class Company extends BaseModel {
 
     public String description;//拉勾上的公司自我描述
 
-    //Todo:根据公司在融资,人数,业务各方面通过一个计算公式计算出得分。
     public float score;      //
 
     //Todo:根据不同的display level作出不同的显示

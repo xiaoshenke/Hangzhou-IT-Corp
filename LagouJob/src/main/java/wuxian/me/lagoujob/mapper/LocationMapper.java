@@ -1,4 +1,4 @@
-package wuxian.me.lagoujob.mapper.lagou;
+package wuxian.me.lagoujob.mapper;
 
 import org.apache.ibatis.annotations.Param;
 import wuxian.me.lagoujob.model.lagou.Location;
@@ -12,7 +12,7 @@ public interface LocationMapper {
 
     void updateLocation(Location location);
 
-    List<Location> loadLocation(Location location);
+    List<Location> loadLocation(@Param("tableName") String tableName, @Param("company_id") long company_id);
 
     List<Location> loadAll(@Param("tableName") String tableName);
 }

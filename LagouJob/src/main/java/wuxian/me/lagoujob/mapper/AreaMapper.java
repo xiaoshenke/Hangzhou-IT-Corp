@@ -1,4 +1,4 @@
-package wuxian.me.lagoujob.mapper.lagou;
+package wuxian.me.lagoujob.mapper;
 
 import org.apache.ibatis.annotations.Param;
 import wuxian.me.lagoujob.model.lagou.Area;

@@ -6,10 +6,15 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            classpath*:/applicationContext.xml
             classpath*:/applicationContext-datasource.xml
+            classpath*:/applicationContext.xml
         </param-value>
     </context-param>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
 
     <context-param>
         <param-name>webAppRootKey</param-name>
@@ -24,10 +29,6 @@
         <param-value>60000</param-value>
     </context-param>
 
-
-    <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    </listener>
 
     <!-- IMPORTANT! Must be under ContextLoaderListner -->
     <listener>

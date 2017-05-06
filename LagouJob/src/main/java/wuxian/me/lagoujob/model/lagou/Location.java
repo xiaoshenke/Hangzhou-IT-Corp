@@ -1,5 +1,6 @@
 package wuxian.me.lagoujob.model.lagou;
 
+import com.google.gson.annotations.Expose;
 import wuxian.me.lagoujob.model.BaseModel;
 
 /**
@@ -9,7 +10,10 @@ public class Location extends BaseModel {
     public static String tableName;
 
     public String location;
+
+    @Expose(serialize = false)
     public long company_id;
+
     public String longitude;
     public String lantitude;
 
@@ -34,6 +38,10 @@ public class Location extends BaseModel {
 
     public String name() {
         return "Location: {" + "company_id: " + company_id + " location: " + location + "}";
+    }
+
+    public String toJson() {
+        return null;
     }
 
     public long index() {

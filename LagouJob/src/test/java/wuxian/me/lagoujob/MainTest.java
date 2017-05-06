@@ -15,8 +15,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import wuxian.me.lagoujob.geoapi.GeoResult;
 import wuxian.me.lagoujob.geoapi.GeoService;
-import wuxian.me.lagoujob.mapper.lagou.LocationMapper;
+import wuxian.me.lagoujob.mapper.CompanyMapper;
+import wuxian.me.lagoujob.mapper.LocationMapper;
 import wuxian.me.lagoujob.mapper.TableMapper;
+import wuxian.me.lagoujob.model.lagou.Company;
 import wuxian.me.lagoujob.model.lagou.Location;
 
 import java.util.ArrayList;
@@ -37,6 +39,9 @@ public class MainTest {
     private MockMvc mockMvc;
 
     @Autowired
+    public CompanyMapper companyMapper;
+
+    @Autowired
     public LocationMapper locationMapper;
 
     @Autowired
@@ -50,16 +55,23 @@ public class MainTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
     }
 
-    //Fixme:有些数据是不是有问题？
+    @Test
+    public void testCompanyDB() {
+        String tb = "companies";
+
+        Company company = companyMapper.loadCompany(tb, 749);
+        System.out.println(company);
+    }
+
     @Test
     public void testChangeAll() {
         String tableName = "locations";
         Location.tableName = tableName;
         Location location = new Location(106310, "");
-        List<Location> locations = locationMapper.loadLocation(location);
+        List<Location> locations = locationMapper.loadLocation(tableName, 749);
 
         for (Location location1 : locations) {
-            batchChange(location1);
+            //batchChange(location1);
         }
 
         while (true) {
@@ -83,6 +95,7 @@ public class MainTest {
 
                         location.longitude = ss[0];
                         location.lantitude = ss[1];
+
                         locationMapper.updateLocation(location);
                     }
                 }
@@ -98,7 +111,7 @@ public class MainTest {
     @Test
     public void testMockMVC() {
         try {
-            mockMvc.perform(MockMvcRequestBuilders.get("/home"))
+            mockMvc.perform(MockMvcRequestBuilders.get("/list"))
                     .andDo(MockMvcResultHandlers.print())
                     .andReturn();
         } catch (Exception e) {
