@@ -7,10 +7,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 import wuxian.me.lagouspider.Main;
-import wuxian.me.lagouspider.mapper.AreaMapper;
-import wuxian.me.lagouspider.mapper.CompanyMapper;
-import wuxian.me.lagouspider.mapper.LocationMapper;
-import wuxian.me.lagouspider.mapper.ProductMapper;
+import wuxian.me.lagouspider.mapper.lagou.AreaMapper;
+import wuxian.me.lagouspider.mapper.lagou.CompanyMapper;
+import wuxian.me.lagouspider.mapper.lagou.LocationMapper;
+import wuxian.me.lagouspider.mapper.lagou.ProductMapper;
 
 import static wuxian.me.lagouspider.util.Helper.getLog4jPropFilePath;
 

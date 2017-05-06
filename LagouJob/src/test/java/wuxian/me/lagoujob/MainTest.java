@@ -1,6 +1,5 @@
 package wuxian.me.lagoujob;
 
-import okhttp3.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,9 +15,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import wuxian.me.lagoujob.geoapi.GeoResult;
 import wuxian.me.lagoujob.geoapi.GeoService;
-import wuxian.me.lagoujob.mapper.LocationMapper;
+import wuxian.me.lagoujob.mapper.lagou.LocationMapper;
 import wuxian.me.lagoujob.mapper.TableMapper;
-import wuxian.me.lagoujob.model.Location;
+import wuxian.me.lagoujob.model.lagou.Location;
 
 import java.util.ArrayList;
 import java.util.List;

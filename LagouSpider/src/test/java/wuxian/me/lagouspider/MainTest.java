@@ -2,19 +2,19 @@ package wuxian.me.lagouspider;
 
 import okhttp3.Request;
 import org.junit.Test;
-import wuxian.me.lagouspider.core.CitySpider;
-import wuxian.me.lagouspider.core.CompanySpider;
-import wuxian.me.lagouspider.core.DistinctSpider;
-import wuxian.me.lagouspider.core.itjuzi.SearchSpider;
-import wuxian.me.lagouspider.core.AreaSpider;
-import wuxian.me.lagouspider.mapper.AreaMapper;
-import wuxian.me.lagouspider.mapper.CompanyMapper;
-import wuxian.me.lagouspider.mapper.LocationMapper;
-import wuxian.me.lagouspider.mapper.ProductMapper;
-import wuxian.me.lagouspider.model.Area;
-import wuxian.me.lagouspider.model.Company;
-import wuxian.me.lagouspider.model.Location;
-import wuxian.me.lagouspider.model.Product;
+import wuxian.me.lagouspider.business.lagou.CompanySpider;
+import wuxian.me.lagouspider.business.lagou.LagouConfig;
+import wuxian.me.lagouspider.business.lagou.DistinctSpider;
+import wuxian.me.lagouspider.business.itjuzi.SearchSpider;
+import wuxian.me.lagouspider.business.lagou.AreaSpider;
+import wuxian.me.lagouspider.mapper.lagou.AreaMapper;
+import wuxian.me.lagouspider.mapper.lagou.CompanyMapper;
+import wuxian.me.lagouspider.mapper.lagou.LocationMapper;
+import wuxian.me.lagouspider.mapper.lagou.ProductMapper;
+import wuxian.me.lagouspider.model.lagou.Area;
+import wuxian.me.lagouspider.model.lagou.Company;
+import wuxian.me.lagouspider.model.lagou.Location;
+import wuxian.me.lagouspider.model.lagou.Product;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.ModuleProvider;
 import wuxian.me.spidersdk.BaseSpider;
@@ -41,10 +41,10 @@ public class MainTest {
         //dispatchSpider(citySpider);
 
         String content = FileUtil.readFromFile(Helper.getDistinctsFilePath());
-        String[] list = content.split(Config.CUT);
+        String[] list = content.split(LagouConfig.CUT);
 
         for (int i = 0; i < list.length; i++) {
-            DistinctSpider spider = new DistinctSpider(Config.CITY_TO_SPIDER, list[i]);
+            DistinctSpider spider = new DistinctSpider(LagouConfig.CITY_TO_SPIDER, list[i]);
 
             dispatchSpider(spider);
         }

@@ -1,24 +1,25 @@
 package wuxian.me.lagouspider;
 
-import wuxian.me.lagouspider.core.AreaSpider;
-import wuxian.me.lagouspider.core.CitySpider;
-import wuxian.me.lagouspider.core.DistinctSpider;
-import wuxian.me.lagouspider.mapper.AreaMapper;
-import wuxian.me.lagouspider.mapper.CompanyMapper;
-import wuxian.me.lagouspider.mapper.LocationMapper;
-import wuxian.me.lagouspider.mapper.ProductMapper;
-import wuxian.me.lagouspider.model.Area;
+import wuxian.me.lagouspider.business.lagou.AreaSpider;
+import wuxian.me.lagouspider.business.lagou.CitySpider;
+import wuxian.me.lagouspider.business.lagou.LagouConfig;
+import wuxian.me.lagouspider.business.lagou.DistinctSpider;
+import wuxian.me.lagouspider.mapper.lagou.AreaMapper;
+import wuxian.me.lagouspider.mapper.lagou.CompanyMapper;
+import wuxian.me.lagouspider.mapper.lagou.LocationMapper;
+import wuxian.me.lagouspider.mapper.lagou.ProductMapper;
+import wuxian.me.lagouspider.model.lagou.Area;
 
-import static wuxian.me.lagouspider.Config.CUT;
-import static wuxian.me.lagouspider.Config.SEPRATE;
+import static wuxian.me.lagouspider.business.lagou.LagouConfig.CUT;
+import static wuxian.me.lagouspider.business.lagou.LagouConfig.SEPRATE;
 import static wuxian.me.lagouspider.util.Helper.getAreaFilePath;
 import static wuxian.me.lagouspider.util.Helper.getDistinctsFilePath;
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 import static wuxian.me.spidersdk.util.FileUtil.readFromFile;
 
-import wuxian.me.lagouspider.model.Company;
-import wuxian.me.lagouspider.model.Location;
-import wuxian.me.lagouspider.model.Product;
+import wuxian.me.lagouspider.model.lagou.Company;
+import wuxian.me.lagouspider.model.lagou.Location;
+import wuxian.me.lagouspider.model.lagou.Product;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.ModuleProvider;
 import wuxian.me.spidersdk.JobManager;
@@ -100,7 +101,7 @@ public class Main {
 
         if (!FileUtil.checkFileExist(getDistinctsFilePath())) {
 
-            CitySpider citySpider = new CitySpider(Config.CITY_TO_SPIDER);
+            CitySpider citySpider = new CitySpider(LagouConfig.CITY_TO_SPIDER);
             IJob job = JobProvider.getJob();
             job.setRealRunnable(citySpider);
             JobManager.getInstance().putJob(job);
@@ -112,7 +113,7 @@ public class Main {
             }
             String[] dis = distincts.split(CUT);  //编码问题带来分解失败...
             for (int i = 0; i < dis.length; i++) {
-                DistinctSpider spider = new DistinctSpider(Config.CITY_TO_SPIDER, dis[i]);
+                DistinctSpider spider = new DistinctSpider(LagouConfig.CITY_TO_SPIDER, dis[i]);
                 IJob job = JobProvider.getJob();
                 job.setRealRunnable(spider);
                 JobManager.getInstance().putJob(job);

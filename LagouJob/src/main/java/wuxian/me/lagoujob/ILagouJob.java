@@ -1,6 +1,6 @@
 package wuxian.me.lagoujob;
 
-import wuxian.me.lagoujob.model.Company;
+import wuxian.me.lagoujob.model.lagou.Company;
 
 import java.util.List;
 

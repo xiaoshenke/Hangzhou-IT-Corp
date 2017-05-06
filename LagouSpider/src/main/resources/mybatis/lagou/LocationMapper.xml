@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="wuxian.me.lagouspider.mapper.lagou.LocationMapper">
+
+    <delete id="deleteTable" parameterType="wuxian.me.lagouspider.model.lagou.Location">
+        drop table if exists ${tableName}
+    </delete>
+
+    <update id="createNewTableIfNeed" parameterType="wuxian.me.lagouspider.model.lagou.Location">
+        create table if not exists ${tableName} (location_id INT AUTO_INCREMENT,company_id INTEGER,
+        location VARCHAR(100),longitude varchar(10),lantitude varchar(10),
+        PRIMARY KEY (location_id))
+        DEFAULT CHARSET = utf8,
+        ENGINE = InnoDB;
+    </update>
+
+    <update id="createIndex" parameterType="wuxian.me.lagouspider.model.lagou.Location">
+        CREATE INDEX idx_company_id ON ${tableName} (company_id);
+    </update>
+
+    <insert id="insertLocation" parameterType="wuxian.me.lagouspider.model.lagou.Location">
+        insert into ${tableName} (company_id,location) values (#{company_id},#{location});
+    </insert>
+
+    <update id="updateLocation" parameterType="wuxian.me.lagouspider.model.lagou.Location">
+        update ${tableName} set longitude=#{longitude},lantitude=#{lantitude}
+        where company_id=#{company_id}
+    </update>
+
+    <select id="loadLocation" resultType="wuxian.me.lagouspider.model.lagou.Location">
+        select * from ${tableName} where company_id = #{company_id}
+    </select>
+
+</mapper>

@@ -2,7 +2,7 @@ package wuxian.me.lagouspider.util;
 
 import com.sun.istack.internal.NotNull;
 import okhttp3.Headers;
-import wuxian.me.lagouspider.Config;
+import wuxian.me.lagouspider.business.lagou.LagouConfig;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.JobManager;
 import wuxian.me.spidersdk.job.IJob;
@@ -12,11 +12,11 @@ import wuxian.me.spidersdk.util.FileUtil;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static wuxian.me.lagouspider.Config.*;
-import static wuxian.me.lagouspider.Config.File.*;
-import static wuxian.me.lagouspider.Config.Grab.CONF_LASTGRAB;
-import static wuxian.me.lagouspider.Config.Grab.GRAB_INTERNAL;
-import static wuxian.me.lagouspider.Config.TableName.*;
+import static wuxian.me.lagouspider.business.lagou.LagouConfig.*;
+import static wuxian.me.lagouspider.business.lagou.LagouConfig.File.*;
+import static wuxian.me.lagouspider.business.lagou.LagouConfig.Grab.CONF_LASTGRAB;
+import static wuxian.me.lagouspider.business.lagou.LagouConfig.Grab.GRAB_INTERNAL;
+import static wuxian.me.lagouspider.business.lagou.LagouConfig.TableName.*;
 import static wuxian.me.spidersdk.util.FileUtil.getCurrentPath;
 
 /**
@@ -25,7 +25,7 @@ import static wuxian.me.spidersdk.util.FileUtil.getCurrentPath;
 public class Helper {
 
     public static String getAreaFilePath() {
-        return getCurrentPath() + CONF + Config.CITY_TO_SPIDER + AREA;
+        return getCurrentPath() + CONF + LagouConfig.CITY_TO_SPIDER + AREA;
     }
 
     public static String getDistinctsFilePath() {
