@@ -5,8 +5,8 @@ import org.junit.Test;
 import wuxian.me.lagouspider.business.lagou.CompanySpider;
 import wuxian.me.lagouspider.business.lagou.LagouConfig;
 import wuxian.me.lagouspider.business.lagou.DistinctSpider;
-import wuxian.me.lagouspider.business.itjuzi.SearchSpider;
 import wuxian.me.lagouspider.business.lagou.AreaSpider;
+import wuxian.me.lagouspider.business.tianyancha.SearchSpider;
 import wuxian.me.lagouspider.mapper.lagou.AreaMapper;
 import wuxian.me.lagouspider.mapper.lagou.CompanyMapper;
 import wuxian.me.lagouspider.mapper.lagou.LocationMapper;
@@ -19,6 +19,7 @@ import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.ModuleProvider;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.JobManager;
+import wuxian.me.spidersdk.JobManagerConfig;
 import wuxian.me.spidersdk.SpiderCallback;
 import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
@@ -35,10 +36,23 @@ import static wuxian.me.lagouspider.util.Helper.*;
  */
 public class MainTest {
 
+    //Damn! 页面是用js加载的 还没成功破解
+    @Test
+    public void testSearchSpider() {
+        JobManagerConfig.enableScheduleImmediately = true;
+        JobManager jobManager = JobManager.getInstance();
+        SearchSpider searchSpider = new SearchSpider(-1, "杭州随地付网络技术有限公司");
+
+        Helper.dispatchSpider(searchSpider);
+        jobManager.start();
+
+        while (true) {
+
+        }
+    }
+
     @Test
     public void testCity() {
-        //CitySpider citySpider = new CitySpider();
-        //dispatchSpider(citySpider);
 
         String content = FileUtil.readFromFile(Helper.getDistinctsFilePath());
         String[] list = content.split(LagouConfig.CUT);
@@ -53,18 +67,6 @@ public class MainTest {
         while (true) {
 
         }
-    }
-
-    @Test
-    public void testAreaDB() {
-        Area.tableName = Helper.getAreaTableName();
-
-        AreaMapper areaMapper = ModuleProvider.areaMapper();
-
-
-        Area area = new Area();
-        areaMapper.createNewTableIfNeed(area);
-        //areaMapper.createIndex(area);
     }
 
     @Test
@@ -151,13 +153,6 @@ public class MainTest {
         while (true) {
             //http://www.cnblogs.com/yanphet/p/5774291.html
         }
-    }
-
-    //Todo
-    @Test
-    public void testITChengziSearch() {
-        IJob job = JobProvider.getJob();
-        job.setRealRunnable(new SearchSpider(33618, "微贷（杭州）金融信息服务有限公司"));
     }
 
     private class DummySpider extends BaseSpider {

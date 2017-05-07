@@ -43,7 +43,7 @@ public class DistinctSpider extends BaseLagouSpider {
         urlBuilder.removeAllQueryParameters("district");
         urlBuilder.addQueryParameter("district", distinct);
         Request request = new Request.Builder()
-                .headers(Helper.getHeaderBySpecifyRef(referer))
+                .headers(Helper.getLagouHeader(referer, LagouConfig.SPIDER_NAME))
                 .url(urlBuilder.build().toString())
                 .build();
 

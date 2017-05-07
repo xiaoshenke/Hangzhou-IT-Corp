@@ -10,7 +10,6 @@ import org.htmlparser.nodes.TextNode;
 import org.htmlparser.tags.*;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
-import wuxian.me.lagouspider.business.itjuzi.SearchSpider;
 
 import wuxian.me.lagouspider.model.lagou.Company;
 import wuxian.me.lagouspider.model.lagou.Location;
@@ -20,10 +19,7 @@ import wuxian.me.lagouspider.save.lagou.LocationSaver;
 import wuxian.me.lagouspider.save.lagou.ProductSaver;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.spidersdk.BaseSpider;
-import wuxian.me.spidersdk.JobManager;
 import wuxian.me.spidersdk.anti.MaybeBlockedException;
-import wuxian.me.spidersdk.job.IJob;
-import wuxian.me.spidersdk.job.JobProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +74,7 @@ public class CompanySpider extends BaseLagouSpider {
 
     protected Request buildRequest() {
         Request request = new Request.Builder()
-                .headers(Helper.getHeaderBySpecifyRef(REFERER))
+                .headers(Helper.getLagouHeader(REFERER, LagouConfig.SPIDER_NAME))
                 .url(getUrl(company_id))
                 .build();
         return request;
@@ -150,12 +146,6 @@ public class CompanySpider extends BaseLagouSpider {
         ret = list.extractAllNodesThatMatch(f12, true);
         if (ret != null && ret.size() != 0) {
             webLink = ((LinkTag) ret.elementAt(0)).getLink().trim();
-
-            if (ENABLE_SPIDER_ITCHENGZI_SEARCH) {
-                IJob iJob = JobProvider.getJob();
-                iJob.setRealRunnable((new SearchSpider(company_id, companyName)));
-                JobManager.getInstance().putJob(iJob);
-            }
         }
 
         HasAttributeFilter f3 = new HasAttributeFilter("class", "company_word");

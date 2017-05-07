@@ -43,7 +43,7 @@ public class CitySpider extends BaseLagouSpider {
         urlBuilder.addQueryParameter("city", city);
 
         final Request request = new Request.Builder()
-                .headers(Helper.getHeaderBySpecifyRef("https://www.lagou.com/"))
+                .headers(Helper.getLagouHeader("https://www.lagou.com/", LagouConfig.SPIDER_NAME))
                 .url(urlBuilder.build().toString())
                 .build();
         return request;

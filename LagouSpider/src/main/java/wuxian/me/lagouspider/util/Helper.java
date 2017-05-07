@@ -3,6 +3,7 @@ package wuxian.me.lagouspider.util;
 import com.sun.istack.internal.NotNull;
 import okhttp3.Headers;
 import wuxian.me.lagouspider.business.lagou.LagouConfig;
+import wuxian.me.lagouspider.business.tianyancha.TianyanConfig;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.JobManager;
 import wuxian.me.spidersdk.job.IJob;
@@ -10,7 +11,7 @@ import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.util.FileUtil;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
 
 import static wuxian.me.lagouspider.business.lagou.LagouConfig.*;
 import static wuxian.me.lagouspider.business.lagou.LagouConfig.File.*;
@@ -36,8 +37,8 @@ public class Helper {
         return getCurrentPath() + CONF_LASTGRAB;
     }
 
-    public static String getCookieFilePath() {
-        return getCurrentPath() + CONF_COOKIE;
+    public static String getCookieFilePath(String spiderName) {
+        return getCurrentPath() + CONF_COOKIE + "_" + spiderName;
     }
 
     public static String getLog4jPropFilePath() {
@@ -68,30 +69,42 @@ public class Helper {
     private static final String HEADER_REFERER = "Referer";
     private static Headers.Builder builder;
 
+    private static Map<String, String> cookieList = new HashMap<String, String>();
+
     static {
         builder = new Headers.Builder();
+        builder.add("Cookie", "");
         builder.add("Connection", "keep_alive");
         builder.add("Host", "www.lagou.com");
         builder.add(HEADER_REFERER, "abd");
         builder.add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36");
     }
 
-    private static boolean cookieInit = false;
-
-    public static Headers getHeaderBySpecifyRef(@NotNull String reference) {
-        if (!cookieInit) {
-            if (FileUtil.checkFileExist(getCookieFilePath())) {
-                String content = FileUtil.readFromFile(getCookieFilePath());
+    public static Headers getHeaderBySpecifyRef(@NotNull String reference, @NotNull String spiderName) {
+        if (!cookieList.containsKey(spiderName)) {
+            if (FileUtil.checkFileExist(getCookieFilePath(spiderName))) {
+                String content = FileUtil.readFromFile(getCookieFilePath(spiderName));
                 if (content != null && content.length() != 0) {
-                    builder.add("Cookie", content);
-                    cookieInit = true;
+                    cookieList.put(spiderName, content);
                 }
             }
         }
 
+        builder.set("Cookie", cookieList.get(spiderName));
         builder.set(HEADER_REFERER, reference);
         return builder.build();
     }
+
+    public static Headers getLagouHeader(@NotNull String reference, @NotNull String spiderName) {
+        builder.set("Host", LagouConfig.HOST);
+        return getHeaderBySpecifyRef(reference, spiderName);
+    }
+
+    public static Headers getTianyanHeader(@NotNull String reference, @NotNull String spiderName) {
+        builder.set("Host", TianyanConfig.HOST);
+        return getHeaderBySpecifyRef("", spiderName);
+    }
+
 
     /**
      * 用于数据库"根据不同时间"分表:分表的目的用于后续研究公司变迁的数据：比如说某块区域的公司迁移数据 某个公司的招聘岗位的变化等

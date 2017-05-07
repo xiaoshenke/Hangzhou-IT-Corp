@@ -7,10 +7,13 @@ package wuxian.me.lagouspider.business.lagou;
  */
 public interface LagouConfig {
 
+    String SPIDER_NAME = "LagouSpider";
+
     String CITY_TO_SPIDER = "杭州";
 
     String CUT = ";";
     String SEPRATE = ":";
+    String HOST = "www.lagou.com";
 
     int SHORTNAME_MAX = 6;
     int FULLNAME_MAX = 15;

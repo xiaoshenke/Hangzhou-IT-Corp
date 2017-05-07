@@ -47,7 +47,7 @@ public class AreaSpider extends BaseLagouSpider {
         final String referer = urlBuilder.build().toString();
 
         urlBuilder.addQueryParameter("bizArea", area.name);
-        Headers headers = Helper.getHeaderBySpecifyRef(referer);
+        Headers headers = Helper.getLagouHeader(referer, LagouConfig.SPIDER_NAME);
         if (agent != null) {
             headers = headers.newBuilder().set("User-Agent", agent).build();
         }

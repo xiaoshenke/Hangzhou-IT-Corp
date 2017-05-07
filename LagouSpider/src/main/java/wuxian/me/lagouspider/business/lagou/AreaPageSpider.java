@@ -66,7 +66,7 @@ public class AreaPageSpider extends BaseLagouSpider {
         bodyBuilder.add("kd", "Java");
 
         Request request = new Request.Builder()
-                .headers(Helper.getHeaderBySpecifyRef(referer))
+                .headers(Helper.getLagouHeader(referer, LagouConfig.SPIDER_NAME))
                 .url(urlBuilder.build().toString())
                 .post(bodyBuilder.build())
                 .build();
