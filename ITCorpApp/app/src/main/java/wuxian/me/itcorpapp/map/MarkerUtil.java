@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -23,7 +24,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import wuxian.me.itcorpapp.R;
 import wuxian.me.itcorpapp.model.BaseModel;
+import wuxian.me.itcorpapp.model.Display;
 import wuxian.me.itcorpapp.util.Helper;
 
 /**
@@ -36,12 +39,17 @@ public class MarkerUtil {
     private static RequestManager requestManager;
     private static List<String> failUris = new ArrayList<>();
 
+    private static int DEFAULT_COLOR = 0;
+    private static int DEFAULT_SIZE = 20;
+
     public static void init(@NonNull Context context) {
         if (inited) {
             return;
         }
 
         requestManager = Glide.with(context);
+        DEFAULT_COLOR = Helper.getColor(R.color.color_5da89e);
+
         inited = true;
     }
 
@@ -116,25 +124,31 @@ public class MarkerUtil {
 
 
     private static Bitmap genBitmapFrom(String text) {
-        return genBitmapFrom(text, Helper.dp2px(8f));
+        return genBitmapFrom(text, DEFAULT_SIZE);
     }
 
     //Todo: ui优化
     private static Bitmap genBitmapFrom(String text, float textSize) {
 
+        Paint paint = new Paint();
+
+        paint.setColor(DEFAULT_COLOR);
+        paint.setStyle(Paint.Style.FILL);
+
         TextPaint textPaint = new TextPaint();
 
-        textPaint.setColor(Color.BLACK);
+        textPaint.setColor(Color.WHITE);
 
         textPaint.setTextSize(textSize);
 
-        StaticLayout layout = new StaticLayout(text, textPaint, 450,
+        StaticLayout layout = new StaticLayout(text, textPaint, (int) (text.length() * textSize),
                 Layout.Alignment.ALIGN_NORMAL, 1.3f, 0.0f, true);
         Bitmap bitmap = Bitmap.createBitmap(layout.getWidth() + 20,
                 layout.getHeight() + 20, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         canvas.translate(10, 10);
-        canvas.drawColor(Color.WHITE);
+        canvas.drawColor(DEFAULT_COLOR);
+        canvas.drawRect(0, 0, layout.getWidth(), layout.getHeight(), paint);
 
         layout.draw(canvas);
         return bitmap;

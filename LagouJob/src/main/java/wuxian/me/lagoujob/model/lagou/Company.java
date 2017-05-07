@@ -1,6 +1,7 @@
 package wuxian.me.lagoujob.model.lagou;
 
 import com.google.gson.annotations.Expose;
+import org.springframework.stereotype.Service;
 import wuxian.me.lagoujob.model.BaseModel;
 
 import java.util.List;
@@ -39,6 +40,18 @@ public class Company extends BaseModel {
     public String interviewScore;       //面试评价评分
 
     public int score;
+
+    @Expose(serialize = false)
+    public int finaceScore;
+
+    @Expose(serialize = false)
+    public int authenScore;
+
+    @Expose(serialize = false)
+    public int positionNumScore;
+
+    @Expose(serialize = false)
+    public int interScore;
 
     public String name() {
         return "Company: {id: " + company_id + " name: " + name + "}";

@@ -1,5 +1,8 @@
 package wuxian.me.lagoujob.controller;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.sun.istack.internal.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -12,6 +15,8 @@ import wuxian.me.lagoujob.mapper.LocationMapper;
 import wuxian.me.lagoujob.model.lagou.Company;
 import wuxian.me.lagoujob.model.lagou.Location;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -44,4 +49,5 @@ public class ListController {
 
         return company;
     }
+
 }

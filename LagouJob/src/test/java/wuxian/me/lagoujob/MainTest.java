@@ -1,5 +1,6 @@
 package wuxian.me.lagoujob;
 
+import com.google.common.collect.Collections2;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,9 +21,13 @@ import wuxian.me.lagoujob.mapper.LocationMapper;
 import wuxian.me.lagoujob.mapper.TableMapper;
 import wuxian.me.lagoujob.model.lagou.Company;
 import wuxian.me.lagoujob.model.lagou.Location;
+import wuxian.me.lagoujob.util.CompanyFilter;
+import wuxian.me.lagoujob.util.Helper;
+import wuxian.me.lagoujob.util.ScoreUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Handler;
 
 /**
  * Created by wuxian on 1/5/2017.
@@ -58,9 +63,27 @@ public class MainTest {
     @Test
     public void testCompanyDB() {
         String tb = "companies";
+        //Company company = companyMapper.loadCompany(tb, 749);
+        //System.out.println(company);
 
-        Company company = companyMapper.loadCompany(tb, 749);
-        System.out.println(company);
+        List<Company> list = companyMapper.loadAllCompanies(tb);
+        list = Helper.fromCollection(Collections2.filter(list, new CompanyFilter()));
+
+        for (Company company : list) {
+            company.score = ScoreUtil.calScore(company);
+            print(company);
+        }
+    }
+
+    private void print(Company company) {
+        System.out.println("Company: {id:" + company.company_id + " name:"
+                + company.name + " financeStage:" + company.financeStage
+                + "}");
+        System.out.println("Score:" + company.score + " position:" + company.positionNum
+                + " positionScore:" + company.positionNumScore + " interview:"
+                + company.interviewScore + " interviewScore:" + company.interScore
+                + " financeScore:" + company.finaceScore + " authenScore:" + company.authenScore);
+        System.out.println();
     }
 
     @Test
