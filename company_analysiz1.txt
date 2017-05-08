@@ -1,0 +1,508 @@
+
+
+Company: {id:11971 name:上海天玑科技股份有限公司 financeStage:上市公司}
+Score:100 position:29个 positionScore:0 interview:4.4 interviewScore:10 financeScore:70 authenScore:20
+
+Company: {id:140249 name:杭州景年酒店管理有限公司 financeStage:上市公司}
+Score:80 position:4个 positionScore:-20 interview:3.5 interviewScore:10 financeScore:70 authenScore:20
+
+Company: {id:7953 name:杭州博科思科技有限公司 financeStage:上市公司}
+Score:100 position:31个 positionScore:0 interview:3.7 interviewScore:10 financeScore:70 authenScore:20
+
+Company: {id:191131 name:汉鼎宇佑集团有限公司 financeStage:上市公司}
+Score:70 position:5个 positionScore:-20 interview:null interviewScore:0 financeScore:70 authenScore:20
+
+Company: {id:24287 name:杭州腾展科技股份有限公司 financeStage:上市公司}
+Score:100 position:24个 positionScore:0 interview:4.3 interviewScore:10 financeScore:70 authenScore:20
+
+Company: {id:100334 name:浙江爱充网络科技有限公司 financeStage:上市公司}
+Score:90 position:4个 positionScore:-20 interview:4.2 interviewScore:20 financeScore:70 authenScore:20
+
+Company: {id:40823 name:杭州网营科技股份有限公司 financeStage:上市公司}
+Score:90 position:20个 positionScore:-20 interview:4.2 interviewScore:20 financeScore:70 authenScore:20
+
+Company: {id:121048 name:杭州盈丰软件股份有限公司 financeStage:上市公司}
+Score:90 position:4个 positionScore:-20 interview:4.1 interviewScore:20 financeScore:70 authenScore:20
+
+Company: {id:62369 name:浙江爱信诺航天信息有限公司 financeStage:上市公司}
+Score:80 position:5个 positionScore:-20 interview:3.8 interviewScore:10 financeScore:70 authenScore:20
+
+Company: {id:20425 name:艾诺威科技（杭州）有限公司 financeStage:上市公司}
+Score:70 position:5个 positionScore:-20 interview:null interviewScore:0 financeScore:70 authenScore:20
+
+Company: {id:49369 name:杭州淘粉吧网络技术股份有限公司 financeStage:上市公司}
+Score:80 position:17个 positionScore:-20 interview:4.5 interviewScore:10 financeScore:70 authenScore:20
+
+Company: {id:95131 name:信雅达系统工程股份有限公司 financeStage:上市公司}
+Score:100 position:76个 positionScore:0 interview:4.3 interviewScore:10 financeScore:70 authenScore:20
+
+Company: {id:23115 name:阿里小微金融服务集团 financeStage:上市公司}
+Score:60 position:3个 positionScore:-20 interview:5.0 interviewScore:10 financeScore:70 authenScore:0
+
+Company: {id:81629 name:支付宝（杭州）网络技术有限公司 financeStage:上市公司}
+Score:50 position:4个 positionScore:-20 interview:3.0 interviewScore:0 financeScore:70 authenScore:0
+
+Company: {id:85040 name:北京广通信达软件股份有限公司杭州分公司 financeStage:上市公司}
+Score:100 position:22个 positionScore:0 interview:4.4 interviewScore:10 financeScore:70 authenScore:20
+
+Company: {id:72753 name:道富信息科技浙江有限公司 financeStage:上市公司}
+Score:70 position:5个 positionScore:-20 interview:4.0 interviewScore:20 financeScore:70 authenScore:0
+
+Company: {id:63383 name:博彦科技股份有限公司 financeStage:上市公司}
+Score:150 position:404个 positionScore:50 interview:4.3 interviewScore:10 financeScore:70 authenScore:20
+
+Company: {id:60754 name:杭州新利科技有限公司 financeStage:上市公司}
+Score:90 position:13个 positionScore:-20 interview:4.2 interviewScore:20 financeScore:70 authenScore:20
+
+
+Company: {id:11261 name:支付宝 financeStage:D轮及以上}
+Score:10 position:2个 positionScore:-20 interview:1.0 interviewScore:-40 financeScore:70 authenScore:0
+
+Company: {id:108 name:杭州卷瓜网络有限公司 financeStage:D轮及以上}
+Score:110 position:57个 positionScore:0 interview:4.0 interviewScore:20 financeScore:70 authenScore:20
+
+Company: {id:50354 name:浙江百世技术有限公司 financeStage:D轮及以上}
+Score:80 position:11个 positionScore:-20 interview:4.4 interviewScore:10 financeScore:70 authenScore:20
+
+Company: {id:13163 name:浙江每日互动网络科技股份有限公司 financeStage:D轮及以上}
+Score:140 position:215个 positionScore:50 interview:3.3 interviewScore:0 financeScore:70 authenScore:20
+
+Company: {id:749 name:支付宝（中国）网络技术有限公司 financeStage:D轮及以上}
+Score:60 position:5个 positionScore:-20 interview:4.3 interviewScore:10 financeScore:70 authenScore:0
+
+Company: {id:153849 name:支付宝(杭州)信息技术有限公司 financeStage:D轮及以上}
+Score:110 position:37个 positionScore:0 interview:3.9 interviewScore:20 financeScore:70 authenScore:20
+
+Company: {id:2474 name:北京小桔科技有限公司 financeStage:D轮及以上}
+Score:130 position:410个 positionScore:50 interview:3.6 interviewScore:10 financeScore:70 authenScore:0
+
+Company: {id:3770 name:杭州九言科技股份有限公司 financeStage:B轮}
+Score:110 position:86个 positionScore:20 interview:4.3 interviewScore:20 financeScore:50 authenScore:20
+
+Company: {id:4448 name:杭州财米科技有限公司 financeStage:B轮}
+Score:80 position:26个 positionScore:0 interview:4.2 interviewScore:10 financeScore:50 authenScore:20
+
+Company: {id:7443 name:杭州数游软件科技有限公司 financeStage:不需要融资}
+Score:60 position:15个 positionScore:0 interview:4.1 interviewScore:0 financeScore:40 authenScore:20
+
+Company: {id:7461 name:杭州有赞科技有限公司 financeStage:B轮}
+Score:110 position:92个 positionScore:20 interview:4.3 interviewScore:20 financeScore:50 authenScore:20
+
+
+Company: {id:9689 name:杭州绿漫科技有限公司 financeStage:不需要融资}
+Score:60 position:9个 positionScore:0 interview:4.2 interviewScore:0 financeScore:40 authenScore:20
+
+Company: {id:10505 name:上海新炬网络技术有限公司 financeStage:不需要融资}
+Score:50 position:5个 positionScore:-10 interview:4.1 interviewScore:0 financeScore:40 authenScore:20
+
+
+
+Company: {id:13527 name:杭州泰联科技有限公司 financeStage:B轮}
+Score:65 position:3个 positionScore:-15 interview:4.0 interviewScore:10 financeScore:50 authenScore:20
+
+Company: {id:14109 name:杭州鼎好科技有限公司 financeStage:未融资}
+Score:40 position:5个 positionScore:-10 interview:4.3 interviewScore:0 financeScore:30 authenScore:20
+
+
+Company: {id:21891 name:杭州小卡科技有限公司 financeStage:C轮}
+Score:90 position:75个 positionScore:10 interview:3.4 interviewScore:0 financeScore:60 authenScore:20
+
+Company: {id:22222 name:杭州思伟信息科技有限公司 financeStage:A轮}
+Score:40 position:5个 positionScore:-10 interview:4.4 interviewScore:10 financeScore:20 authenScore:20
+
+Company: {id:22267 name:杭州树熊网络有限公司 financeStage:B轮}
+Score:75 position:9个 positionScore:-15 interview:4.3 interviewScore:20 financeScore:50 authenScore:20
+
+Company: {id:22774 name:妙资金融财富管理中心(杭州)有限公司 financeStage:不需要融资}
+Score:60 position:7个 positionScore:0 interview:4.0 interviewScore:0 financeScore:40 authenScore:20
+
+Company: {id:23252 name:杭州兑吧网络科技有限公司 financeStage:A轮}
+Score:80 position:36个 positionScore:20 interview:4.6 interviewScore:20 financeScore:20 authenScore:20
+
+Company: {id:23472 name:杭州博联智芯科技有限公司 financeStage:未融资}
+Score:40 position:5个 positionScore:-10 interview:5.0 interviewScore:0 financeScore:30 authenScore:20
+
+
+Company: {id:24785 name:杭州龙骞科技有限公司 financeStage:不需要融资}
+Score:50 position:5个 positionScore:-10 interview:3.5 interviewScore:0 financeScore:40 authenScore:20
+
+Company: {id:26378 name:杭州时代银通软件有限公司 financeStage:不需要融资}
+Score:50 position:5个 positionScore:-10 interview:3.0 interviewScore:0 financeScore:40 authenScore:20
+
+Company: {id:27155 name:上海维信荟智金融科技有限公司 financeStage:C轮}
+Score:90 position:68个 positionScore:10 interview:3.9 interviewScore:0 financeScore:60 authenScore:20
+
+Company: {id:27232 name:杭州随地付网络技术有限公司 financeStage:B轮}
+Score:80 position:19个 positionScore:0 interview:4.1 interviewScore:10 financeScore:50 authenScore:20
+
+Company: {id:28350 name:浙江卓锐信息技术有限公司 financeStage:A轮}
+Score:30 position:5个 positionScore:-10 interview:3.6 interviewScore:0 financeScore:20 authenScore:20
+
+Company: {id:31889 name:越亮传奇科技股份有限公司 financeStage:未融资}
+Score:60 position:63个 positionScore:10 interview:3.8 interviewScore:0 financeScore:30 authenScore:20
+
+Company: {id:32768 name:杭州尚尚签网络科技有限公司 financeStage:A轮}
+Score:60 position:34个 positionScore:20 interview:4.2 interviewScore:0 financeScore:20 authenScore:20
+
+Company: {id:32870 name:浙江成功软件开发有限公司 financeStage:不需要融资}
+Score:50 position:5个 positionScore:-10 interview:3.8 interviewScore:0 financeScore:40 authenScore:20
+
+Company: {id:34315 name:杭州涂鸦科技有限公司 financeStage:A轮}
+Score:40 position:16个 positionScore:0 interview:4.2 interviewScore:0 financeScore:20 authenScore:20
+
+Company: {id:36908 name:杭州天阙科技有限公司 financeStage:未融资}
+Score:40 position:4个 positionScore:-10 interview:4.4 interviewScore:0 financeScore:30 authenScore:20
+
+Company: {id:38272 name:浙江用友软件有限公司 financeStage:不需要融资}
+Score:50 position:5个 positionScore:-10 interview:3.0 interviewScore:0 financeScore:40 authenScore:20
+
+Company: {id:38286 name:杭州中焯信息技术股份有限公司 financeStage:不需要融资}
+Score:50 position:5个 positionScore:-10 interview:2.6 interviewScore:0 financeScore:40 authenScore:20
+
+Company: {id:40345 name:杭州星球部落信息服务有限公司 financeStage:A轮}
+Score:50 position:9个 positionScore:0 interview:5.0 interviewScore:10 financeScore:20 authenScore:20
+
+Company: {id:40463 name:杭州壹晨仟阳科技有限公司 financeStage:A轮}
+Score:40 position:8个 positionScore:0 interview:4.1 interviewScore:0 financeScore:20 authenScore:20
+
+Company: {id:40813 name:杭州贝安云科技有限公司 financeStage:未融资}
+Score:40 position:5个 positionScore:-10 interview:3.7 interviewScore:0 financeScore:30 authenScore:20
+
+
+Company: {id:40840 name:杭州中软安人网络通信有限公司 financeStage:未融资}
+Score:20 position:3个 positionScore:-10 interview:4.9 interviewScore:0 financeScore:30 authenScore:0
+
+Company: {id:41252 name:杭州网泰信息技术有限公司 financeStage:未融资}
+Score:40 position:5个 positionScore:-10 interview:3.3 interviewScore:0 financeScore:30 authenScore:20
+
+Company: {id:41984 name:爱财科技有限公司 financeStage:C轮}
+Score:90 position:35个 positionScore:0 interview:4.1 interviewScore:10 financeScore:60 authenScore:20
+
+Company: {id:42006 name:杭州聚盈网络科技有限公司 financeStage:天使轮}
+Score:15 position:1个 positionScore:-5 interview:4.3 interviewScore:10 financeScore:10 authenScore:0
+
+Company: {id:44364 name:杭州红点网络科技有限公司 financeStage:天使轮}
+Score:5 position:5个 positionScore:0 interview:3.4 interviewScore:-5 financeScore:10 authenScore:0
+
+Company: {id:45577 name:浙江万朋教育科技股份有限公司 financeStage:不需要融资}
+Score:30 position:5个 positionScore:-10 interview:4.0 interviewScore:0 financeScore:40 authenScore:0
+
+Company: {id:46016 name:杭州勤路软件有限公司 financeStage:不需要融资}
+Score:30 position:5个 positionScore:-10 interview:3.8 interviewScore:0 financeScore:40 authenScore:0
+
+Company: {id:48687 name:珠海市魅族科技有限公司 financeStage:A轮}
+Score:100 position:55个 positionScore:40 interview:4.5 interviewScore:20 financeScore:20 authenScore:20
+
+
+Company: {id:49855 name:杭州市尚洛网络技术有限公司 financeStage:不需要融资}
+Score:50 position:4个 positionScore:-10 interview:3.9 interviewScore:0 financeScore:40 authenScore:20
+
+
+Company: {id:51617 name:杭州小农网络科技有限公司 financeStage:A轮}
+Score:60 position:10个 positionScore:0 interview:4.5 interviewScore:20 financeScore:20 authenScore:20
+
+Company: {id:51881 name:浙江小融网络科技股份有限公司 financeStage:A轮}
+Score:80 position:51个 positionScore:40 interview:4.2 interviewScore:0 financeScore:20 authenScore:20
+
+Company: {id:52108 name:杭州浙卓科技有限公司 financeStage:天使轮}
+Score:20 position:5个 positionScore:0 interview:5.0 interviewScore:10 financeScore:10 authenScore:0
+
+Company: {id:52809 name:上海新致软件股份有限公司 financeStage:C轮}
+Score:100 position:71个 positionScore:10 interview:4.1 interviewScore:10 financeScore:60 authenScore:20
+
+Company: {id:53426 name:杭州绿云科技有限公司 financeStage:A轮}
+Score:30 position:5个 positionScore:-10 interview:3.8 interviewScore:0 financeScore:20 authenScore:20
+
+Company: {id:54124 name:杭州摩嘎科技有限公司 financeStage:天使轮}
+Score:45 position:4个 positionScore:-5 interview:4.7 interviewScore:20 financeScore:10 authenScore:20
+
+Company: {id:55046 name:朗新科技股份有限公司 financeStage:不需要融资}
+Score:50 position:5个 positionScore:-10 interview:4.1 interviewScore:0 financeScore:40 authenScore:20
+
+Company: {id:55348 name:杭州万盈网络科技有限公司 financeStage:天使轮}
+Score:30 position:5个 positionScore:0 interview:4.0 interviewScore:0 financeScore:10 authenScore:20
+
+Company: {id:60045 name:杭州瓜舟网络科技有限公司 financeStage:不需要融资}
+Score:50 position:4个 positionScore:-10 interview:4.2 interviewScore:0 financeScore:40 authenScore:20
+
+Company: {id:60254 name:杭州导领科技有限公司 financeStage:天使轮}
+Score:35 position:4个 positionScore:-5 interview:4.3 interviewScore:10 financeScore:10 authenScore:20
+
+
+Company: {id:61529 name:杭州古川科技有限公司 financeStage:未融资}
+Score:50 position:25个 positionScore:0 interview:4.2 interviewScore:0 financeScore:30 authenScore:20
+
+
+Company: {id:64383 name:杭州恰途科技有限公司 financeStage:天使轮}
+Score:40 position:5个 positionScore:0 interview:4.4 interviewScore:10 financeScore:10 authenScore:20
+
+Company: {id:64827 name:杭州新视窗信息技术有限公司 financeStage:未融资}
+Score:40 position:5个 positionScore:-10 interview:5.0 interviewScore:0 financeScore:30 authenScore:20
+
+Company: {id:65313 name:浙江保融科技有限公司 financeStage:不需要融资}
+Score:60 position:31个 positionScore:0 interview:4.5 interviewScore:0 financeScore:40 authenScore:20
+
+Company: {id:65593 name:浙江协同数据系统有限公司 financeStage:不需要融资}
+Score:60 position:11个 positionScore:0 interview:4.1 interviewScore:0 financeScore:40 authenScore:20
+
+Company: {id:66658 name:杭州时投信息科技有限公司 financeStage:A轮}
+Score:40 position:5个 positionScore:-10 interview:4.4 interviewScore:10 financeScore:20 authenScore:20
+
+Company: {id:67077 name:杭州牛经数据技术有限公司 financeStage:不需要融资}
+Score:65 position:53个 positionScore:5 interview:4.4 interviewScore:0 financeScore:40 authenScore:20
+
+Company: {id:69731 name:杭州橙子信息科技有限公司 financeStage:A轮}
+Score:60 position:12个 positionScore:0 interview:4.5 interviewScore:20 financeScore:20 authenScore:20
+
+Company: {id:71614 name:泽达易盛(天津)科技股份有限公司 financeStage:B轮}
+Score:80 position:12个 positionScore:0 interview:4.1 interviewScore:10 financeScore:50 authenScore:20
+
+
+Company: {id:73288 name:杭州一喂智能科技有限公司 financeStage:未融资}
+Score:40 position:5个 positionScore:-10 interview:null interviewScore:0 financeScore:30 authenScore:20
+
+Company: {id:73675 name:杭州木瓜科技有限公司 financeStage:A轮}
+Score:40 position:8个 positionScore:0 interview:4.2 interviewScore:0 financeScore:20 authenScore:20
+
+Company: {id:75068 name:杭州微易信息科技有限公司 financeStage:B轮}
+Score:90 position:24个 positionScore:0 interview:4.3 interviewScore:20 financeScore:50 authenScore:20
+
+Company: {id:78496 name:杭州伐木累网络科技有限公司 financeStage:A轮}
+Score:40 position:5个 positionScore:-10 interview:4.4 interviewScore:10 financeScore:20 authenScore:20
+
+Company: {id:79064 name:杭州星石网络科技有限公司 financeStage:天使轮}
+Score:40 position:5个 positionScore:0 interview:4.8 interviewScore:10 financeScore:10 authenScore:20
+
+
+Company: {id:82036 name:杭州红花朵朵网络技术有限公司 financeStage:A轮}
+Score:50 position:5个 positionScore:-10 interview:4.7 interviewScore:20 financeScore:20 authenScore:20
+
+Company: {id:82381 name:浙江格家网络技术有限公司 financeStage:A轮}
+Score:80 position:59个 positionScore:40 interview:4.2 interviewScore:0 financeScore:20 authenScore:20
+
+Company: {id:83144 name:杭州海洽网络科技有限公司 financeStage:天使轮}
+Score:5 position:4个 positionScore:-5 interview:4.0 interviewScore:0 financeScore:10 authenScore:0
+
+
+Company: {id:87100 name:杭州信牛网络科技有限公司 financeStage:A轮}
+Score:50 position:10个 positionScore:0 interview:4.4 interviewScore:10 financeScore:20 authenScore:20
+
+Company: {id:88003 name:杭州瑞琦信息技术有限公司 financeStage:未融资}
+Score:20 position:3个 positionScore:-10 interview:3.0 interviewScore:0 financeScore:30 authenScore:0
+
+Company: {id:88497 name:杭州驿驴网络科技有限公司 financeStage:天使轮}
+Score:10 position:5个 positionScore:0 interview:4.2 interviewScore:0 financeScore:10 authenScore:0
+
+Company: {id:95097 name:杭州设维信息技术有限公司 financeStage:不需要融资}
+Score:50 position:5个 positionScore:-10 interview:4.5 interviewScore:0 financeScore:40 authenScore:20
+
+
+Company: {id:97014 name:杭州荣域网络科技有限公司 financeStage:天使轮}
+Score:25 position:2个 positionScore:-5 interview:null interviewScore:0 financeScore:10 authenScore:20
+
+Company: {id:97944 name:杭州大鱼网络科技有限公司 financeStage:A轮}
+Score:50 position:8个 positionScore:0 interview:4.4 interviewScore:10 financeScore:20 authenScore:20
+
+Company: {id:98702 name:浙江力太科技有限公司 financeStage:C轮}
+Score:100 position:12个 positionScore:0 interview:4.5 interviewScore:20 financeScore:60 authenScore:20
+
+
+Company: {id:100344 name:杭州大白科技有限公司 financeStage:天使轮}
+Score:40 position:5个 positionScore:0 interview:4.3 interviewScore:10 financeScore:10 authenScore:20
+
+Company: {id:102382 name:浙江易网科技股份有限公司 financeStage:未融资}
+Score:40 position:5个 positionScore:-10 interview:3.5 interviewScore:0 financeScore:30 authenScore:20
+
+Company: {id:103855 name:杭州青蜂网络科技有限公司 financeStage:天使轮}
+Score:25 position:2个 positionScore:-5 interview:3.7 interviewScore:0 financeScore:10 authenScore:20
+
+Company: {id:106310 name:北京天诚安信科技股份有限公司 financeStage:A轮}
+Score:30 position:3个 positionScore:-10 interview:null interviewScore:0 financeScore:20 authenScore:20
+
+Company: {id:108146 name:杭州迪尔西时尚科技有限公司 financeStage:A轮}
+Score:50 position:24个 positionScore:10 interview:4.0 interviewScore:0 financeScore:20 authenScore:20
+
+Company: {id:109503 name:深圳市沃特沃德股份有限公司 financeStage:不需要融资}
+Score:50 position:3个 positionScore:-10 interview:5.0 interviewScore:0 financeScore:40 authenScore:20
+
+Company: {id:113494 name:杭州米橙科技有限公司 financeStage:B轮}
+Score:55 position:4个 positionScore:-15 interview:null interviewScore:0 financeScore:50 authenScore:20
+
+Company: {id:113585 name:杭州食在有趣科技有限公司 financeStage:天使轮}
+Score:25 position:3个 positionScore:-5 interview:null interviewScore:0 financeScore:10 authenScore:20
+
+Company: {id:114161 name:杭州质子科技有限公司 financeStage:天使轮}
+Score:40 position:6个 positionScore:0 interview:4.4 interviewScore:10 financeScore:10 authenScore:20
+
+Company: {id:115707 name:杭州妈妈去哪儿网络科技有限公司 financeStage:A轮}
+Score:40 position:16个 positionScore:0 interview:3.8 interviewScore:0 financeScore:20 authenScore:20
+
+Company: {id:116816 name:杭州龙境科技有限公司 financeStage:A轮}
+Score:40 position:3个 positionScore:-10 interview:4.4 interviewScore:10 financeScore:20 authenScore:20
+
+Company: {id:118306 name:杭州禾伟科技有限公司 financeStage:不需要融资}
+Score:50 position:1个 positionScore:-10 interview:null interviewScore:0 financeScore:40 authenScore:20
+
+Company: {id:119551 name:杭州宠邦网络科技有限公司 financeStage:天使轮}
+Score:35 position:2个 positionScore:-5 interview:4.3 interviewScore:10 financeScore:10 authenScore:20
+
+Company: {id:119598 name:杭州当虹科技有限公司 financeStage:B轮}
+Score:55 position:5个 positionScore:-15 interview:null interviewScore:0 financeScore:50 authenScore:20
+
+Company: {id:120212 name:杭州登虹科技有限公司 financeStage:B轮}
+Score:55 position:5个 positionScore:-15 interview:null interviewScore:0 financeScore:50 authenScore:20
+
+Company: {id:120577 name:杭州杰竞科技有限公司 financeStage:A轮}
+Score:30 position:5个 positionScore:-10 interview:4.1 interviewScore:0 financeScore:20 authenScore:20
+
+
+Company: {id:121229 name:惠龙易通国际物流股份有限公司 financeStage:不需要融资}
+Score:50 position:2个 positionScore:-10 interview:4.0 interviewScore:0 financeScore:40 authenScore:20
+
+Company: {id:121397 name:杭州上上铺网络科技有限公司 financeStage:天使轮}
+Score:45 position:2个 positionScore:-5 interview:4.5 interviewScore:20 financeScore:10 authenScore:20
+
+Company: {id:123777 name:北京通力互联技术服务有限公司 financeStage:不需要融资}
+Score:60 position:6个 positionScore:0 interview:4.0 interviewScore:0 financeScore:40 authenScore:20
+
+Company: {id:125025 name:上海佩辉金融信息服务有限公司 financeStage:不需要融资}
+Score:50 position:5个 positionScore:-10 interview:4.3 interviewScore:0 financeScore:40 authenScore:20
+
+Company: {id:126020 name:杭州网新新思软件有限公司 financeStage:不需要融资}
+Score:50 position:5个 positionScore:-10 interview:null interviewScore:0 financeScore:40 authenScore:20
+
+Company: {id:126641 name:浙江禾连网络科技有限公司 financeStage:B轮}
+Score:80 position:15个 positionScore:0 interview:4.1 interviewScore:10 financeScore:50 authenScore:20
+
+Company: {id:127757 name:杭州百赚网络科技有限公司 financeStage:天使轮}
+Score:25 position:3个 positionScore:-5 interview:null interviewScore:0 financeScore:10 authenScore:20
+
+Company: {id:127947 name:杭州素女文化交流有限公司 financeStage:天使轮}
+Score:5 position:2个 positionScore:-5 interview:3.8 interviewScore:0 financeScore:10 authenScore:0
+
+Company: {id:128631 name:广州市仁创通讯科技有限公司 financeStage:不需要融资}
+Score:60 position:6个 positionScore:0 interview:4.3 interviewScore:0 financeScore:40 authenScore:20
+
+Company: {id:128782 name:杭州猋骑网络科技有限公司 financeStage:未融资}
+Score:40 position:2个 positionScore:-10 interview:4.3 interviewScore:0 financeScore:30 authenScore:20
+
+Company: {id:129647 name:上海幂群网络科技有限公司 financeStage:不需要融资}
+Score:30 position:4个 positionScore:-10 interview:5.0 interviewScore:0 financeScore:40 authenScore:0
+
+Company: {id:129648 name:上海易促网络技术有限公司 financeStage:不需要融资}
+Score:30 position:4个 positionScore:-10 interview:4.7 interviewScore:0 financeScore:40 authenScore:0
+
+Company: {id:131888 name:浙江当家网络有限公司 financeStage:未融资}
+Score:20 position:5个 positionScore:-10 interview:4.0 interviewScore:0 financeScore:30 authenScore:0
+
+Company: {id:132580 name:浙江卡富嘉科技有限公司 financeStage:未融资}
+Score:50 position:10个 positionScore:0 interview:4.3 interviewScore:0 financeScore:30 authenScore:20
+
+Company: {id:133257 name:安徽晖冠网络科技有限公司 financeStage:不需要融资}
+Score:30 position:3个 positionScore:-10 interview:3.6 interviewScore:0 financeScore:40 authenScore:0
+
+Company: {id:133339 name:杭州掌升财金融信息服务有限公司 financeStage:天使轮}
+Score:45 position:4个 positionScore:-5 interview:4.6 interviewScore:20 financeScore:10 authenScore:20
+
+Company: {id:133398 name:广州一禾企业管理有限公司 financeStage:A轮}
+Score:30 position:3个 positionScore:-10 interview:3.9 interviewScore:0 financeScore:20 authenScore:20
+
+Company: {id:134795 name:杭州每天健康管理有限公司 financeStage:A轮}
+Score:60 position:31个 positionScore:20 interview:4.0 interviewScore:0 financeScore:20 authenScore:20
+
+Company: {id:135309 name:上海亦蓁健康管理咨询有限公司 financeStage:未融资}
+Score:50 position:8个 positionScore:0 interview:4.3 interviewScore:0 financeScore:30 authenScore:20
+
+Company: {id:136968 name:杭州动蛙数码科技有限公司 financeStage:天使轮}
+Score:15 position:3个 positionScore:-5 interview:4.9 interviewScore:10 financeScore:10 authenScore:0
+
+Company: {id:139350 name:杭州信邦科技有限公司 financeStage:天使轮}
+Score:50 position:20个 positionScore:20 interview:4.2 interviewScore:0 financeScore:10 authenScore:20
+
+
+Company: {id:141397 name:浙江腾保网络科技有限公司 financeStage:A轮}
+Score:40 position:5个 positionScore:-10 interview:5.0 interviewScore:10 financeScore:20 authenScore:20
+
+Company: {id:142419 name:杭州尊兴网络科技有限公司 financeStage:不需要融资}
+Score:50 position:5个 positionScore:-10 interview:4.6 interviewScore:0 financeScore:40 authenScore:20
+
+Company: {id:143587 name:杭州拓道互联网金融服务有限公司 financeStage:A轮}
+Score:110 position:87个 positionScore:70 interview:4.2 interviewScore:0 financeScore:20 authenScore:20
+
+Company: {id:143634 name:浙江贯通科技有限公司 financeStage:不需要融资}
+Score:30 position:5个 positionScore:-10 interview:3.4 interviewScore:0 financeScore:40 authenScore:0
+
+Company: {id:144419 name:杭州以数科技有限公司 financeStage:天使轮}
+Score:25 position:4个 positionScore:-5 interview:null interviewScore:0 financeScore:10 authenScore:20
+
+Company: {id:145279 name:浙江创泰科技有限公司 financeStage:B轮}
+Score:55 position:5个 positionScore:-15 interview:null interviewScore:0 financeScore:50 authenScore:20
+
+Company: {id:145748 name:浙江胜握信息科技股份有限公司 financeStage:不需要融资}
+Score:50 position:3个 positionScore:-10 interview:null interviewScore:0 financeScore:40 authenScore:20
+
+Company: {id:146041 name:杭州托宝网络有限公司 financeStage:不需要融资}
+Score:50 position:4个 positionScore:-10 interview:5.0 interviewScore:0 financeScore:40 authenScore:20
+
+Company: {id:148409 name:浙江华坤道威数据科技有限公司 financeStage:不需要融资}
+Score:50 position:5个 positionScore:-10 interview:5.0 interviewScore:0 financeScore:40 authenScore:20
+
+Company: {id:150087 name:杭州湛联科技有限公司 financeStage:未融资}
+Score:20 position:5个 positionScore:-10 interview:2.0 interviewScore:0 financeScore:30 authenScore:0
+
+Company: {id:150922 name:河南鑫众力软件有限公司 financeStage:不需要融资}
+Score:40 position:6个 positionScore:0 interview:3.0 interviewScore:0 financeScore:40 authenScore:0
+
+
+Company: {id:154612 name:杭州昕程网络科技有限公司 financeStage:天使轮}
+Score:25 position:4个 positionScore:-5 interview:4.5 interviewScore:20 financeScore:10 authenScore:0
+
+Company: {id:154789 name:杭州数心网络科技有限公司 financeStage:天使轮}
+Score:60 position:18个 positionScore:10 interview:4.7 interviewScore:20 financeScore:10 authenScore:20
+
+Company: {id:155270 name:点雇网络技术（上海）有限公司 financeStage:天使轮}
+Score:5 position:5个 positionScore:0 interview:3.1 interviewScore:-5 financeScore:10 authenScore:0
+
+Company: {id:156898 name:杭州互纳科技有限公司 financeStage:天使轮}
+Score:20 position:5个 positionScore:0 interview:2.8 interviewScore:-10 financeScore:10 authenScore:20
+
+Company: {id:160934 name:浙江卫宁软件有限公司 financeStage:上市公司}
+Score:70 position:5个 positionScore:-20 interview:null interviewScore:0 financeScore:70 authenScore:20
+
+Company: {id:163169 name:文思海辉技术有限公司 financeStage:上市公司}
+Score:120 position:138个 positionScore:30 interview:null interviewScore:0 financeScore:70 authenScore:20
+
+Company: {id:167419 name:杭州课淘科技有限公司 financeStage:不需要融资}
+Score:30 position:5个 positionScore:-10 interview:4.8 interviewScore:0 financeScore:40 authenScore:0
+
+Company: {id:170701 name:杭州墨匠信息技术有限公司 financeStage:A轮}
+Score:30 position:4个 positionScore:-10 interview:null interviewScore:0 financeScore:20 authenScore:20
+
+Company: {id:171071 name:杭州伟滔金融信息服务有限公司 financeStage:不需要融资}
+Score:60 position:22个 positionScore:0 interview:4.9 interviewScore:0 financeScore:40 authenScore:20
+
+Company: {id:177709 name:杭州影川信息科技有限公司 financeStage:天使轮}
+Score:15 position:2个 positionScore:-5 interview:4.3 interviewScore:10 financeScore:10 authenScore:0
+
+Company: {id:178320 name:杭州知坤网络科技有限公司 financeStage:天使轮}
+Score:35 position:3个 positionScore:-5 interview:4.4 interviewScore:10 financeScore:10 authenScore:20
+
+Company: {id:179638 name:杭州诚善科技有限公司 financeStage:未融资}
+Score:40 position:5个 positionScore:-10 interview:null interviewScore:0 financeScore:30 authenScore:20
+
+Company: {id:182424 name:杭州拉趣科技有限公司 financeStage:不需要融资}
+Score:50 position:4个 positionScore:-10 interview:null interviewScore:0 financeScore:40 authenScore:20
+
+Company: {id:182849 name:浙江银江云计算技术有限公司 financeStage:未融资}
+Score:20 position:5个 positionScore:-10 interview:5.0 interviewScore:0 financeScore:30 authenScore:0
+
+Company: {id:187319 name:杭州正念科技有限公司 financeStage:天使轮}
+Score:20 position:5个 positionScore:0 interview:4.8 interviewScore:10 financeScore:10 authenScore:0
+
+
+Company: {id:191720 name:杭州大步健康管理有限公司 financeStage:A轮}
+Score:0 position:5个 positionScore:-10 interview:2.7 interviewScore:-10 financeScore:20 authenScore:0
+
+Company: {id:195175 name:浙江云检科技有限公司 financeStage:不需要融资}
+Score:50 position:3个 positionScore:-10 interview:null interviewScore:0 financeScore:40 authenScore:20
+

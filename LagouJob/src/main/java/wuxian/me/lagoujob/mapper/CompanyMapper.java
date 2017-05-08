@@ -15,4 +15,8 @@ public interface CompanyMapper {
     Company loadCompany(@Param("tableName") String tableName, @Param("company_id") long company_id);
 
     List<Company> loadAllCompanies(@Param("tableName") String tableName);
+
+    List<Company> loadCompanyAndLocation(@Param("companyTable") String companyTable,
+                                         @Param("locationTable") String locationTable,
+                                         @Param("company_id") long company_id);
 }

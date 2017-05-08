@@ -17,6 +17,8 @@ public class Location extends BaseModel {
     public String longitude;
     public String lantitude;
 
+    public long locationId;
+
     public Location() {
 
     }

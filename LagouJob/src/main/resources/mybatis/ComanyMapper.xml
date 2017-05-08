@@ -17,4 +17,28 @@
     <select id="loadAllCompanies" resultMap="company" useCache="false">
         select * from ${tableName}
     </select>
+
+    <!-- Fixme:这里用到的result都必须列出来 否则值不会被赋予 -->
+    <resultMap id="companyWithLocation" type="wuxian.me.lagoujob.model.lagou.Company">
+        <id property="company_id" column="company_id"/>
+        <result property="name" column="company_fullname"/>
+        <result property="shortName" column="company_shortname"/>
+        <result property="companySize" column="company_size"/>
+        <result property="interviewScore" column="score"/>
+        <!-- 注意这里的id 必须赋值 且必须是unique的！ -->
+        <collection property="locationList" ofType="wuxian.me.lagoujob.model.lagou.Location">
+            <id property="locationId" column="location_id"/>
+            <result property="location" column="location"/>
+        </collection>
+
+    </resultMap>
+
+    <select id="loadCompanyAndLocation" resultMap="companyWithLocation">
+        select
+        *
+        from ${companyTable} B
+        left outer join ${locationTable} A on B.company_id=A.company_id
+        where B.company_id=#{company_id}
+    </select>
+
 </mapper>

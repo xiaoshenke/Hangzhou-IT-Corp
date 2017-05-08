@@ -66,6 +66,13 @@ public class MainTest {
         //Company company = companyMapper.loadCompany(tb, 749);
         //System.out.println(company);
 
+        List<Company> list = companyMapper.loadCompanyAndLocation("companies", "locations", 191131);
+
+        for (Company company : list) {
+            System.out.println(company);
+        }
+
+        /*
         List<Company> list = companyMapper.loadAllCompanies(tb);
         list = Helper.fromCollection(Collections2.filter(list, new CompanyFilter()));
 
@@ -73,6 +80,7 @@ public class MainTest {
             company.score = ScoreUtil.calScore(company);
             print(company);
         }
+        */
     }
 
     private void print(Company company) {
