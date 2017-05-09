@@ -15,6 +15,7 @@
 
     <dependencies>
 
+        <!-- Fixme:java.lang.ClassNotFoundException: org.aspectj.weaver.World -->
         <!-- spring data access -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -176,4 +177,25 @@
         </dependency>
 
     </dependencies>
+
+    <!--
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                    <compilerArgs>
+                        <arg>-XDignore.symbol.file</arg>
+                    </compilerArgs>
+                    <fork>true</fork>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    -->
+
 </project>

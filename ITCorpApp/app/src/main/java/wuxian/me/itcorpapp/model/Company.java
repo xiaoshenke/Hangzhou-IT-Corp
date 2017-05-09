@@ -2,13 +2,15 @@ package wuxian.me.itcorpapp.model;
 
 import com.amap.api.maps2d.model.LatLng;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by wuxian on 5/5/2017.
  */
 
 public class Company extends BaseModel {
 
-    //public int area_id = -1;
     public long company_id;
     public String shortName;
 
@@ -18,7 +20,9 @@ public class Company extends BaseModel {
     public String companySize;
 
     public String logo;           //logo uri
-    public String location;
+
+    public List<Location> locationList;
+
     public double longitude;     //经度
     public double lantitude;        //纬度
 
@@ -27,7 +31,15 @@ public class Company extends BaseModel {
 
     public String description;//拉勾上的公司自我描述
 
-    public float score;      //
+    public int score;
+
+    public int finaceScore;
+
+    public int authenScore;
+
+    public int positionNumScore;
+
+    public int interScore;
 
     //Todo:根据不同的display level作出不同的显示
     //比如说在marker不同的z序,显示的图片的大小 或者给不同的颜色？？
@@ -47,8 +59,17 @@ public class Company extends BaseModel {
     }
 
     @Override
-    public LatLng getLatLng() {
-        return new LatLng(lantitude, longitude);
+    public List<LatLng> getLatLngs() {
+
+        if (locationList != null && locationList.size() != 0) {
+            List<LatLng> list = new ArrayList<>();
+            for (Location location : locationList) {
+                list.add(new LatLng(Double.parseDouble(location.lantitude),
+                        Double.parseDouble(location.longitude)));
+            }
+            return list;
+        }
+        return new ArrayList<>();
     }
 
     @Override

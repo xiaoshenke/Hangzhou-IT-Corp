@@ -176,7 +176,7 @@ public class MainTest {
     @Test
     public void testMockMVC() {
         try {
-            mockMvc.perform(MockMvcRequestBuilders.get("/list"))
+            mockMvc.perform(MockMvcRequestBuilders.get("/home.json"))
                     .andDo(MockMvcResultHandlers.print())
                     .andReturn();
         } catch (Exception e) {

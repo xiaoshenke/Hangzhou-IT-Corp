@@ -17,6 +17,7 @@ public class Location extends BaseModel {
     public String longitude;
     public String lantitude;
 
+    @Expose(serialize = false)
     public long locationId;
 
     public Location() {

@@ -14,6 +14,7 @@ import android.text.TextPaint;
 
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
+import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
@@ -26,7 +27,6 @@ import java.util.List;
 
 import wuxian.me.itcorpapp.R;
 import wuxian.me.itcorpapp.model.BaseModel;
-import wuxian.me.itcorpapp.model.Display;
 import wuxian.me.itcorpapp.util.Helper;
 
 /**
@@ -63,6 +63,11 @@ public class MarkerUtil {
         if (!inited) {
             return;
         }
+
+        if (model.getLatLngs().size() == 0) {
+            return;
+        }
+
         if (true || !forceRemote && failUris.contains(model.getIconUri())) {
             addMarkerFrom(aMap, model, model.getTitle());  //文字生成头像
             return;
@@ -75,24 +80,29 @@ public class MarkerUtil {
     //Todo: better showing custom
     private static void addMarkerFrom(AMap aMap, BaseModel model, String text) {
         Bitmap bm = genBitmapFrom(text);
-        MarkerOptions options = new MarkerOptions()
-                .position(model.getLatLng())
-                .title(model.getTitle())
-                .snippet(model.getSnippet())
-                .icon(BitmapDescriptorFactory.fromBitmap(bm));
-        aMap.addMarker(options);
+
+        for (LatLng latLng : model.getLatLngs()) {
+            MarkerOptions options = new MarkerOptions()
+                    .position(latLng)
+                    .title(model.getTitle())
+                    .snippet(model.getSnippet())
+                    .icon(BitmapDescriptorFactory.fromBitmap(bm));
+            aMap.addMarker(options);
+        }
 
     }
 
     //远程url生成marker图片
     //icon file大小太大 没法显示...
     private static void addMarkerFrom(AMap aMap, BaseModel model, File file) {
-        MarkerOptions options = new MarkerOptions()
-                .position(model.getLatLng())
-                .title(model.getTitle())
-                .snippet(model.getSnippet())
-                .icon(BitmapDescriptorFactory.fromFile(file.getAbsolutePath()));
-        aMap.addMarker(options);
+        for (LatLng latLng : model.getLatLngs()) {
+            MarkerOptions options = new MarkerOptions()
+                    .position(latLng)
+                    .title(model.getTitle())
+                    .snippet(model.getSnippet())
+                    .icon(BitmapDescriptorFactory.fromFile(file.getAbsolutePath()));
+            aMap.addMarker(options);
+        }
     }
 
     /**

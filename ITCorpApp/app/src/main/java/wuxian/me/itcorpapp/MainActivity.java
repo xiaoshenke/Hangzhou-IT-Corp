@@ -10,6 +10,8 @@ import android.view.View;
 
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.MapView;
+import com.android.volley.Response;
+import com.android.volley.toolbox.StringRequest;
 
 import java.util.List;
 
@@ -20,6 +22,7 @@ import wuxian.me.itcorpapp.map.MapLoaderHelper;
 import wuxian.me.itcorpapp.map.MarkerUtil;
 import wuxian.me.itcorpapp.map.OnMapLocatedListener;
 import wuxian.me.itcorpapp.model.Company;
+import wuxian.me.itcorpapp.volley.VolleyUtil;
 
 /**
  * @AMap:实际一个地图的控制器
@@ -45,6 +48,16 @@ public class MainActivity extends BaseActionbarActivity implements OnMapLocatedL
             return;
         }
 
+        Log.e(TAG, "send stringrequest ");
+        VolleyUtil.sendRequest(new StringRequest("http://127.0.0.1:8080/home.json",
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e(TAG, "receive response: " + response);
+                    }
+                }, null));
+
         ButterKnife.bind(this);
         mapView.onCreate(savedInstanceState);// 此方法必须重写
         mAMap = mapView.getMap();
@@ -67,6 +80,7 @@ public class MainActivity extends BaseActionbarActivity implements OnMapLocatedL
     }
 
     private void doMapDrawing() {
+        /*
         Company company = new Company();
         company.company_id = 749;
         company.name = "支付宝（中国）网络技术有限公司";
@@ -74,12 +88,12 @@ public class MainActivity extends BaseActionbarActivity implements OnMapLocatedL
         company.financeStage = "D轮及以上";
         company.webLink = "http://www.alipay.com";
         company.description = "支付宝（中国）网络技术有限公司是国内领先的第三方支付平台，2014年成为当前全球最大的移动支付厂商";
-
-        company.longitude = 120.125809;
-        company.lantitude = 30.272553;
-        company.location = "杭州西湖区江省杭州市黄龙时代广场B座";
+        //company.longitude = 120.125809;
+        //company.lantitude = 30.272553;
+        //company.location = "杭州西湖区江省杭州市黄龙时代广场B座";
 
         MarkerUtil.addMarker(mAMap, company);
+        */
 
     }
 

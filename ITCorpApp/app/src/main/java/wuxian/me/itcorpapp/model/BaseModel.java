@@ -2,6 +2,8 @@ package wuxian.me.itcorpapp.model;
 
 import com.amap.api.maps2d.model.LatLng;
 
+import java.util.List;
+
 /**
  * Created by wuxian on 5/5/2017.
  * <p>
@@ -25,7 +27,7 @@ public abstract class BaseModel {
 
     public abstract String getSnippet();
 
-    public abstract LatLng getLatLng();
+    public abstract List<LatLng> getLatLngs();
 
     //显示规则 若能下载到远程的uri 则显示远程的,否则显示@getTitle的图案
     public abstract String getIconUri();
