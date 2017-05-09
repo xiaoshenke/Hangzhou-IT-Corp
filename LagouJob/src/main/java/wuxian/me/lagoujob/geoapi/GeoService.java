@@ -28,6 +28,8 @@ public class GeoService {
     private GeoService() {
     }
 
+    //Fixme:目前调用的请求里面city是写死的,这样子比如说一家杭州公司的上海分公司通过这个接口返回的是空值
+    //我现在在数据库做的规避是一旦返回的是空值,那么数据库里的longitude,lantitude存的都是-1
     public static void asyncSendRequest(List<String> addressList, final @NotNull IGeoResultCallback callback) {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(URL_GAODE).newBuilder();
         urlBuilder.addQueryParameter("key", KEY);

@@ -5,8 +5,10 @@ import wuxian.me.lagoujob.model.lagou.Company;
 
 /**
  * Created by wuxian on 7/5/2017.
+ *
+ * 过滤掉一些没什么用的脏数据
  */
-public class CompanyFilter implements Predicate<Company> {
+public final class BaseCompanyFilter implements Predicate<Company> {
 
     public boolean test(Company input) {
         return apply(input);

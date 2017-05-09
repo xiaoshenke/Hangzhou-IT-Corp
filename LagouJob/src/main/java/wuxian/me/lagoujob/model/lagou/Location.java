@@ -39,11 +39,9 @@ public class Location extends BaseModel {
     }
 
     public String name() {
-        return "Location: {" + "company_id: " + company_id + " location: " + location + "}";
-    }
-
-    public String toJson() {
-        return null;
+        return "Location: {" + "company_id: " + company_id +
+                " location: " + location + " longitude: " +
+                longitude + " lantitude: " + lantitude + "}";
     }
 
     public long index() {

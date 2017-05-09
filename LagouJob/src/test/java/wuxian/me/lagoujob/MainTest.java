@@ -1,6 +1,5 @@
 package wuxian.me.lagoujob;
 
-import com.google.common.collect.Collections2;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,13 +20,12 @@ import wuxian.me.lagoujob.mapper.LocationMapper;
 import wuxian.me.lagoujob.mapper.TableMapper;
 import wuxian.me.lagoujob.model.lagou.Company;
 import wuxian.me.lagoujob.model.lagou.Location;
-import wuxian.me.lagoujob.util.CompanyFilter;
+import wuxian.me.lagoujob.util.BaseCompanyFilter;
+import wuxian.me.lagoujob.util.GeoFilter;
 import wuxian.me.lagoujob.util.Helper;
-import wuxian.me.lagoujob.util.ScoreUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Handler;
 
 /**
  * Created by wuxian on 1/5/2017.
@@ -61,12 +59,37 @@ public class MainTest {
     }
 
     @Test
+    public void testListControl() {
+        List<Company> companyList;//= companyMapper.loadCompany(Config.TABLE_COMPANY, Config.TABLE_LOCATION,55046);
+        companyList = companyMapper.loadAll(Config.TABLE_COMPANY, Config.TABLE_LOCATION);
+
+        companyList = Helper.filterAndReturn(companyList, new BaseCompanyFilter());
+
+        for (Company company : companyList) {
+            company.locationList = Helper.filterAndReturn(company.locationList, new GeoFilter());
+
+            print2(company);
+        }
+
+    }
+
+    private void print2(Company company) {
+        System.out.println("Company: {id:" + company.company_id + " name:"
+                + company.name + " locationNum: " +
+                (company.locationList == null ? 0 : company.locationList.size()) + "}");
+
+        for (Location location : company.locationList) {
+            System.out.println(location.name());
+        }
+    }
+
+    @Test
     public void testCompanyDB() {
         String tb = "companies";
         //Company company = companyMapper.loadCompany(tb, 749);
         //System.out.println(company);
 
-        List<Company> list = companyMapper.loadCompanyAndLocation("companies", "locations", 191131);
+        List<Company> list = companyMapper.loadCompany("companies", "locations", 191131);
 
         for (Company company : list) {
             System.out.println(company);
@@ -74,10 +97,10 @@ public class MainTest {
 
         /*
         List<Company> list = companyMapper.loadAllCompanies(tb);
-        list = Helper.fromCollection(Collections2.filter(list, new CompanyFilter()));
+        list = Helper.fromCollection(Collections2.filter(list, new BaseCompanyFilter()));
 
         for (Company company : list) {
-            company.score = ScoreUtil.calScore(company);
+            company.score = ScoreUtil.calScoreFieldOf(company);
             print(company);
         }
         */
@@ -98,11 +121,10 @@ public class MainTest {
     public void testChangeAll() {
         String tableName = "locations";
         Location.tableName = tableName;
-        Location location = new Location(106310, "");
-        List<Location> locations = locationMapper.loadLocation(tableName, 749);
+        List<Location> locations = locationMapper.loadAll(tableName);
 
         for (Location location1 : locations) {
-            //batchChange(location1);
+            batchChange(location1);
         }
 
         while (true) {
@@ -116,8 +138,15 @@ public class MainTest {
 
         GeoService.asyncSendRequest(addressList, new GeoService.IGeoResultCallback() {
             public void onResult(GeoResult result) {
+                System.out.println("" + location.locationId + result);
 
-                System.out.println(result);
+                if (result.count == 0) {
+                    location.longitude = "-1";
+                    location.lantitude = "-1";
+
+                    locationMapper.updateLocation(location);
+                }
+
                 for (int i = 0; i < result.count; i++) {
                     String s = result.geocodes.get(i).location;
                     String[] ss = s.split(",");
@@ -126,6 +155,11 @@ public class MainTest {
 
                         location.longitude = ss[0];
                         location.lantitude = ss[1];
+
+                        locationMapper.updateLocation(location);
+                    } else {
+                        location.longitude = "-1";
+                        location.lantitude = "-1";
 
                         locationMapper.updateLocation(location);
                     }

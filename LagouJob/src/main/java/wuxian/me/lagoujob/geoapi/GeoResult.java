@@ -21,7 +21,7 @@ public class GeoResult {
     public List<GeoCode> geocodes;
 
     public static class GeoCode {
-        //public String formatted_address;
+        public String formatted_address;
         public String province;
         public String citycode;
         public String city;

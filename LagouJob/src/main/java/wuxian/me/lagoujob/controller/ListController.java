@@ -1,8 +1,6 @@
 package wuxian.me.lagoujob.controller;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
-import com.sun.istack.internal.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -13,9 +11,11 @@ import wuxian.me.lagoujob.Config;
 import wuxian.me.lagoujob.mapper.CompanyMapper;
 import wuxian.me.lagoujob.mapper.LocationMapper;
 import wuxian.me.lagoujob.model.lagou.Company;
-import wuxian.me.lagoujob.model.lagou.Location;
+import wuxian.me.lagoujob.util.BaseCompanyFilter;
+import wuxian.me.lagoujob.util.GeoFilter;
+import wuxian.me.lagoujob.util.Helper;
+import wuxian.me.lagoujob.util.NoLocationCompanyFilter;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -35,19 +35,32 @@ public class ListController {
 
     @RequestMapping
     @ResponseBody
-    public Company list(@RequestParam(required = false) String city) {
+    public List<Company> list(@RequestParam(required = false) String city) {
 
         if (StringUtils.isEmpty(city)) {
             city = Config.DEFAULT_CITY;
         }
 
+        /*
         Company company = companyMapper.loadCompany(Config.TABLE_COMPANY, 749);
         company.calcScore();
-        //Todo: locations根据@city来进行帅选
         List<Location> locations = locationMapper.loadLocation(Config.TABLE_LOCATION, 749);
         company.locationList = locations;
+        */
 
-        return company;
+        List<Company> companyList = companyMapper.loadAll(Config.TABLE_COMPANY, Config.TABLE_LOCATION);
+
+        companyList = Helper.filterAndReturn(companyList, new BaseCompanyFilter());
+
+        for (Company company : companyList) {
+            company.locationList = Helper.filterAndReturn(company.locationList, new GeoFilter());
+        }
+
+        //Fixme:这说明这家单位在杭州只是一个分部 或者在拉勾上根本就没有location... 可以直接filter掉么？
+        //companyList = Helper.filterAndReturn(companyList,new NoLocationCompanyFilter());
+
+        return companyList;
     }
+
 
 }

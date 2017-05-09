@@ -41,25 +41,16 @@ public class Company extends BaseModel {
 
     public int score;
 
-    @Expose(serialize = false)
     public int finaceScore;
 
-    @Expose(serialize = false)
     public int authenScore;
 
-    @Expose(serialize = false)
     public int positionNumScore;
 
-    @Expose(serialize = false)
     public int interScore;
 
     public String name() {
         return "Company: {id: " + company_id + " name: " + name + "}";
-    }
-
-    //Todo:根据拉勾上的数据计算出一个公司的靠谱值
-    public void calcScore() {
-        score = 0;
     }
 
 }

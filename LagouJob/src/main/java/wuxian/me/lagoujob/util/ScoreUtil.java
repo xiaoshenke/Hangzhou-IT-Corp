@@ -10,8 +10,8 @@ public class ScoreUtil {
     private ScoreUtil() {
     }
 
-    public static int calScore(Company company) {
-
+    //赋值company的一些域比如@financeScore,@authenScore
+    public static void calScoreFieldOf(Company company) {
         int scores = 0;
         int score = 0;
 
@@ -31,7 +31,8 @@ public class ScoreUtil {
         company.interScore = score;
         scores += score;
 
-        return scores;
+        company.score = scores;
+        return;
     }
 
     //对于不同的公司 需求是不一样的 比如说大公司有很大的需求 那么说明这个公司有新业务

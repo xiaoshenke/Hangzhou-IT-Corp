@@ -5,7 +5,7 @@
 
     <update id="updateLocation" parameterType="wuxian.me.lagoujob.model.lagou.Location">
         update ${tableName} set longitude=#{longitude},lantitude=#{lantitude}
-        where company_id=#{company_id}
+        where location_id=#{locationId}
     </update>
 
     <select id="loadLocation" resultMap="location">
@@ -16,6 +16,12 @@
         select * from ${tableName}
     </select>
 
-    <resultMap id="location" type="wuxian.me.lagoujob.model.lagou.Location"/>
+    <resultMap id="location" type="wuxian.me.lagoujob.model.lagou.Location">
+        <id property="locationId" column="location_id"/>
+        <result property="location" column="location"/>
+        <result property="company_id" column="company_id"/>
+        <result property="longitude" column="longitude"/>
+        <result property="lantitude" column="lantitude"/>
+    </resultMap>
 
 </mapper>

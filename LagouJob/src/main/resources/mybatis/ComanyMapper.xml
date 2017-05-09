@@ -3,21 +3,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="wuxian.me.lagoujob.mapper.CompanyMapper">
 
-    <select id="loadCompany" resultMap="company">
-        select * from ${tableName} where company_id=#{company_id}
-    </select>
-
-    <resultMap id="company" type="wuxian.me.lagoujob.model.lagou.Company">
-        <result property="name" column="company_fullname"/>
-        <result property="shortName" column="company_shortname"/>
-        <result property="companySize" column="company_size"/>
-        <result property="interviewScore" column="score"/>
-    </resultMap>
-
-    <select id="loadAllCompanies" resultMap="company" useCache="false">
-        select * from ${tableName}
-    </select>
-
     <!-- Fixme:这里用到的result都必须列出来 否则值不会被赋予 -->
     <resultMap id="companyWithLocation" type="wuxian.me.lagoujob.model.lagou.Company">
         <id property="company_id" column="company_id"/>
@@ -25,15 +10,21 @@
         <result property="shortName" column="company_shortname"/>
         <result property="companySize" column="company_size"/>
         <result property="interviewScore" column="score"/>
+        <result property="financeStage" column="financeStage"/>
+        <result property="positionNum" column="positionNum"/>
+        <result property="lagouAuthentic" column="lagouAuthentic"/>
         <!-- 注意这里的id 必须赋值 且必须是unique的！ -->
         <collection property="locationList" ofType="wuxian.me.lagoujob.model.lagou.Location">
             <id property="locationId" column="location_id"/>
             <result property="location" column="location"/>
+            <result property="company_id" column="company_id"/>
+            <result property="longitude" column="longitude"/>
+            <result property="lantitude" column="lantitude"/>
         </collection>
 
     </resultMap>
 
-    <select id="loadCompanyAndLocation" resultMap="companyWithLocation">
+    <select id="loadCompany" resultMap="companyWithLocation">
         select
         *
         from ${companyTable} B
@@ -41,4 +32,30 @@
         where B.company_id=#{company_id}
     </select>
 
+    <select id="loadAll" resultMap="companyWithLocation">
+        select
+        *
+        from ${companyTable} B
+        left outer join ${locationTable} A on B.company_id=A.company_id
+    </select>
+
 </mapper>
+
+        <!--
+
+            <select id="loadCompany" resultMap="company">
+                select * from ${tableName} where company_id=#{company_id}
+            </select>
+
+            <resultMap id="company" type="wuxian.me.lagoujob.model.lagou.Company">
+                <result property="name" column="company_fullname"/>
+                <result property="shortName" column="company_shortname"/>
+                <result property="companySize" column="company_size"/>
+                <result property="interviewScore" column="score"/>
+            </resultMap>
+
+            <select id="loadAllCompanies" resultMap="company" useCache="false">
+                select * from ${tableName}
+            </select>
+
+        -->
