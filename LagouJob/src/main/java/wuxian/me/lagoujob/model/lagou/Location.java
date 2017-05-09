@@ -11,7 +11,6 @@ public class Location extends BaseModel {
 
     public String location;
 
-    @Expose(serialize = false)
     public long company_id;
 
     public String longitude;

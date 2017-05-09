@@ -15,6 +15,8 @@ public class ScoreUtil {
         int scores = 0;
         int score = 0;
 
+        company.stage = FinanceUtil.from(company).getValue();
+
         score = calFinanceScore(company);
         company.finaceScore = score;
         scores += score;

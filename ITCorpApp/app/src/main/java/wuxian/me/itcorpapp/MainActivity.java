@@ -11,17 +11,24 @@ import android.view.View;
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.model.CameraPosition;
+import com.android.volley.Response;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import wuxian.me.itcorpapp.api.Api;
 import wuxian.me.itcorpapp.base.BaseActionbarActivity;
+import wuxian.me.itcorpapp.greendao.GreenDaoHelper;
 import wuxian.me.itcorpapp.map.MapLoaderHelper;
 import wuxian.me.itcorpapp.map.MarkerUtil;
 import wuxian.me.itcorpapp.map.OnMapLocatedListener;
 import wuxian.me.itcorpapp.model.Company;
+import wuxian.me.itcorpapp.util.VisibleOption;
+import wuxian.me.itcorpapp.volley.GsonRequest;
+import wuxian.me.itcorpapp.volley.VolleyUtil;
 
 /**
  * @AMap:实际一个地图的控制器
@@ -39,11 +46,15 @@ public class MainActivity extends BaseActionbarActivity implements OnMapLocatedL
     private AMap mAMap;
 
     private boolean mMapLocationed = false;
+    private boolean mDataloaded = false;
+
+    //Todo:网络请求 然后存入dao
+    private List<Company> companyList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(isRequestingPermission()){
+        if (isRequestingPermission()) {
             return;
         }
 
@@ -52,49 +63,82 @@ public class MainActivity extends BaseActionbarActivity implements OnMapLocatedL
         mAMap = mapView.getMap();
         mMapLoader = new MapLoaderHelper(this, mAMap, this);
 
-        loadMap();
+        mMapLoader.loadMap();
+
+        loadData();
+    }
+
+    private void loadData() {
+        companyList = GreenDaoHelper.companyDao().loadAll();
+        if (companyList == null || companyList.size() == 0) {
+            VolleyUtil.sendRequest(new GsonRequest(Api.LIST,
+                    new TypeToken<List<Company>>() {
+                    },
+                    new Response.Listener<List<Company>>() {
+                        @Override
+                        public void onResponse(List<Company> response) {
+                            for (Company company : response) {
+                                GreenDaoHelper.companyDao().insert(company);
+                            }
+                            companyList = response;
+                            mDataloaded = true;
+                            maybeDisplay();
+
+                        }
+                    }, null));
+        } else {
+            mDataloaded = true;
+            maybeDisplay();
+        }
+    }
+
+    private void maybeDisplay() {
+        if (mMapLocationed && mDataloaded) {
+            mAMap.setOnCameraChangeListener(new AMap.OnCameraChangeListener() {
+                @Override
+                public void onCameraChange(CameraPosition cameraPosition) {
+                    Log.i(TAG, "onCameraChange, " + cameraPosition.toString());
+                }
+
+                @Override
+                public void onCameraChangeFinish(CameraPosition cameraPosition) {
+                    //Todo: 优化 不应该每次变化都reRender,cpu消耗太高
+                    drawEveryFrameWith(cameraPosition);
+                }
+            });
+            drawEveryFrameWith(mAMap.getCameraPosition());
+        }
     }
 
     @Override
     public void onMapLocated(Location location) {
         mMapLocationed = true;
-
-        Log.e(TAG, "location: " + location.getLongitude() + " ," + location.getLatitude());
-
-        doMapDrawing();
+        maybeDisplay();
+        Log.i(TAG, "location: " + location.getLongitude() + " ," + location.getLatitude());
     }
 
-    private void loadMap() {
-        mMapLoader.loadMap();
+    private void drawEveryFrameWith(@NonNull CameraPosition position) {
+        mAMap.clear(); //先清除
+
+        VisibleOption visibleOption = new VisibleOption();
+        visibleOption.cameraZoom = position.zoom;
+        for (Company company : companyList) {
+
+            if (company.isVisibleWithOption(visibleOption)) {  //本身判定自己可见 那么显示
+                MarkerUtil.addMarker(mAMap, company);
+            }
+        }
     }
 
     private void doMapDrawing() {
-        mAMap.setOnCameraChangeListener(new AMap.OnCameraChangeListener() {
-            @Override
-            public void onCameraChange(CameraPosition cameraPosition) {
-                Log.e(TAG, "onCameraChange, " + cameraPosition.toString());
-
-                if (cameraPosition.zoom > 11) {
-                    mAMap.clear();
-                }
-            }
-
-            @Override
-            public void onCameraChangeFinish(CameraPosition cameraPosition) {
-
-            }
-        });
-
+        /*
         Company company = new Company();
         company.company_id = 749;
         company.name = "支付宝（中国）网络技术有限公司";
         company.logo = "http://www.lgstatic.com/thumbnail_300x300/image1/M00/00/04/CgYXBlTUV_6AdvqVAAApge7s8yA551.jpg";
-        company.financeStage = "D轮及以上";
+        company.financeStage = Finance.STAGE_D_OR_PLUS.getValue();
         company.webLink = "http://www.alipay.com";
         company.description = "支付宝（中国）网络技术有限公司是国内领先的第三方支付平台，2014年成为当前全球最大的移动支付厂商";
-        //company.longitude = 120.125809;
-        //company.lantitude = 30.272553;
-        //company.location = "杭州西湖区江省杭州市黄龙时代广场B座";
 
         wuxian.me.itcorpapp.model.Location location = new wuxian.me.itcorpapp.model.Location();
         location.lantitude = String.valueOf(30.272553);
@@ -105,18 +149,16 @@ public class MainActivity extends BaseActionbarActivity implements OnMapLocatedL
         company.locationList = locations;
 
         MarkerUtil.addMarker(mAMap, company);
-
-
+        */
     }
 
-    protected List<String> getRequestPermission(){
+    protected List<String> getRequestPermission() {
         List<String> list = super.getRequestPermission();
-        if(!list.contains(Manifest.permission.ACCESS_COARSE_LOCATION)){
+        if (!list.contains(Manifest.permission.ACCESS_COARSE_LOCATION)) {
             list.add(Manifest.permission.ACCESS_COARSE_LOCATION);
         }
         return list;
     }
-
 
     @Override
     protected void onDestroy() {

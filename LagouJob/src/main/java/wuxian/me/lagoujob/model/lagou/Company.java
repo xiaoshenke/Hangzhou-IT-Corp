@@ -25,6 +25,9 @@ public class Company extends BaseModel {
 
     public List<Location> locationList;
 
+    public int stage;
+
+    @Expose(serialize = false)
     public String financeStage;  //公司融资轮次
     public String webLink;       //公司主页
 

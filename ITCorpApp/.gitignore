@@ -11,3 +11,5 @@ android.keystore
 .idea
 .idea/vcs.xml
 keystore.properties
+build
+build/generated

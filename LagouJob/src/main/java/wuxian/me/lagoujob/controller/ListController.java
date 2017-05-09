@@ -11,10 +11,7 @@ import wuxian.me.lagoujob.Config;
 import wuxian.me.lagoujob.mapper.CompanyMapper;
 import wuxian.me.lagoujob.mapper.LocationMapper;
 import wuxian.me.lagoujob.model.lagou.Company;
-import wuxian.me.lagoujob.util.BaseCompanyFilter;
-import wuxian.me.lagoujob.util.GeoFilter;
-import wuxian.me.lagoujob.util.Helper;
-import wuxian.me.lagoujob.util.NoLocationCompanyFilter;
+import wuxian.me.lagoujob.util.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -54,6 +51,8 @@ public class ListController {
 
         for (Company company : companyList) {
             company.locationList = Helper.filterAndReturn(company.locationList, new GeoFilter());
+
+            ScoreUtil.calScoreFieldOf(company);
         }
 
         //Fixme:这说明这家单位在杭州只是一个分部 或者在拉勾上根本就没有location... 可以直接filter掉么？

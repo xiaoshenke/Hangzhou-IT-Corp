@@ -6,13 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eab34228-edfc-44e7-bc45-cb52fa74264f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/Config.java" afterPath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/Config.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/core/CompanySpider.java" afterPath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/core/CompanySpider.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/model/Company.java" afterPath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/model/Company.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/save/CompanyJsonSaver.java" afterPath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/save/CompanyJsonSaver.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../LagouSpider/src/main/resources/mybatis/ComanyMapper.xml" afterPath="$PROJECT_DIR$/../LagouSpider/src/main/resources/mybatis/ComanyMapper.xml" />
-    </list>
+    <list default="true" id="eab34228-edfc-44e7-bc45-cb52fa74264f" name="Default" comment="" />
     <ignored path="SpiderSDK.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -764,6 +758,7 @@
       <workItem from="1493885232763" duration="125000" />
       <workItem from="1493973140765" duration="75000" />
       <workItem from="1494012310623" duration="1222000" />
+      <workItem from="1494332645628" duration="1000" />
     </task>
     <servers />
   </component>
@@ -800,7 +795,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="17970000" />
+    <option name="totallyTimeSpent" value="17971000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="181" y="23" width="1020" height="652" extended-state="0" />
@@ -1125,7 +1120,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
           <caret line="14" column="42" selection-start-line="14" selection-start-column="42" selection-end-line="14" selection-end-column="42" />
-          <folding />
         </state>
       </provider>
     </entry>
