@@ -1,6 +1,5 @@
 package wuxian.me.lagoujob;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,11 +51,6 @@ public class MainTest {
 
     @Autowired
     private WebApplicationContext wac;
-
-    @Before
-    public void setUp() throws Exception {
-        mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-    }
 
     @Test
     public void testListControl() {
@@ -175,6 +169,7 @@ public class MainTest {
 
     @Test
     public void testMockMVC() {
+        mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
         try {
             mockMvc.perform(MockMvcRequestBuilders.get("/home.json"))
                     .andDo(MockMvcResultHandlers.print())

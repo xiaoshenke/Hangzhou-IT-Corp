@@ -15,7 +15,7 @@ public class HomeController {
     }
 
     @RequestMapping(value = {"/home"})
-    //@ResponseBody
+    @ResponseBody
     public String index() {
         System.out.println("home");
         return "index";

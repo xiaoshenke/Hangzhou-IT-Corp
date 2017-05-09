@@ -1,9 +1,14 @@
 package wuxian.me.itcorpapp.model;
 
+import android.support.annotation.Nullable;
+
 import com.amap.api.maps2d.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import wuxian.me.itcorpapp.util.VisibleOption;
+import wuxian.me.itcorpapp.util.VisibleUtil;
 
 /**
  * Created by wuxian on 5/5/2017.
@@ -26,7 +31,11 @@ public class Company extends BaseModel {
     public double longitude;     //经度
     public double lantitude;        //纬度
 
-    public String financeStage;  //公司融资轮次
+    //Todo: LagouWeb接口需要改成int型
+    //public String financeStage;  //公司融资轮次
+
+    public int financeStage;
+
     public String webLink;       //公司主页
 
     public String description;//拉勾上的公司自我描述
@@ -41,13 +50,6 @@ public class Company extends BaseModel {
 
     public int interScore;
 
-    //Todo:根据不同的display level作出不同的显示
-    //比如说在marker不同的z序,显示的图片的大小 或者给不同的颜色？？
-    @Override
-    public int getDisplayLevel() {
-        return Display.LEVEL_1;
-    }
-
     @Override
     public String getTitle() {
         return name;
@@ -55,7 +57,7 @@ public class Company extends BaseModel {
 
     @Override
     public String getSnippet() {
-        return financeStage;
+        return industryField;
     }
 
     @Override
@@ -75,5 +77,13 @@ public class Company extends BaseModel {
     @Override
     public String getIconUri() {
         return logo;
+    }
+
+    //SHOULD BE CALCULATED EVERYTIME!
+    public boolean isVisible(@Nullable VisibleOption option) {
+        if (option == null) {
+            option = VisibleOption.DEFAULT;
+        }
+        return VisibleUtil.isVisible(this, option);
     }
 }

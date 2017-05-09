@@ -9,7 +9,6 @@ import java.util.List;
  * <p>
  * 用于高德API的@Marker显示用
  * <p>
- * Todo: To be finished
  */
 
 public abstract class BaseModel {
@@ -20,8 +19,6 @@ public abstract class BaseModel {
     public int getDisplayType() {
         return TYPE_MARKER;
     }
-
-    public abstract int getDisplayLevel();
 
     public abstract String getTitle();
 

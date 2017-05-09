@@ -10,9 +10,9 @@ import android.view.View;
 
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.MapView;
-import com.android.volley.Response;
-import com.android.volley.toolbox.StringRequest;
+import com.amap.api.maps2d.model.CameraPosition;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -22,7 +22,6 @@ import wuxian.me.itcorpapp.map.MapLoaderHelper;
 import wuxian.me.itcorpapp.map.MarkerUtil;
 import wuxian.me.itcorpapp.map.OnMapLocatedListener;
 import wuxian.me.itcorpapp.model.Company;
-import wuxian.me.itcorpapp.volley.VolleyUtil;
 
 /**
  * @AMap:实际一个地图的控制器
@@ -48,16 +47,6 @@ public class MainActivity extends BaseActionbarActivity implements OnMapLocatedL
             return;
         }
 
-        Log.e(TAG, "send stringrequest ");
-        VolleyUtil.sendRequest(new StringRequest("http://127.0.0.1:8080/home.json",
-                new Response.Listener<String>() {
-
-                    @Override
-                    public void onResponse(String response) {
-                        Log.e(TAG, "receive response: " + response);
-                    }
-                }, null));
-
         ButterKnife.bind(this);
         mapView.onCreate(savedInstanceState);// 此方法必须重写
         mAMap = mapView.getMap();
@@ -80,7 +69,22 @@ public class MainActivity extends BaseActionbarActivity implements OnMapLocatedL
     }
 
     private void doMapDrawing() {
-        /*
+        mAMap.setOnCameraChangeListener(new AMap.OnCameraChangeListener() {
+            @Override
+            public void onCameraChange(CameraPosition cameraPosition) {
+                Log.e(TAG, "onCameraChange, " + cameraPosition.toString());
+
+                if (cameraPosition.zoom > 11) {
+                    mAMap.clear();
+                }
+            }
+
+            @Override
+            public void onCameraChangeFinish(CameraPosition cameraPosition) {
+
+            }
+        });
+
         Company company = new Company();
         company.company_id = 749;
         company.name = "支付宝（中国）网络技术有限公司";
@@ -92,8 +96,16 @@ public class MainActivity extends BaseActionbarActivity implements OnMapLocatedL
         //company.lantitude = 30.272553;
         //company.location = "杭州西湖区江省杭州市黄龙时代广场B座";
 
+        wuxian.me.itcorpapp.model.Location location = new wuxian.me.itcorpapp.model.Location();
+        location.lantitude = String.valueOf(30.272553);
+        location.longitude = String.valueOf(120.125809);
+
+        List<wuxian.me.itcorpapp.model.Location> locations = new ArrayList<>();
+        locations.add(location);
+        company.locationList = locations;
+
         MarkerUtil.addMarker(mAMap, company);
-        */
+
 
     }
 

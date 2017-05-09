@@ -7,13 +7,10 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
 
-    <!--
-    <context:component-scan base-package="wuxian.me.lagoujob.mapper" >
-        <context:include-filter type="aspectj" expression="wuxian.me.lagoujob.mapper.*"/>
-    </context:component-scan>
-    -->
     <context:component-scan base-package="wuxian.me.lagoujob">
+        <!-- Fixme:
         <context:include-filter type="aspectj" expression="wuxian.me.lagoujob.*"/>
+        -->
     </context:component-scan>
 
     <context:property-placeholder ignore-unresolvable="true"
@@ -70,7 +67,6 @@
 
 
     <mvc:view-controller path="/" view-name="redirect:/home"/>
-
 
     <!-- 默认错误网页 -->
 </beans>

@@ -1,9 +1,12 @@
 package wuxian.me.itcorpapp.volley;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 /**
@@ -11,6 +14,7 @@ import com.android.volley.toolbox.Volley;
  */
 
 public class VolleyUtil {
+    private static final String TAG = "VolleyUtil";
 
     static RequestQueue requestQueue;
 
@@ -30,4 +34,15 @@ public class VolleyUtil {
         requestQueue.add(request);
     }
 
+    public static void testVolley() {
+        Log.e(TAG, "send stringrequest ");
+        VolleyUtil.sendRequest(new StringRequest("http://192.168.13.187:8081/home",
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e(TAG, "receive response: " + response);
+                    }
+                }, null));
+    }
 }
