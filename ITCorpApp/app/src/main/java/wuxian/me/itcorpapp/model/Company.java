@@ -119,6 +119,11 @@ public class Company extends BaseModel {
     }
 
     @Override
+    public float getZIndex() {
+        return VisibleUtil.getZIndexOf(this);
+    }
+
+    @Override
     public String getIconUri() {
         return logo;
     }

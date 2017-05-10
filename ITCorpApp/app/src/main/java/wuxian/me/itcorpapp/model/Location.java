@@ -4,6 +4,7 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Index;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Property;
 
 /**
  * Created by wuxian on 9/5/2017.
@@ -13,13 +14,20 @@ import org.greenrobot.greendao.annotation.Generated;
 public class Location {
 
     @Index
+    @Property(nameInDb = "company_id")
     public long company_id;
 
     @Id(autoincrement = true)
+    @Property(nameInDb = "location_id")
     public long locationId;
 
+    @Property(nameInDb = "location_des")
     public String location;
+
+    @Property(nameInDb = "longitude")
     public String longitude;
+
+    @Property(nameInDb = "lantitude")
     public String lantitude;
 
     public Location() {

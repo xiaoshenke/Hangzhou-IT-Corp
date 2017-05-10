@@ -86,6 +86,7 @@ public class MarkerUtil {
                     .position(latLng)
                     .title(model.getTitle())
                     .snippet(model.getSnippet())
+                    .zIndex(model.getZIndex())
                     .icon(BitmapDescriptorFactory.fromBitmap(bm));
             aMap.addMarker(options);
         }

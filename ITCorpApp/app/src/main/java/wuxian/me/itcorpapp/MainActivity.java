@@ -14,6 +14,8 @@ import com.amap.api.maps2d.model.CameraPosition;
 import com.android.volley.Response;
 import com.google.gson.reflect.TypeToken;
 
+import org.greenrobot.greendao.query.QueryBuilder;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +28,7 @@ import wuxian.me.itcorpapp.map.MapLoaderHelper;
 import wuxian.me.itcorpapp.map.MarkerUtil;
 import wuxian.me.itcorpapp.map.OnMapLocatedListener;
 import wuxian.me.itcorpapp.model.Company;
+import wuxian.me.itcorpapp.model.LocationDao;
 import wuxian.me.itcorpapp.util.VisibleOption;
 import wuxian.me.itcorpapp.volley.GsonRequest;
 import wuxian.me.itcorpapp.volley.VolleyUtil;
@@ -79,6 +82,12 @@ public class MainActivity extends BaseActionbarActivity implements OnMapLocatedL
                         public void onResponse(List<Company> response) {
                             for (Company company : response) {
                                 GreenDaoHelper.companyDao().insert(company);
+
+                                if (company.locationList != null) {
+                                    for (wuxian.me.itcorpapp.model.Location location : company.locationList) {
+                                        GreenDaoHelper.locationDao().insert(location);
+                                    }
+                                }
                             }
                             companyList = response;
                             mDataloaded = true;
@@ -87,9 +96,22 @@ public class MainActivity extends BaseActionbarActivity implements OnMapLocatedL
                         }
                     }, null));
         } else {
+
+            for (Company company : companyList) {
+                List<wuxian.me.itcorpapp.model.Location> locationList =
+                        getLocationQuery(company.company_id).list();
+                company.locationList = locationList;
+            }
+
             mDataloaded = true;
             maybeDisplay();
         }
+    }
+
+    //http://greenrobot.org/greendao/documentation/queries/
+    private QueryBuilder getLocationQuery(long companyId) {
+        return GreenDaoHelper.locationDao().queryBuilder()
+                .where(LocationDao.Properties.Company_id.eq(companyId));
     }
 
     private void maybeDisplay() {

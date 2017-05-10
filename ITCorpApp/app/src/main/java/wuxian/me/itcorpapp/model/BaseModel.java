@@ -26,6 +26,8 @@ public abstract class BaseModel {
 
     public abstract List<LatLng> getLatLngs();
 
+    public abstract float getZIndex();
+
     //显示规则 若能下载到远程的uri 则显示远程的,否则显示@getTitle的图案
     public abstract String getIconUri();
 

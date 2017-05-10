@@ -6,5 +6,5 @@ package wuxian.me.itcorpapp.api;
 
 public interface Api {
 
-    String LIST = "http://192.168.13.187:8081/list";
+    String LIST = "http://192.168.14.19:8081/list";
 }

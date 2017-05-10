@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import wuxian.me.itcorpapp.model.CompanyDao;
 import wuxian.me.itcorpapp.model.DaoMaster;
 import wuxian.me.itcorpapp.model.DaoSession;
+import wuxian.me.itcorpapp.model.LocationDao;
 
 /**
  * Created by wuxian on 9/5/2017.
@@ -34,5 +35,9 @@ public class GreenDaoHelper {
 
     public static CompanyDao companyDao() {
         return session.getCompanyDao();
+    }
+
+    public static LocationDao locationDao() {
+        return session.getLocationDao();
     }
 }
