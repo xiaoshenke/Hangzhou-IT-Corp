@@ -10,7 +10,7 @@ import wuxian.me.lagouspider.util.ModuleProvider;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static wuxian.me.lagouspider.business.lagou.LagouConfig.SaveDBThread.SAVE_COMPANY_MAIN_INTERVAL;
+import static wuxian.me.lagouspider.biz.lagou.LagouConfig.SaveDBThread.SAVE_COMPANY_MAIN_INTERVAL;
 
 /**
  * Created by wuxian on 8/4/2017.

@@ -1,4 +1,4 @@
-package wuxian.me.lagouspider.business.lagou;
+package wuxian.me.lagouspider.biz.lagou;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -20,10 +20,10 @@ import wuxian.me.spidersdk.job.JobProvider;
 import java.util.ArrayList;
 import java.util.List;
 
-import static wuxian.me.lagouspider.business.lagou.LagouConfig.EnableSaveDB.ENABLE_SAVE_COMPANY_DB;
-import static wuxian.me.lagouspider.business.lagou.LagouConfig.Spider.ENABLE_SPIDER_COMPANY_MAIN;
-import static wuxian.me.lagouspider.business.lagou.LagouConfig.SpiderUrl.URL_LAGOU_JAVA;
-import static wuxian.me.lagouspider.business.lagou.LagouConfig.SpiderUrl.URL_LAGOU_POSITION_JSON;
+import static wuxian.me.lagouspider.biz.lagou.LagouConfig.EnableSaveDB.ENABLE_SAVE_COMPANY_DB;
+import static wuxian.me.lagouspider.biz.lagou.LagouConfig.Spider.ENABLE_SPIDER_COMPANY_MAIN;
+import static wuxian.me.lagouspider.biz.lagou.LagouConfig.SpiderUrl.URL_LAGOU_JAVA;
+import static wuxian.me.lagouspider.biz.lagou.LagouConfig.SpiderUrl.URL_LAGOU_POSITION_JSON;
 
 /**
  * Created by wuxian on 7/4/2017.

@@ -1,4 +1,4 @@
-package wuxian.me.lagouspider.business.tianyancha;
+package wuxian.me.lagouspider.biz.tianyancha;
 
 import com.sun.istack.internal.NotNull;
 import okhttp3.Headers;
@@ -10,6 +10,8 @@ import wuxian.me.spidersdk.log.LogManager;
 
 /**
  * Created by wuxian on 7/5/2017.
+ *
+ * Fixme: 反爬虫太厉害 暂时还没有破解
  */
 public class SearchSpider extends BaseTianyanSpider {
 

@@ -2,8 +2,9 @@ package wuxian.me.lagouspider.util;
 
 import com.sun.istack.internal.NotNull;
 import okhttp3.Headers;
-import wuxian.me.lagouspider.business.lagou.LagouConfig;
-import wuxian.me.lagouspider.business.tianyancha.TianyanConfig;
+import wuxian.me.lagouspider.biz.lagou.LagouConfig;
+import wuxian.me.lagouspider.biz.tianyancha.TianyanConfig;
+import wuxian.me.lagouspider.biz.zhishu.ZhishuConfig;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.JobManager;
 import wuxian.me.spidersdk.job.IJob;
@@ -13,11 +14,11 @@ import wuxian.me.spidersdk.util.FileUtil;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static wuxian.me.lagouspider.business.lagou.LagouConfig.*;
-import static wuxian.me.lagouspider.business.lagou.LagouConfig.File.*;
-import static wuxian.me.lagouspider.business.lagou.LagouConfig.Grab.CONF_LASTGRAB;
-import static wuxian.me.lagouspider.business.lagou.LagouConfig.Grab.GRAB_INTERNAL;
-import static wuxian.me.lagouspider.business.lagou.LagouConfig.TableName.*;
+import static wuxian.me.lagouspider.biz.lagou.LagouConfig.*;
+import static wuxian.me.lagouspider.biz.lagou.LagouConfig.File.*;
+import static wuxian.me.lagouspider.biz.lagou.LagouConfig.Grab.CONF_LASTGRAB;
+import static wuxian.me.lagouspider.biz.lagou.LagouConfig.Grab.GRAB_INTERNAL;
+import static wuxian.me.lagouspider.biz.lagou.LagouConfig.TableName.*;
 import static wuxian.me.spidersdk.util.FileUtil.getCurrentPath;
 
 /**
@@ -103,6 +104,11 @@ public class Helper {
     public static Headers getTianyanHeader(@NotNull String reference, @NotNull String spiderName) {
         builder.set("Host", TianyanConfig.HOST);
         return getHeaderBySpecifyRef("", spiderName);
+    }
+
+    public static Headers getZhishuHeader(@NotNull String reference, @NotNull String spiderName) {
+        builder.set("Host", ZhishuConfig.HOST);
+        return getHeaderBySpecifyRef(reference, spiderName);
     }
 
 

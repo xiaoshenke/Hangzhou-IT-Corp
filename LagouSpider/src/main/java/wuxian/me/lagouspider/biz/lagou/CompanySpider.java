@@ -1,4 +1,4 @@
-package wuxian.me.lagouspider.business.lagou;
+package wuxian.me.lagouspider.biz.lagou;
 
 import com.sun.istack.internal.NotNull;
 import okhttp3.Request;
@@ -24,12 +24,12 @@ import wuxian.me.spidersdk.anti.MaybeBlockedException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static wuxian.me.lagouspider.business.lagou.LagouConfig.EnableSaveDB.*;
-import static wuxian.me.lagouspider.business.lagou.LagouConfig.Location.LOCATION_MULTY;
-import static wuxian.me.lagouspider.business.lagou.LagouConfig.Location.LOCATION_NONE;
-import static wuxian.me.lagouspider.business.lagou.LagouConfig.Location.LOCATION_SINGLE;
-import static wuxian.me.lagouspider.business.lagou.LagouConfig.Spider.*;
-import static wuxian.me.lagouspider.business.lagou.LagouConfig.SpiderUrl.URL_LAGOU_COMPANY_MAIN;
+import static wuxian.me.lagouspider.biz.lagou.LagouConfig.EnableSaveDB.*;
+import static wuxian.me.lagouspider.biz.lagou.LagouConfig.Location.LOCATION_MULTY;
+import static wuxian.me.lagouspider.biz.lagou.LagouConfig.Location.LOCATION_NONE;
+import static wuxian.me.lagouspider.biz.lagou.LagouConfig.Location.LOCATION_SINGLE;
+import static wuxian.me.lagouspider.biz.lagou.LagouConfig.Spider.*;
+import static wuxian.me.lagouspider.biz.lagou.LagouConfig.SpiderUrl.URL_LAGOU_COMPANY_MAIN;
 
 /**
  * Created by wuxian on 30/3/2017.

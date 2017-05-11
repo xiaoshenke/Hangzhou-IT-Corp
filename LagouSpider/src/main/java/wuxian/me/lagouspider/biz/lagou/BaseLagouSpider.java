@@ -1,4 +1,4 @@
-package wuxian.me.lagouspider.business.lagou;
+package wuxian.me.lagouspider.biz.lagou;
 
 import org.htmlparser.Parser;
 import org.htmlparser.filters.HasAttributeFilter;

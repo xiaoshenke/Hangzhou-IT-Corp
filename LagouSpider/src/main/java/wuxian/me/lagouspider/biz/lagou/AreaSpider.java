@@ -1,4 +1,4 @@
-package wuxian.me.lagouspider.business.lagou;
+package wuxian.me.lagouspider.biz.lagou;
 
 import com.sun.istack.internal.NotNull;
 import okhttp3.*;
@@ -17,8 +17,8 @@ import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.log.LogManager;
 
-import static wuxian.me.lagouspider.business.lagou.LagouConfig.Spider.ENABLE_SPIDER_AREAPAGE;
-import static wuxian.me.lagouspider.business.lagou.LagouConfig.SpiderUrl.URL_LAGOU_JAVA;
+import static wuxian.me.lagouspider.biz.lagou.LagouConfig.Spider.ENABLE_SPIDER_AREAPAGE;
+import static wuxian.me.lagouspider.biz.lagou.LagouConfig.SpiderUrl.URL_LAGOU_JAVA;
 
 /**
  * Created by wuxian on 30/3/2017.

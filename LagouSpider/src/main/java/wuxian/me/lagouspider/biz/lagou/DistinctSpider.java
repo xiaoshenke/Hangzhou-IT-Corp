@@ -1,9 +1,9 @@
-package wuxian.me.lagouspider.business.lagou;
+package wuxian.me.lagouspider.biz.lagou;
 
 import static com.google.common.base.Preconditions.*;
-import static wuxian.me.lagouspider.business.lagou.LagouConfig.CUT;
-import static wuxian.me.lagouspider.business.lagou.LagouConfig.SEPRATE;
-import static wuxian.me.lagouspider.business.lagou.LagouConfig.SpiderUrl.*;
+import static wuxian.me.lagouspider.biz.lagou.LagouConfig.CUT;
+import static wuxian.me.lagouspider.biz.lagou.LagouConfig.SEPRATE;
+import static wuxian.me.lagouspider.biz.lagou.LagouConfig.SpiderUrl.*;
 import static wuxian.me.lagouspider.util.Helper.*;
 
 import okhttp3.*;

@@ -1,4 +1,4 @@
-package wuxian.me.lagouspider.business.tianyancha;
+package wuxian.me.lagouspider.biz.tianyancha;
 
 /**
  * Created by wuxian on 7/5/2017.

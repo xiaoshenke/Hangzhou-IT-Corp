@@ -1,4 +1,4 @@
-package wuxian.me.lagouspider.business.lagou;
+package wuxian.me.lagouspider.biz.lagou;
 
 import com.sun.istack.internal.NotNull;
 import okhttp3.HttpUrl;
@@ -16,8 +16,8 @@ import wuxian.me.spidersdk.util.FileUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import static wuxian.me.lagouspider.business.lagou.LagouConfig.CUT;
-import static wuxian.me.lagouspider.business.lagou.LagouConfig.SpiderUrl.URL_LAGOU_JAVA;
+import static wuxian.me.lagouspider.biz.lagou.LagouConfig.CUT;
+import static wuxian.me.lagouspider.biz.lagou.LagouConfig.SpiderUrl.URL_LAGOU_JAVA;
 import static wuxian.me.lagouspider.util.Helper.getAreaFilePath;
 import static wuxian.me.lagouspider.util.Helper.getDistinctsFilePath;
 

@@ -1,17 +1,17 @@
 package wuxian.me.lagouspider;
 
-import wuxian.me.lagouspider.business.lagou.AreaSpider;
-import wuxian.me.lagouspider.business.lagou.CitySpider;
-import wuxian.me.lagouspider.business.lagou.LagouConfig;
-import wuxian.me.lagouspider.business.lagou.DistinctSpider;
+import wuxian.me.lagouspider.biz.lagou.AreaSpider;
+import wuxian.me.lagouspider.biz.lagou.CitySpider;
+import wuxian.me.lagouspider.biz.lagou.LagouConfig;
+import wuxian.me.lagouspider.biz.lagou.DistinctSpider;
 import wuxian.me.lagouspider.mapper.lagou.AreaMapper;
 import wuxian.me.lagouspider.mapper.lagou.CompanyMapper;
 import wuxian.me.lagouspider.mapper.lagou.LocationMapper;
 import wuxian.me.lagouspider.mapper.lagou.ProductMapper;
 import wuxian.me.lagouspider.model.lagou.Area;
 
-import static wuxian.me.lagouspider.business.lagou.LagouConfig.CUT;
-import static wuxian.me.lagouspider.business.lagou.LagouConfig.SEPRATE;
+import static wuxian.me.lagouspider.biz.lagou.LagouConfig.CUT;
+import static wuxian.me.lagouspider.biz.lagou.LagouConfig.SEPRATE;
 import static wuxian.me.lagouspider.util.Helper.getAreaFilePath;
 import static wuxian.me.lagouspider.util.Helper.getDistinctsFilePath;
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;

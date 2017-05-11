@@ -1,4 +1,4 @@
-package wuxian.me.lagouspider.business.boss;
+package wuxian.me.lagouspider.biz.boss;
 
 import okhttp3.Request;
 import wuxian.me.spidersdk.BaseSpider;

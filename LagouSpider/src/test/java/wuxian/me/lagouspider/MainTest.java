@@ -2,11 +2,12 @@ package wuxian.me.lagouspider;
 
 import okhttp3.Request;
 import org.junit.Test;
-import wuxian.me.lagouspider.business.lagou.CompanySpider;
-import wuxian.me.lagouspider.business.lagou.LagouConfig;
-import wuxian.me.lagouspider.business.lagou.DistinctSpider;
-import wuxian.me.lagouspider.business.lagou.AreaSpider;
-import wuxian.me.lagouspider.business.tianyancha.SearchSpider;
+import wuxian.me.lagouspider.biz.lagou.CompanySpider;
+import wuxian.me.lagouspider.biz.lagou.LagouConfig;
+import wuxian.me.lagouspider.biz.lagou.DistinctSpider;
+import wuxian.me.lagouspider.biz.lagou.AreaSpider;
+import wuxian.me.lagouspider.biz.tianyancha.SearchSpider;
+import wuxian.me.lagouspider.biz.zhishu.ZhishuSpider;
 import wuxian.me.lagouspider.mapper.lagou.AreaMapper;
 import wuxian.me.lagouspider.mapper.lagou.CompanyMapper;
 import wuxian.me.lagouspider.mapper.lagou.LocationMapper;
@@ -25,6 +26,7 @@ import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.util.FileUtil;
 
+import java.net.URLEncoder;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -35,6 +37,35 @@ import static wuxian.me.lagouspider.util.Helper.*;
  * Created by wuxian on 9/4/2017.
  */
 public class MainTest {
+
+    @Test
+    public void testZhishu() {
+        JobManagerConfig.enableScheduleImmediately = true;
+        JobManager jobManager = JobManager.getInstance();
+        ZhishuSpider searchSpider = new ZhishuSpider("美丽说");
+        Helper.dispatchSpider(searchSpider);
+        jobManager.start();
+
+        while (true) {
+
+        }
+    }
+
+    @Test
+    //Todo:!
+    public void testEncode() {
+        String code = "美丽说";
+        try {
+            byte[] bytes = code.getBytes("unicode");
+
+            String data = URLEncoder.encode(code, "gb2312");
+            System.out.println(data);
+            System.out.println(data.replace("%", ""));
+        } catch (Exception e) {
+
+        }
+
+    }
 
     //Damn! 页面是用js加载的 还没成功破解
     @Test

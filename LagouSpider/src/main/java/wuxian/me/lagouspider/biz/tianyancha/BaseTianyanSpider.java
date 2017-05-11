@@ -1,10 +1,11 @@
-package wuxian.me.lagouspider.business.tianyancha;
+package wuxian.me.lagouspider.biz.tianyancha;
 
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.SpiderCallback;
 
 /**
  * Created by wuxian on 7/5/2017.
+ *
  */
 public abstract class BaseTianyanSpider extends BaseSpider {
     protected SpiderCallback getCallback() {

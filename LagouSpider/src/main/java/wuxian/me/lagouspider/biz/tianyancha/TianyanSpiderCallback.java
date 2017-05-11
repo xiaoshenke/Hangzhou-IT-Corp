@@ -1,4 +1,4 @@
-package wuxian.me.lagouspider.business.boss;
+package wuxian.me.lagouspider.biz.tianyancha;
 
 import com.sun.istack.internal.NotNull;
 import okhttp3.Call;
@@ -13,8 +13,8 @@ import java.io.IOException;
 /**
  * Created by wuxian on 6/5/2017.
  */
-public class BossSpiderCallback extends SpiderCallback {
-    public BossSpiderCallback(@NotNull BaseSpider spider) {
+public class TianyanSpiderCallback extends SpiderCallback {
+    public TianyanSpiderCallback(@NotNull BaseSpider spider) {
         super(spider);
     }
 

@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static wuxian.me.lagouspider.business.lagou.LagouConfig.SaveDBThread.SAVE_COMPANY_INTERVAL;
+import static wuxian.me.lagouspider.biz.lagou.LagouConfig.SaveDBThread.SAVE_COMPANY_INTERVAL;
 
 /**
  * Created by wuxian on 8/4/2017.
