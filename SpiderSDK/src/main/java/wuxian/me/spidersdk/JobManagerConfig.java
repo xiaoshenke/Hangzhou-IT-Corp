@@ -15,6 +15,9 @@ import java.util.Properties;
  */
 public class JobManagerConfig {
 
+    //从哪个路径下扫描checker 以';'隔开 如果没有这个值那么从跟路径开始扫描
+    public static String redisSpiderCheckerBasePackage;
+
     public static long okhttpClientSocketReadTimeout;
 
     public static String shellOpenProxyFile;

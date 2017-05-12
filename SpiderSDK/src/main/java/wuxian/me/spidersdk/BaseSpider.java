@@ -3,6 +3,7 @@ package wuxian.me.spidersdk;
 import com.sun.istack.internal.NotNull;
 import okhttp3.Request;
 import okhttp3.Response;
+import wuxian.me.spidersdk.distribute.HttpUrlNode;
 import wuxian.me.spidersdk.util.FileUtil;
 import wuxian.me.spidersdk.util.OkhttpProvider;
 
@@ -15,6 +16,16 @@ import static wuxian.me.spidersdk.util.FileUtil.getCurrentPath;
  * Created by wuxian on 13/4/2017.
  */
 public abstract class BaseSpider implements Runnable {
+
+    //如果启用了redis 子类必须实现这个函数 这个会在runtime被检查
+    public static BaseSpider fromUrlNode(HttpUrlNode node) {
+        return null;
+    }
+
+    //同上
+    public static HttpUrlNode toUrlNode() {
+        return null;
+    }
 
     private static final String LINTFEED = "/r/n";
     public static final int RET_SUCCESS = 0; //成功
