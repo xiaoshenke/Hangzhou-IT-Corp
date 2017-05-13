@@ -2,7 +2,8 @@ package wuxian.me.lagouspider.model.lagou;
 
 import wuxian.me.lagouspider.model.BaseModel;
 
-import static wuxian.me.lagouspider.biz.lagou.LagouConfig.CUT;
+import static wuxian.me.lagouspider.util.Config.CUT;
+
 
 /**
  * Created by wuxian on 13/4/2017.

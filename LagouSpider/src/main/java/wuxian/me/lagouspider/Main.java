@@ -10,10 +10,11 @@ import wuxian.me.lagouspider.mapper.lagou.LocationMapper;
 import wuxian.me.lagouspider.mapper.lagou.ProductMapper;
 import wuxian.me.lagouspider.model.lagou.Area;
 
-import static wuxian.me.lagouspider.biz.lagou.LagouConfig.CUT;
-import static wuxian.me.lagouspider.biz.lagou.LagouConfig.SEPRATE;
-import static wuxian.me.lagouspider.util.Helper.getAreaFilePath;
-import static wuxian.me.lagouspider.util.Helper.getDistinctsFilePath;
+
+import static wuxian.me.lagouspider.util.Config.CUT;
+import static wuxian.me.lagouspider.util.Config.SEPRATE;
+import static wuxian.me.lagouspider.util.Helper.getLagouAreaFilePath;
+import static wuxian.me.lagouspider.util.Helper.getLagouDistinctsFilePath;
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 import static wuxian.me.spidersdk.util.FileUtil.readFromFile;
 
@@ -74,10 +75,10 @@ public class Main {
             Helper.updateNewGrab();
 
             LogManager.info("Create new Tables");
-            Company.tableName = Helper.getCompanyTableName();
-            Product.tableName = Helper.getProductTableName();
-            Location.tableName = Helper.getLocationTableName();
-            Area.tableName = Helper.getAreaTableName();
+            Company.tableName = Helper.getLagouCompanyTableName();
+            Product.tableName = Helper.getLagouProductTableName();
+            Location.tableName = Helper.getLagouLocationTableName();
+            Area.tableName = Helper.getLagouAreaTableName();
 
             Area area = new Area();
             areaMapper.createNewTableIfNeed(area);
@@ -99,15 +100,15 @@ public class Main {
             locationMapper.createIndex(location);
         }
 
-        if (!FileUtil.checkFileExist(getDistinctsFilePath())) {
+        if (!FileUtil.checkFileExist(getLagouDistinctsFilePath())) {
 
             CitySpider citySpider = new CitySpider(LagouConfig.CITY_TO_SPIDER);
             IJob job = JobProvider.getJob();
             job.setRealRunnable(citySpider);
             JobManager.getInstance().putJob(job);
 
-        } else if (!FileUtil.checkFileExist(getAreaFilePath())) {
-            String distincts = readFromFile(getDistinctsFilePath());
+        } else if (!FileUtil.checkFileExist(getLagouAreaFilePath())) {
+            String distincts = readFromFile(getLagouDistinctsFilePath());
             if (null == distincts) {
                 return;
             }
@@ -174,7 +175,7 @@ public class Main {
 
     private List<Area> parseAreasFromFile() {
         List<Area> areaList = new ArrayList<Area>();
-        String areaString = readFromFile(getAreaFilePath());
+        String areaString = readFromFile(getLagouAreaFilePath());
         if (areaString.equals("")) {
             return areaList;
         }

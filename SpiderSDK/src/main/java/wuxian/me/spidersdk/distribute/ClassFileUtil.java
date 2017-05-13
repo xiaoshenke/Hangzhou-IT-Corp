@@ -20,6 +20,10 @@ public class ClassFileUtil {
     private ClassFileUtil() {
     }
 
+    public static Class getClassByName(String name) throws ClassNotFoundException {
+        return Thread.currentThread().getContextClassLoader().loadClass(name);
+    }
+
     public static Set<Class<?>> getClasses(String pack) throws IOException {
         Set<Class<?>> classes = new LinkedHashSet<Class<?>>();
         boolean recursive = true;

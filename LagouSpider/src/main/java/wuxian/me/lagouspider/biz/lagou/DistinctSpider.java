@@ -1,9 +1,9 @@
 package wuxian.me.lagouspider.biz.lagou;
 
 import static com.google.common.base.Preconditions.*;
-import static wuxian.me.lagouspider.biz.lagou.LagouConfig.CUT;
-import static wuxian.me.lagouspider.biz.lagou.LagouConfig.SEPRATE;
 import static wuxian.me.lagouspider.biz.lagou.LagouConfig.SpiderUrl.*;
+import static wuxian.me.lagouspider.util.Config.CUT;
+import static wuxian.me.lagouspider.util.Config.SEPRATE;
 import static wuxian.me.lagouspider.util.Helper.*;
 
 import okhttp3.*;
@@ -94,8 +94,8 @@ public class DistinctSpider extends BaseLagouSpider {
             checkNotNull(areas);
 
             String former = "";
-            if (FileUtil.checkFileExist(getAreaFilePath())) {
-                former = FileUtil.readFromFile(getAreaFilePath());
+            if (FileUtil.checkFileExist(getLagouAreaFilePath())) {
+                former = FileUtil.readFromFile(getLagouAreaFilePath());
             }
 
             String content = former;
@@ -104,12 +104,11 @@ public class DistinctSpider extends BaseLagouSpider {
             }
 
             content += "\n";
-            if (!FileUtil.writeToFile(getAreaFilePath(), content)) {
-                //LogManager.error("Error write content, content: "+content +" path: "+getAreaFilePath());
+            if (!FileUtil.writeToFile(getLagouAreaFilePath(), content)) {
+                //LogManager.error("Error write content, content: "+content +" path: "+getLagouAreaFilePath());
 
             }
         }
-
     }
 
 }

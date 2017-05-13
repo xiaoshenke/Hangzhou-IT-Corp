@@ -11,8 +11,7 @@ public interface LagouConfig {
 
     String CITY_TO_SPIDER = "杭州";
 
-    String CUT = ";";
-    String SEPRATE = ":";
+
     String HOST = "www.lagou.com";
 
     int SHORTNAME_MAX = 6;
@@ -86,12 +85,12 @@ public interface LagouConfig {
         long GRAB_INTERNAL = 1000 * 60 * 60 * 24 * 7;
 
         //上一次爬虫抓取的时间
-        String CONF_LASTGRAB = "/conf/lastgrab.txt";
+        String CONF_LASTGRAB = "/conf/lagou/lastgrab.txt";
     }
 
     interface File {
 
-        String CONF = "/conf/";
+        String CONF = "/conf/lagou/";
 
         //存储区域的文件
         String DISTINTC = "distinct.txt";

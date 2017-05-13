@@ -2,6 +2,7 @@ package wuxian.me.lagouspider.util;
 
 import com.sun.istack.internal.NotNull;
 import okhttp3.Headers;
+import wuxian.me.lagouspider.biz.boss.BossConfig;
 import wuxian.me.lagouspider.biz.lagou.LagouConfig;
 import wuxian.me.lagouspider.biz.tianyancha.TianyanConfig;
 import wuxian.me.lagouspider.biz.zhishu.ZhishuConfig;
@@ -26,19 +27,23 @@ import static wuxian.me.spidersdk.util.FileUtil.getCurrentPath;
  */
 public class Helper {
 
-    public static String getAreaFilePath() {
+    public static String getBossDistinctsFilePath() {
+        return getCurrentPath() + BossConfig.File.CONF + BossConfig.CITY_TO_SPIDER + BossConfig.File.DISTINTC;
+    }
+
+    public static String getLagouAreaFilePath() {
         return getCurrentPath() + CONF + LagouConfig.CITY_TO_SPIDER + AREA;
     }
 
-    public static String getDistinctsFilePath() {
+    public static String getLagouDistinctsFilePath() {
         return getCurrentPath() + CONF + CITY_TO_SPIDER + DISTINTC;
     }
 
-    public static String getGrabFilePath() {
+    public static String getLagouGrabFilePath() {
         return getCurrentPath() + CONF_LASTGRAB;
     }
 
-    public static String getCookieFilePath(String spiderName) {
+    public static String getLagouCookieFilePath(String spiderName) {
         return getCurrentPath() + CONF_COOKIE + "_" + spiderName;
     }
 
@@ -47,19 +52,19 @@ public class Helper {
     }
 
     //每个城市一张表
-    public static String getCompanyTableName() {
+    public static String getLagouCompanyTableName() {
         return CITY_TO_SPIDER + TABLE_COMPANY + getDatabasePost();
     }
 
-    public static String getProductTableName() {
+    public static String getLagouProductTableName() {
         return CITY_TO_SPIDER + TABLE_PRODUCT + getDatabasePost();
     }
 
-    public static String getLocationTableName() {
+    public static String getLagouLocationTableName() {
         return CITY_TO_SPIDER + TABLE_LOCATION + getDatabasePost();
     }
 
-    public static String getAreaTableName() {
+    public static String getLagouAreaTableName() {
         return CITY_TO_SPIDER + TABLE_AREA;
     }
 
@@ -83,8 +88,8 @@ public class Helper {
 
     public static Headers getHeaderBySpecifyRef(@NotNull String reference, @NotNull String spiderName) {
         if (!cookieList.containsKey(spiderName)) {
-            if (FileUtil.checkFileExist(getCookieFilePath(spiderName))) {
-                String content = FileUtil.readFromFile(getCookieFilePath(spiderName));
+            if (FileUtil.checkFileExist(getLagouCookieFilePath(spiderName))) {
+                String content = FileUtil.readFromFile(getLagouCookieFilePath(spiderName));
                 if (content != null && content.length() != 0) {
                     cookieList.put(spiderName, content);
                 }
@@ -94,6 +99,11 @@ public class Helper {
         builder.set("Cookie", cookieList.get(spiderName));
         builder.set(HEADER_REFERER, reference);
         return builder.build();
+    }
+
+    public static Headers getBossHeader(@NotNull String reference, @NotNull String spiderName) {
+        builder.set("Host", BossConfig.HOST);
+        return getHeaderBySpecifyRef(reference, spiderName);
     }
 
     public static Headers getLagouHeader(@NotNull String reference, @NotNull String spiderName) {
@@ -123,7 +133,7 @@ public class Helper {
         if (post != null) {
             return post;
         }
-        String content = FileUtil.readFromFile(getGrabFilePath());
+        String content = FileUtil.readFromFile(getLagouGrabFilePath());
         long time = Long.parseLong(content);
 
         SimpleDateFormat dd = new SimpleDateFormat("yyyy_MM_dd");
@@ -131,10 +141,10 @@ public class Helper {
     }
 
     public static boolean shouldStartNewGrab() {
-        if (!FileUtil.checkFileExist(getGrabFilePath())) {
+        if (!FileUtil.checkFileExist(getLagouGrabFilePath())) {
             return true;
         }
-        String content = FileUtil.readFromFile(getGrabFilePath());
+        String content = FileUtil.readFromFile(getLagouGrabFilePath());
 
         if (content == null) {
             return true;
@@ -144,7 +154,7 @@ public class Helper {
     }
 
     public static void updateNewGrab() {
-        FileUtil.writeToFile(getGrabFilePath(), String.valueOf(System.currentTimeMillis()));
+        FileUtil.writeToFile(getLagouGrabFilePath(), String.valueOf(System.currentTimeMillis()));
     }
 
     private static JobManager jobManager;

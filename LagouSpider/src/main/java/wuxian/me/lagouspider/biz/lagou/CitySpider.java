@@ -16,10 +16,10 @@ import wuxian.me.spidersdk.util.FileUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import static wuxian.me.lagouspider.biz.lagou.LagouConfig.CUT;
 import static wuxian.me.lagouspider.biz.lagou.LagouConfig.SpiderUrl.URL_LAGOU_JAVA;
-import static wuxian.me.lagouspider.util.Helper.getAreaFilePath;
-import static wuxian.me.lagouspider.util.Helper.getDistinctsFilePath;
+import static wuxian.me.lagouspider.util.Config.CUT;
+import static wuxian.me.lagouspider.util.Helper.getLagouAreaFilePath;
+import static wuxian.me.lagouspider.util.Helper.getLagouDistinctsFilePath;
 
 /**
  * Created by wuxian on 2/5/2017.
@@ -82,10 +82,10 @@ public class CitySpider extends BaseLagouSpider {
                 for (String dis : distincts) {
                     content += dis;
                 }
-                FileUtil.writeToFile(getDistinctsFilePath(), content);
+                FileUtil.writeToFile(getLagouDistinctsFilePath(), content);
             }
 
-            if (!FileUtil.checkFileExist(getAreaFilePath()) && LagouConfig.Spider.ENABLE_SPIDER_DISTINCT) {
+            if (!FileUtil.checkFileExist(getLagouAreaFilePath()) && LagouConfig.Spider.ENABLE_SPIDER_DISTINCT) {
                 for (String dis : distincts) {
                     DistinctSpider distinctSpider = new DistinctSpider(city, dis);
                     Helper.dispatchSpider(distinctSpider);

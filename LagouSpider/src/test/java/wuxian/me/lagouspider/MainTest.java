@@ -2,6 +2,7 @@ package wuxian.me.lagouspider;
 
 import okhttp3.Request;
 import org.junit.Test;
+import wuxian.me.lagouspider.biz.boss.BDisdinctSpider;
 import wuxian.me.lagouspider.biz.lagou.CompanySpider;
 import wuxian.me.lagouspider.biz.lagou.LagouConfig;
 import wuxian.me.lagouspider.biz.lagou.DistinctSpider;
@@ -16,6 +17,7 @@ import wuxian.me.lagouspider.model.lagou.Area;
 import wuxian.me.lagouspider.model.lagou.Company;
 import wuxian.me.lagouspider.model.lagou.Location;
 import wuxian.me.lagouspider.model.lagou.Product;
+import wuxian.me.lagouspider.util.Config;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.ModuleProvider;
 import wuxian.me.spidersdk.BaseSpider;
@@ -37,6 +39,19 @@ import static wuxian.me.lagouspider.util.Helper.*;
  * Created by wuxian on 9/4/2017.
  */
 public class MainTest {
+
+    @Test
+    public void testBossDistinctSpider() {
+        JobManagerConfig.enableScheduleImmediately = true;
+        JobManager jobManager = JobManager.getInstance();
+        BDisdinctSpider searchSpider = new BDisdinctSpider();
+        Helper.dispatchSpider(searchSpider);
+        jobManager.start();
+
+        while (true) {
+
+        }
+    }
 
     @Test
     public void testZhishu() {
@@ -85,8 +100,8 @@ public class MainTest {
     @Test
     public void testCity() {
 
-        String content = FileUtil.readFromFile(Helper.getDistinctsFilePath());
-        String[] list = content.split(LagouConfig.CUT);
+        String content = FileUtil.readFromFile(Helper.getLagouDistinctsFilePath());
+        String[] list = content.split(Config.CUT);
 
         for (int i = 0; i < list.length; i++) {
             DistinctSpider spider = new DistinctSpider(LagouConfig.CITY_TO_SPIDER, list[i]);
@@ -106,9 +121,9 @@ public class MainTest {
         JobManager manager = JobManager.getInstance();
         CompanyMapper companyMapper = ModuleProvider.companyMapper();
 
-        Company.tableName = Helper.getCompanyTableName();
-        Product.tableName = Helper.getProductTableName();
-        Location.tableName = Helper.getLocationTableName();
+        Company.tableName = Helper.getLagouCompanyTableName();
+        Product.tableName = Helper.getLagouProductTableName();
+        Location.tableName = Helper.getLagouLocationTableName();
 
         /*
         Company company = new Company(-1);
@@ -149,9 +164,9 @@ public class MainTest {
         ProductMapper productMapper = ModuleProvider.productMapper();
         LocationMapper locationMapper = ModuleProvider.locationMapper();
 
-        Company.tableName = Helper.getCompanyTableName();
-        Product.tableName = Helper.getProductTableName();
-        Location.tableName = Helper.getLocationTableName();
+        Company.tableName = Helper.getLagouCompanyTableName();
+        Product.tableName = Helper.getLagouProductTableName();
+        Location.tableName = Helper.getLagouLocationTableName();
 
         Company company = new Company(-1);
         companyMapper.deleteTable(company);

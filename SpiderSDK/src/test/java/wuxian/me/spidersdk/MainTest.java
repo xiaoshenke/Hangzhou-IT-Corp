@@ -2,6 +2,7 @@ package wuxian.me.spidersdk;
 
 import org.junit.Test;
 import wuxian.me.spidersdk.distribute.ClassFileUtil;
+import wuxian.me.spidersdk.distribute.RedisSpiderChecker;
 
 import java.io.IOException;
 import java.util.Set;
@@ -22,6 +23,17 @@ public class MainTest {
                 System.out.println(c.getName());
             }
         } catch (IOException e) {
+
+        }
+    }
+
+    @Test
+    public void testStaticMethodCheck() {
+        try {
+            RedisSpiderChecker.performCheck(ClassFileUtil.getClassByName("wuxian.me.spidersdk.NoneSpider"));
+
+            System.out.println("success");
+        } catch (Exception e) {
 
         }
     }
