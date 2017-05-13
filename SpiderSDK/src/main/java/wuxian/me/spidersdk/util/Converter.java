@@ -18,4 +18,8 @@ public interface Converter {
     //<div /> --> TextNode
 
     //<dd /> --> DefinitionListBullet
+
+    //<h3 /> --> HeadingTag
+
+    //<p > --> ParagraphTag
 }

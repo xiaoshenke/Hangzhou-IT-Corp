@@ -1,4 +1,4 @@
-package wuxian.me.lagouspider.model;
+package wuxian.me.lagouspider.model.juzi;
 
 /**
  * Created by wuxian on 15/4/2017.
