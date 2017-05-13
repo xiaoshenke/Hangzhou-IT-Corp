@@ -10,7 +10,6 @@ import org.htmlparser.tags.DefinitionListBullet;
 import org.htmlparser.tags.LinkTag;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
-import wuxian.me.lagouspider.biz.lagou.DistinctSpider;
 import wuxian.me.lagouspider.util.Config;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.NodeLogUtil;
@@ -24,8 +23,6 @@ import java.util.List;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import static wuxian.me.lagouspider.util.Helper.getBossDistinctsFilePath;
-import static wuxian.me.lagouspider.util.Helper.getLagouAreaFilePath;
-import static wuxian.me.lagouspider.util.Helper.getLagouDistinctsFilePath;
 
 /**
  * Created by wuxian on 13/5/2017.

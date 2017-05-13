@@ -5,6 +5,7 @@ package wuxian.me.lagouspider.biz.boss;
  */
 public interface BossConfig {
 
+    int POSITION_NUM_PER_PAGE = 15;
 
     String CITY_TO_SPIDER = "杭州";
 

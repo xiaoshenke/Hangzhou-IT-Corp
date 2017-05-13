@@ -3,6 +3,8 @@ package wuxian.me.lagouspider;
 import okhttp3.Request;
 import org.junit.Test;
 import wuxian.me.lagouspider.biz.boss.BDisdinctSpider;
+import wuxian.me.lagouspider.biz.boss.BPositionListSpider;
+import wuxian.me.lagouspider.biz.boss.BPositonDetailSpider;
 import wuxian.me.lagouspider.biz.lagou.CompanySpider;
 import wuxian.me.lagouspider.biz.lagou.LagouConfig;
 import wuxian.me.lagouspider.biz.lagou.DistinctSpider;
@@ -39,6 +41,40 @@ import static wuxian.me.lagouspider.util.Helper.*;
  * Created by wuxian on 9/4/2017.
  */
 public class MainTest {
+
+    @Test
+    public void testBossPositionDetailSpider() {
+
+        JobManagerConfig.enableScheduleImmediately = true;
+        JobManager jobManager = JobManager.getInstance();
+
+        BPositonDetailSpider searchSpider = new BPositonDetailSpider(1411467424);
+        Helper.dispatchSpider(searchSpider);
+        jobManager.start();
+
+        while (true) {
+
+        }
+    }
+
+    @Test
+    public void testBossPositionListSpider() {
+        JobManagerConfig.enableScheduleImmediately = true;
+        JobManager jobManager = JobManager.getInstance();
+
+        String distinctList = FileUtil.readFromFile(Helper.getBossDistinctsFilePath());
+
+        String[] list = distinctList.split(Config.CUT);
+
+
+        BPositionListSpider searchSpider = new BPositionListSpider(list[0], 1);
+        Helper.dispatchSpider(searchSpider);
+        jobManager.start();
+
+        while (true) {
+
+        }
+    }
 
     @Test
     public void testBossDistinctSpider() {
