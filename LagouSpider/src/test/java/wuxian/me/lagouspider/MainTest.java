@@ -11,10 +11,16 @@ import wuxian.me.lagouspider.biz.lagou.DistinctSpider;
 import wuxian.me.lagouspider.biz.lagou.AreaSpider;
 import wuxian.me.lagouspider.biz.tianyancha.SearchSpider;
 import wuxian.me.lagouspider.biz.zhishu.ZhishuSpider;
+import wuxian.me.lagouspider.mapper.boss.BCompanyMapper;
+import wuxian.me.lagouspider.mapper.boss.BLocationMapper;
+import wuxian.me.lagouspider.mapper.boss.BPositionMapper;
 import wuxian.me.lagouspider.mapper.lagou.AreaMapper;
 import wuxian.me.lagouspider.mapper.lagou.CompanyMapper;
 import wuxian.me.lagouspider.mapper.lagou.LocationMapper;
 import wuxian.me.lagouspider.mapper.lagou.ProductMapper;
+import wuxian.me.lagouspider.model.boss.BCompany;
+import wuxian.me.lagouspider.model.boss.BLocation;
+import wuxian.me.lagouspider.model.boss.BPosition;
 import wuxian.me.lagouspider.model.lagou.Area;
 import wuxian.me.lagouspider.model.lagou.Company;
 import wuxian.me.lagouspider.model.lagou.Location;
@@ -43,12 +49,31 @@ import static wuxian.me.lagouspider.util.Helper.*;
 public class MainTest {
 
     @Test
+    public void testDBs() {
+        BCompanyMapper bCompanyMapper = ModuleProvider.bCompanyMapper();
+        BCompany company = new BCompany();
+        bCompanyMapper.createNewTableIfNeed(company);
+        bCompanyMapper.createIndex(company);
+
+        BLocationMapper bLocationMapper = ModuleProvider.bLocationMapper();
+        BLocation location = new BLocation();
+        bLocationMapper.createNewTableIfNeed(location);
+        bLocationMapper.createIndex(location);
+
+        BPositionMapper bPositionMapper = ModuleProvider.bPositionMapper();
+        BPosition position = new BPosition();
+        bPositionMapper.createNewTableIfNeed(position);
+        bPositionMapper.createIndex(position);
+
+    }
+
+    @Test
     public void testBossPositionDetailSpider() {
 
         JobManagerConfig.enableScheduleImmediately = true;
         JobManager jobManager = JobManager.getInstance();
 
-        BPositonDetailSpider searchSpider = new BPositonDetailSpider(1411467424);
+        BPositonDetailSpider searchSpider = new BPositonDetailSpider(1411498876);
         Helper.dispatchSpider(searchSpider);
         jobManager.start();
 

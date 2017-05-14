@@ -1,5 +1,6 @@
 package wuxian.me.lagouspider.model.boss;
 
+import wuxian.me.lagouspider.biz.boss.BossConfig;
 import wuxian.me.lagouspider.model.BaseModel;
 
 /**
@@ -7,18 +8,22 @@ import wuxian.me.lagouspider.model.BaseModel;
  */
 public class BCompany extends BaseModel {
 
-    //Todo: logo存起来有意义么？
-    //public String logo;
+    public static String tableName = BossConfig.TableName.COMPANY;
+
+    //做个校验：最长125字节
+    public String logo;
 
     public String financeStage;
 
-    public String sizeMin;
-    public String sizeMax;
+    public int sizeMin;
+    public int sizeMax;
 
     public String field;
 
+    //max:8 长过这个的截取
     public String name;
 
+    //max:16
     public String fullName;
 
     public long companyId;

@@ -7,10 +7,7 @@ import org.htmlparser.Node;
 import org.htmlparser.Parser;
 import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.nodes.TextNode;
-import org.htmlparser.tags.Div;
-import org.htmlparser.tags.HeadingTag;
-import org.htmlparser.tags.ParagraphTag;
-import org.htmlparser.tags.Span;
+import org.htmlparser.tags.*;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import wuxian.me.lagouspider.model.boss.BCompany;
@@ -73,6 +70,30 @@ public class BPositonDetailSpider extends BaseBossSpider {
                 Node child = list.elementAt(i);
                 if (child instanceof Div && child.getText().trim().contains("company-logo")) {
                     //logo节点 //暂时不要这个信息
+
+                    NodeList list1 = child.getChildren();
+                    for (int j = 0; j < list1.size(); j++) {
+                        Node child1 = list1.elementAt(j);
+                        if (child1 instanceof LinkTag) {
+                            //NodeLogUtil.printChildrenOfNode(child1);
+
+                            if (child1.getChildren() == null && child1.getChildren().size() == 0) {
+                                break;
+                            }
+
+                            child1 = child1.getChildren().elementAt(0);
+                            String str = child1.getText().trim();
+                            int begin = str.indexOf("\"");
+                            int end = str.indexOf("\"", begin + 1);
+                            if (begin != -1 && end != -1) {
+                                company.logo = str.substring(begin + 1, end);
+                                LogManager.info("logo: " + company.logo);
+                            }
+
+
+                            break;
+                        }
+                    }
                     continue;
                 }
 
@@ -115,10 +136,10 @@ public class BPositonDetailSpider extends BaseBossSpider {
 
                                     String[] sizes = size.split("-");
                                     if (size != null && sizes.length == 2) {
-                                        company.sizeMin = sizes[0];
-                                        company.sizeMax = sizes[1];
+                                        company.sizeMin = Integer.parseInt(sizes[0]);
+                                        company.sizeMax = Integer.parseInt(sizes[1]);
                                     } else {
-                                        company.sizeMin = size;//10000人以上
+                                        company.sizeMin = Integer.parseInt(size);//10000人以上
                                     }
                                 }
                                 k++;
@@ -139,7 +160,6 @@ public class BPositonDetailSpider extends BaseBossSpider {
         NodeList list = parser.extractAllNodesThatMatch(filter);
 
         if (list != null && list.size() != 0) {
-            //NodeLogUtil.printChildrenOfNode(list.elementAt(0));
             list = list.elementAt(0).getChildren();
 
             for (int i = 0; i < list.size(); i++) {
@@ -206,7 +226,7 @@ public class BPositonDetailSpider extends BaseBossSpider {
 
                     for (int j = 0; j < list1.size(); j++) {
                         Node child1 = list1.elementAt(j);
-                        NodeLogUtil.printNodeOnly(child1);
+                        //NodeLogUtil.printNodeOnly(child1);
 
                         if (child1 instanceof TextNode) {
                             if (k == 0) {
@@ -224,19 +244,19 @@ public class BPositonDetailSpider extends BaseBossSpider {
                                 if (index != -1) {
                                     sa = sa.substring(0, index);
                                 }
-                                position.salaryMax = sa;
+                                position.salaryMax = Integer.parseInt(sa);
                             } else if (sa.contains(Salary.YISHANG)) {
                                 int index = sa.indexOf("K");
                                 if (index != -1) {
                                     sa = sa.substring(0, index);
                                 }
-                                position.salaryMin = sa;
+                                position.salaryMin = Integer.parseInt(sa);
                             } else {
                                 sa = sa.replace("K", "");
                                 String[] sas = sa.split("-");
                                 if (sas.length == 2) {
-                                    position.salaryMin = sas[0];
-                                    position.salaryMax = sas[1];
+                                    position.salaryMin = Integer.parseInt(sas[0]);
+                                    position.salaryMax = Integer.parseInt(sas[1]);
                                 }
                             }
                         }
@@ -255,26 +275,26 @@ public class BPositonDetailSpider extends BaseBossSpider {
 
                         if (child1 instanceof TextNode) {
                             if (k == 0) {
-
+                                position.city = child1.getText().trim();
                             } else if (k == 1) {
                                 //应届生
                                 String ex = child1.getText().trim();
                                 if (ex.contains(Experience.YINGJIE)) {
-                                    position.experienceMax = "0";  //0年经验
+                                    position.experienceMax = 0;  //0年经验
                                 } else if (ex.contains(Experience.LESS_THAN_A_YEAR)) {
                                     int index = ex.indexOf("年");
                                     if (index != -1) {
                                         ex = ex.substring(0, index);
                                     }
 
-                                    position.experienceMax = ex;
+                                    position.experienceMax = Integer.parseInt(ex);
                                 } else if (ex.contains(Experience.MORE_THAN_TEN_YEAR)) {
                                     int index = ex.indexOf("年");
                                     if (index != -1) {
                                         ex = ex.substring(0, index);
                                     }
 
-                                    position.experienceMin = ex;
+                                    position.experienceMin = Integer.parseInt(ex);
                                 } else {
                                     int index = ex.indexOf("年");
                                     if (index != -1) {
@@ -284,8 +304,8 @@ public class BPositonDetailSpider extends BaseBossSpider {
                                     String[] exs = ex.split("-");
 
                                     if (exs.length == 2) {
-                                        position.experienceMin = exs[0];
-                                        position.experienceMax = exs[1];
+                                        position.experienceMin = Integer.parseInt(exs[0]);
+                                        position.experienceMax = Integer.parseInt(exs[1]);
                                     }
 
                                 }
@@ -302,6 +322,54 @@ public class BPositonDetailSpider extends BaseBossSpider {
         }
     }
 
+    private void parseDes(String data)
+            throws MaybeBlockedException, ParserException {
+        Parser parser = new Parser(data);
+        parser.setEncoding("utf-8");
+
+        HasAttributeFilter filter = new HasAttributeFilter("class", "detail-content");
+        NodeList list = parser.extractAllNodesThatMatch(filter);
+        if (list == null || list.size() == 0) {
+            return;  //Fixme
+        }
+
+        Node child = list.elementAt(0);
+        list = child.getChildren();
+        if (list == null || list.size() == 0) {
+            return;  //Fixme
+        }
+
+        for (int i = 0; i < list.size(); i++) {
+            child = list.elementAt(i);
+            if (child instanceof Div && child.getText().trim().contains("job-sec")) {
+                NodeLogUtil.printChildrenOfNode(child);
+                NodeList list1 = child.getChildren();
+                if (list1 == null || list1.size() == 0) {
+                    continue;
+                }
+                for (int j = 0; j < list1.size(); j++) {
+                    Node child1 = list1.elementAt(j);
+
+                    if (child1 instanceof HeadingTag && child1.getText().trim().contains("h3")) {
+                        if (child1.toPlainTextString().trim().contains("职位描述")) {
+                            continue;
+                        } else {   //这个tag是团队介绍的tag 这里不抓团队介绍
+                            break;
+                        }
+                    }
+
+                    if (child1 instanceof Div && child1.getText().trim().contains("text")) {
+
+                        //Todo:存入文件
+                        position.description = child1.toPlainTextString().trim();
+
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
 
     //Todo: company location position存入数据库
     public int parseRealData(String s) {
@@ -311,6 +379,8 @@ public class BPositonDetailSpider extends BaseBossSpider {
             parseLocation(s);
 
             parsePosition(s);
+
+            parseDes(s);
 
         } catch (MaybeBlockedException e) {
             return BaseSpider.RET_MAYBE_BLOCK;

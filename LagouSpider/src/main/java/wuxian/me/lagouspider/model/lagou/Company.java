@@ -7,7 +7,6 @@ import wuxian.me.lagouspider.model.BaseModel;
  * <p>
  * 处理有多个地址的公司 --> 多一张表记录多个地址的公司
  *
- * Todo:字段优化 比如没有融资0 天使1 A轮2 3 4 ... 若是以上市给个11 不需要融资给个12
  * 可以优化的点还是非常多的
  */
 public class Company extends BaseModel {
@@ -20,7 +19,6 @@ public class Company extends BaseModel {
     public int area_id = -1;
     public long company_id;
 
-    //Todo: 用于高德显示
     public String company_shortname;
     public String company_fullname;  //这些可以从@AreaPageSpider拿
     public String industryField;

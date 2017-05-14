@@ -1,5 +1,6 @@
 package wuxian.me.lagouspider.model.boss;
 
+import wuxian.me.lagouspider.biz.boss.BossConfig;
 import wuxian.me.lagouspider.model.BaseModel;
 
 /**
@@ -7,13 +8,15 @@ import wuxian.me.lagouspider.model.BaseModel;
  */
 public class BPosition extends BaseModel {
 
+    public static String tableName = BossConfig.TableName.POSITION;
+
     public long positionId;
 
     public String positionName;
 
-    public String salaryMin = "-1";
+    public int salaryMin = -1;
 
-    public String salaryMax = "-1";
+    public int salaryMax = -1;
 
     public String city;
 
@@ -21,9 +24,9 @@ public class BPosition extends BaseModel {
 
     public String description;
 
-    public String experienceMin = "-1";
+    public int experienceMin = -1;
 
-    public String experienceMax = "-1";
+    public int experienceMax = -1;
 
     public String education;
 

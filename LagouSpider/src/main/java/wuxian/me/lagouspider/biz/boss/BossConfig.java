@@ -14,12 +14,19 @@ public interface BossConfig {
     String HOST = "www.zhipin.com";
 
     interface File {
-
         String CONF = "/conf/boss/";
 
         //存储区域的文件
         String DISTINTC = "distinct.txt";
+    }
 
+    interface TableName {
+
+        String COMPANY = "bcompanies";
+
+        String LOCATION = "blocations";
+
+        String POSITION = "bpositions";
     }
 
 }

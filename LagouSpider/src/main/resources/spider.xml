@@ -24,6 +24,21 @@
           p:password="123456"
     />
 
+    <bean id="blocationMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="wuxian.me.lagouspider.mapper.boss.BLocationMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="bcompanyMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="wuxian.me.lagouspider.mapper.boss.BCompanyMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="bpositionMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="wuxian.me.lagouspider.mapper.boss.BPositionMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
     <bean id="locationMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="mapperInterface" value="wuxian.me.lagouspider.mapper.lagou.LocationMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>

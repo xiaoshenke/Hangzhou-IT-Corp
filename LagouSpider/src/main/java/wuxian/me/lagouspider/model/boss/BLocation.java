@@ -1,5 +1,6 @@
 package wuxian.me.lagouspider.model.boss;
 
+import wuxian.me.lagouspider.biz.boss.BossConfig;
 import wuxian.me.lagouspider.model.BaseModel;
 
 /**
@@ -7,10 +8,14 @@ import wuxian.me.lagouspider.model.BaseModel;
  */
 public class BLocation extends BaseModel {
 
+    public static String tableName = BossConfig.TableName.LOCATION;
+
     //通过currentmill和location的hashString计算而来 确保唯一性
     public long locationId;
-    public String location;
+
     public long companyId;
+    public String location;
+
     public String longitude;
     public String latitude;
 

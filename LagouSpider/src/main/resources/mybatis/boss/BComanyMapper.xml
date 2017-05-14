@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="wuxian.me.lagouspider.mapper.boss.BCompanyMapper">
+
+    <delete id="deleteTable" parameterType="wuxian.me.lagouspider.model.boss.BCompany">
+        drop table if exists ${tableName}
+    </delete>
+
+    <update id="createNewTableIfNeed" parameterType="wuxian.me.lagouspider.model.boss.BCompany">
+        create table if not exists ${tableName} (company_id INTEGER,company_shortname VARCHAR(8),
+        company_fullname VARCHAR(16),size_min SMALLINT,size_max SMALLINT,industry_field VARCHAR(8),
+        company_logo VARCHAR(125),finance_stage VARCHAR(5),
+        PRIMARY KEY (company_id))
+        DEFAULT CHARSET = utf8,
+        ENGINE = InnoDB;
+
+    </update>
+
+    <update id="createIndex" parameterType="wuxian.me.lagouspider.model.boss.BCompany">
+        CREATE INDEX idx_company_fullname ON ${tableName} (company_fullname);
+    </update>
+
+    <insert id="insertCompany" parameterType="wuxian.me.lagouspider.model.boss.BCompany">
+        insert into ${tableName} (company_id,company_shortname,company_fullname,size_min,size_max,
+        industry_field,company_logo,finance_stage)
+        values (#{companyId},#{name},#{fullName},#{sizeMin},#{sizeMax},#{field},#{logo},#{financeStage});
+    </insert>
+
+    <resultMap id="allCompany" type="wuxian.me.lagouspider.model.boss.BCompany"/>
+    <select id="loadAll" resultMap="allCompany" useCache="false">
+        select * from ${tableName}
+    </select>
+</mapper>

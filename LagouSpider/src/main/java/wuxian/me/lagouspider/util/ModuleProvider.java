@@ -7,6 +7,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 import wuxian.me.lagouspider.Main;
+import wuxian.me.lagouspider.mapper.boss.BCompanyMapper;
+import wuxian.me.lagouspider.mapper.boss.BLocationMapper;
+import wuxian.me.lagouspider.mapper.boss.BPositionMapper;
 import wuxian.me.lagouspider.mapper.lagou.AreaMapper;
 import wuxian.me.lagouspider.mapper.lagou.CompanyMapper;
 import wuxian.me.lagouspider.mapper.lagou.LocationMapper;
@@ -53,6 +56,18 @@ public class ModuleProvider {
         return instance.locationMapper;
     }
 
+    public static BPositionMapper bPositionMapper() {
+        return instance.bpositionMapper;
+    }
+
+    public static BCompanyMapper bCompanyMapper() {
+        return instance.bcompanyMapper;
+    }
+
+    public static BLocationMapper bLocationMapper() {
+        return instance.blocationMapper;
+    }
+
     @Autowired
     LocationMapper locationMapper;
 
@@ -64,4 +79,13 @@ public class ModuleProvider {
 
     @Autowired
     CompanyMapper companyMapper;
+
+    @Autowired
+    BLocationMapper blocationMapper;
+
+    @Autowired
+    BCompanyMapper bcompanyMapper;
+
+    @Autowired
+    BPositionMapper bpositionMapper;
 }
