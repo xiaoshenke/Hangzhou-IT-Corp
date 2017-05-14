@@ -9,8 +9,8 @@
 
     <update id="createNewTableIfNeed" parameterType="wuxian.me.lagouspider.model.boss.BPosition">
         create table if not exists ${tableName} (position_id INTEGER,company_id INTEGER,location_id INTEGER,
-        position_name VARCHAR(15),salary_min TINYINT,salary_max TINYINT,city VARCHAR(4),
-        experience_min TINYINT,experience_max SMALLINT,education VARCHAR(5),post_time CHAR(10),
+        position_name VARCHAR(15),city VARCHAR(4),education VARCHAR(5),salary_min TINYINT,salary_max TINYINT,
+        experience_min TINYINT,experience_max SMALLINT,post_time CHAR(10),
         PRIMARY KEY (position_id))
         DEFAULT CHARSET = utf8,
         ENGINE = InnoDB;

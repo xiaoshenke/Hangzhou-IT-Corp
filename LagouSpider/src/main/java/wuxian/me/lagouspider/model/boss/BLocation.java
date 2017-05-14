@@ -10,14 +10,13 @@ public class BLocation extends BaseModel {
 
     public static String tableName = BossConfig.TableName.LOCATION;
 
-    //通过currentmill和location的hashString计算而来 确保唯一性
-    public long locationId;
+    public long locationId = -1;
+    public long companyId = -1;
 
-    public long companyId;
     public String location;
 
     public String longitude;
-    public String latitude;
+    public String lantitude;
 
     public BLocation() {
     }
@@ -37,6 +36,7 @@ public class BLocation extends BaseModel {
     }
 
     public long index() {
-        return companyId + hashCode();
+        return locationId != -1 ? locationId :
+                companyId + hashCode();
     }
 }

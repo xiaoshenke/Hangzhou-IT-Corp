@@ -49,6 +49,15 @@ import static wuxian.me.lagouspider.util.Helper.*;
 public class MainTest {
 
     @Test
+    public void testDate() {
+        System.out.println(BPositonDetailSpider.formatPositionPostTime("发布于昨天"));
+
+        System.out.println(BPositonDetailSpider.formatPositionPostTime("发布于14:11"));
+
+        System.out.println(BPositonDetailSpider.formatPositionPostTime("发布于05月10日"));
+    }
+
+    @Test
     public void testDBs() {
         BCompanyMapper bCompanyMapper = ModuleProvider.bCompanyMapper();
         BCompany company = new BCompany();

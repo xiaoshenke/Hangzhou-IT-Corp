@@ -47,7 +47,14 @@ public class LocationSaver implements IModelSaver<Location> {
     }
 
     public boolean saveModel(@NotNull Location location) {
+        if (!isModelValid(location)) {
+            return false;
+        }
         companyMap.put(location.index(), location);
+        return true;
+    }
+
+    public boolean isModelValid(@NotNull Location model) {
         return true;
     }
 }

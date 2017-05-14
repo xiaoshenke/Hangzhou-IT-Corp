@@ -91,4 +91,8 @@ public class CompanyJsonSaver implements IModelSaver<Company> {
         }
     }
 
+    public boolean isModelValid(@NotNull Company model) {
+        return true;
+    }
+
 }

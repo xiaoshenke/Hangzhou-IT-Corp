@@ -10,4 +10,6 @@ public interface IModelSaver<T> {
      * @return datachanged
      */
     boolean saveModel(@NotNull T model);
+
+    boolean isModelValid(@NotNull T model);
 }

@@ -51,4 +51,8 @@ public class ProductSaver implements IModelSaver<Product> {
         companyMap.put(product.index(), product);
         return true;
     }
+
+    public boolean isModelValid(@NotNull Product model) {
+        return true;
+    }
 }

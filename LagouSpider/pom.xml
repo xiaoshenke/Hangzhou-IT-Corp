@@ -7,8 +7,18 @@
     <groupId>wuxian.me</groupId>
     <artifactId>lagouspider</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <properties>
+        <commons-lang3.version>3.3.2</commons-lang3.version>
+
+    </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.htmlparser</groupId>
             <artifactId>htmlparser</artifactId>

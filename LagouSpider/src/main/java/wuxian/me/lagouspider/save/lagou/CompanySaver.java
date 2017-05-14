@@ -40,4 +40,8 @@ public class CompanySaver implements IModelSaver<Company> {
         jsonSaver.saveModel(company);
         return true;
     }
+
+    public boolean isModelValid(@NotNull Company model) {
+        return true;
+    }
 }

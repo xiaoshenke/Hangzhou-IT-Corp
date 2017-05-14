@@ -26,7 +26,7 @@ public class BCompany extends BaseModel {
     //max:16
     public String fullName;
 
-    public long companyId;
+    public long companyId = -1;
 
     public String name() {
         return "BossCompany: name:" + name + " fullName:" + fullName + " companyId:" + companyId

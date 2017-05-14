@@ -3,6 +3,7 @@ package wuxian.me.lagouspider.biz.boss;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
+import org.apache.commons.lang3.time.DateUtils;
 import org.htmlparser.Node;
 import org.htmlparser.Parser;
 import org.htmlparser.filters.HasAttributeFilter;
@@ -13,12 +14,19 @@ import org.htmlparser.util.ParserException;
 import wuxian.me.lagouspider.model.boss.BCompany;
 import wuxian.me.lagouspider.model.boss.BLocation;
 import wuxian.me.lagouspider.model.boss.BPosition;
+import wuxian.me.lagouspider.save.boss.BCompanySaver;
+import wuxian.me.lagouspider.save.boss.BLocationSaver;
+import wuxian.me.lagouspider.save.boss.BPositionSaver;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.NodeLogUtil;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.anti.MaybeBlockedException;
 import wuxian.me.spidersdk.log.LogManager;
+import wuxian.me.spidersdk.util.FileUtil;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -150,6 +158,10 @@ public class BPositonDetailSpider extends BaseBossSpider {
                 }
             }
         }
+
+        if (company.companyId == -1) {
+            throw new ParserException();
+        }
     }
 
     private void parseLocation(String data) throws MaybeBlockedException, ParserException {
@@ -167,7 +179,6 @@ public class BPositonDetailSpider extends BaseBossSpider {
 
                 if (child instanceof Div && child.getText().contains("location-address")) {
                     location.location = child.toPlainTextString().trim();
-
                     continue;
                 }
 
@@ -179,7 +190,7 @@ public class BPositonDetailSpider extends BaseBossSpider {
                         String[] longlat = matcher.group().split(",");
                         if (longlat.length == 2) {
                             location.longitude = longlat[0];
-                            location.latitude = longlat[1];
+                            location.lantitude = longlat[1];
                         }
                     }
 
@@ -187,6 +198,10 @@ public class BPositonDetailSpider extends BaseBossSpider {
                 }
 
             }
+        }
+
+        if (location.location == null || location.location.length() == 0) {
+            throw new ParserException("No Location found");
         }
 
     }
@@ -201,7 +216,7 @@ public class BPositonDetailSpider extends BaseBossSpider {
         NodeList list = parser.extractAllNodesThatMatch(filter);
 
         if (list == null && list.size() == 0) {
-            return;  //Fixme
+            return;
         }
 
         Node jobPrimary = list.elementAt(0);
@@ -261,8 +276,6 @@ public class BPositonDetailSpider extends BaseBossSpider {
                             }
                         }
                     }
-
-
                     continue;
                 }
 
@@ -320,6 +333,7 @@ public class BPositonDetailSpider extends BaseBossSpider {
                 }
             }
         }
+
     }
 
     private void parseDes(String data)
@@ -330,13 +344,13 @@ public class BPositonDetailSpider extends BaseBossSpider {
         HasAttributeFilter filter = new HasAttributeFilter("class", "detail-content");
         NodeList list = parser.extractAllNodesThatMatch(filter);
         if (list == null || list.size() == 0) {
-            return;  //Fixme
+            return;
         }
 
         Node child = list.elementAt(0);
         list = child.getChildren();
         if (list == null || list.size() == 0) {
-            return;  //Fixme
+            return;
         }
 
         for (int i = 0; i < list.size(); i++) {
@@ -359,10 +373,7 @@ public class BPositonDetailSpider extends BaseBossSpider {
                     }
 
                     if (child1 instanceof Div && child1.getText().trim().contains("text")) {
-
-                        //Todo:存入文件
                         position.description = child1.toPlainTextString().trim();
-
                         break;
                     }
                 }
@@ -370,8 +381,50 @@ public class BPositonDetailSpider extends BaseBossSpider {
         }
     }
 
+    public static String formatPositionPostTime(String postTime) {
 
-    //Todo: company location position存入数据库
+        String ret = null;
+        String post = postTime;
+        if (post == null || post.length() == 0) {
+            return ret;
+        }
+
+        if (post.contains(":")) {
+            ret = formattedToday;
+            return ret;
+
+        } else if (post.contains("月")) {
+            String month = "";
+            String day = "";
+            String reg = "(?<=发布于)[0-9]+(?=月)";
+            Pattern pattern = Pattern.compile(reg);
+            Matcher matcher = pattern.matcher(post);
+            if (matcher.find()) {
+                month = matcher.group();
+            }
+
+            String reg1 = "(?<=月)[0-9]+(?=日)";
+            Pattern pattern1 = Pattern.compile(reg1);
+            Matcher matcher1 = pattern1.matcher(post);
+            if (matcher1.find()) {
+                day = matcher1.group();
+            }
+
+            ret = String.valueOf(today.getYear() + 1900) + "-" + month + "-" + day;
+        } else if (post.contains("昨天")) {
+            ret = formattedYestoday;
+        }
+
+        return ret;
+
+    }
+
+    static Date today = DateUtils.truncate(Calendar.getInstance(), Calendar.DATE).getTime();
+    static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    static String formattedToday = sdf.format(today);
+    static String formattedYestoday = sdf.format(DateUtils.addDays(today, -1));
+
+
     public int parseRealData(String s) {
         try {
             parseCompany(s);
@@ -382,6 +435,33 @@ public class BPositonDetailSpider extends BaseBossSpider {
 
             parseDes(s);
 
+            location.companyId = company.companyId;
+            location.locationId = location.location.hashCode() + location.companyId;
+            if (location.locationId < 0) {
+                location.locationId = -(location.locationId + 1);   //Fixme:有没有必要
+            }
+
+
+            position.companyId = company.companyId;
+            position.locationId = location.locationId;
+            position.postTime = formatPositionPostTime(position.postTime);
+
+            if (BossConfig.EnableSaveDB.ENABLE_SAVE_COMPANY) {
+                saveCompany();
+            }
+
+            if (BossConfig.EnableSaveDB.ENABLE_SAVE_LOCATION) {
+                saveLocation();
+            }
+
+            if (BossConfig.EnableSaveDB.ENABLE_SAVE_POSITION) {
+                savePosition();
+            }
+
+            if (BossConfig.EnableSaveDB.ENABLE_SAVE_COMPANY_DES) {
+                saveJobDescription();
+            }
+
         } catch (MaybeBlockedException e) {
             return BaseSpider.RET_MAYBE_BLOCK;
         } catch (ParserException e) {
@@ -389,6 +469,37 @@ public class BPositonDetailSpider extends BaseBossSpider {
         }
 
         return BaseSpider.RET_SUCCESS;
+    }
+
+    private void savePosition() {
+        BPositionSaver.getInstance().saveModel(position);
+    }
+
+    private void saveCompany() {
+        BCompanySaver.getInstance().saveModel(company);
+    }
+
+    private void saveLocation() {
+        BLocationSaver.getInstance().saveModel(location);
+    }
+
+    private void saveJobDescription() {
+        if (position.description == null || position.description.length() == 0) {
+            return;
+        }
+        synchronized (BPositonDetailSpider.class) {
+            if (!FileUtil.checkFileExist(getDesFilePath())) {
+                FileUtil.writeToFile(getDesFilePath(), position.description);
+            }
+        }
+    }
+
+    private String getDesFilePath() {
+        return FileUtil.getCurrentPath() + BossConfig.File.POSITON_DES_PATH + getDesFileName();
+    }
+
+    private String getDesFileName() {
+        return position.positionName + "_" + position.positionId + ".txt";
     }
 
     public String name() {

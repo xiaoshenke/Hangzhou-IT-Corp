@@ -55,4 +55,8 @@ public class CompanyMainSaver implements IModelSaver<Company> {
         companyMap.put(company.company_id, company);
         return true;
     }
+
+    public boolean isModelValid(@NotNull Company model) {
+        return true;
+    }
 }

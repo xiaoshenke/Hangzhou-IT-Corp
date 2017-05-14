@@ -10,7 +10,7 @@ public class BPosition extends BaseModel {
 
     public static String tableName = BossConfig.TableName.POSITION;
 
-    public long positionId;
+    public long positionId = -1;
 
     public String positionName;
 
@@ -33,7 +33,7 @@ public class BPosition extends BaseModel {
     //发布时间
     public String postTime;
 
-    public long locationId;
+    public long locationId = -1;
 
     public BPosition() {
         ;
