@@ -501,7 +501,7 @@ public class BPositonDetailSpider extends BaseBossSpider {
     }
 
     private String getDesFilePath() {
-        return FileUtil.getCurrentPath() + BossConfig.File.POSITON_DES_PATH + getDesFileName();
+        return Helper.getCurrentPath() + BossConfig.File.POSITON_DES_PATH + getDesFileName();
     }
 
     private String getDesFileName() {

@@ -12,31 +12,48 @@ import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.util.FileUtil;
 
+import java.io.File;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static wuxian.me.lagouspider.biz.lagou.LagouConfig.*;
-import static wuxian.me.lagouspider.biz.lagou.LagouConfig.File.*;
+import static wuxian.me.lagouspider.biz.lagou.LagouConfig.File.CONF;
 import static wuxian.me.lagouspider.biz.lagou.LagouConfig.Grab.CONF_LASTGRAB;
 import static wuxian.me.lagouspider.biz.lagou.LagouConfig.Grab.GRAB_INTERNAL;
 import static wuxian.me.lagouspider.biz.lagou.LagouConfig.TableName.*;
-import static wuxian.me.spidersdk.util.FileUtil.getCurrentPath;
 
 /**
  * Created by wuxian on 1/4/2017.
  */
 public class Helper {
 
+    private static String currentPath = null;
+
+    public static String getCurrentPath() {
+        if (currentPath == null) {
+            try {
+                File file = new File(Helper.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+
+                currentPath = file.getParentFile().getAbsolutePath();
+            } catch (URISyntaxException e) {
+
+            }
+        }
+
+        return currentPath;
+
+    }
+
     public static String getBossDistinctsFilePath() {
         return getCurrentPath() + BossConfig.File.CONF + BossConfig.CITY_TO_SPIDER + BossConfig.File.DISTINTC;
     }
 
     public static String getLagouAreaFilePath() {
-        return getCurrentPath() + CONF + LagouConfig.CITY_TO_SPIDER + AREA;
+        return getCurrentPath() + LagouConfig.File.CONF + LagouConfig.CITY_TO_SPIDER + LagouConfig.File.AREA;
     }
 
     public static String getLagouDistinctsFilePath() {
-        return getCurrentPath() + CONF + CITY_TO_SPIDER + DISTINTC;
+        return getCurrentPath() + CONF + LagouConfig.CITY_TO_SPIDER + LagouConfig.File.DISTINTC;
     }
 
     public static String getLagouGrabFilePath() {
@@ -44,28 +61,28 @@ public class Helper {
     }
 
     public static String getLagouCookieFilePath(String spiderName) {
-        return getCurrentPath() + CONF_COOKIE + "_" + spiderName;
+        return getCurrentPath() + LagouConfig.File.CONF_COOKIE + "_" + spiderName;
     }
 
     public static String getLog4jPropFilePath() {
-        return getCurrentPath() + CONF_LOG4J_PROPERTIES;
+        return getCurrentPath() + LagouConfig.File.CONF_LOG4J_PROPERTIES;
     }
 
     //每个城市一张表
     public static String getLagouCompanyTableName() {
-        return CITY_TO_SPIDER + TABLE_COMPANY + getDatabasePost();
+        return LagouConfig.CITY_TO_SPIDER + TABLE_COMPANY + getDatabasePost();
     }
 
     public static String getLagouProductTableName() {
-        return CITY_TO_SPIDER + TABLE_PRODUCT + getDatabasePost();
+        return LagouConfig.CITY_TO_SPIDER + TABLE_PRODUCT + getDatabasePost();
     }
 
     public static String getLagouLocationTableName() {
-        return CITY_TO_SPIDER + TABLE_LOCATION + getDatabasePost();
+        return LagouConfig.CITY_TO_SPIDER + TABLE_LOCATION + getDatabasePost();
     }
 
     public static String getLagouAreaTableName() {
-        return CITY_TO_SPIDER + TABLE_AREA;
+        return LagouConfig.CITY_TO_SPIDER + TABLE_AREA;
     }
 
     private Helper() {

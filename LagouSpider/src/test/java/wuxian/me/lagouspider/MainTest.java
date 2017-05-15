@@ -36,6 +36,7 @@ import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.util.FileUtil;
 
+
 import java.net.URLEncoder;
 import java.util.List;
 
@@ -47,6 +48,11 @@ import static wuxian.me.lagouspider.util.Helper.*;
  * Created by wuxian on 9/4/2017.
  */
 public class MainTest {
+
+    @Test
+    public void testPath() {
+        System.out.println(Helper.getCurrentPath());
+    }
 
     @Test
     public void testDate() {
@@ -194,15 +200,6 @@ public class MainTest {
         Company.tableName = Helper.getLagouCompanyTableName();
         Product.tableName = Helper.getLagouProductTableName();
         Location.tableName = Helper.getLagouLocationTableName();
-
-        /*
-        Company company = new Company(-1);
-        companyMapper.createNewTableIfNeed(company);
-        Product product = new Product(-1);
-        productMapper.createNewTableIfNeed(product);
-        Location location = new Location(-1, "2r3");
-        locationMapper.createNewTableIfNeed(location);
-        */
 
         List<Company> companyList = companyMapper.loadAllCompanies(Company.tableName);
 

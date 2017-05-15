@@ -57,11 +57,11 @@ public class Main {
             }
 
             public void error(String message) {
-                logger().info(message);
+                logger().error(message);
             }
 
             public void warn(String message) {
-                logger().info(message);
+                logger().warn(message);
             }
         });
     }
@@ -169,8 +169,11 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        //System.out.println(Helper.getCurrentPath());
+
         Main main = new Main();
         main.run();
+
     }
 
     private List<Area> parseAreasFromFile() {
