@@ -17,11 +17,16 @@ public class ProcessSignalManager implements SignalHandler {
 
     //系统的支持程度各异
     public ProcessSignalManager() {
-        Signal.handle(new Signal("TERM"), this);  // kill -15 common kill
-        Signal.handle(new Signal("INT"), this);   // Ctrl+c
-        Signal.handle(new Signal("KILL"), this);  // kill -9  no Support
-        Signal.handle(new Signal("USR1"), this);   // kill -10
-        Signal.handle(new Signal("USR2"), this);   // kill -12
+        try {
+            Signal.handle(new Signal("TERM"), this);  // kill -15 common kill
+            Signal.handle(new Signal("INT"), this);   // Ctrl+c
+            Signal.handle(new Signal("KILL"), this);  // kill -9  no Support
+            Signal.handle(new Signal("USR1"), this);   // kill -10
+            Signal.handle(new Signal("USR2"), this);   // kill -12
+        } catch (Exception e) {
+
+        }
+
     }
 
 

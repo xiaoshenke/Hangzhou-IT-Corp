@@ -30,6 +30,7 @@ import wuxian.me.spidersdk.log.ILog;
 import wuxian.me.spidersdk.log.LogManager;
 import wuxian.me.spidersdk.util.FileUtil;
 
+import java.io.File;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -39,6 +40,22 @@ import java.util.List;
  * Created by wuxian on 29/3/2017.
  */
 public class Main {
+
+    static {
+        if(true){  //IDE运行
+            File file = new File("");
+            FileUtil.setCurrentPath(file.getAbsolutePath());
+        } else {   //JAR包运行
+            try{
+                File file = new File(Helper.class.getProtectionDomain().getCodeSource()
+                        .getLocation().toURI().getPath());
+                FileUtil.setCurrentPath(file.getParentFile().getAbsolutePath());
+            } catch (Exception e){
+
+            }
+
+        }
+    }
 
     AreaMapper areaMapper = ModuleProvider.areaMapper();
     CompanyMapper companyMapper = ModuleProvider.companyMapper();

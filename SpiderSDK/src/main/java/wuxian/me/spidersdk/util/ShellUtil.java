@@ -2,7 +2,6 @@ package wuxian.me.spidersdk.util;
 
 import com.sun.jna.Library;
 import com.sun.jna.Native;
-import wuxian.me.spidersdk.JobManager;
 import wuxian.me.spidersdk.JobManagerConfig;
 
 import java.io.BufferedReader;
@@ -19,6 +18,25 @@ public class ShellUtil {
     private ShellUtil() {
     }
 
+    //Todo:被调用
+    public static boolean isRedisServerRunning() throws IOException {
+        Runtime runtime = Runtime.getRuntime();
+        String check = getCheckRedisServerRunningPath();
+        String[] args = new String[]{check};
+        Process pc = null;
+        pc = runtime.exec(args);
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(pc.getInputStream()));
+
+        StringBuilder builder = new StringBuilder("");
+        String line;
+        while ((line = reader.readLine()) != null) {
+            builder.append(line);
+        }
+
+        return builder.toString().contains("PONG");
+    }
+
     //0:running 1:not running -1:not known
     public static int textEditState() {
         try {
@@ -28,6 +46,10 @@ public class ShellUtil {
         } catch (Exception e) {
             return -1;
         }
+    }
+
+    private static String getCheckRedisServerRunningPath() {
+        return getCurrentPath() + JobManagerConfig.shellCheckRedisRunning;
     }
 
     private static String getCheckProcessShellPath() {

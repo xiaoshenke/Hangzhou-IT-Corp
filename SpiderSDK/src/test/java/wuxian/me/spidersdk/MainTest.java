@@ -2,12 +2,12 @@ package wuxian.me.spidersdk;
 
 import org.junit.Test;
 import wuxian.me.spidersdk.distribute.ClassFileUtil;
-import wuxian.me.spidersdk.distribute.RedisSpiderChecker;
+import wuxian.me.spidersdk.distribute.SpiderChecker;
+import wuxian.me.spidersdk.util.FileUtil;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Set;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by wuxian on 12/5/2017.
@@ -15,10 +15,26 @@ import static org.junit.Assert.*;
 public class MainTest {
 
     @Test
-    public void testClass() {
-        NoneSpider spider = new NoneSpider();
+    public void testPath() {
+        System.out.println(FileUtil.getCurrentPath());
+    }
 
-        spider.toUrlNode();
+    @Test
+    public void testClass() {
+
+        File file = null;
+        String jarPath = "";
+        try {
+            jarPath = FileUtil.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+            file = new File(jarPath);
+            file = file.getParentFile();
+        } catch (Exception e) {
+        }
+        FileUtil.setCurrentPath(file.getAbsolutePath());
+
+        System.out.println(jarPath);
+        //NoneSpider spider = new NoneSpider();
+        //spider.toUrlNode();
     }
 
     @Test
@@ -37,7 +53,7 @@ public class MainTest {
     @Test
     public void testStaticMethodCheck() {
         try {
-            RedisSpiderChecker.performCheck(ClassFileUtil.getClassByName("wuxian.me.spidersdk.NoneSpider"));
+            SpiderChecker.performCheck(ClassFileUtil.getClassByName("wuxian.me.spidersdk.NoneSpider"));
 
             System.out.println("success");
         } catch (Exception e) {

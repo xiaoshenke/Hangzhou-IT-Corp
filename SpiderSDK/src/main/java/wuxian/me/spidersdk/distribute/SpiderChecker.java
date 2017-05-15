@@ -11,9 +11,9 @@ import java.util.Set;
  *
  * Runtime检查@BaseSpider的子类是否实现了@BaseSpider.fromUrlNode,toUrlNode,若没有,抛异常
  */
-public class RedisSpiderChecker {
+public class SpiderChecker {
 
-    private RedisSpiderChecker() {
+    private SpiderChecker() {
     }
 
     public static void performCheck(String pack) throws MethodCheckException {

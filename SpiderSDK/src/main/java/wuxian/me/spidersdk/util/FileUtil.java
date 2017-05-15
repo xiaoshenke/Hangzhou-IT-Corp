@@ -6,7 +6,6 @@ import com.sun.istack.internal.Nullable;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.attribute.PosixFilePermission;
 import java.util.List;
 import java.util.Set;
 
@@ -25,10 +24,26 @@ public class FileUtil {
 
     private static String currentPath;
 
+    //Todo:业务层记得要调用一下
+    //ide运行和java -jar运行的时候是不同的值
+    public static void setCurrentPath(String path) {
+        currentPath = path;
+    }
+
     public static String getCurrentPath() {
         if (currentPath == null) {
-            File file = new File("");
+            File file = null;
+            /*
+            try{
+                file = new File(FileUtil.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+                file = file.getParentFile();
+            } catch (Exception e){
+
+            }
+            */
+            file = new File("");
             currentPath = file.getAbsolutePath();
+
         }
         return currentPath;
     }

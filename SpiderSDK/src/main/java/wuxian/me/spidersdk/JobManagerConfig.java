@@ -70,6 +70,12 @@ public class JobManagerConfig {
 
     public static String fulllogPost;
 
+    public static boolean useRedisJobQueue;
+
+    public static String shellCheckRedisRunning;
+    public static String redisIp;
+    public static long redisPort;
+
     static {
         readConfigFromFile();
     }
@@ -157,6 +163,11 @@ public class JobManagerConfig {
 
         fulllogPost = parse(pro, "fulllogPost", ".html");
 
+        useRedisJobQueue = parse(pro, "useRedisJobQueue", false);
+        shellCheckRedisRunning = parse(pro, "shellCheckRedisRunning", "/shell/checkredisrunning");
+        redisIp = parse(pro, "redisIp", "127.0.0.1");
+        redisPort = parse(pro, "redisPort", (long) 6379);
+
         doSomeInit();
     }
 
@@ -172,6 +183,13 @@ public class JobManagerConfig {
         path = FileUtil.getCurrentPath() + shellCheckprocessFile;
         if (!FileUtil.checkFileExist(path)) {
             String shell = "ps -ef | grep $1";
+            FileUtil.writeToFile(path, shell);
+        }
+        ShellUtil.chmod(path, 0777);
+
+        path = FileUtil.getCurrentPath() + shellCheckRedisRunning;
+        if (!FileUtil.checkFileExist(path)) {
+            String shell = "redis-cli -h " + redisIp + " -p " + redisPort + " ping";
             FileUtil.writeToFile(path, shell);
         }
         ShellUtil.chmod(path, 0777);
