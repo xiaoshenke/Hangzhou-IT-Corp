@@ -15,6 +15,13 @@ import static org.junit.Assert.*;
 public class MainTest {
 
     @Test
+    public void testClass() {
+        NoneSpider spider = new NoneSpider();
+
+        spider.toUrlNode();
+    }
+
+    @Test
     public void testClassFileUtil() {
         try {
             Set<Class<?>> classSet = ClassFileUtil.getClasses("wuxian.me.spidersdk.log");

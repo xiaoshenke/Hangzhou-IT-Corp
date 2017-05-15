@@ -24,6 +24,8 @@ public class BPosition extends BaseModel {
 
     public String description;
 
+    public String team;
+
     public int experienceMin = -1;
 
     public int experienceMax = -1;

@@ -3,17 +3,24 @@ package wuxian.me.spidersdk;
 import com.sun.istack.internal.NotNull;
 import okhttp3.Request;
 import okhttp3.Response;
+import wuxian.me.spidersdk.distribute.ClassFileUtil;
 import wuxian.me.spidersdk.distribute.HttpUrlNode;
-import wuxian.me.spidersdk.util.FileUtil;
+import wuxian.me.spidersdk.distribute.ToUrlMethodManager;
+import wuxian.me.spidersdk.log.LogManager;
 import wuxian.me.spidersdk.util.OkhttpProvider;
+import wuxian.me.spidersdk.util.SerializeFullLogHelper;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
-import static wuxian.me.spidersdk.util.FileUtil.getCurrentPath;
 
 /**
  * Created by wuxian on 13/4/2017.
+ * <p>
+ * 一个spider其实就是两部分功能：
+ * 1 生成httpRequest,或者说url,或者HttpUrlNode,这仨在逻辑上是等效的
+ * 2 解析callback
+ * 现在这俩被耦合到了一个叫做@BaseSpider的类上,未来有需求的时候可以解耦
  */
 public abstract class BaseSpider implements Runnable {
 
@@ -23,11 +30,45 @@ public abstract class BaseSpider implements Runnable {
     }
 
     //同上
-    public static HttpUrlNode toUrlNode() {
+    public static HttpUrlNode toUrlNode(BaseSpider spider) {
         return null;
     }
 
-    private static final String LINTFEED = "/r/n";
+    //Used in distributted mode
+    public final HttpUrlNode toUrlNode() {
+        String name = this.getClass().getName();
+        if (ToUrlMethodManager.contains(name)) {
+
+            try {
+                return (HttpUrlNode) ToUrlMethodManager.getMethod(name).invoke(null, this);
+            } catch (IllegalAccessException e) {
+                ;
+            } catch (InvocationTargetException e) {
+                ;
+            }
+
+        } else {
+            try {
+                Class clazz = ClassFileUtil.getClassByName(this.getClass().getName());
+                Method method = clazz.getMethod("toUrlNode", clazz);
+
+                ToUrlMethodManager.put(clazz, method);
+                return (HttpUrlNode) method.invoke(null, this);
+
+            } catch (ClassNotFoundException e) {
+
+            } catch (NoSuchMethodException e) {
+
+            } catch (IllegalAccessException e) {
+                ;
+            } catch (InvocationTargetException e) {
+                ;
+            }
+        }
+
+        return null;
+    }
+
     public static final int RET_SUCCESS = 0; //成功
 
     //parsing error --> 指new Parser(html) 是不是因为parser能力太弱 这个网页有些tag不支持
@@ -35,9 +76,6 @@ public abstract class BaseSpider implements Runnable {
     public static final int RET_PARSING_ERR = 1;
 
     public static final int RET_MAYBE_BLOCK = 2; //可能被block
-
-    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private static SimpleDateFormat fullLogSdf = new SimpleDateFormat("yyyy_MM_dd_HH:mm:ss");
 
     private SpiderCallback callback;
     private Request request;
@@ -103,30 +141,7 @@ public abstract class BaseSpider implements Runnable {
 
     //将详细错误码包括Http Request,Response写到本地文件
     public final void serializeFullLog() {
-        StringBuilder builder = new StringBuilder("");
-        Date date = new Date();
-        String time = sdf.format(date);
-        builder.append(time);
-
-        builder.append(" [" + Thread.currentThread().getName() + "]" + LINTFEED);
-        builder.append("Spider: " + toString() + LINTFEED);
-
-        builder.append("Request: " + buildRequest() + LINTFEED);
-        Response response = callback.getResponse();
-        if (response != null) {
-            builder.append("Response: HttpCode: " + response.code() + " isRedirect: " + response.isRedirect() + " Message: " + response.message() + LINTFEED);
-            builder.append("Header: " + response.headers().toString() + LINTFEED);
-            builder.append(LINTFEED + "Body: " + callback.getBody());
-        }
-
-        String name = name().length() > 25 ? name().substring(0, 25) : name();
-        String fileName = fullLogSdf.format(date) + name; //simpleName只有一个类名
-
-        FileUtil.writeToFile(getFullLogFilePath(fileName), builder.toString());
-    }
-
-    private String getFullLogFilePath(String filename) {
-        return getCurrentPath() + JobManagerConfig.fulllogFile + filename + JobManagerConfig.fulllogPost;
+        SerializeFullLogHelper.seriazeFullLog(callback, buildRequest(), toString(), name());
     }
 
     @Override

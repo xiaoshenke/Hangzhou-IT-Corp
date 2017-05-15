@@ -11,6 +11,7 @@ import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.log.LogManager;
 import wuxian.me.spidersdk.util.OkhttpProvider;
+import wuxian.me.spidersdk.util.ProcessSignalManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,13 +28,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 2 负责处理job的成功失败 --> 失败是否重试
  * 3 负责处理ip被屏蔽 --> 是则停止现有job,切换ip,打监控日志,重启workThread等等
  * <p>
- * <p>
- * 日志级别规定:
- * 1 监控整个项目运行的info级别 比如切换ip,job状态切换:开始运行,成功,失败,重试等
- * 2 Job出错的error级
- * 3 其他debug级别 比如parsing什么的
  */
 public class JobManager implements HeartbeatManager.IHeartBeat {
+
+    private ProcessSignalManager signalManager = new ProcessSignalManager();
 
     private JobMonitor monitor = new JobMonitor();
     private JobQueue queue = new JobQueue(monitor);
@@ -63,6 +61,37 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
 
 
     private JobManager() {
+        signalManager.registerOnSystemKill(new ProcessSignalManager.OnSystemKill() {
+            public void onSystemKilled() {
+                onPause();
+            }
+        });
+        signalManager.init();
+
+        //Todo
+        Thread.currentThread().setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            public void uncaughtException(Thread t, Throwable e) {
+                onUncaughtException(t, e);
+            }
+        });
+        onResume();
+    }
+
+    //Todo:检查各个部件是否工作良好
+    public void onUncaughtException(Thread t, Throwable e) {
+
+    }
+
+    //Enable resume Non-Finished job
+    //Todo
+    public void onResume() {
+        ;
+    }
+
+    //Enable resume Non-Finished job
+    //Todo
+    public void onPause() {
+        ;
     }
 
     //单独调用

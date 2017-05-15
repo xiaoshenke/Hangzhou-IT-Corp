@@ -361,20 +361,26 @@ public class BPositonDetailSpider extends BaseBossSpider {
                 if (list1 == null || list1.size() == 0) {
                     continue;
                 }
+                String type = "";
                 for (int j = 0; j < list1.size(); j++) {
                     Node child1 = list1.elementAt(j);
 
                     if (child1 instanceof HeadingTag && child1.getText().trim().contains("h3")) {
                         if (child1.toPlainTextString().trim().contains("职位描述")) {
+                            type = "zhiwei";
                             continue;
                         } else {   //这个tag是团队介绍的tag 这里不抓团队介绍
-                            break;
+                            type = "tuandui";
+                            continue;
                         }
                     }
 
                     if (child1 instanceof Div && child1.getText().trim().contains("text")) {
-                        position.description = child1.toPlainTextString().trim();
-                        break;
+                        if (type.equals("zhiwei")) {
+                            position.description = child1.toPlainTextString().trim();
+                        } else if (type.equals("tuandui")) {
+                            position.team = child1.toPlainTextString().trim();
+                        }
                     }
                 }
             }
