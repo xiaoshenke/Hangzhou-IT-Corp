@@ -18,9 +18,9 @@ import java.util.jar.JarFile;
 /**
  * Created by wuxian on 12/5/2017.
  */
-public class ClassFileUtil {
+public class ClassHelper {
 
-    private ClassFileUtil() {
+    private ClassHelper() {
     }
 
     public static Class getClassByName(String name) throws ClassNotFoundException {

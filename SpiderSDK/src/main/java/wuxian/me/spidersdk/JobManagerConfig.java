@@ -113,9 +113,9 @@ public class JobManagerConfig {
 
         okhttpClientSocketReadTimeout = parse(pro, "okhttpClientSocketReadTimeout", (long) 10 * 1000);
 
-        shellOpenProxyFile = parse(pro, "shellOpenProxyFile", "/shell/openproxy");
+        shellOpenProxyFile = parse(pro, "shellOpenProxyFile", "/util/shell/openproxy");
 
-        shellCheckprocessFile = parse(pro, "shellCheckprocessFile", "/shell/processexist");
+        shellCheckprocessFile = parse(pro, "shellCheckprocessFile", "/util/shell/processexist");
 
         shellCheckProxyFileSleepTime = parse(pro, "shellCheckProxyFileSleepTime", (long) 1000 * 10);
 
@@ -164,7 +164,7 @@ public class JobManagerConfig {
         fulllogPost = parse(pro, "fulllogPost", ".html");
 
         useRedisJobQueue = parse(pro, "useRedisJobQueue", false);
-        shellCheckRedisRunning = parse(pro, "shellCheckRedisRunning", "/shell/checkredisrunning");
+        shellCheckRedisRunning = parse(pro, "shellCheckRedisRunning", "/util/shell/checkredisrunning");
         redisIp = parse(pro, "redisIp", "127.0.0.1");
         redisPort = parse(pro, "redisPort", (long) 6379);
 

@@ -2,16 +2,13 @@ package wuxian.me.spidersdk;
 
 import com.sun.istack.internal.NotNull;
 import okhttp3.Request;
-import okhttp3.Response;
-import wuxian.me.spidersdk.distribute.ClassFileUtil;
 import wuxian.me.spidersdk.distribute.HttpUrlNode;
-import wuxian.me.spidersdk.distribute.ToUrlMethodManager;
-import wuxian.me.spidersdk.log.LogManager;
+import wuxian.me.spidersdk.distribute.MethodCheckException;
+import wuxian.me.spidersdk.distribute.SpiderMethodManager;
 import wuxian.me.spidersdk.util.OkhttpProvider;
 import wuxian.me.spidersdk.util.SerializeFullLogHelper;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 
 /**
@@ -37,33 +34,16 @@ public abstract class BaseSpider implements Runnable {
     //Used in distributted mode
     public final HttpUrlNode toUrlNode() {
         String name = this.getClass().getName();
-        if (ToUrlMethodManager.contains(name)) {
+        if (!SpiderMethodManager.contains(name)) {
+            throw new MethodCheckException();
+        }
 
-            try {
-                return (HttpUrlNode) ToUrlMethodManager.getMethod(name).invoke(null, this);
-            } catch (IllegalAccessException e) {
-                ;
-            } catch (InvocationTargetException e) {
-                ;
-            }
-
-        } else {
-            try {
-                Class clazz = ClassFileUtil.getClassByName(this.getClass().getName());
-                Method method = clazz.getMethod("toUrlNode", clazz);
-
-                ToUrlMethodManager.put(clazz, method);
-                return (HttpUrlNode) method.invoke(null, this);
-
-            } catch (ClassNotFoundException e) {
-
-            } catch (NoSuchMethodException e) {
-
-            } catch (IllegalAccessException e) {
-                ;
-            } catch (InvocationTargetException e) {
-                ;
-            }
+        try {
+            return (HttpUrlNode) SpiderMethodManager.getToUrlMethod(name).invoke(null, this);
+        } catch (IllegalAccessException e) {
+            ;
+        } catch (InvocationTargetException e) {
+            ;
         }
 
         return null;

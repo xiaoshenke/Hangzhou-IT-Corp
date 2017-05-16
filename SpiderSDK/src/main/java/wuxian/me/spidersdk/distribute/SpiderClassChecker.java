@@ -11,14 +11,14 @@ import java.util.Set;
  *
  * Runtime检查@BaseSpider的子类是否实现了@BaseSpider.fromUrlNode,toUrlNode,若没有,抛异常
  */
-public class SpiderChecker {
+public class SpiderClassChecker {
 
-    private SpiderChecker() {
+    private SpiderClassChecker() {
     }
 
     public static void performCheckAndCollect(String pack) throws MethodCheckException {
         try {
-            Set<Class<?>> classSet = ClassFileUtil.getClasses(pack);
+            Set<Class<?>> classSet = ClassHelper.getClasses(pack);
 
             for (Class clazz : classSet) {
                 performCheckAndCollect(clazz);
@@ -33,13 +33,14 @@ public class SpiderChecker {
         try {
             clazz.asSubclass(BaseSpider.class);
 
-            Method method = clazz.getMethod("fromUrlNode", HttpUrlNode.class);
-            if (!(method.getClass().getSimpleName().equals(clazz.getSimpleName()))) {
+            Method method1 = clazz.getMethod("toUrlNode", clazz);
+            if (!(method1.getDeclaringClass().getSimpleName().equals(clazz.getSimpleName()))) {
                 throw new MethodCheckException();
             }
 
-            Method method1 = clazz.getMethod("toUrlNode", Void.class);
-            if (!(method1.getClass().getSimpleName().equals(clazz.getSimpleName()))) {
+            Method method = clazz.getMethod("fromUrlNode", HttpUrlNode.class);
+
+            if (!(method.getDeclaringClass().getSimpleName().equals(clazz.getSimpleName()))) {
                 throw new MethodCheckException();
             }
 

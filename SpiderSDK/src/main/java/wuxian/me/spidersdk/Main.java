@@ -1,41 +1,42 @@
 package wuxian.me.spidersdk;
 
-import wuxian.me.spidersdk.distribute.ClassFileUtil;
+import wuxian.me.spidersdk.distribute.ClassHelper;
+import wuxian.me.spidersdk.distribute.SpiderClassChecker;
+import wuxian.me.spidersdk.distribute.SpiderMethodTuple;
 import wuxian.me.spidersdk.util.FileUtil;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.JarURLConnection;
-import java.util.Enumeration;
-import java.util.Set;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 /**
  * Created by wuxian on 12/5/2017.
  */
 public class Main {
 
-    public static void main(String[] args) {
-        System.out.println("main");
-        String jarPath = "";
+    static {
+        File file = null;
         try {
-            jarPath = FileUtil.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+            file = new File(FileUtil.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+            file = file.getParentFile();
+            FileUtil.setCurrentPath(file.getAbsolutePath());
         } catch (Exception e) {
+
         }
+
+    }
+
+    public static void main(String[] args) {
+        NoneSpider spider = new NoneSpider();
+        System.out.println("Hello World,This Is Main.main");
+        System.out.println("redis enabled: " + JobManagerConfig.useRedisJobQueue);
 
         try {
-            JarFile jar = new JarFile(jarPath);
-            Set<Class<?>> classSet = ClassFileUtil.getJarFileClasses(jar);
-
-            for (Class<?> clazz : classSet) {
-                System.out.println(clazz.getName());
-            }
-
-
-        } catch (IOException e) {
+            Class clazz = ClassHelper.getClassByName("wuxian.me.spidersdk.NoneSpider");
+            SpiderMethodTuple tuple = SpiderClassChecker.performCheckAndCollect(clazz);
+            System.out.println("success");
+        } catch (ClassNotFoundException e) {
 
         }
 
+        JobManager.getInstance(); //会进行BaseSpider check
     }
 }

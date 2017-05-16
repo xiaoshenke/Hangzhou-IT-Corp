@@ -33,14 +33,6 @@ public class FileUtil {
     public static String getCurrentPath() {
         if (currentPath == null) {
             File file = null;
-            /*
-            try{
-                file = new File(FileUtil.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
-                file = file.getParentFile();
-            } catch (Exception e){
-
-            }
-            */
             file = new File("");
             currentPath = file.getAbsolutePath();
 

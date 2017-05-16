@@ -1,8 +1,9 @@
 package wuxian.me.spidersdk;
 
 import org.junit.Test;
-import wuxian.me.spidersdk.distribute.ClassFileUtil;
-import wuxian.me.spidersdk.distribute.SpiderChecker;
+import wuxian.me.spidersdk.distribute.ClassHelper;
+import wuxian.me.spidersdk.distribute.SpiderClassChecker;
+import wuxian.me.spidersdk.distribute.SpiderMethodTuple;
 import wuxian.me.spidersdk.util.FileUtil;
 
 import java.io.File;
@@ -17,6 +18,10 @@ public class MainTest {
     //Todo
     @Test
     public void testRedisJobQueue() {
+        Class clazz = new NoneSpider().getClass();
+
+        SpiderMethodTuple tuple = SpiderClassChecker.performCheckAndCollect(clazz);
+
 
     }
 
@@ -46,7 +51,7 @@ public class MainTest {
     @Test
     public void testClassFileUtil() {
         try {
-            Set<Class<?>> classSet = ClassFileUtil.getClasses("wuxian.me.spidersdk.log");
+            Set<Class<?>> classSet = ClassHelper.getClasses("wuxian.me.spidersdk.log");
 
             for (Class c : classSet) {
                 System.out.println(c.getName());
@@ -59,7 +64,7 @@ public class MainTest {
     @Test
     public void testStaticMethodCheck() {
         try {
-            SpiderChecker.performCheckAndCollect(ClassFileUtil.getClassByName("wuxian.me.spidersdk.NoneSpider"));
+            SpiderClassChecker.performCheckAndCollect(ClassHelper.getClassByName("wuxian.me.spidersdk.NoneSpider"));
 
             System.out.println("success");
         } catch (Exception e) {

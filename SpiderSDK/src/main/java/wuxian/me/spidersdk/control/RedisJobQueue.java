@@ -26,22 +26,19 @@ public class RedisJobQueue implements IQueue {
 
     private static final String JOB_QUEUE = "jobqueue";
 
-    private Map<Class, SpiderMethodTuple> spiderClassMap = new HashMap<Class, SpiderMethodTuple>();
-
     //HttpUrlNode pattern --> Class
     private Map<Long, Class> urlPatternMap = new HashMap<Long, Class>();
     private List<Long> unResolveList = new ArrayList<Long>();
 
     private Jedis jedis;
-    private Gson gson = new Gson();
+    private Gson gson;
 
-    //Fixme:构造函数抛异常？
-    public RedisJobQueue() throws RedisServerConnectionException, MethodCheckException {
+    public RedisJobQueue() {
         init();
-
     }
 
-    public void init() throws RedisServerConnectionException, MethodCheckException {
+    public void init() {
+        gson = new Gson();
         boolean redisRunning = false;
         try {
             redisRunning = ShellUtil.isRedisServerRunning();
@@ -50,11 +47,13 @@ public class RedisJobQueue implements IQueue {
         }
 
         if (!redisRunning) {
-            throw new RedisServerConnectionException();
+            throw new RedisConnectionException();
         }
+        System.out.println("redis running ok");
         jedis = new Jedis(JobManagerConfig.redisIp,
                 Ints.checkedCast(JobManagerConfig.redisPort));
 
+        System.out.println("begin to checkSubSpiders");
         checkSubSpiders();
     }
 
@@ -68,8 +67,7 @@ public class RedisJobQueue implements IQueue {
                     getLocation().toURI().getPath();
 
             JarFile jar = new JarFile(jarPath);
-            classSet = ClassFileUtil.getJarFileClasses(jar);
-
+            classSet = ClassHelper.getJarFileClasses(jar);
 
         } catch (Exception e) {
         }
@@ -78,11 +76,18 @@ public class RedisJobQueue implements IQueue {
             return;
         }
         for (Class<?> clazz : classSet) {
+            //System.out.println(clazz.getName());
             //收集method
-            SpiderMethodTuple tuple = SpiderChecker.performCheckAndCollect(clazz);
-            if (tuple != null) {
-                spiderClassMap.put(clazz, tuple);
+            try {
+                SpiderMethodTuple tuple = SpiderClassChecker.performCheckAndCollect(clazz);
+
+                if (tuple != null) {
+                    SpiderMethodManager.put(clazz, tuple);
+                }
+            } catch (MethodCheckException e) {
+
             }
+
         }
 
     }
@@ -124,7 +129,7 @@ public class RedisJobQueue implements IQueue {
             }
         }
 
-        Method fromUrl = spiderClassMap.get(urlPatternMap.get(hash)).fromUrlNode;
+        Method fromUrl = SpiderMethodManager.getFromUrlMethod(urlPatternMap.get(hash));
         try {
             BaseSpider spider = (BaseSpider) fromUrl.invoke(node);
 
@@ -144,8 +149,8 @@ public class RedisJobQueue implements IQueue {
 
     private Class getHandleableClassOf(HttpUrlNode node) {
 
-        for (Class clazz : spiderClassMap.keySet()) {
-            Method fromUrl = spiderClassMap.get(clazz).fromUrlNode;
+        for (Class clazz : SpiderMethodManager.getSpiderClasses()) {
+            Method fromUrl = SpiderMethodManager.getFromUrlMethod(clazz);
 
             try {
                 BaseSpider spider = (BaseSpider) fromUrl.invoke(node);

@@ -8,7 +8,7 @@ import wuxian.me.spidersdk.anti.HeartbeatManager;
 import wuxian.me.spidersdk.anti.IPProxyTool;
 import wuxian.me.spidersdk.control.*;
 import wuxian.me.spidersdk.distribute.MethodCheckException;
-import wuxian.me.spidersdk.distribute.RedisServerConnectionException;
+import wuxian.me.spidersdk.distribute.RedisConnectionException;
 import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.log.LogManager;
@@ -55,7 +55,7 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
     private boolean started = false;
     private static JobManager instance;
 
-    public static JobManager getInstance() throws RedisServerConnectionException, MethodCheckException {
+    public static JobManager getInstance() {
         if (instance == null) {
             instance = new JobManager();
         }
@@ -63,7 +63,7 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
     }
 
 
-    private JobManager() throws RedisServerConnectionException, MethodCheckException {
+    private JobManager() {
         signalManager.registerOnSystemKill(new ProcessSignalManager.OnSystemKill() {
             public void onSystemKilled() {
                 onPause();
@@ -77,9 +77,10 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
             queue = new JobQueue(monitor);
         }
 
-        //Todo
+
         Thread.currentThread().setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             public void uncaughtException(Thread t, Throwable e) {
+                System.out.println("uncaughtExceptionHandler e:" + e.getMessage());
                 onUncaughtException(t, e);
             }
         });
