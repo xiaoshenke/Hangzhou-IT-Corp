@@ -27,4 +27,24 @@ public class HttpUrlNode {
 
         return null;
     }
+
+    public long hash() {
+        StringBuilder ret = new StringBuilder(baseUrl);
+
+        if (!httpGetParam.isEmpty()) {
+            ret.append("get");
+            for (String str : httpGetParam.keySet()) {
+                ret.append(str);
+            }
+        }
+
+        if (!httpPostParam.isEmpty()) {
+            ret.append("post");
+            for (String str : httpPostParam.keySet()) {
+                ret.append(str);
+            }
+        }
+
+        return ret.toString().hashCode();
+    }
 }

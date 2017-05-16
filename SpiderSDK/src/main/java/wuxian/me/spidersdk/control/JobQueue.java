@@ -17,7 +17,7 @@ import java.util.Random;
  * <p>
  * 所有任务的状态会被更新到@JobMonitor
  */
-public class JobQueue {
+public class JobQueue implements IQueue {
 
     private JobMonitor monitor;
     private Random random = new Random();

@@ -14,6 +14,12 @@ import java.util.Set;
  */
 public class MainTest {
 
+    //Todo
+    @Test
+    public void testRedisJobQueue() {
+
+    }
+
     @Test
     public void testPath() {
         System.out.println(FileUtil.getCurrentPath());
@@ -53,7 +59,7 @@ public class MainTest {
     @Test
     public void testStaticMethodCheck() {
         try {
-            SpiderChecker.performCheck(ClassFileUtil.getClassByName("wuxian.me.spidersdk.NoneSpider"));
+            SpiderChecker.performCheckAndCollect(ClassFileUtil.getClassByName("wuxian.me.spidersdk.NoneSpider"));
 
             System.out.println("success");
         } catch (Exception e) {

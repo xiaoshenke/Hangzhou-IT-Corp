@@ -1,18 +1,20 @@
 package wuxian.me.spidersdk.control;
 
 import com.google.common.primitives.Ints;
+import com.google.gson.Gson;
 import redis.clients.jedis.Jedis;
+import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.JobManagerConfig;
-import wuxian.me.spidersdk.distribute.ClassFileUtil;
-import wuxian.me.spidersdk.distribute.MethodCheckException;
-import wuxian.me.spidersdk.distribute.RedisServerConnectionException;
-import wuxian.me.spidersdk.distribute.SpiderChecker;
+import wuxian.me.spidersdk.distribute.*;
 import wuxian.me.spidersdk.job.IJob;
+import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.util.FileUtil;
 import wuxian.me.spidersdk.util.ShellUtil;
 
 import java.io.IOException;
-import java.util.Set;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.*;
 import java.util.jar.JarFile;
 
 /**
@@ -22,7 +24,16 @@ import java.util.jar.JarFile;
  */
 public class RedisJobQueue implements IQueue {
 
+    private static final String JOB_QUEUE = "jobqueue";
+
+    private Map<Class, SpiderMethodTuple> spiderClassMap = new HashMap<Class, SpiderMethodTuple>();
+
+    //HttpUrlNode pattern --> Class
+    private Map<Long, Class> urlPatternMap = new HashMap<Long, Class>();
+    private List<Long> unResolveList = new ArrayList<Long>();
+
     private Jedis jedis;
+    private Gson gson = new Gson();
 
     //Fixme:构造函数抛异常？
     public RedisJobQueue() throws RedisServerConnectionException, MethodCheckException {
@@ -67,16 +78,90 @@ public class RedisJobQueue implements IQueue {
             return;
         }
         for (Class<?> clazz : classSet) {
-            SpiderChecker.performCheck(clazz);
+            //收集method
+            SpiderMethodTuple tuple = SpiderChecker.performCheckAndCollect(clazz);
+            if (tuple != null) {
+                spiderClassMap.put(clazz, tuple);
+            }
         }
 
     }
 
+    //Todo:state管理
     public boolean putJob(IJob job, int state) {
-        return false;
+
+        BaseSpider spider = (BaseSpider) job.getRealRunnable();
+        HttpUrlNode urlNode = spider.toUrlNode();
+
+        jedis.lpush(JOB_QUEUE, gson.toJson(urlNode));
+
+        return true;
     }
 
     public IJob getJob() {
+
+        String spiderStr = jedis.rpop(JOB_QUEUE);
+        if (spiderStr == null) {
+            return null;
+        }
+
+        HttpUrlNode node = gson.fromJson(spiderStr, HttpUrlNode.class);
+
+        long hash = node.hash();
+        if (!urlPatternMap.containsKey(hash)) {
+            if (unResolveList.contains(hash)) {  //避免多次调用getHandleableClassOf
+                return getJob();
+            }
+
+            Class clazz = getHandleableClassOf(node);
+            if (clazz == null) {
+                unResolveList.add(hash);
+
+                jedis.lpush(JOB_QUEUE, spiderStr);
+                return getJob();  //重新拿一个呗
+            } else {
+                urlPatternMap.put(hash, clazz);
+            }
+        }
+
+        Method fromUrl = spiderClassMap.get(urlPatternMap.get(hash)).fromUrlNode;
+        try {
+            BaseSpider spider = (BaseSpider) fromUrl.invoke(node);
+
+            IJob job = JobProvider.getJob();
+            job.setRealRunnable(spider);
+
+            return job;
+        } catch (IllegalAccessException e) {
+
+        } catch (InvocationTargetException e) {
+
+        }
+
+        return null;
+    }
+
+
+    private Class getHandleableClassOf(HttpUrlNode node) {
+
+        for (Class clazz : spiderClassMap.keySet()) {
+            Method fromUrl = spiderClassMap.get(clazz).fromUrlNode;
+
+            try {
+                BaseSpider spider = (BaseSpider) fromUrl.invoke(node);
+
+                if (spider != null) {
+                    return clazz;
+                } else {
+                    continue;
+                }
+            } catch (IllegalAccessException e) {
+
+            } catch (InvocationTargetException e) {
+
+            }
+        }
+
         return null;
     }
 
@@ -87,4 +172,5 @@ public class RedisJobQueue implements IQueue {
     public int getJobNum() {
         return 0;
     }
+
 }

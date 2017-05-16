@@ -16,19 +16,20 @@ public class SpiderChecker {
     private SpiderChecker() {
     }
 
-    public static void performCheck(String pack) throws MethodCheckException {
+    public static void performCheckAndCollect(String pack) throws MethodCheckException {
         try {
             Set<Class<?>> classSet = ClassFileUtil.getClasses(pack);
 
             for (Class clazz : classSet) {
-                performCheck(clazz);
+                performCheckAndCollect(clazz);
             }
         } catch (IOException e) {
             ;
         }
     }
 
-    public static void performCheck(Class clazz) throws MethodCheckException {
+    public static SpiderMethodTuple performCheckAndCollect(Class clazz) throws MethodCheckException {
+        SpiderMethodTuple ret = null;
         try {
             clazz.asSubclass(BaseSpider.class);
 
@@ -37,15 +38,21 @@ public class SpiderChecker {
                 throw new MethodCheckException();
             }
 
-            method = clazz.getMethod("toUrlNode", Void.class);
-            if (!(method.getClass().getSimpleName().equals(clazz.getSimpleName()))) {
+            Method method1 = clazz.getMethod("toUrlNode", Void.class);
+            if (!(method1.getClass().getSimpleName().equals(clazz.getSimpleName()))) {
                 throw new MethodCheckException();
             }
+
+            ret = new SpiderMethodTuple();
+            ret.fromUrlNode = method;
+            ret.toUrlNode = method1;
         } catch (NoSuchMethodException e) {
             //Todo:
 
         } catch (ClassCastException e) {
 
         }
+
+        return ret;
     }
 }

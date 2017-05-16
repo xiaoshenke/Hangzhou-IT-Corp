@@ -7,6 +7,8 @@ import wuxian.me.spidersdk.anti.FailHelper;
 import wuxian.me.spidersdk.anti.HeartbeatManager;
 import wuxian.me.spidersdk.anti.IPProxyTool;
 import wuxian.me.spidersdk.control.*;
+import wuxian.me.spidersdk.distribute.MethodCheckException;
+import wuxian.me.spidersdk.distribute.RedisServerConnectionException;
 import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.log.LogManager;
@@ -34,7 +36,8 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
     private ProcessSignalManager signalManager = new ProcessSignalManager();
 
     private JobMonitor monitor = new JobMonitor();
-    private JobQueue queue = new JobQueue(monitor);
+    private IQueue queue;//= new JobQueue(monitor);
+
     private WorkThread workThread = new WorkThread(this);
 
     private HeartbeatManager heartbeatManager = new HeartbeatManager();
@@ -52,7 +55,7 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
     private boolean started = false;
     private static JobManager instance;
 
-    public static JobManager getInstance() {
+    public static JobManager getInstance() throws RedisServerConnectionException, MethodCheckException {
         if (instance == null) {
             instance = new JobManager();
         }
@@ -60,13 +63,19 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
     }
 
 
-    private JobManager() {
+    private JobManager() throws RedisServerConnectionException, MethodCheckException {
         signalManager.registerOnSystemKill(new ProcessSignalManager.OnSystemKill() {
             public void onSystemKilled() {
                 onPause();
             }
         });
         signalManager.init();
+
+        if (JobManagerConfig.useRedisJobQueue) {
+            queue = new RedisJobQueue();
+        } else {
+            queue = new JobQueue(monitor);
+        }
 
         //Todo
         Thread.currentThread().setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
@@ -107,7 +116,7 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
     }
 
     public boolean putJob(@NotNull IJob job) {
-        return queue.putJob(job);
+        return queue.putJob(job, IJob.STATE_INIT);
     }
 
     public IJob getJob() {
