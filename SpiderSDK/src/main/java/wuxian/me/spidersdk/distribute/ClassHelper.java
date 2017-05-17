@@ -45,7 +45,7 @@ public class ClassHelper {
 
                 JarFile jar;
                 jar = ((JarURLConnection) url.openConnection()).getJarFile();
-                Set<Class<?>> set = addJarFileClasses(jar, packageName);
+                Set<Class<?>> set = getJarFileClasses(jar, packageName);
 
                 classes.addAll(set);
             }
@@ -55,10 +55,10 @@ public class ClassHelper {
     }
 
     public static Set<Class<?>> getJarFileClasses(@NotNull JarFile jar) {
-        return addJarFileClasses(jar, null);
+        return getJarFileClasses(jar, null);
     }
 
-    private static Set<Class<?>> addJarFileClasses(JarFile jar, @Nullable String packageName) {
+    public static Set<Class<?>> getJarFileClasses(JarFile jar, @Nullable String packageName, @Nullable CheckFilter filter) {
         Set<Class<?>> classes = new LinkedHashSet<Class<?>>();
         boolean recursive = true;
         Enumeration<JarEntry> entries = jar.entries();
@@ -90,12 +90,17 @@ public class ClassHelper {
                     }
                 }
             } else {
+                System.out.println(name);
+                if (filter != null && !filter.apply(name)) {
+                    break;
+                }
                 int idx = name.lastIndexOf('/');
                 if (idx != -1 && name.endsWith(".class") && !entry.isDirectory()) {
                     String packageName1 = name.substring(0, idx).replace('/', '.');
                     String className = name.substring(packageName1.length() + 1, name.length() - 6);
                     try {
                         classes.add(Class.forName(packageName1 + '.' + className));
+
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -105,6 +110,10 @@ public class ClassHelper {
         }
 
         return classes;
+    }
+
+    public static Set<Class<?>> getJarFileClasses(JarFile jar, @Nullable String packageName) {
+        return getJarFileClasses(jar, packageName, null);
     }
 
     public static void findAndAddClassesInPackageByFile(String packageName, String packagePath,
@@ -135,5 +144,9 @@ public class ClassHelper {
                 }
             }
         }
+    }
+
+    public interface CheckFilter {
+        boolean apply(String name);
     }
 }

@@ -4,7 +4,6 @@ import okhttp3.Request;
 import org.junit.Test;
 import wuxian.me.lagouspider.biz.boss.BDisdinctSpider;
 import wuxian.me.lagouspider.biz.boss.BPositionListSpider;
-import wuxian.me.lagouspider.biz.boss.BPositonDetailSpider;
 import wuxian.me.lagouspider.biz.lagou.CompanySpider;
 import wuxian.me.lagouspider.biz.lagou.LagouConfig;
 import wuxian.me.lagouspider.biz.lagou.DistinctSpider;
@@ -55,15 +54,6 @@ public class MainTest {
     }
 
     @Test
-    public void testDate() {
-        System.out.println(BPositonDetailSpider.formatPositionPostTime("发布于昨天"));
-
-        System.out.println(BPositonDetailSpider.formatPositionPostTime("发布于14:11"));
-
-        System.out.println(BPositonDetailSpider.formatPositionPostTime("发布于05月10日"));
-    }
-
-    @Test
     public void testDBs() {
         BCompanyMapper bCompanyMapper = ModuleProvider.bCompanyMapper();
         BCompany company = new BCompany();
@@ -85,6 +75,7 @@ public class MainTest {
     @Test
     public void testBossPositionDetailSpider() {
 
+        /*
         JobManagerConfig.enableScheduleImmediately = true;
         JobManager jobManager = JobManager.getInstance();
 
@@ -95,6 +86,7 @@ public class MainTest {
         while (true) {
 
         }
+        */
     }
 
     @Test

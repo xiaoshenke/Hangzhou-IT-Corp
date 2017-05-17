@@ -21,7 +21,6 @@ import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.NodeLogUtil;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.anti.MaybeBlockedException;
-import wuxian.me.spidersdk.log.LogManager;
 import wuxian.me.spidersdk.util.FileUtil;
 
 import java.text.SimpleDateFormat;
@@ -32,7 +31,7 @@ import java.util.regex.Pattern;
 
 /**
  * Created by wuxian on 13/5/2017.
- * <p>
+ * <p> Fixme:Class.ForName的时候 这个类会抛出未知类型的runtime错误 导致进行不下去...
  */
 public class BPositonDetailSpider extends BaseBossSpider {
 
@@ -42,12 +41,6 @@ public class BPositonDetailSpider extends BaseBossSpider {
 
     private static String BASE_URL = "http://www.zhipin.com/job_detail/";
     private long positionId;
-
-    public BPositonDetailSpider(long positionId) {
-        this.positionId = positionId;
-
-        position.positionId = positionId;
-    }
 
     protected Request buildRequest() {
 
@@ -61,6 +54,92 @@ public class BPositonDetailSpider extends BaseBossSpider {
                 .build();
         return request;
 
+    }
+
+    private void savePosition() {
+        BPositionSaver.getInstance().saveModel(position);
+    }
+
+    private void saveCompany() {
+        BCompanySaver.getInstance().saveModel(company);
+    }
+
+    private void saveLocation() {
+        BLocationSaver.getInstance().saveModel(location);
+    }
+
+    private void saveJobDescription() {
+        if (position.description == null || position.description.length() == 0) {
+            return;
+        }
+        synchronized (BPositonDetailSpider.class) {
+            if (!FileUtil.checkFileExist(getDesFilePath())) {
+                FileUtil.writeToFile(getDesFilePath(), position.description);
+            }
+        }
+    }
+
+    private String getDesFilePath() {
+        return Helper.getCurrentPath() + BossConfig.File.POSITON_DES_PATH + getDesFileName();
+    }
+
+    private String getDesFileName() {
+        return position.positionName + "_" + position.positionId + ".txt";
+    }
+
+    public String name() {
+        return "BossPositionDetailSpider: positionId: " + positionId;
+    }
+
+    private void parseDes(String data)
+            throws MaybeBlockedException, ParserException {
+        Parser parser = new Parser(data);
+        parser.setEncoding("utf-8");
+
+        HasAttributeFilter filter = new HasAttributeFilter("class", "detail-content");
+        NodeList list = parser.extractAllNodesThatMatch(filter);
+        if (list == null || list.size() == 0) {
+            return;
+        }
+
+        Node child = list.elementAt(0);
+        list = child.getChildren();
+        if (list == null || list.size() == 0) {
+            return;
+        }
+
+        for (int i = 0; i < list.size(); i++) {
+            child = list.elementAt(i);
+            if (child instanceof Div && child.getText().trim().contains("job-sec")) {
+                NodeLogUtil.printChildrenOfNode(child);
+                NodeList list1 = child.getChildren();
+                if (list1 == null || list1.size() == 0) {
+                    continue;
+                }
+                String type = "";
+                for (int j = 0; j < list1.size(); j++) {
+                    Node child1 = list1.elementAt(j);
+
+                    if (child1 instanceof HeadingTag && child1.getText().trim().contains("h3")) {
+                        if (child1.toPlainTextString().trim().contains("职位描述")) {
+                            type = "zhiwei";
+                            continue;
+                        } else {   //这个tag是团队介绍的tag 这里不抓团队介绍
+                            type = "tuandui";
+                            continue;
+                        }
+                    }
+
+                    if (child1 instanceof Div && child1.getText().trim().contains("text")) {
+                        if (type.equals("zhiwei")) {
+                            position.description = child1.toPlainTextString().trim();
+                        } else if (type.equals("tuandui")) {
+                            position.team = child1.toPlainTextString().trim();
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private void parseCompany(String data) throws MaybeBlockedException, ParserException {
@@ -95,7 +174,7 @@ public class BPositonDetailSpider extends BaseBossSpider {
                             int end = str.indexOf("\"", begin + 1);
                             if (begin != -1 && end != -1) {
                                 company.logo = str.substring(begin + 1, end);
-                                LogManager.info("logo: " + company.logo);
+                                //LogManager.info("logo: " + company.logo);
                             }
 
 
@@ -336,57 +415,6 @@ public class BPositonDetailSpider extends BaseBossSpider {
 
     }
 
-    private void parseDes(String data)
-            throws MaybeBlockedException, ParserException {
-        Parser parser = new Parser(data);
-        parser.setEncoding("utf-8");
-
-        HasAttributeFilter filter = new HasAttributeFilter("class", "detail-content");
-        NodeList list = parser.extractAllNodesThatMatch(filter);
-        if (list == null || list.size() == 0) {
-            return;
-        }
-
-        Node child = list.elementAt(0);
-        list = child.getChildren();
-        if (list == null || list.size() == 0) {
-            return;
-        }
-
-        for (int i = 0; i < list.size(); i++) {
-            child = list.elementAt(i);
-            if (child instanceof Div && child.getText().trim().contains("job-sec")) {
-                NodeLogUtil.printChildrenOfNode(child);
-                NodeList list1 = child.getChildren();
-                if (list1 == null || list1.size() == 0) {
-                    continue;
-                }
-                String type = "";
-                for (int j = 0; j < list1.size(); j++) {
-                    Node child1 = list1.elementAt(j);
-
-                    if (child1 instanceof HeadingTag && child1.getText().trim().contains("h3")) {
-                        if (child1.toPlainTextString().trim().contains("职位描述")) {
-                            type = "zhiwei";
-                            continue;
-                        } else {   //这个tag是团队介绍的tag 这里不抓团队介绍
-                            type = "tuandui";
-                            continue;
-                        }
-                    }
-
-                    if (child1 instanceof Div && child1.getText().trim().contains("text")) {
-                        if (type.equals("zhiwei")) {
-                            position.description = child1.toPlainTextString().trim();
-                        } else if (type.equals("tuandui")) {
-                            position.team = child1.toPlainTextString().trim();
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     public static String formatPositionPostTime(String postTime) {
 
         String ret = null;
@@ -430,6 +458,11 @@ public class BPositonDetailSpider extends BaseBossSpider {
     static String formattedToday = sdf.format(today);
     static String formattedYestoday = sdf.format(DateUtils.addDays(today, -1));
 
+    public BPositonDetailSpider(long positionId) {
+        this.positionId = positionId;
+
+        position.positionId = positionId;
+    }
 
     public int parseRealData(String s) {
         try {
@@ -477,38 +510,4 @@ public class BPositonDetailSpider extends BaseBossSpider {
         return BaseSpider.RET_SUCCESS;
     }
 
-    private void savePosition() {
-        BPositionSaver.getInstance().saveModel(position);
-    }
-
-    private void saveCompany() {
-        BCompanySaver.getInstance().saveModel(company);
-    }
-
-    private void saveLocation() {
-        BLocationSaver.getInstance().saveModel(location);
-    }
-
-    private void saveJobDescription() {
-        if (position.description == null || position.description.length() == 0) {
-            return;
-        }
-        synchronized (BPositonDetailSpider.class) {
-            if (!FileUtil.checkFileExist(getDesFilePath())) {
-                FileUtil.writeToFile(getDesFilePath(), position.description);
-            }
-        }
-    }
-
-    private String getDesFilePath() {
-        return Helper.getCurrentPath() + BossConfig.File.POSITON_DES_PATH + getDesFileName();
-    }
-
-    private String getDesFileName() {
-        return position.positionName + "_" + position.positionId + ".txt";
-    }
-
-    public String name() {
-        return "BossPositionDetailSpider: positionId: " + positionId;
-    }
 }

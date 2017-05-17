@@ -4,6 +4,7 @@ import com.google.common.primitives.Ints;
 import com.google.gson.Gson;
 import redis.clients.jedis.Jedis;
 import wuxian.me.spidersdk.BaseSpider;
+import wuxian.me.spidersdk.JobManager;
 import wuxian.me.spidersdk.JobManagerConfig;
 import wuxian.me.spidersdk.distribute.*;
 import wuxian.me.spidersdk.job.IJob;
@@ -38,6 +39,7 @@ public class RedisJobQueue implements IQueue {
     }
 
     public void init() {
+        System.out.println("before new Gson");
         gson = new Gson();
         boolean redisRunning = false;
         try {
@@ -46,10 +48,11 @@ public class RedisJobQueue implements IQueue {
             ;
         }
 
+        System.out.println("redis running: " + redisRunning);
         if (!redisRunning) {
             throw new RedisConnectionException();
         }
-        System.out.println("redis running ok");
+        System.out.println("before init jedis");
         jedis = new Jedis(JobManagerConfig.redisIp,
                 Ints.checkedCast(JobManagerConfig.redisPort));
 
@@ -62,21 +65,33 @@ public class RedisJobQueue implements IQueue {
     private void checkSubSpiders() throws MethodCheckException {
         String jarPath = "";
         Set<Class<?>> classSet = null;
-        try {
-            jarPath = FileUtil.class.getProtectionDomain().getCodeSource().
-                    getLocation().toURI().getPath();
+        if (FileUtil.currentFile != null) {
+            try {
+                JarFile jar = new JarFile(FileUtil.currentFile);
 
-            JarFile jar = new JarFile(jarPath);
-            classSet = ClassHelper.getJarFileClasses(jar);
+                classSet = ClassHelper.getJarFileClasses(jar, null, JobManager.checkFilter);
 
-        } catch (Exception e) {
+            } catch (IOException e) {
+
+
+            }
+        } else {
+            try {
+                jarPath = FileUtil.class.getProtectionDomain().getCodeSource().
+                        getLocation().toURI().getPath();
+
+                JarFile jar = new JarFile(jarPath);
+                classSet = ClassHelper.getJarFileClasses(jar);
+
+            } catch (Exception e) {
+            }
         }
+
 
         if (classSet == null) {
             return;
         }
         for (Class<?> clazz : classSet) {
-            //System.out.println(clazz.getName());
             //收集method
             try {
                 SpiderMethodTuple tuple = SpiderClassChecker.performCheckAndCollect(clazz);

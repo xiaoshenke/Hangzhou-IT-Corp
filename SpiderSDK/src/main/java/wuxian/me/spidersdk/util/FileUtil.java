@@ -24,6 +24,12 @@ public class FileUtil {
 
     private static String currentPath;
 
+    public static String currentFile;
+
+    public static void setCurrentFile(String path) {
+        currentFile = path;
+    }
+
     //Todo:业务层记得要调用一下
     //ide运行和java -jar运行的时候是不同的值
     public static void setCurrentPath(String path) {

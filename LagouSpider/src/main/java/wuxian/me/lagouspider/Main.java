@@ -1,5 +1,6 @@
 package wuxian.me.lagouspider;
 
+import wuxian.me.lagouspider.biz.boss.BPositonDetailSpider;
 import wuxian.me.lagouspider.biz.lagou.AreaSpider;
 import wuxian.me.lagouspider.biz.lagou.CitySpider;
 import wuxian.me.lagouspider.biz.lagou.LagouConfig;
@@ -24,6 +25,8 @@ import wuxian.me.lagouspider.model.lagou.Product;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.ModuleProvider;
 import wuxian.me.spidersdk.JobManager;
+import wuxian.me.spidersdk.JobManagerConfig;
+import wuxian.me.spidersdk.distribute.ClassHelper;
 import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.log.ILog;
@@ -31,10 +34,12 @@ import wuxian.me.spidersdk.log.LogManager;
 import wuxian.me.spidersdk.util.FileUtil;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.jar.JarFile;
 
 /**
  * Created by wuxian on 29/3/2017.
@@ -44,19 +49,55 @@ public class Main {
     static {
         System.out.println("Main static");
 
-        if(false){  //IDE运行
+        if (false) {  //IDE运行
             File file = new File("");
             FileUtil.setCurrentPath(file.getAbsolutePath());
         } else {   //JAR包运行
             try{
                 File file = new File(Main.class.getProtectionDomain().getCodeSource()
                         .getLocation().toURI().getPath());
+                FileUtil.setCurrentFile(file.getAbsolutePath());
                 FileUtil.setCurrentPath(file.getParentFile().getAbsolutePath());
             } catch (Exception e){
 
             }
-
         }
+
+        JobManager.initCheckFilter(new ClassHelper.CheckFilter() {  //Fix 有的jar包里的类无法加载的问题
+            @Override
+            public boolean apply(String s) {
+                boolean ret = true;
+
+                if(s.contains("org/")){
+                    ret = false;
+                } else if(s.contains("google")){
+                    ret = false;
+                }
+
+                return ret;
+            }
+        });
+
+        try {
+            JarFile jar = new JarFile(FileUtil.getCurrentPath() + "/lagouspider.jar");
+
+            System.out.println("begin to getJarFile");
+            ClassHelper.getJarFileClasses(jar, null, new ClassHelper.CheckFilter() {
+                @Override
+                public boolean apply(String s) {
+                    return s.contains("lagouspider");
+                }
+            });
+            System.out.println("getJarFile End");
+
+        } catch (IOException e) {
+
+
+        } catch (Exception e) {
+            e.getMessage();
+        }
+
+        System.out.println("Main static End");
     }
 
     AreaMapper areaMapper = ModuleProvider.areaMapper();
@@ -88,7 +129,7 @@ public class Main {
     public void run() {
         System.out.println("main run() func");
 
-        System.out.println("before checkDBConnection");
+        System.out.println("useRedis: " + JobManagerConfig.useRedisJobQueue);
 
         if (!checkDBConnection()) {
             return;
@@ -97,7 +138,6 @@ public class Main {
         System.out.println("before start JobMananger");
         if (true){
             JobManager.getInstance().start();
-
             System.out.println("success");
             return;
         }
@@ -200,8 +240,6 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        //System.out.println(Helper.getCurrentPath());
-
         Main main = new Main();
         main.run();
 

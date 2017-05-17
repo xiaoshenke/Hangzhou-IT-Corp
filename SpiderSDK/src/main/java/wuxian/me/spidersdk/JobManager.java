@@ -7,6 +7,7 @@ import wuxian.me.spidersdk.anti.FailHelper;
 import wuxian.me.spidersdk.anti.HeartbeatManager;
 import wuxian.me.spidersdk.anti.IPProxyTool;
 import wuxian.me.spidersdk.control.*;
+import wuxian.me.spidersdk.distribute.ClassHelper;
 import wuxian.me.spidersdk.distribute.MethodCheckException;
 import wuxian.me.spidersdk.distribute.RedisConnectionException;
 import wuxian.me.spidersdk.job.IJob;
@@ -38,9 +39,10 @@ import static wuxian.me.spidersdk.JobManagerConfig.*;
 public class JobManager implements HeartbeatManager.IHeartBeat {
 
     private ProcessSignalManager signalManager = new ProcessSignalManager();
+    public static ClassHelper.CheckFilter checkFilter = null;
 
     private JobMonitor monitor = new JobMonitor();
-    private IQueue queue;//= new JobQueue(monitor);
+    private IQueue queue;
 
     private WorkThread workThread = new WorkThread(this);
 
@@ -67,6 +69,10 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
     }
 
 
+    public static void initCheckFilter(@NotNull ClassHelper.CheckFilter filter) {
+        checkFilter = filter;
+    }
+
     private JobManager() {
         signalManager.registerOnSystemKill(new ProcessSignalManager.OnSystemKill() {
             public void onSystemKilled() {
@@ -78,6 +84,10 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
         initShellFile();
 
         if (JobManagerConfig.useRedisJobQueue) {
+
+            if (checkFilter == null) {
+                throw new MethodCheckException();
+            }
             queue = new RedisJobQueue();
         } else {
             queue = new JobQueue(monitor);
