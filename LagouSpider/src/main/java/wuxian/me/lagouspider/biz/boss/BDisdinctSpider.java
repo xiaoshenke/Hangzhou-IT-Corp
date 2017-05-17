@@ -60,8 +60,6 @@ public class BDisdinctSpider extends BaseBossSpider {
 
         NodeList list = parser.extractAllNodesThatMatch(filter);
         if (list != null && list.size() != 0) {
-            //NodeLogUtil.printChildrenOfNode(list.elementAt(0));
-
             list = list.elementAt(0).getChildren();
 
             for (int i = 0; i < list.size(); i++) {
@@ -84,7 +82,6 @@ public class BDisdinctSpider extends BaseBossSpider {
     }
 
     public int parseRealData(String s) {
-        //LogManager.info(s);
         try {
             parse(s);
         } catch (MaybeBlockedException e) {

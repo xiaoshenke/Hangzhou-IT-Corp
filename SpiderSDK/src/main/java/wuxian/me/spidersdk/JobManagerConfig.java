@@ -89,7 +89,7 @@ public class JobManagerConfig {
         FileInputStream in = null;
         boolean success = false;
         try {
-            in = new FileInputStream(FileUtil.getCurrentPath() + "/jobmanager.properties");
+            in = new FileInputStream(FileUtil.getCurrentPath() + "/conf/jobmanager.properties");
             pro.load(in);
             success = true;
         } catch (FileNotFoundException e) {
@@ -121,7 +121,7 @@ public class JobManagerConfig {
 
         proxyHeartbeatInterval = parse(pro, "proxyHeartbeatInterval", 5 * 1000);
 
-        ipproxyFile = parse(pro, "ipproxyFile", "/conf/ipproxy.txt");
+        ipproxyFile = parse(pro, "ipproxyFile", "/util/ipproxy.txt");
 
         enableSwitchProxy = parse(pro, "enableSwitchProxy", true);
 
@@ -159,7 +159,7 @@ public class JobManagerConfig {
 
         singleJobMaxFailTimes = parse(pro, "singleJobMaxFailTimes", 4);
 
-        fulllogFile = parse(pro, "fulllogFile", "/htmls/");
+        fulllogFile = parse(pro, "fulllogFile", "/logs/htmls/");
 
         fulllogPost = parse(pro, "fulllogPost", ".html");
 
@@ -168,31 +168,6 @@ public class JobManagerConfig {
         redisIp = parse(pro, "redisIp", "127.0.0.1");
         redisPort = parse(pro, "redisPort", (long) 6379);
 
-        doSomeInit();
-    }
-
-    private static void doSomeInit() {
-        String path = FileUtil.getCurrentPath() + shellOpenProxyFile;  //写shell文件
-        if (!FileUtil.checkFileExist(path)) {
-            String shell = "open -t " + FileUtil.getCurrentPath() + ipproxyFile;
-            FileUtil.writeToFile(path, shell);
-        }
-
-        ShellUtil.chmod(path, 0777);
-
-        path = FileUtil.getCurrentPath() + shellCheckprocessFile;
-        if (!FileUtil.checkFileExist(path)) {
-            String shell = "ps -ef | grep $1";
-            FileUtil.writeToFile(path, shell);
-        }
-        ShellUtil.chmod(path, 0777);
-
-        path = FileUtil.getCurrentPath() + shellCheckRedisRunning;
-        if (!FileUtil.checkFileExist(path)) {
-            String shell = "redis-cli -h " + redisIp + " -p " + redisPort + " ping";
-            FileUtil.writeToFile(path, shell);
-        }
-        ShellUtil.chmod(path, 0777);
     }
 
     private static String parse(@NotNull Properties pro, String key, String defValue) {

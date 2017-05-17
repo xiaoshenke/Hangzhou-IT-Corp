@@ -4,6 +4,7 @@ __author__='wuxian'
 __version__='1.0'
 
 import os
+import sys
 from subprocess import *
 
 CUT=":"

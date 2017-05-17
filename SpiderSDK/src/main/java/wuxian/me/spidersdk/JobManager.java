@@ -12,8 +12,10 @@ import wuxian.me.spidersdk.distribute.RedisConnectionException;
 import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.log.LogManager;
+import wuxian.me.spidersdk.util.FileUtil;
 import wuxian.me.spidersdk.util.OkhttpProvider;
 import wuxian.me.spidersdk.util.ProcessSignalManager;
+import wuxian.me.spidersdk.util.ShellUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,6 +23,8 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static wuxian.me.spidersdk.JobManagerConfig.*;
 
 /**
  * Created by wuxian on 9/4/2017.
@@ -71,6 +75,8 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
         });
         signalManager.init();
 
+        initShellFile();
+
         if (JobManagerConfig.useRedisJobQueue) {
             queue = new RedisJobQueue();
         } else {
@@ -85,6 +91,30 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
             }
         });
         onResume();
+    }
+
+    private void initShellFile(){
+        String path = FileUtil.getCurrentPath() + JobManagerConfig.shellOpenProxyFile;  //写shell文件
+        if (!FileUtil.checkFileExist(path)) {
+            String shell = "open -t " + FileUtil.getCurrentPath() + ipproxyFile;
+            FileUtil.writeToFile(path, shell);
+        }
+
+        ShellUtil.chmod(path, 0777);
+
+        path = FileUtil.getCurrentPath() + shellCheckprocessFile;
+        if (!FileUtil.checkFileExist(path)) {
+            String shell = "ps -ef | grep $1";
+            FileUtil.writeToFile(path, shell);
+        }
+        ShellUtil.chmod(path, 0777);
+
+        path = FileUtil.getCurrentPath() + shellCheckRedisRunning;
+        if (!FileUtil.checkFileExist(path)) {
+            String shell = "redis-cli -h " + redisIp + " -p " + redisPort + " ping";
+            FileUtil.writeToFile(path, shell);
+        }
+        ShellUtil.chmod(path, 0777);
     }
 
     //Todo:检查各个部件是否工作良好

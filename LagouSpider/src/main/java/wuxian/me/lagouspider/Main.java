@@ -42,12 +42,14 @@ import java.util.List;
 public class Main {
 
     static {
-        if(true){  //IDE运行
+        System.out.println("Main static");
+
+        if(false){  //IDE运行
             File file = new File("");
             FileUtil.setCurrentPath(file.getAbsolutePath());
         } else {   //JAR包运行
             try{
-                File file = new File(Helper.class.getProtectionDomain().getCodeSource()
+                File file = new File(Main.class.getProtectionDomain().getCodeSource()
                         .getLocation().toURI().getPath());
                 FileUtil.setCurrentPath(file.getParentFile().getAbsolutePath());
             } catch (Exception e){
@@ -84,7 +86,19 @@ public class Main {
     }
 
     public void run() {
+        System.out.println("main run() func");
+
+        System.out.println("before checkDBConnection");
+
         if (!checkDBConnection()) {
+            return;
+        }
+
+        System.out.println("before start JobMananger");
+        if (true){
+            JobManager.getInstance().start();
+
+            System.out.println("success");
             return;
         }
 

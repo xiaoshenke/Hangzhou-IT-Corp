@@ -98,7 +98,7 @@ public interface LagouConfig {
         //存储街道的文件
         String AREA = "area.txt";
 
-        String CONF_COOKIE = "/conf/cookies";
+        String CONF_COOKIE = "/cookie";
 
         String CONF_LOG4J_PROPERTIES = "/log4j.properties";
 

@@ -45,7 +45,7 @@ public class Helper {
     }
 
     public static String getBossDistinctsFilePath() {
-        return getCurrentPath() + BossConfig.File.CONF + BossConfig.CITY_TO_SPIDER + BossConfig.File.DISTINTC;
+        return getCurrentPath() + BossConfig.File.FILE + BossConfig.CITY_TO_SPIDER + BossConfig.File.DISTINTC;
     }
 
     public static String getLagouAreaFilePath() {
@@ -60,8 +60,8 @@ public class Helper {
         return getCurrentPath() + CONF_LASTGRAB;
     }
 
-    public static String getLagouCookieFilePath(String spiderName) {
-        return getCurrentPath() + LagouConfig.File.CONF_COOKIE + "_" + spiderName;
+    public static String getCookieFilePath(String spiderName) {
+        return getCurrentPath() + Config.File.CONF_COOKIE + spiderName;
     }
 
     public static String getLog4jPropFilePath() {
@@ -105,8 +105,8 @@ public class Helper {
 
     public static Headers getHeaderBySpecifyRef(@NotNull String reference, @NotNull String spiderName) {
         if (!cookieList.containsKey(spiderName)) {
-            if (FileUtil.checkFileExist(getLagouCookieFilePath(spiderName))) {
-                String content = FileUtil.readFromFile(getLagouCookieFilePath(spiderName));
+            if (FileUtil.checkFileExist(getCookieFilePath(spiderName))) {
+                String content = FileUtil.readFromFile(getCookieFilePath(spiderName));
                 if (content != null && content.length() != 0) {
                     cookieList.put(spiderName, content);
                 }

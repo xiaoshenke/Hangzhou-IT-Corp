@@ -7,4 +7,10 @@ public interface Config {
 
     String CUT = ";";
     String SEPRATE = ":";
+
+    interface File {
+        String CONF_COOKIE = "/cookie/cookies_";
+
+    }
+
 }
