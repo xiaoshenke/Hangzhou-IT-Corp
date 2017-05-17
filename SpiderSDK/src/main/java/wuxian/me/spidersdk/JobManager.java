@@ -86,7 +86,9 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
         if (JobManagerConfig.useRedisJobQueue) {
 
             if (checkFilter == null) {
-                throw new MethodCheckException();
+                if (!JobManagerConfig.noMethodCheckingException) {
+                    throw new MethodCheckException();
+                }
             }
             queue = new RedisJobQueue();
         } else {

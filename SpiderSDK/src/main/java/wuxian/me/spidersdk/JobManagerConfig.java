@@ -76,6 +76,8 @@ public class JobManagerConfig {
     public static String redisIp;
     public static long redisPort;
 
+    public static boolean jarMode;
+
     public static boolean noMethodCheckingException;
 
     static {
@@ -171,6 +173,9 @@ public class JobManagerConfig {
         redisPort = parse(pro, "redisPort", (long) 6379);
 
         noMethodCheckingException = parse(pro, "noMethodCheckingException", false);
+
+        jarMode = parse(pro, "jarMode", true);
+        //Todo: 解决jar包被引用的问题...
 
     }
 

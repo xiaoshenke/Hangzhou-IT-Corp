@@ -4,6 +4,8 @@ import org.junit.Test;
 import wuxian.me.spidersdk.distribute.ClassHelper;
 import wuxian.me.spidersdk.distribute.SpiderClassChecker;
 import wuxian.me.spidersdk.distribute.SpiderMethodTuple;
+import wuxian.me.spidersdk.job.IJob;
+import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.util.FileUtil;
 
 import java.io.File;
@@ -15,59 +17,28 @@ import java.util.Set;
  */
 public class MainTest {
 
-    //Todo
+
     @Test
     public void testRedisJobQueue() {
 
-        //Class clazz = new NoneSpider().getClass();
-        //SpiderMethodTuple tuple = SpiderClassChecker.performCheckAndCollect(clazz);
-        SpiderClassChecker.performCheckAndCollect(NoneSpider.class);
-    }
+        IJob job = JobProvider.getJob();
+        NoneSpider spider = new NoneSpider();
+        job.setRealRunnable(spider);
+        JobManager.getInstance().putJob(job);
 
-    @Test
-    public void testPath() {
-        System.out.println(FileUtil.getCurrentPath());
-    }
-
-    @Test
-    public void testClass() {
-
-        File file = null;
-        String jarPath = "";
         try {
-            jarPath = FileUtil.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
-            file = new File(jarPath);
-            file = file.getParentFile();
-        } catch (Exception e) {
-        }
-        FileUtil.setCurrentPath(file.getAbsolutePath());
-
-        System.out.println(jarPath);
-        //NoneSpider spider = new NoneSpider();
-        //spider.toUrlNode();
-    }
-
-    @Test
-    public void testClassFileUtil() {
-        try {
-            Set<Class<?>> classSet = ClassHelper.getClasses("wuxian.me.spidersdk.log");
-
-            for (Class c : classSet) {
-                System.out.println(c.getName());
-            }
-        } catch (IOException e) {
-
-        }
-    }
-
-    @Test
-    public void testStaticMethodCheck() {
-        try {
-            SpiderClassChecker.performCheckAndCollect(ClassHelper.getClassByName("wuxian.me.spidersdk.NoneSpider"));
-
-            System.out.println("success");
+            Thread.sleep(1000);
         } catch (Exception e) {
 
         }
+
+        job = JobManager.getInstance().getJob();
+
+        System.out.println("job: " + job);
+
+        //SpiderClassChecker.performCheckAndCollect(NoneSpider.class);
+
+
     }
+
 }

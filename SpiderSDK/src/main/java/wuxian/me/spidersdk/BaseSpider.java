@@ -35,7 +35,11 @@ public abstract class BaseSpider implements Runnable {
     public final HttpUrlNode toUrlNode() {
         String name = this.getClass().getName();
         if (!SpiderMethodManager.contains(name)) {
-            throw new MethodCheckException();
+            if (!JobManagerConfig.noMethodCheckingException) {
+                throw new MethodCheckException();
+            } else {
+                return null;
+            }
         }
 
         try {

@@ -56,37 +56,41 @@ public class RedisJobQueue implements IQueue {
         checkSubSpiders();
     }
 
-    //Todo:若@JobManagerConfig没有设置baseScanner类 那么check所有类
-    //Fixme:目前只支持jar包模式运行
     private void checkSubSpiders() throws MethodCheckException {
-        String jarPath = "";
         Set<Class<?>> classSet = null;
-        if (FileUtil.currentFile != null) {
-            try {
-                JarFile jar = new JarFile(FileUtil.currentFile);
-                classSet = ClassHelper.getJarFileClasses(jar, null, JobManager.checkFilter);
 
-            } catch (IOException e) {
+        if (JobManagerConfig.jarMode) {
+            String jarPath = "";
+            if (FileUtil.currentFile != null) {
+                try {
+                    JarFile jar = new JarFile(FileUtil.currentFile);
+                    classSet = ClassHelper.getJarFileClasses(jar, null, JobManager.checkFilter);
 
+                } catch (IOException e) {
+
+                }
+            } else {
+                try {   //Fixme:当这个jar包被引用时 这段代码不起作用
+                    jarPath = FileUtil.class.getProtectionDomain().getCodeSource().
+                            getLocation().toURI().getPath();
+                    JarFile jar = new JarFile(jarPath);
+                    classSet = ClassHelper.getJarFileClasses(jar);
+
+                } catch (Exception e) {
+                }
             }
-        } else {
+        } else {  //Fixme:当这个jar包被引用时 这段代码不起作用
             try {
-                jarPath = FileUtil.class.getProtectionDomain().getCodeSource().
-                        getLocation().toURI().getPath();
-                JarFile jar = new JarFile(jarPath);
-                classSet = ClassHelper.getJarFileClasses(jar);
-
-            } catch (Exception e) {
+                classSet = ClassHelper.getClasses("wuxian.me.spidersdk");
+            } catch (IOException e) {
+                classSet = null;
             }
         }
-
 
         if (classSet == null) {
             return;
         }
         for (Class<?> clazz : classSet) {
-            //收集method
-            //System.out.println("check method of: "+clazz);
             SpiderMethodTuple tuple = SpiderClassChecker.performCheckAndCollect(clazz);
             if (tuple != null) {
                 SpiderMethodManager.put(clazz, tuple);

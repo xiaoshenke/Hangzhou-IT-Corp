@@ -3,6 +3,8 @@ package wuxian.me.spidersdk;
 import wuxian.me.spidersdk.distribute.ClassHelper;
 import wuxian.me.spidersdk.distribute.SpiderClassChecker;
 import wuxian.me.spidersdk.distribute.SpiderMethodTuple;
+import wuxian.me.spidersdk.job.IJob;
+import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.util.FileUtil;
 
 import java.io.File;
@@ -25,6 +27,23 @@ public class Main {
     }
 
     public static void main(String[] args) {
+
+        IJob job = JobProvider.getJob();
+        NoneSpider spider = new NoneSpider();
+        job.setRealRunnable(spider);
+        JobManager.getInstance().putJob(job);
+
+        try {
+            Thread.sleep(1000);
+        } catch (Exception e) {
+
+        }
+
+        job = JobManager.getInstance().getJob();
+
+        System.out.println("job: " + job);
+
+        /*
         NoneSpider spider = new NoneSpider();
         System.out.println("Hello World,This Is Main.main");
         System.out.println("redis enabled: " + JobManagerConfig.useRedisJobQueue);
@@ -38,5 +57,6 @@ public class Main {
         }
 
         JobManager.getInstance(); //会进行BaseSpider check
+        */
     }
 }

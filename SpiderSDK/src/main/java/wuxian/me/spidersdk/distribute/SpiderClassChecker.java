@@ -5,6 +5,7 @@ import wuxian.me.spidersdk.JobManagerConfig;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Set;
 
 /**
@@ -32,6 +33,9 @@ public class SpiderClassChecker {
     public static SpiderMethodTuple performCheckAndCollect(Class clazz) {
         SpiderMethodTuple ret = null;
         try {
+            if (Modifier.isAbstract(clazz.getModifiers())) { //跳过抽象类检查
+                return ret;
+            }
             clazz.asSubclass(BaseSpider.class);
             Method method1 = clazz.getMethod("toUrlNode", clazz);
             if (!(method1.getDeclaringClass().getSimpleName().equals(clazz.getSimpleName()))) {

@@ -8,14 +8,19 @@ import wuxian.me.spidersdk.distribute.HttpUrlNode;
  */
 public class NoneSpider extends BaseSpider {
 
-    /*public static BaseSpider fromUrlNode(HttpUrlNode node) {
+    public static BaseSpider fromUrlNode(HttpUrlNode node) {
+
+        if (node.baseUrl.contains("hello_world")) {
+            return new NoneSpider();
+        }
         return null;
     }
-    */
 
     //同上
     public static HttpUrlNode toUrlNode(NoneSpider spider) {
-        return null;
+        HttpUrlNode node = new HttpUrlNode();
+        node.baseUrl = "hello_world";
+        return node;
     }
 
     protected SpiderCallback getCallback() {
@@ -35,10 +40,10 @@ public class NoneSpider extends BaseSpider {
     }
 
     public String name() {
-        return null;
+        return hashString();
     }
 
     public String hashString() {
-        return null;
+        return "NoneSpider";
     }
 }

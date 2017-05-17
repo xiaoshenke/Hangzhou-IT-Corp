@@ -32,11 +32,33 @@ import static wuxian.me.lagouspider.util.Helper.getBossDistinctsFilePath;
 public class BPositionListSpider extends BaseBossSpider {
 
     public static BPositionListSpider fromUrlNode(HttpUrlNode node) {
-        return null;
-    }
+        String url = BASE_URL + "c" + INDEX_HANGZHOU;
+        if(!node.baseUrl.contains(url)){
+            return null;
+        }
 
+        if(!node.httpGetParam.containsKey("query") || !node.httpGetParam.containsKey("page")) {
+            return null;
+        }
+
+        String reg = "(?<=/b_)*+(?=-h_)";
+        Pattern pattern = Pattern.compile(reg);
+        Matcher matcher = pattern.matcher(node.baseUrl);
+        if(!matcher.find()){
+            return null;
+        }
+        String distinc = matcher.group();
+        int page = Integer.parseInt(node.httpGetParam.get("page"));
+        return new BPositionListSpider(distinc,page);
+    }
     public static HttpUrlNode toUrlNode(BPositionListSpider spider) {
-        return null;
+        HttpUrlNode node = new HttpUrlNode();
+        String url = BASE_URL + "c" + INDEX_HANGZHOU + "/b_" + spider.distinct + "-h_" + INDEX_HANGZHOU + "/";
+
+        node.baseUrl = url;
+        node.httpGetParam.put("query","java");
+        node.httpGetParam.put("page",String.valueOf(spider.page));
+        return node;
     }
 
     private static String BASE_URL = "http://www.zhipin.com/";

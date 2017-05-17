@@ -1,5 +1,6 @@
 package wuxian.me.lagouspider;
 
+import wuxian.me.lagouspider.biz.boss.BPositionListSpider;
 import wuxian.me.lagouspider.biz.lagou.AreaSpider;
 import wuxian.me.lagouspider.biz.lagou.CitySpider;
 import wuxian.me.lagouspider.biz.lagou.LagouConfig;
@@ -26,7 +27,6 @@ import wuxian.me.lagouspider.util.ModuleProvider;
 import wuxian.me.spidersdk.JobManager;
 import wuxian.me.spidersdk.JobManagerConfig;
 import wuxian.me.spidersdk.distribute.ClassHelper;
-import wuxian.me.spidersdk.distribute.SpiderClassChecker;
 import wuxian.me.spidersdk.distribute.SpiderMethodManager;
 import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
@@ -49,7 +49,8 @@ import java.util.jar.JarFile;
 public class Main {
 
     static {
-        if (false) {  //IDE运行
+
+        if (!JobManagerConfig.jarMode) {  //IDE运行
             File file = new File("");
             FileUtil.setCurrentPath(file.getAbsolutePath());
         } else {   //JAR包运行
@@ -63,7 +64,6 @@ public class Main {
             }
         }
 
-        System.out.println("noMethodCheckingException: "+JobManagerConfig.noMethodCheckingException);
         JobManager.initCheckFilter(new ClassHelper.CheckFilter() {  //Fix 有的jar包里的类无法加载的问题
             @Override
             public boolean apply(String s) {
@@ -78,14 +78,6 @@ public class Main {
                 return ret;
             }
         });
-    }
-
-    AreaMapper areaMapper = ModuleProvider.areaMapper();
-    CompanyMapper companyMapper = ModuleProvider.companyMapper();
-    ProductMapper productMapper = ModuleProvider.productMapper();
-    LocationMapper locationMapper = ModuleProvider.locationMapper();
-
-    public Main() {
 
         LogManager.setRealLogImpl(new ILog() {
             public void debug(String message) {
@@ -104,6 +96,15 @@ public class Main {
                 logger().warn(message);
             }
         });
+
+    }
+
+    AreaMapper areaMapper = ModuleProvider.areaMapper();
+    CompanyMapper companyMapper = ModuleProvider.companyMapper();
+    ProductMapper productMapper = ModuleProvider.productMapper();
+    LocationMapper locationMapper = ModuleProvider.locationMapper();
+
+    public Main() {
     }
 
     public void run() {
@@ -111,6 +112,8 @@ public class Main {
         if (!checkDBConnection()) {
             return;
         }
+
+        System.out.println("useRedis: "+ JobManagerConfig.useRedisJobQueue);
 
         System.out.println("before start JobMananger");
         if (true){
@@ -121,8 +124,21 @@ public class Main {
                 }
             }
 
-            JobManager.getInstance().start();
-            System.out.println("start JobManager success");
+            IJob job = JobProvider.getJob();
+            BPositionListSpider spider = new BPositionListSpider("hellor",1);
+            job.setRealRunnable(spider);
+            JobManager.getInstance().putJob(job);
+
+            try{
+                Thread.sleep(1000);
+            } catch (Exception e){
+
+            }
+
+            job = JobManager.getInstance().getJob();
+
+            //JobManager.getInstance().start();
+            System.out.println("job: "+job);
             return;
         }
 
