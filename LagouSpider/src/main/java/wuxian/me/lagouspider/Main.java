@@ -1,6 +1,5 @@
 package wuxian.me.lagouspider;
 
-import wuxian.me.lagouspider.biz.boss.BPositonDetailSpider;
 import wuxian.me.lagouspider.biz.lagou.AreaSpider;
 import wuxian.me.lagouspider.biz.lagou.CitySpider;
 import wuxian.me.lagouspider.biz.lagou.LagouConfig;
@@ -27,6 +26,8 @@ import wuxian.me.lagouspider.util.ModuleProvider;
 import wuxian.me.spidersdk.JobManager;
 import wuxian.me.spidersdk.JobManagerConfig;
 import wuxian.me.spidersdk.distribute.ClassHelper;
+import wuxian.me.spidersdk.distribute.SpiderClassChecker;
+import wuxian.me.spidersdk.distribute.SpiderMethodManager;
 import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.log.ILog;
@@ -39,6 +40,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.jar.JarFile;
 
 /**
@@ -47,8 +49,6 @@ import java.util.jar.JarFile;
 public class Main {
 
     static {
-        System.out.println("Main static");
-
         if (false) {  //IDE运行
             File file = new File("");
             FileUtil.setCurrentPath(file.getAbsolutePath());
@@ -63,6 +63,7 @@ public class Main {
             }
         }
 
+        System.out.println("noMethodCheckingException: "+JobManagerConfig.noMethodCheckingException);
         JobManager.initCheckFilter(new ClassHelper.CheckFilter() {  //Fix 有的jar包里的类无法加载的问题
             @Override
             public boolean apply(String s) {
@@ -77,27 +78,6 @@ public class Main {
                 return ret;
             }
         });
-
-        try {
-            JarFile jar = new JarFile(FileUtil.getCurrentPath() + "/lagouspider.jar");
-
-            System.out.println("begin to getJarFile");
-            ClassHelper.getJarFileClasses(jar, null, new ClassHelper.CheckFilter() {
-                @Override
-                public boolean apply(String s) {
-                    return s.contains("lagouspider");
-                }
-            });
-            System.out.println("getJarFile End");
-
-        } catch (IOException e) {
-
-
-        } catch (Exception e) {
-            e.getMessage();
-        }
-
-        System.out.println("Main static End");
     }
 
     AreaMapper areaMapper = ModuleProvider.areaMapper();
@@ -128,17 +108,21 @@ public class Main {
 
     public void run() {
         System.out.println("main run() func");
-
-        System.out.println("useRedis: " + JobManagerConfig.useRedisJobQueue);
-
         if (!checkDBConnection()) {
             return;
         }
 
         System.out.println("before start JobMananger");
         if (true){
+            Set<Class> classSet = SpiderMethodManager.getSpiderClasses();
+            if(classSet != null){
+                for(Class clazz:classSet){
+                    System.out.println("find class: "+clazz);
+                }
+            }
+
             JobManager.getInstance().start();
-            System.out.println("success");
+            System.out.println("start JobManager success");
             return;
         }
 

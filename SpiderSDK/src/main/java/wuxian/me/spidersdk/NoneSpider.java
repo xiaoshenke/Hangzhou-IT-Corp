@@ -8,9 +8,10 @@ import wuxian.me.spidersdk.distribute.HttpUrlNode;
  */
 public class NoneSpider extends BaseSpider {
 
-    public static BaseSpider fromUrlNode(HttpUrlNode node) {
+    /*public static BaseSpider fromUrlNode(HttpUrlNode node) {
         return null;
     }
+    */
 
     //同上
     public static HttpUrlNode toUrlNode(NoneSpider spider) {

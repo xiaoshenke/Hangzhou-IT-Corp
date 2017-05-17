@@ -18,11 +18,10 @@ public class MainTest {
     //Todo
     @Test
     public void testRedisJobQueue() {
-        Class clazz = new NoneSpider().getClass();
 
-        SpiderMethodTuple tuple = SpiderClassChecker.performCheckAndCollect(clazz);
-
-
+        //Class clazz = new NoneSpider().getClass();
+        //SpiderMethodTuple tuple = SpiderClassChecker.performCheckAndCollect(clazz);
+        SpiderClassChecker.performCheckAndCollect(NoneSpider.class);
     }
 
     @Test

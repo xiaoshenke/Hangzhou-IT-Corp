@@ -17,6 +17,7 @@ import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.NodeLogUtil;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.anti.MaybeBlockedException;
+import wuxian.me.spidersdk.distribute.HttpUrlNode;
 import wuxian.me.spidersdk.log.LogManager;
 import wuxian.me.spidersdk.util.FileUtil;
 
@@ -29,6 +30,14 @@ import static wuxian.me.lagouspider.util.Helper.getBossDistinctsFilePath;
  * Created by wuxian on 13/5/2017.
  */
 public class BPositionListSpider extends BaseBossSpider {
+
+    public static BPositionListSpider fromUrlNode(HttpUrlNode node) {
+        return null;
+    }
+
+    public static HttpUrlNode toUrlNode(BPositionListSpider spider) {
+        return null;
+    }
 
     private static String BASE_URL = "http://www.zhipin.com/";
 

@@ -90,7 +90,6 @@ public class ClassHelper {
                     }
                 }
             } else {
-                System.out.println(name);
                 if (filter != null && !filter.apply(name)) {
                     break;
                 }
@@ -106,7 +105,6 @@ public class ClassHelper {
                     }
                 }
             }
-
         }
 
         return classes;

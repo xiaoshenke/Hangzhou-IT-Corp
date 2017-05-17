@@ -76,6 +76,8 @@ public class JobManagerConfig {
     public static String redisIp;
     public static long redisPort;
 
+    public static boolean noMethodCheckingException;
+
     static {
         readConfigFromFile();
     }
@@ -167,6 +169,8 @@ public class JobManagerConfig {
         shellCheckRedisRunning = parse(pro, "shellCheckRedisRunning", "/util/shell/checkredisrunning");
         redisIp = parse(pro, "redisIp", "127.0.0.1");
         redisPort = parse(pro, "redisPort", (long) 6379);
+
+        noMethodCheckingException = parse(pro, "noMethodCheckingException", false);
 
     }
 

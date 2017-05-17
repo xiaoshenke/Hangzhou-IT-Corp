@@ -39,7 +39,6 @@ public class RedisJobQueue implements IQueue {
     }
 
     public void init() {
-        System.out.println("before new Gson");
         gson = new Gson();
         boolean redisRunning = false;
         try {
@@ -48,15 +47,12 @@ public class RedisJobQueue implements IQueue {
             ;
         }
 
-        System.out.println("redis running: " + redisRunning);
         if (!redisRunning) {
             throw new RedisConnectionException();
         }
-        System.out.println("before init jedis");
         jedis = new Jedis(JobManagerConfig.redisIp,
                 Ints.checkedCast(JobManagerConfig.redisPort));
 
-        System.out.println("begin to checkSubSpiders");
         checkSubSpiders();
     }
 
@@ -68,18 +64,15 @@ public class RedisJobQueue implements IQueue {
         if (FileUtil.currentFile != null) {
             try {
                 JarFile jar = new JarFile(FileUtil.currentFile);
-
                 classSet = ClassHelper.getJarFileClasses(jar, null, JobManager.checkFilter);
 
             } catch (IOException e) {
-
 
             }
         } else {
             try {
                 jarPath = FileUtil.class.getProtectionDomain().getCodeSource().
                         getLocation().toURI().getPath();
-
                 JarFile jar = new JarFile(jarPath);
                 classSet = ClassHelper.getJarFileClasses(jar);
 
@@ -93,16 +86,11 @@ public class RedisJobQueue implements IQueue {
         }
         for (Class<?> clazz : classSet) {
             //收集method
-            try {
-                SpiderMethodTuple tuple = SpiderClassChecker.performCheckAndCollect(clazz);
-
-                if (tuple != null) {
-                    SpiderMethodManager.put(clazz, tuple);
-                }
-            } catch (MethodCheckException e) {
-
+            //System.out.println("check method of: "+clazz);
+            SpiderMethodTuple tuple = SpiderClassChecker.performCheckAndCollect(clazz);
+            if (tuple != null) {
+                SpiderMethodManager.put(clazz, tuple);
             }
-
         }
 
     }
