@@ -1,6 +1,7 @@
 package wuxian.me.spidersdk;
 
 import wuxian.me.spidersdk.distribute.ClassHelper;
+import wuxian.me.spidersdk.distribute.MethodCheckException;
 import wuxian.me.spidersdk.distribute.SpiderClassChecker;
 import wuxian.me.spidersdk.distribute.SpiderMethodTuple;
 import wuxian.me.spidersdk.job.IJob;

@@ -10,7 +10,7 @@ from subprocess import *
 CUT=":"
 
 def jar_wrapper(args):
-		process = Popen(args, stdout=PIPE, stderr=PIPE)
+		process = Popen(args, stdout=PIPE, stderr=STDOUT)
 		ret = []
 		while True:
 			out = process.stdout.read(1)
