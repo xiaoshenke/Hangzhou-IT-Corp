@@ -15,38 +15,24 @@ import java.util.Properties;
  */
 public class JobManagerConfig {
 
-    //从哪个路径下扫描checker 以';'隔开 如果没有这个值那么从跟路径开始扫描
-    public static String redisSpiderCheckerBasePackage;
+    public static boolean distributeMode;
 
-    public static long okhttpClientSocketReadTimeout;
+    public static String spiderIdentity;  //none,master,agent三种身份
 
-    public static String shellOpenProxyFile;
+    public static String redisIp;
+    public static long redisPort;
 
-    public static String shellCheckprocessFile;
+    public static boolean jarMode;
 
-    public static long shellCheckProxyFileSleepTime;
-
-    public static int proxyHeartbeatInterval;
-
-    public static String ipproxyFile;
+    public static boolean noMethodCheckingException;
 
     public static boolean enableSwitchProxy;
 
-    public static boolean enableRuntimeInputProxy;
-
-    public static boolean enableInitProxyFromFile;
-
-    public static int everyProxyTryTime;
-
-    public static boolean enableRadomInsertJob;
-
-    public static boolean enableInsertDuplicateJob;
+    public static boolean enableRetrySpider;
 
     public static boolean enableScheduleImmediately;
 
-    public static long jobQueueEmptySleepTime;
-
-    public static int jobNumToSleep;
+    public static int jobNumToSleep;    //For @WorkingThread
 
     public static int jobSleepTimeToSleep;
 
@@ -62,24 +48,32 @@ public class JobManagerConfig {
 
     public static int considerBlockedNeterr;
 
-    public static boolean enableRetrySpider;
+    //从哪个路径下扫描checker 以';'隔开 如果没有这个值那么从跟路径开始扫描
+    public static String redisSpiderCheckerBasePackage;
 
-    public static String fulllogFile;
+    public static long okhttpClientSocketReadTimeout;
 
-    public static String fulllogPost;
+    public static long shellCheckProxyFileSleepTime;
 
-    public static boolean useRedisJobQueue;
+    public static int proxyHeartbeatInterval;
 
-    public static String shellCheckRedisRunning;
-    public static String redisIp;
-    public static long redisPort;
+    public static boolean enableRuntimeInputProxy;
 
-    public static boolean jarMode;
+    public static boolean enableInitProxyFromFile;
 
-    public static boolean noMethodCheckingException;
+    public static int everyProxyTryTime;
 
-    public static boolean distributeMode;
-    public static String spiderIdentity;  //none,master,agent三种身份
+    public static boolean enableRadomInsertJob;
+
+    public static boolean enableInsertDuplicateJob;
+
+    public static long jobQueueEmptySleepTime;
+
+    public final static String ipproxyFile = "/util/ipproxy.txt";
+
+    public final static String fulllogFile = "/logs/htmls/";
+
+    public final static String fulllogPost = ".html";
 
     static {
         readConfigFromFile();
@@ -118,15 +112,10 @@ public class JobManagerConfig {
 
         okhttpClientSocketReadTimeout = parse(pro, "okhttpClientSocketReadTimeout", (long) 10 * 1000);
 
-        shellOpenProxyFile = parse(pro, "shellOpenProxyFile", "/util/shell/openproxy");
-
-        shellCheckprocessFile = parse(pro, "shellCheckprocessFile", "/util/shell/processexist");
-
         shellCheckProxyFileSleepTime = parse(pro, "shellCheckProxyFileSleepTime", (long) 1000 * 10);
 
         proxyHeartbeatInterval = parse(pro, "proxyHeartbeatInterval", 5 * 1000);
 
-        ipproxyFile = parse(pro, "ipproxyFile", "/util/ipproxy.txt");
 
         enableSwitchProxy = parse(pro, "enableSwitchProxy", true);
 
@@ -162,12 +151,7 @@ public class JobManagerConfig {
 
         enableRetrySpider = parse(pro, "enableRetrySpider", true);
 
-        fulllogFile = parse(pro, "fulllogFile", "/logs/htmls/");
 
-        fulllogPost = parse(pro, "fulllogPost", ".html");
-
-        useRedisJobQueue = parse(pro, "useRedisJobQueue", false);
-        shellCheckRedisRunning = parse(pro, "shellCheckRedisRunning", "/util/shell/checkredisrunning");
         redisIp = parse(pro, "redisIp", "127.0.0.1");
         redisPort = parse(pro, "redisPort", (long) 6379);
 

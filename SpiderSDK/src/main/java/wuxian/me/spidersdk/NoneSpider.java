@@ -7,9 +7,7 @@ import wuxian.me.spidersdk.distribute.HttpUrlNode;
  * Created by wuxian on 16/5/2017.
  */
 public class NoneSpider extends BaseSpider {
-
     public static BaseSpider fromUrlNode(HttpUrlNode node) {
-
         if (node.baseUrl.contains("hello_world")) {
             return new NoneSpider();
         }

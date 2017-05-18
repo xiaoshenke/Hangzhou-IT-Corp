@@ -8,6 +8,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import static wuxian.me.spidersdk.JobManagerConfig.*;
+import static wuxian.me.spidersdk.JobManagerConfig.redisPort;
 import static wuxian.me.spidersdk.util.FileUtil.getCurrentPath;
 
 /**
@@ -15,10 +17,43 @@ import static wuxian.me.spidersdk.util.FileUtil.getCurrentPath;
  */
 public class ShellUtil {
 
+    private static final String shellOpenProxyFile = "/util/shell/openproxy";
+    private static final String shellCheckprocessFile = "/util/shell/processexist";
+    private static final String shellCheckRedisRunning = "/util/shell/checkredisrunning";
+
     private ShellUtil() {
     }
 
-    //Todo:被调用
+    private static boolean init = false;
+    public static void init(){
+        if(!init){
+            init = true;
+
+            String path = FileUtil.getCurrentPath() + shellOpenProxyFile;  //写shell文件
+            if (!FileUtil.checkFileExist(path)) {
+                String shell = "open -t " + FileUtil.getCurrentPath() + ipproxyFile;
+                FileUtil.writeToFile(path, shell);
+            }
+
+            ShellUtil.chmod(path, 0777);
+
+            path = FileUtil.getCurrentPath() + shellCheckprocessFile;
+            if (!FileUtil.checkFileExist(path)) {
+                String shell = "ps -ef | grep $1";
+                FileUtil.writeToFile(path, shell);
+            }
+            ShellUtil.chmod(path, 0777);
+
+            path = FileUtil.getCurrentPath() + shellCheckRedisRunning;
+            if (!FileUtil.checkFileExist(path)) {
+                String shell = "redis-cli -h " + redisIp + " -p " + redisPort + " ping";
+                FileUtil.writeToFile(path, shell);
+            }
+            ShellUtil.chmod(path, 0777);
+        }
+
+    }
+
     public static boolean isRedisServerRunning() throws IOException {
         Runtime runtime = Runtime.getRuntime();
         String check = getCheckRedisServerRunningPath();
@@ -49,11 +84,11 @@ public class ShellUtil {
     }
 
     private static String getCheckRedisServerRunningPath() {
-        return getCurrentPath() + JobManagerConfig.shellCheckRedisRunning;
+        return getCurrentPath() + shellCheckRedisRunning;
     }
 
     private static String getCheckProcessShellPath() {
-        return getCurrentPath() + JobManagerConfig.shellCheckprocessFile;
+        return getCurrentPath() + shellCheckprocessFile;
     }
 
     private static boolean isTextEditRunning() throws IOException {
@@ -90,8 +125,9 @@ public class ShellUtil {
         return libc.chmod(path, mode);
     }
 
+
     public static String getOpenProxyShellPath() {
-        return getCurrentPath() + JobManagerConfig.shellOpenProxyFile;
+        return getCurrentPath() + shellOpenProxyFile;
     }
 
     //http://stackoverflow.com/questions/664432/how-do-i-programmatically-change-file-permissions

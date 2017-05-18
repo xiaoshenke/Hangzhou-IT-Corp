@@ -2,11 +2,8 @@ package wuxian.me.spidersdk.control;
 
 import com.google.common.primitives.Ints;
 import com.google.gson.Gson;
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
 import redis.clients.jedis.Jedis;
 import wuxian.me.spidersdk.BaseSpider;
-import wuxian.me.spidersdk.manager.PlainJobManager;
 import wuxian.me.spidersdk.JobManagerConfig;
 import wuxian.me.spidersdk.distribute.*;
 import wuxian.me.spidersdk.job.IJob;
@@ -36,13 +33,12 @@ public class RedisJobQueue implements IQueue {
     private Jedis jedis;
     private Gson gson;
 
-    private ClassHelper.CheckFilter filter;
 
-    public RedisJobQueue(@NotNull ClassHelper.CheckFilter filter) {
-        this.filter = filter;
+    public RedisJobQueue() {
         init();
     }
 
+    //检查redis server是否在运行
     public void init() {
         gson = new Gson();
         boolean redisRunning = false;
@@ -57,50 +53,6 @@ public class RedisJobQueue implements IQueue {
         }
         jedis = new Jedis(JobManagerConfig.redisIp,
                 Ints.checkedCast(JobManagerConfig.redisPort));
-
-        checkSubSpiders();
-    }
-
-    private void checkSubSpiders() throws MethodCheckException {
-        Set<Class<?>> classSet = null;
-
-        if (JobManagerConfig.jarMode) {
-            String jarPath = "";
-            if (FileUtil.currentFile != null) {
-                try {
-                    JarFile jar = new JarFile(FileUtil.currentFile);
-                    classSet = ClassHelper.getJarFileClasses(jar, null, filter);
-
-                } catch (IOException e) {
-
-                }
-            } else {
-                try {   //Fixme:当这个jar包被引用时 这段代码不起作用
-                    jarPath = FileUtil.class.getProtectionDomain().getCodeSource().
-                            getLocation().toURI().getPath();
-                    JarFile jar = new JarFile(jarPath);
-                    classSet = ClassHelper.getJarFileClasses(jar);
-
-                } catch (Exception e) {
-                }
-            }
-        } else {  //Fixme:当这个jar包被引用时 这段代码不起作用
-            try {
-                classSet = ClassHelper.getClasses("wuxian.me.spidersdk");
-            } catch (IOException e) {
-                classSet = null;
-            }
-        }
-
-        if (classSet == null) {
-            return;
-        }
-        for (Class<?> clazz : classSet) {
-            SpiderMethodTuple tuple = SpiderClassChecker.performCheckAndCollect(clazz);
-            if (tuple != null) {
-                SpiderMethodManager.put(clazz, tuple);
-            }
-        }
 
     }
 
@@ -160,7 +112,6 @@ public class RedisJobQueue implements IQueue {
 
 
     private Class getHandleableClassOf(HttpUrlNode node) {
-
         for (Class clazz : SpiderMethodManager.getSpiderClasses()) {
             Method fromUrl = SpiderMethodManager.getFromUrlMethod(clazz);
 

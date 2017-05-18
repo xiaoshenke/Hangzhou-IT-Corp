@@ -61,7 +61,6 @@ public class PlainJobManager implements HeartbeatManager.IHeartBeat,IJobManager 
 
     private boolean started = false;
 
-
     public PlainJobManager() {
         signalManager.registerOnSystemKill(new ProcessSignalManager.OnSystemKill() {
             public void onSystemKilled() {
@@ -70,7 +69,7 @@ public class PlainJobManager implements HeartbeatManager.IHeartBeat,IJobManager 
         });
         signalManager.init();
 
-        initShellFile();
+        ShellUtil.init();
         queue = new JobQueue(monitor);
         Thread.currentThread().setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             public void uncaughtException(Thread t, Throwable e) {
@@ -81,29 +80,8 @@ public class PlainJobManager implements HeartbeatManager.IHeartBeat,IJobManager 
         onResume();
     }
 
-    private void initShellFile(){
-        String path = FileUtil.getCurrentPath() + JobManagerConfig.shellOpenProxyFile;  //写shell文件
-        if (!FileUtil.checkFileExist(path)) {
-            String shell = "open -t " + FileUtil.getCurrentPath() + ipproxyFile;
-            FileUtil.writeToFile(path, shell);
-        }
+    private final static String shellOpenProxyFile = "/util/shell/openproxy";
 
-        ShellUtil.chmod(path, 0777);
-
-        path = FileUtil.getCurrentPath() + shellCheckprocessFile;
-        if (!FileUtil.checkFileExist(path)) {
-            String shell = "ps -ef | grep $1";
-            FileUtil.writeToFile(path, shell);
-        }
-        ShellUtil.chmod(path, 0777);
-
-        path = FileUtil.getCurrentPath() + shellCheckRedisRunning;
-        if (!FileUtil.checkFileExist(path)) {
-            String shell = "redis-cli -h " + redisIp + " -p " + redisPort + " ping";
-            FileUtil.writeToFile(path, shell);
-        }
-        ShellUtil.chmod(path, 0777);
-    }
 
     //Todo:检查各个部件是否工作良好
     public void onUncaughtException(Thread t, Throwable e) {
