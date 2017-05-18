@@ -35,13 +35,11 @@ import wuxian.me.spidersdk.log.LogManager;
 import wuxian.me.spidersdk.util.FileUtil;
 
 import java.io.File;
-import java.io.IOException;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.jar.JarFile;
 
 /**
  * Created by wuxian on 29/3/2017.
@@ -49,7 +47,6 @@ import java.util.jar.JarFile;
 public class Main {
 
     static {
-
         if (!JobManagerConfig.jarMode) {  //IDE运行
             File file = new File("");
             FileUtil.setCurrentPath(file.getAbsolutePath());
@@ -68,7 +65,6 @@ public class Main {
             @Override
             public boolean apply(String s) {
                 boolean ret = true;
-
                 if(s.contains("org/")){
                     ret = false;
                 } else if(s.contains("google")){
@@ -96,7 +92,6 @@ public class Main {
                 logger().warn(message);
             }
         });
-
     }
 
     AreaMapper areaMapper = ModuleProvider.areaMapper();
@@ -104,23 +99,21 @@ public class Main {
     ProductMapper productMapper = ModuleProvider.productMapper();
     LocationMapper locationMapper = ModuleProvider.locationMapper();
 
-    public Main() {
-    }
-
     public void run() {
-        System.out.println("main run() func");
         if (!checkDBConnection()) {
             return;
         }
 
-        System.out.println("useRedis: "+ JobManagerConfig.useRedisJobQueue);
+        if (true) {
+            LogManager.error("hello_world");
+            return;
+        }
 
-        System.out.println("before start JobMananger");
         if (true){
             Set<Class> classSet = SpiderMethodManager.getSpiderClasses();
             if(classSet != null){
                 for(Class clazz:classSet){
-                    System.out.println("find class: "+clazz);
+                    LogManager.info("find class: " + clazz);
                 }
             }
 
@@ -137,8 +130,6 @@ public class Main {
 
             job = JobManager.getInstance().getJob();
 
-            //JobManager.getInstance().start();
-            System.out.println("job: "+job);
             return;
         }
 

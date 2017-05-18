@@ -21,6 +21,7 @@ import static wuxian.me.lagouspider.biz.lagou.LagouConfig.File.CONF;
 import static wuxian.me.lagouspider.biz.lagou.LagouConfig.Grab.CONF_LASTGRAB;
 import static wuxian.me.lagouspider.biz.lagou.LagouConfig.Grab.GRAB_INTERNAL;
 import static wuxian.me.lagouspider.biz.lagou.LagouConfig.TableName.*;
+import static wuxian.me.spidersdk.util.FileUtil.getCurrentPath;
 
 /**
  * Created by wuxian on 1/4/2017.
@@ -28,21 +29,6 @@ import static wuxian.me.lagouspider.biz.lagou.LagouConfig.TableName.*;
 public class Helper {
 
     private static String currentPath = null;
-
-    public static String getCurrentPath() {
-        if (currentPath == null) {
-            try {
-                File file = new File(Helper.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
-
-                currentPath = file.getParentFile().getAbsolutePath();
-            } catch (URISyntaxException e) {
-
-            }
-        }
-
-        return currentPath;
-
-    }
 
     public static String getBossDistinctsFilePath() {
         return getCurrentPath() + BossConfig.File.FILE + BossConfig.CITY_TO_SPIDER + BossConfig.File.DISTINTC;
@@ -66,6 +52,10 @@ public class Helper {
 
     public static String getLog4jPropFilePath() {
         return getCurrentPath() + LagouConfig.File.CONF_LOG4J_PROPERTIES;
+    }
+
+    public static String getWriteLogFilePath() {
+        return getCurrentPath() + "/logs/error.log";
     }
 
     //每个城市一张表

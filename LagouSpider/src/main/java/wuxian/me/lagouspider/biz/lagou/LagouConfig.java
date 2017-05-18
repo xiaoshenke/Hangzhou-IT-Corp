@@ -100,7 +100,7 @@ public interface LagouConfig {
 
         String CONF_COOKIE = "/cookie";
 
-        String CONF_LOG4J_PROPERTIES = "/log4j.properties";
+        String CONF_LOG4J_PROPERTIES = "/conf/log4j.properties";
 
     }
 

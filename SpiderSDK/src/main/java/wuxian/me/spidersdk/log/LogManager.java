@@ -27,7 +27,7 @@ public class LogManager {
     }
 
     public static void error(String message) {
-        logImpl.info(message);
+        logImpl.error(message);
     }
 
     public static void warn(String message) {

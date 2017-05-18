@@ -1,5 +1,7 @@
 package wuxian.me.lagouspider.util;
 
+import org.apache.log4j.Appender;
+import org.apache.log4j.DailyRollingFileAppender;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,10 @@ import wuxian.me.lagouspider.mapper.lagou.CompanyMapper;
 import wuxian.me.lagouspider.mapper.lagou.LocationMapper;
 import wuxian.me.lagouspider.mapper.lagou.ProductMapper;
 
+import java.util.Enumeration;
+
 import static wuxian.me.lagouspider.util.Helper.getLog4jPropFilePath;
+import static wuxian.me.lagouspider.util.Helper.getWriteLogFilePath;
 
 /**
  * Created by wuxian on 8/4/2017.
@@ -31,6 +36,12 @@ public class ModuleProvider {
         ctx = new ClassPathXmlApplicationContext("spider.xml");
         instance = ctx.getBean(ModuleProvider.class);
         PropertyConfigurator.configure(getLog4jPropFilePath());
+        try {
+            DailyRollingFileAppender appender = (DailyRollingFileAppender) logger.getRootLogger().getAppender("E");
+            appender.setFile(getWriteLogFilePath());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private ModuleProvider() {

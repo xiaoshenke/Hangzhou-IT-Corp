@@ -45,7 +45,6 @@ public class SpiderClassChecker {
 
                 return ret;
             }
-            System.out.println("5");
             Method method = clazz.getMethod("fromUrlNode", HttpUrlNode.class);
             if (!(method.getDeclaringClass().getSimpleName().equals(clazz.getSimpleName()))) {
                 if (!JobManagerConfig.noMethodCheckingException) {

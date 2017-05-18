@@ -6,6 +6,7 @@ import wuxian.me.spidersdk.distribute.SpiderClassChecker;
 import wuxian.me.spidersdk.distribute.SpiderMethodTuple;
 import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
+import wuxian.me.spidersdk.log.LogManager;
 import wuxian.me.spidersdk.util.FileUtil;
 
 import java.io.File;
@@ -34,7 +35,7 @@ public class MainTest {
 
         job = JobManager.getInstance().getJob();
 
-        System.out.println("job: " + job);
+        LogManager.info("job: " + job);
 
         //SpiderClassChecker.performCheckAndCollect(NoneSpider.class);
 

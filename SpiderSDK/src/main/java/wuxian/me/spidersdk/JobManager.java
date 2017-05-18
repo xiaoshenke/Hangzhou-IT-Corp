@@ -98,7 +98,7 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
 
         Thread.currentThread().setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             public void uncaughtException(Thread t, Throwable e) {
-                System.out.println("uncaughtExceptionHandler e:" + e.getMessage());
+                LogManager.error("uncaughtExceptionHandler e:" + e.getMessage());
                 onUncaughtException(t, e);
             }
         });

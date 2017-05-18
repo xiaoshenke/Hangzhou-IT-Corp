@@ -49,11 +49,6 @@ import static wuxian.me.lagouspider.util.Helper.*;
 public class MainTest {
 
     @Test
-    public void testPath() {
-        System.out.println(Helper.getCurrentPath());
-    }
-
-    @Test
     public void testDBs() {
         BCompanyMapper bCompanyMapper = ModuleProvider.bCompanyMapper();
         BCompany company = new BCompany();
@@ -132,22 +127,6 @@ public class MainTest {
         while (true) {
 
         }
-    }
-
-    @Test
-    //Todo:!
-    public void testEncode() {
-        String code = "美丽说";
-        try {
-            byte[] bytes = code.getBytes("unicode");
-
-            String data = URLEncoder.encode(code, "gb2312");
-            System.out.println(data);
-            System.out.println(data.replace("%", ""));
-        } catch (Exception e) {
-
-        }
-
     }
 
     //Damn! 页面是用js加载的 还没成功破解
