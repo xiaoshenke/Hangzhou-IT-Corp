@@ -5,10 +5,10 @@ import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import wuxian.me.spidersdk.BaseSpider;
-import wuxian.me.spidersdk.JobManager;
 import wuxian.me.spidersdk.SpiderCallback;
 import wuxian.me.spidersdk.anti.Fail;
 import wuxian.me.spidersdk.log.LogManager;
+import wuxian.me.spidersdk.manager.JobManagerFactory;
 
 /**
  * Created by wuxian on 9/4/2017.
@@ -39,7 +39,7 @@ public abstract class BaseLagouSpider extends BaseSpider {
             NodeList list = parser.extractAllNodesThatMatch(filter);
             if (list != null && list.size() != 0) {
                 LogManager.error("We got BLOCKED, " + name());
-                JobManager.getInstance().fail(BaseLagouSpider.this, Fail.BLOCK);
+                JobManagerFactory.getJobManager().fail(BaseLagouSpider.this, Fail.BLOCK);
                 return true;
             }
 

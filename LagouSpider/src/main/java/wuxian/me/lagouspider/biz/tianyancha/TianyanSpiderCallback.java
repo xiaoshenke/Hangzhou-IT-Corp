@@ -3,10 +3,10 @@ package wuxian.me.lagouspider.biz.tianyancha;
 import com.sun.istack.internal.NotNull;
 import okhttp3.Call;
 import wuxian.me.spidersdk.BaseSpider;
-import wuxian.me.spidersdk.JobManager;
 import wuxian.me.spidersdk.SpiderCallback;
 import wuxian.me.spidersdk.anti.Fail;
 import wuxian.me.spidersdk.log.LogManager;
+import wuxian.me.spidersdk.manager.JobManagerFactory;
 
 import java.io.IOException;
 
@@ -20,7 +20,7 @@ public class TianyanSpiderCallback extends SpiderCallback {
 
     public void onFailure(Call call, IOException e) {
         LogManager.error("onFailure: " + getSpider().name());
-        JobManager.getInstance().fail(getSpider(), Fail.MAYBE_BLOCK);
+        JobManagerFactory.getJobManager().fail(getSpider(), Fail.MAYBE_BLOCK);
         getSpider().serializeFullLog();
     }
 }

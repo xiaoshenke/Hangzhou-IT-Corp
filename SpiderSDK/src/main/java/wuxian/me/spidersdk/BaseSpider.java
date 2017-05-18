@@ -5,6 +5,8 @@ import okhttp3.Request;
 import wuxian.me.spidersdk.distribute.HttpUrlNode;
 import wuxian.me.spidersdk.distribute.MethodCheckException;
 import wuxian.me.spidersdk.distribute.SpiderMethodManager;
+import wuxian.me.spidersdk.manager.JobManagerFactory;
+import wuxian.me.spidersdk.manager.PlainJobManager;
 import wuxian.me.spidersdk.util.OkhttpProvider;
 import wuxian.me.spidersdk.util.SerializeFullLogHelper;
 
@@ -76,7 +78,7 @@ public abstract class BaseSpider implements Runnable {
         if (request == null) {
             return;
         }
-        JobManager.getInstance().register(this);
+        JobManagerFactory.getJobManager().register(this);
         OkhttpProvider.getClient().newCall(request).enqueue(callback);
     }
 

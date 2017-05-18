@@ -2,9 +2,11 @@ package wuxian.me.spidersdk.control;
 
 import com.google.common.primitives.Ints;
 import com.google.gson.Gson;
+import com.sun.istack.internal.NotNull;
+import com.sun.istack.internal.Nullable;
 import redis.clients.jedis.Jedis;
 import wuxian.me.spidersdk.BaseSpider;
-import wuxian.me.spidersdk.JobManager;
+import wuxian.me.spidersdk.manager.PlainJobManager;
 import wuxian.me.spidersdk.JobManagerConfig;
 import wuxian.me.spidersdk.distribute.*;
 import wuxian.me.spidersdk.job.IJob;
@@ -34,7 +36,10 @@ public class RedisJobQueue implements IQueue {
     private Jedis jedis;
     private Gson gson;
 
-    public RedisJobQueue() {
+    private ClassHelper.CheckFilter filter;
+
+    public RedisJobQueue(@NotNull ClassHelper.CheckFilter filter) {
+        this.filter = filter;
         init();
     }
 
@@ -64,7 +69,7 @@ public class RedisJobQueue implements IQueue {
             if (FileUtil.currentFile != null) {
                 try {
                     JarFile jar = new JarFile(FileUtil.currentFile);
-                    classSet = ClassHelper.getJarFileClasses(jar, null, JobManager.checkFilter);
+                    classSet = ClassHelper.getJarFileClasses(jar, null, filter);
 
                 } catch (IOException e) {
 

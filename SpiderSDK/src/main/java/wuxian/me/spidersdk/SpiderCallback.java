@@ -6,6 +6,8 @@ import okhttp3.Callback;
 import okhttp3.Response;
 import wuxian.me.spidersdk.anti.Fail;
 import wuxian.me.spidersdk.log.LogManager;
+import wuxian.me.spidersdk.manager.JobManagerFactory;
+import wuxian.me.spidersdk.manager.PlainJobManager;
 
 import java.io.IOException;
 
@@ -34,7 +36,7 @@ public abstract class SpiderCallback implements Callback {
 
     public SpiderCallback(@NotNull BaseSpider spider) {
         this.spider = spider;
-        //JobManager.getInstance().register(spider);
+        //PlainJobManager.getInstance().register(spider);
     }
 
 
@@ -55,9 +57,9 @@ public abstract class SpiderCallback implements Callback {
 
             if (spider.checkBlockAndFailThisSpider(response.code())) {
                 LogManager.error("We got BLOCKED, " + spider.name());
-                JobManager.getInstance().fail(spider, Fail.BLOCK);
+                JobManagerFactory.getJobManager().fail(spider, Fail.BLOCK);
             } else {
-                JobManager.getInstance().fail(spider, new Fail(response.code(), response.message()));
+                JobManagerFactory.getJobManager().fail(spider, new Fail(response.code(), response.message()));
             }
             if (response.body() != null) {
                 response.body().close();
@@ -67,21 +69,21 @@ public abstract class SpiderCallback implements Callback {
         } else {
             int result = spider.parseRealData(body);
             if (result == BaseSpider.RET_SUCCESS) {
-                JobManager.getInstance().success(spider);
+                JobManagerFactory.getJobManager().success(spider);
 
             } else if (result == BaseSpider.RET_PARSING_ERR) {
 
-                JobManager.getInstance().fail(spider, Fail.MAYBE_BLOCK, false);  //这个不放入重试队列
+                JobManagerFactory.getJobManager().fail(spider, Fail.MAYBE_BLOCK, false);  //这个不放入重试队列
                 spider.serializeFullLog();
 
             } else if (result == BaseSpider.RET_MAYBE_BLOCK) {
 
                 if (spider.checkBlockAndFailThisSpider(body)) {
                     LogManager.error("We got BLOCKED, " + spider.name());
-                    JobManager.getInstance().fail(spider, Fail.BLOCK);
+                    JobManagerFactory.getJobManager().fail(spider, Fail.BLOCK);
                     spider.serializeFullLog();
                 } else {
-                    JobManager.getInstance().success(spider);
+                    JobManagerFactory.getJobManager().success(spider);
                 }
             }
         }

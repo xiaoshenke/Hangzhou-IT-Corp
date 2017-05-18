@@ -3,32 +3,15 @@ package wuxian.me.spidersdk;
 import wuxian.me.spidersdk.anti.Fail;
 import wuxian.me.spidersdk.job.IJob;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by wuxian on 31/3/2017.
  * <p>
  * 目前BaseJob的设计是:hashCode,equals都是调用的BaseSpider
- * 这样的目的是为了能够统计某个Spider的失败次数。--> 然后这个值似乎并没有用上
  */
 public abstract class BaseJob implements IJob {
 
-    private List<Fail> fails;  //根据每次失败的情况决定反爬虫策略
-
     public final void fail(Fail fail) {
-        if (fails == null) {
-            fails = new ArrayList<Fail>();
-        }
-        fails.add(fail);
-    }
-
-    public int getFailTimes() {
-        return fails == null ? 0 : fails.size();
-    }
-
-    public final List<Fail> getFailures() {
-        return fails;
+        //Do Nothing
     }
 
     private int state = STATE_INIT;
@@ -39,12 +22,6 @@ public abstract class BaseJob implements IJob {
 
     public final void setCurrentState(int state) {
         this.state = state;
-
-        if (state == STATE_INIT) { //初始化一下
-            if (fails != null) {
-                fails.clear();
-            }
-        }
     }
 
     protected Runnable realJob;

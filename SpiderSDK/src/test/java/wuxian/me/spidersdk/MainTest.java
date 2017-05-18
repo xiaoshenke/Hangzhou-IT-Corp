@@ -1,17 +1,11 @@
 package wuxian.me.spidersdk;
 
 import org.junit.Test;
-import wuxian.me.spidersdk.distribute.ClassHelper;
-import wuxian.me.spidersdk.distribute.SpiderClassChecker;
-import wuxian.me.spidersdk.distribute.SpiderMethodTuple;
 import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.log.LogManager;
-import wuxian.me.spidersdk.util.FileUtil;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Set;
+import wuxian.me.spidersdk.manager.JobManagerFactory;
+import wuxian.me.spidersdk.manager.PlainJobManager;
 
 /**
  * Created by wuxian on 12/5/2017.
@@ -25,7 +19,7 @@ public class MainTest {
         IJob job = JobProvider.getJob();
         NoneSpider spider = new NoneSpider();
         job.setRealRunnable(spider);
-        JobManager.getInstance().putJob(job);
+        JobManagerFactory.getJobManager().putJob(job);
 
         try {
             Thread.sleep(1000);
@@ -33,7 +27,7 @@ public class MainTest {
 
         }
 
-        job = JobManager.getInstance().getJob();
+        job = JobManagerFactory.getJobManager().getJob();
 
         LogManager.info("job: " + job);
 

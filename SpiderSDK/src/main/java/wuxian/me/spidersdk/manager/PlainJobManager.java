@@ -1,7 +1,10 @@
-package wuxian.me.spidersdk;
+package wuxian.me.spidersdk.manager;
 
 import com.sun.istack.internal.NotNull;
 import okhttp3.*;
+import wuxian.me.spidersdk.BaseSpider;
+import wuxian.me.spidersdk.IJobManager;
+import wuxian.me.spidersdk.JobManagerConfig;
 import wuxian.me.spidersdk.anti.Fail;
 import wuxian.me.spidersdk.anti.FailHelper;
 import wuxian.me.spidersdk.anti.HeartbeatManager;
@@ -9,7 +12,6 @@ import wuxian.me.spidersdk.anti.IPProxyTool;
 import wuxian.me.spidersdk.control.*;
 import wuxian.me.spidersdk.distribute.ClassHelper;
 import wuxian.me.spidersdk.distribute.MethodCheckException;
-import wuxian.me.spidersdk.distribute.RedisConnectionException;
 import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.log.LogManager;
@@ -36,10 +38,9 @@ import static wuxian.me.spidersdk.JobManagerConfig.*;
  * 3 负责处理ip被屏蔽 --> 是则停止现有job,切换ip,打监控日志,重启workThread等等
  * <p>
  */
-public class JobManager implements HeartbeatManager.IHeartBeat {
+public class PlainJobManager implements HeartbeatManager.IHeartBeat,IJobManager {
 
     private ProcessSignalManager signalManager = new ProcessSignalManager();
-    public static ClassHelper.CheckFilter checkFilter = null;
 
     private JobMonitor monitor = new JobMonitor();
     private IQueue queue;
@@ -59,21 +60,9 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
     private long workThreadStartTime;//WorkThread线程开启的时间
 
     private boolean started = false;
-    private static JobManager instance;
-
-    public static JobManager getInstance() {
-        if (instance == null) {
-            instance = new JobManager();
-        }
-        return instance;
-    }
 
 
-    public static void initCheckFilter(@NotNull ClassHelper.CheckFilter filter) {
-        checkFilter = filter;
-    }
-
-    private JobManager() {
+    public PlainJobManager() {
         signalManager.registerOnSystemKill(new ProcessSignalManager.OnSystemKill() {
             public void onSystemKilled() {
                 onPause();
@@ -82,20 +71,7 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
         signalManager.init();
 
         initShellFile();
-
-        if (JobManagerConfig.useRedisJobQueue) {
-
-            if (checkFilter == null) {
-                if (!JobManagerConfig.noMethodCheckingException) {
-                    throw new MethodCheckException();
-                }
-            }
-            queue = new RedisJobQueue();
-        } else {
-            queue = new JobQueue(monitor);
-        }
-
-
+        queue = new JobQueue(monitor);
         Thread.currentThread().setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             public void uncaughtException(Thread t, Throwable e) {
                 LogManager.error("uncaughtExceptionHandler e:" + e.getMessage());
@@ -173,7 +149,7 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
     }
 
     public void register(@NotNull BaseSpider spider) {
-        //LogManager.info("JobManager.register " + spider.name());
+        //LogManager.info("PlainJobManager.register " + spider.name());
         todoSpiderList.add(spider);
     }
 
@@ -217,13 +193,9 @@ public class JobManager implements HeartbeatManager.IHeartBeat {
                 monitor.putJob(job, IJob.STATE_FAIL);
 
                 if (retry && JobManagerConfig.enableRetrySpider) {
-                    if (job.getFailTimes() >= JobManagerConfig.singleJobMaxFailTimes) { //重试处理
-                        LogManager.error("Job: " + job.toString() + " fail " + job.getFailTimes() + "times, abandon it");
-                    } else {
-                        LogManager.info("Retry Job: " + job.toString());
-                        IJob next = JobProvider.getNextJob(job);
-                        queue.putJob(next, IJob.STATE_RETRY);
-                    }
+                    LogManager.info("Retry Job: " + job.toString());
+                    IJob next = JobProvider.getNextJob(job);
+                    queue.putJob(next, IJob.STATE_RETRY);
                 }
             }
             if (failHelper.isBlock()) {

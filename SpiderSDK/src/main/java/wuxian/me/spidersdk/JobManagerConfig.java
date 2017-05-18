@@ -64,8 +64,6 @@ public class JobManagerConfig {
 
     public static boolean enableRetrySpider;
 
-    public static int singleJobMaxFailTimes;
-
     public static String fulllogFile;
 
     public static String fulllogPost;
@@ -79,6 +77,9 @@ public class JobManagerConfig {
     public static boolean jarMode;
 
     public static boolean noMethodCheckingException;
+
+    public static boolean distributeMode;
+    public static String spiderIdentity;  //none,master,agent三种身份
 
     static {
         readConfigFromFile();
@@ -161,8 +162,6 @@ public class JobManagerConfig {
 
         enableRetrySpider = parse(pro, "enableRetrySpider", true);
 
-        singleJobMaxFailTimes = parse(pro, "singleJobMaxFailTimes", 4);
-
         fulllogFile = parse(pro, "fulllogFile", "/logs/htmls/");
 
         fulllogPost = parse(pro, "fulllogPost", ".html");
@@ -175,7 +174,16 @@ public class JobManagerConfig {
         noMethodCheckingException = parse(pro, "noMethodCheckingException", false);
 
         jarMode = parse(pro, "jarMode", true);
-        //Todo: 解决jar包被引用的问题...
+
+        distributeMode = parse(pro,"distributeMode",false);
+        spiderIdentity = parse(pro,"spiderIdentity","none");
+
+        //只有三种身份
+        if(!spiderIdentity.equals("none")) {
+            if(!spiderIdentity.equals("master") && !spiderIdentity.equals("agent")) {
+                spiderIdentity = "none";
+            }
+        }
 
     }
 

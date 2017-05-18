@@ -3,6 +3,8 @@ package wuxian.me.spidersdk;
 import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.log.LogManager;
+import wuxian.me.spidersdk.manager.JobManagerFactory;
+import wuxian.me.spidersdk.manager.PlainJobManager;
 import wuxian.me.spidersdk.util.FileUtil;
 
 import java.io.File;
@@ -30,7 +32,7 @@ public class Main {
         IJob job = JobProvider.getJob();
         NoneSpider spider = new NoneSpider();
         job.setRealRunnable(spider);
-        JobManager.getInstance().putJob(job);
+        JobManagerFactory.getJobManager().putJob(job);
 
         try {
             Thread.sleep(1000);
@@ -38,7 +40,7 @@ public class Main {
 
         }
 
-        job = JobManager.getInstance().getJob();
+        job = JobManagerFactory.getJobManager().getJob();
 
         LogManager.info("job: " + job);
     }

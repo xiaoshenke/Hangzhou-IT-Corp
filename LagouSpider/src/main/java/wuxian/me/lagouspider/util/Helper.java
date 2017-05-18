@@ -7,9 +7,10 @@ import wuxian.me.lagouspider.biz.lagou.LagouConfig;
 import wuxian.me.lagouspider.biz.tianyancha.TianyanConfig;
 import wuxian.me.lagouspider.biz.zhishu.ZhishuConfig;
 import wuxian.me.spidersdk.BaseSpider;
-import wuxian.me.spidersdk.JobManager;
+import wuxian.me.spidersdk.IJobManager;
 import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
+import wuxian.me.spidersdk.manager.JobManagerFactory;
 import wuxian.me.spidersdk.util.FileUtil;
 
 import java.io.File;
@@ -164,10 +165,10 @@ public class Helper {
         FileUtil.writeToFile(getLagouGrabFilePath(), String.valueOf(System.currentTimeMillis()));
     }
 
-    private static JobManager jobManager;
+    private static IJobManager jobManager;
 
     static {
-        jobManager = JobManager.getInstance();
+        jobManager = JobManagerFactory.getJobManager();
     }
 
     public static void dispatchSpider(@NotNull BaseSpider spider) {

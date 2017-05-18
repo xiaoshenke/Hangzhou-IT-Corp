@@ -1,7 +1,8 @@
 package wuxian.me.spidersdk.anti;
 
 import com.sun.istack.internal.NotNull;
-import wuxian.me.spidersdk.JobManager;
+import wuxian.me.spidersdk.manager.JobManagerFactory;
+import wuxian.me.spidersdk.manager.PlainJobManager;
 import wuxian.me.spidersdk.JobManagerConfig;
 
 import java.util.ArrayList;
@@ -69,7 +70,7 @@ public class HeartbeatManager implements Runnable {
                 heartBeat.onHeartBeat(heartBeatTime);
             }
 
-            proxyLive = JobManager.getInstance().ipSwitched(proxy);
+            proxyLive = JobManagerFactory.getJobManager().ipSwitched(proxy);
             if (!proxyLive) {
                 for (IHeartBeat heartBeat : heartBeatList) {
                     heartBeat.onHeartBeatFail();

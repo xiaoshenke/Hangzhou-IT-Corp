@@ -14,6 +14,7 @@ import wuxian.me.lagouspider.model.lagou.Area;
 
 import static wuxian.me.lagouspider.util.Config.CUT;
 import static wuxian.me.lagouspider.util.Config.SEPRATE;
+import static wuxian.me.lagouspider.util.Helper.dispatchSpider;
 import static wuxian.me.lagouspider.util.Helper.getLagouAreaFilePath;
 import static wuxian.me.lagouspider.util.Helper.getLagouDistinctsFilePath;
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
@@ -24,7 +25,6 @@ import wuxian.me.lagouspider.model.lagou.Location;
 import wuxian.me.lagouspider.model.lagou.Product;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.ModuleProvider;
-import wuxian.me.spidersdk.JobManager;
 import wuxian.me.spidersdk.JobManagerConfig;
 import wuxian.me.spidersdk.distribute.ClassHelper;
 import wuxian.me.spidersdk.distribute.SpiderMethodManager;
@@ -32,6 +32,7 @@ import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.log.ILog;
 import wuxian.me.spidersdk.log.LogManager;
+import wuxian.me.spidersdk.manager.JobManagerFactory;
 import wuxian.me.spidersdk.util.FileUtil;
 
 import java.io.File;
@@ -60,8 +61,7 @@ public class Main {
 
             }
         }
-
-        JobManager.initCheckFilter(new ClassHelper.CheckFilter() {  //Fix 有的jar包里的类无法加载的问题
+        JobManagerFactory.initCheckFilter(new ClassHelper.CheckFilter() {  //Fix 有的jar包里的类无法加载的问题
             @Override
             public boolean apply(String s) {
                 boolean ret = true;
@@ -74,6 +74,7 @@ public class Main {
                 return ret;
             }
         });
+
 
         LogManager.setRealLogImpl(new ILog() {
             public void debug(String message) {
@@ -119,8 +120,7 @@ public class Main {
 
             IJob job = JobProvider.getJob();
             BPositionListSpider spider = new BPositionListSpider("hellor",1);
-            job.setRealRunnable(spider);
-            JobManager.getInstance().putJob(job);
+            Helper.dispatchSpider(spider);
 
             try{
                 Thread.sleep(1000);
@@ -128,7 +128,7 @@ public class Main {
 
             }
 
-            job = JobManager.getInstance().getJob();
+            job = JobManagerFactory.getJobManager().getJob();
 
             return;
         }
@@ -167,7 +167,7 @@ public class Main {
             CitySpider citySpider = new CitySpider(LagouConfig.CITY_TO_SPIDER);
             IJob job = JobProvider.getJob();
             job.setRealRunnable(citySpider);
-            JobManager.getInstance().putJob(job);
+            JobManagerFactory.getJobManager().putJob(job);
 
         } else if (!FileUtil.checkFileExist(getLagouAreaFilePath())) {
             String distincts = readFromFile(getLagouDistinctsFilePath());
@@ -177,9 +177,7 @@ public class Main {
             String[] dis = distincts.split(CUT);  //编码问题带来分解失败...
             for (int i = 0; i < dis.length; i++) {
                 DistinctSpider spider = new DistinctSpider(LagouConfig.CITY_TO_SPIDER, dis[i]);
-                IJob job = JobProvider.getJob();
-                job.setRealRunnable(spider);
-                JobManager.getInstance().putJob(job);
+                dispatchSpider(spider);
             }
 
         } else {
@@ -194,13 +192,12 @@ public class Main {
             }
 
             for (Area area : areas) {
-                IJob job = JobProvider.getJob();
-                job.setRealRunnable((new AreaSpider(area)));
-                JobManager.getInstance().putJob(job);
+
+                Helper.dispatchSpider(new AreaSpider(area));
             }
         }
 
-        JobManager.getInstance().start();
+        JobManagerFactory.getJobManager().start();
     }
 
     private void insertAreaData(List<Area> areas) {

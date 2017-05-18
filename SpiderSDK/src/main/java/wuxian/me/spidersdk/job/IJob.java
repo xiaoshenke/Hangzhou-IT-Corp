@@ -22,10 +22,6 @@ public interface IJob extends Runnable {
 
     void fail(Fail fail);  //用于爬虫策略
 
-    int getFailTimes();
-
-    List<Fail> getFailures();
-
     void setRealRunnable(@NotNull Runnable runnable);
 
     Runnable getRealRunnable();

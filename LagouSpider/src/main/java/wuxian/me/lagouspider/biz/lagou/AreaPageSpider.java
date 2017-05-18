@@ -12,7 +12,6 @@ import wuxian.me.lagouspider.model.lagou.Company;
 import wuxian.me.lagouspider.save.lagou.CompanySaver;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.spidersdk.BaseSpider;
-import wuxian.me.spidersdk.JobManager;
 import wuxian.me.spidersdk.anti.MaybeBlockedException;
 import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
@@ -93,9 +92,7 @@ public class AreaPageSpider extends BaseLagouSpider {
 
         if (ENABLE_SPIDER_COMPANY_MAIN) {
             for (Company company : companyList) {
-                IJob job = JobProvider.getJob();
-                job.setRealRunnable((new CompanySpider(company.company_id, company.company_fullname)));
-                JobManager.getInstance().putJob(job);
+                Helper.dispatchSpider(new CompanySpider(company.company_id, company.company_fullname));
             }
         }
 
