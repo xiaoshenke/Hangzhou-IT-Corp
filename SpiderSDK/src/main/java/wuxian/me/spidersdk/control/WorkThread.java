@@ -1,5 +1,6 @@
 package wuxian.me.spidersdk.control;
 
+import wuxian.me.spidersdk.IJobManager;
 import wuxian.me.spidersdk.manager.PlainJobManager;
 import wuxian.me.spidersdk.JobManagerConfig;
 import wuxian.me.spidersdk.job.IJob;
@@ -13,12 +14,12 @@ import java.util.Random;
  *
  */
 public class WorkThread extends Thread {
-    private PlainJobManager jobManager;
+    private IJobManager jobManager;
 
     private int i = 0;
     private Random random = new Random();
 
-    public WorkThread(PlainJobManager jobManager) {
+    public WorkThread(IJobManager jobManager) {
         this.jobManager = jobManager;
     }
 

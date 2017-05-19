@@ -55,7 +55,7 @@ public class JobManagerFactory {
 
     //Called by biz service
     public static void initCheckFilter(@NotNull ClassHelper.CheckFilter filter) {
-        ((DistributeJobManager)getNormalJobManager()).setCheckFilter(filter);
+        ((DistributeJobManager) getNormalJobManager()).setSpiderChecker(filter);
     }
 
 }

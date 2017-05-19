@@ -6,16 +6,13 @@ import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.IJobManager;
 import wuxian.me.spidersdk.JobManagerConfig;
 import wuxian.me.spidersdk.anti.Fail;
-import wuxian.me.spidersdk.anti.FailHelper;
+import wuxian.me.spidersdk.anti.BlockHelper;
 import wuxian.me.spidersdk.anti.HeartbeatManager;
 import wuxian.me.spidersdk.anti.IPProxyTool;
 import wuxian.me.spidersdk.control.*;
-import wuxian.me.spidersdk.distribute.ClassHelper;
-import wuxian.me.spidersdk.distribute.MethodCheckException;
 import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.log.LogManager;
-import wuxian.me.spidersdk.util.FileUtil;
 import wuxian.me.spidersdk.util.OkhttpProvider;
 import wuxian.me.spidersdk.util.ProcessSignalManager;
 import wuxian.me.spidersdk.util.ShellUtil;
@@ -27,7 +24,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static wuxian.me.spidersdk.JobManagerConfig.*;
 
 /**
  * Created by wuxian on 9/4/2017.
@@ -55,7 +51,7 @@ public class PlainJobManager implements HeartbeatManager.IHeartBeat,IJobManager 
     private List<BaseSpider> todoSpiderList = Collections.synchronizedList(new ArrayList<BaseSpider>());
     private Dispatcher dispatcher = OkhttpProvider.getClient().dispatcher();
 
-    private FailHelper failHelper = new FailHelper();
+    private BlockHelper blockHelper = new BlockHelper();
     private AtomicInteger successJobNum = new AtomicInteger(0);
     private long workThreadStartTime;//WorkThread线程开启的时间
 
@@ -80,9 +76,6 @@ public class PlainJobManager implements HeartbeatManager.IHeartBeat,IJobManager 
         onResume();
     }
 
-    private final static String shellOpenProxyFile = "/util/shell/openproxy";
-
-
     //Todo:检查各个部件是否工作良好
     public void onUncaughtException(Thread t, Throwable e) {
 
@@ -105,7 +98,7 @@ public class PlainJobManager implements HeartbeatManager.IHeartBeat,IJobManager 
     public void start() {
         if (!started) {
             started = true;
-            heartbeatManager.addHeartBeat(this);
+            heartbeatManager.addHeartBeatCallback(this);
             workThreadStartTime = System.currentTimeMillis();
             LogManager.info("WorkThread started");
             workThread.start();
@@ -118,7 +111,6 @@ public class PlainJobManager implements HeartbeatManager.IHeartBeat,IJobManager 
 
     public IJob getJob() {
         IJob job = queue.getJob();
-        //LogManager.info("getJob: " + ((BaseSpider) (job.getRealRunnable())).name());
         return job;
     }
 
@@ -126,14 +118,14 @@ public class PlainJobManager implements HeartbeatManager.IHeartBeat,IJobManager 
         return queue.isEmpty();
     }
 
-    public void register(@NotNull BaseSpider spider) {
-        //LogManager.info("PlainJobManager.register " + spider.name());
+    public void onDispatch(@NotNull BaseSpider spider) {
+        //LogManager.info("PlainJobManager.onDispatch " + spider.name());
         todoSpiderList.add(spider);
     }
 
     public void success(Runnable runnable) {
         successJobNum.getAndIncrement();
-        failHelper.removeFail(runnable);
+        blockHelper.removeFail(runnable);
 
         IJob job = monitor.getJob(runnable);
         if (job == null) { //SHOULD NEVER HAPPEN!
@@ -161,7 +153,7 @@ public class PlainJobManager implements HeartbeatManager.IHeartBeat,IJobManager 
                 monitor.putJob(job, IJob.STATE_FAIL);
             }
         } else {
-            failHelper.addFail(runnable, fail);
+            blockHelper.addFail(runnable, fail);
 
             IJob job = monitor.getJob(runnable);
             if (job != null) {
@@ -176,7 +168,7 @@ public class PlainJobManager implements HeartbeatManager.IHeartBeat,IJobManager 
                     queue.putJob(next, IJob.STATE_RETRY);
                 }
             }
-            if (failHelper.isBlock()) {
+            if (blockHelper.isBlocked()) {
                 LogManager.error("WE ARE BLOCKED!");
                 LogManager.error("Until now, We have success " + successJobNum.get() +
                         " jobs, We have run " + (System.currentTimeMillis() - workThreadStartTime) / 1000 + " seconds");
@@ -258,7 +250,7 @@ public class PlainJobManager implements HeartbeatManager.IHeartBeat,IJobManager 
         }
         todoSpiderList.clear();
 
-        failHelper.reInit();
+        blockHelper.reInit();
         workThreadStartTime = System.currentTimeMillis();
         LogManager.info("WorkThread resumed");
         workThread.resumeNow();

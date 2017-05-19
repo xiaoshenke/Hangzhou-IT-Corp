@@ -56,19 +56,15 @@ public class RedisJobQueue implements IQueue {
 
     }
 
-    //Todo:state管理
+    //抛弃state --> 分布式下没法管理一个job的状态:是新开始的任务还是重试的任务
     public boolean putJob(IJob job, int state) {
-
         BaseSpider spider = (BaseSpider) job.getRealRunnable();
         HttpUrlNode urlNode = spider.toUrlNode();
-
         jedis.lpush(JOB_QUEUE, gson.toJson(urlNode));
-
         return true;
     }
 
     public IJob getJob() {
-
         String spiderStr = jedis.rpop(JOB_QUEUE);
         if (spiderStr == null) {
             return null;
@@ -133,6 +129,7 @@ public class RedisJobQueue implements IQueue {
         return null;
     }
 
+    //Todo
     public boolean isEmpty() {
         return false;
     }

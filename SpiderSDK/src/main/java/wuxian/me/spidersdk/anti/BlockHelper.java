@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * 注意实现线程安全
  *
  */
-public class FailHelper {
+public class BlockHelper {
 
     private Map<Runnable, Fail> fail404Map = new ConcurrentHashMap<Runnable, Fail>();
     private AtomicLong last404 = new AtomicLong(0);
@@ -32,7 +32,7 @@ public class FailHelper {
     private AtomicLong lastBlock = new AtomicLong(0);
     private AtomicLong currentBlock = lastBlock;
 
-    public FailHelper() {
+    public BlockHelper() {
         init();
     }
 
@@ -81,7 +81,7 @@ public class FailHelper {
 
     }
 
-    public boolean isBlock() {
+    public boolean isBlocked() {
         if (failBlockMap.size() >= JobManagerConfig.considerBlockedBlockNum) {
             return true;
         }

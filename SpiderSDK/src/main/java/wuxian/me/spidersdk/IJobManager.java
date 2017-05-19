@@ -26,9 +26,10 @@ public interface IJobManager {
 
     boolean putJob(@NotNull IJob job);
 
-    void register(@NotNull BaseSpider spider);
+    void onDispatch(@NotNull BaseSpider spider);
 
     void start();
 
+    boolean isEmpty();
 
 }

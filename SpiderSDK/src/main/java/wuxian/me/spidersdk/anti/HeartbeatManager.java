@@ -51,7 +51,7 @@ public class HeartbeatManager implements Runnable {
 
     private List<IHeartBeat> heartBeatList = new ArrayList<IHeartBeat>();
 
-    public void addHeartBeat(@NotNull IHeartBeat heartBeat) {
+    public void addHeartBeatCallback(@NotNull IHeartBeat heartBeat) {
         heartBeatList.add(heartBeat);
     }
 
