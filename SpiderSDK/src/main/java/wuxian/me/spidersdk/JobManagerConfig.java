@@ -20,6 +20,8 @@ public class JobManagerConfig {
 
     public static String spiderIdentity;  //none,master,agent三种身份
 
+    public static boolean newSpideMode;
+
     public static String redisIp;
     public static long redisPort;
 
@@ -76,6 +78,8 @@ public class JobManagerConfig {
 
     public final static String fulllogPost = ".html";
 
+    public final static String serializedSpiderFile = "/file/spiders.txt";
+
     static {
         LogManager.info("Read Configuration From File:/conf/jobmanager.properties");
         readConfigFromFile();
@@ -112,6 +116,8 @@ public class JobManagerConfig {
         if (!success) {
             pro = null; //确保一定会初始化
         }
+
+        newSpideMode = parse(pro, "newSpideMode", true);
 
         okhttpClientSocketReadTimeout = parse(pro, "okhttpClientSocketReadTimeout", (long) 10 * 1000);
 

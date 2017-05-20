@@ -34,8 +34,7 @@ public abstract class BaseSpider implements Runnable {
 
     //Used in distributted mode
     public final HttpUrlNode toUrlNode() {
-        String name = this.getClass().getName();
-        if (!SpiderMethodManager.contains(name)) {
+        if (!SpiderMethodManager.contains(getClass())) {
             if (!JobManagerConfig.noMethodCheckingException) {
                 throw new MethodCheckException();
             } else {
@@ -44,7 +43,7 @@ public abstract class BaseSpider implements Runnable {
         }
 
         try {
-            return (HttpUrlNode) SpiderMethodManager.getToUrlMethod(name).invoke(null, this);
+            return (HttpUrlNode) SpiderMethodManager.getToUrlMethod(getClass()).invoke(null, this);
         } catch (IllegalAccessException e) {
             ;
         } catch (InvocationTargetException e) {

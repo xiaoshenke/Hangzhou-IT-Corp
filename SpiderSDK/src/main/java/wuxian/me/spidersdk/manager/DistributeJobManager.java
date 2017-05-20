@@ -1,5 +1,7 @@
 package wuxian.me.spidersdk.manager;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.sun.istack.internal.NotNull;
 import okhttp3.Dispatcher;
 import wuxian.me.spidersdk.BaseSpider;
@@ -32,8 +34,9 @@ import java.util.jar.JarFile;
  * <p>
  * 分布式下(且没有身份的)的job manager
  */
-public class DistributeJobManager implements IJobManager, HeartbeatManager.IHeartBeat {
+public class DistributeJobManager implements IJobManager, HeartbeatManager.IHeartBeat, ProcessLifecycle {
 
+    private Gson gson = new Gson();
     private IQueue queue;
     private ClassHelper.CheckFilter checkFilter;
     private WorkThread workThread = new WorkThread(this);
@@ -55,13 +58,18 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
     //位于okHttpClient的缓存池中
     private List<BaseSpider> dispatchedSpiderList = Collections.synchronizedList(new ArrayList<BaseSpider>());
 
-    private ProcessSignalManager signalManager = new ProcessSignalManager();
+    private SignalManager signalManager = new SignalManager();
+
+    public List<BaseSpider> getDispatchedSpiderList() {
+        return dispatchedSpiderList;
+    }
 
     public void setSpiderChecker(@NotNull ClassHelper.CheckFilter filter) {
         this.checkFilter = filter;
     }
 
     public DistributeJobManager() {
+
     }
 
     private void init() {
@@ -80,16 +88,19 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
         LogManager.info("Init RedisJobQueue...");
         queue = new RedisJobQueue();
 
-        signalManager.registerOnSystemKill(new ProcessSignalManager.OnSystemKill() {
+        signalManager.registerOnSystemKill(new SignalManager.OnSystemKill() {
             public void onSystemKilled() {
 
                 //Todo:做些什么？
                 LogManager.error("DistributeJobManager, OnSystemKilled");
+
+                DistributeJobManager.this.onPause();
             }
         });
 
         LogManager.info("JobManager Inited");
 
+        onResume();
     }
 
     /**
@@ -174,7 +185,6 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
 
     }
 
-    //Fixme:
     public boolean putJob(@NotNull IJob job) {
         if (!started) {
             return false;
@@ -220,7 +230,6 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
         }
     }
 
-    //Todo: 重构
     private void doSwitchIp() {
         isSwitchingIP.set(true);
         LogManager.info("Pausing WorkThread...");
@@ -294,5 +303,50 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
     //JobManager主动调用HeartbeatManager.stopxxx
     public void onHeartBeatInterrupt() {
         LogManager.info("onHeartBeatInterrupt");
+    }
+
+    public void onResume() {
+
+        if (JobManagerConfig.newSpideMode) {  //全新抓取模式 返回
+            FileUtil.writeToFile(FileUtil.getCurrentPath() + JobManagerConfig.serializedSpiderFile, "");
+            return;
+        }
+
+        String spiderStr = FileUtil.readFromFile(FileUtil.getCurrentPath() + JobManagerConfig.serializedSpiderFile);
+
+        if (spiderStr == null) {
+            return;
+        }
+        FileUtil.writeToFile(FileUtil.getCurrentPath() + JobManagerConfig.serializedSpiderFile, "");
+        List<HttpUrlNode> nodeList = gson.fromJson(spiderStr, new TypeToken<List<HttpUrlNode>>() {
+        }.getType());
+
+        if (nodeList == null) {
+            return;
+        }
+
+        for (HttpUrlNode urlNode : nodeList) {
+            ((RedisJobQueue) queue).putJob(urlNode);
+        }
+    }
+
+    public void onPause() {
+
+        LogManager.info("Try Serialize SpiderList");
+        workThread.pauseWhenSwitchIP();
+        dispatcher.cancelAll();
+        List<HttpUrlNode> spiderList = new ArrayList<HttpUrlNode>();
+        for (BaseSpider spider : dispatchedSpiderList) {
+            HttpUrlNode str = spider.toUrlNode();
+            if (str != null) {
+                spiderList.add(str);
+            }
+        }
+        String spiderString = gson.toJson(spiderList);
+        FileUtil.writeToFile(FileUtil.getCurrentPath() + JobManagerConfig.serializedSpiderFile, spiderString);
+
+        LogManager.info("Serialize SpiderList Success");
+        //Todo:把当前进程杀死？ --> 这样子也差不多等于死了...
+
     }
 }

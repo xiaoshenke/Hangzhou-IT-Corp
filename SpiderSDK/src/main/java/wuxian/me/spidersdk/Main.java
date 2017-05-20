@@ -4,6 +4,7 @@ import wuxian.me.spidersdk.distribute.ClassHelper;
 import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.log.LogManager;
+import wuxian.me.spidersdk.manager.DistributeJobManager;
 import wuxian.me.spidersdk.manager.JobManagerFactory;
 import wuxian.me.spidersdk.manager.PlainJobManager;
 import wuxian.me.spidersdk.util.FileUtil;
@@ -48,7 +49,10 @@ public class Main {
     public static void main(String[] args) {
 
         LogManager.info("Main");
-        JobManagerFactory.getJobManager();
+
+        NoneSpider spider = new NoneSpider();
+        ((DistributeJobManager) JobManagerFactory.getJobManager()).getDispatchedSpiderList().add(spider);
+        JobManagerFactory.getJobManager().start();
 
         while (true) {
 

@@ -21,7 +21,7 @@ public class SpiderMethodManager {
 
     private static Map<String, Class> classMap = new ConcurrentHashMap<String, Class>();
 
-    private static boolean contains(@NotNull Class clazz) {
+    public static boolean contains(@NotNull Class clazz) {
         return spiderClassMap.containsKey(clazz);
     }
 
@@ -35,6 +35,7 @@ public class SpiderMethodManager {
 
     public static void put(@NotNull Class clazz, @NotNull SpiderMethodTuple tuple) {
         spiderClassMap.put(clazz, tuple);
+        classMap.put(clazz.getName(), clazz);
     }
 
     @Nullable

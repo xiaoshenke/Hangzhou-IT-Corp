@@ -67,6 +67,15 @@ public class RedisJobQueue implements IQueue {
         return true;
     }
 
+    public boolean putJob(HttpUrlNode urlNode) {
+        if (urlNode == null) {
+            return false;
+        }
+
+        jedis.lpush(JOB_QUEUE, gson.toJson(urlNode));
+        return true;
+    }
+
     public IJob getJob() {
         String spiderStr = jedis.rpop(JOB_QUEUE);
         if (spiderStr == null) {

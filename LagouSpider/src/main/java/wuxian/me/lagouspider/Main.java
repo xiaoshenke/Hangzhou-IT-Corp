@@ -88,5 +88,9 @@ public class Main {
         Main main = new Main();
         main.run();
         LogManager.info("Main End");
+
+        while (true) {
+
+        }
     }
 }
