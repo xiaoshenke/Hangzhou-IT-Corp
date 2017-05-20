@@ -18,7 +18,7 @@ public class SpiderClassChecker {
     private SpiderClassChecker() {
     }
 
-    public static void performCheckAndCollect(String pack) throws MethodCheckException {
+    public static void performCheckAndCollect(String pack) {
         try {
             Set<Class<?>> classSet = ClassHelper.getClasses(pack);
 

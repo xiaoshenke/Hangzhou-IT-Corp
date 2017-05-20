@@ -8,14 +8,13 @@ import wuxian.me.spidersdk.JobManagerConfig;
 import wuxian.me.spidersdk.distribute.*;
 import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
-import wuxian.me.spidersdk.util.FileUtil;
+import wuxian.me.spidersdk.log.LogManager;
 import wuxian.me.spidersdk.util.ShellUtil;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.jar.JarFile;
 
 /**
  * Created by wuxian on 10/5/2017.
@@ -38,7 +37,6 @@ public class RedisJobQueue implements IQueue {
         init();
     }
 
-    //检查redis server是否在运行
     public void init() {
         gson = new Gson();
         boolean redisRunning = false;
@@ -47,12 +45,17 @@ public class RedisJobQueue implements IQueue {
         } catch (IOException e) {
             ;
         }
+        LogManager.info("Check RedisServer running: " + redisRunning);
 
         if (!redisRunning) {
             throw new RedisConnectionException();
         }
+
+        LogManager.info("Init Jedis client...");
         jedis = new Jedis(JobManagerConfig.redisIp,
                 Ints.checkedCast(JobManagerConfig.redisPort));
+
+        LogManager.info("RedisJobQueue Inited");
 
     }
 
@@ -129,13 +132,12 @@ public class RedisJobQueue implements IQueue {
         return null;
     }
 
-    //Todo
     public boolean isEmpty() {
-        return false;
+        return getJobNum() == 0;
     }
 
     public int getJobNum() {
-        return 0;
+        return Ints.checkedCast(jedis.llen(JOB_QUEUE));
     }
 
 }

@@ -34,14 +34,11 @@ public class ProcessSignalManager implements SignalHandler {
 
     }
 
-    //Todo
     public void handle(Signal signal) {
-
         LogManager.info("Signal: " + signal.getName());
         for (OnSystemKill onSystemKill : killList) {
             onSystemKill.onSystemKilled();
         }
-
     }
 
     public void registerOnSystemKill(@NotNull OnSystemKill onSystemKill) {

@@ -119,7 +119,6 @@ public class PlainJobManager implements HeartbeatManager.IHeartBeat,IJobManager 
     }
 
     public void onDispatch(@NotNull BaseSpider spider) {
-        //LogManager.info("PlainJobManager.onDispatch " + spider.name());
         todoSpiderList.add(spider);
     }
 

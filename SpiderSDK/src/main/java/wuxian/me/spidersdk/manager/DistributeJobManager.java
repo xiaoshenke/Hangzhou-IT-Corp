@@ -16,11 +16,9 @@ import wuxian.me.spidersdk.distribute.*;
 import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.log.LogManager;
-import wuxian.me.spidersdk.util.FileUtil;
-import wuxian.me.spidersdk.util.JobManagerMonitor;
-import wuxian.me.spidersdk.util.OkhttpProvider;
-import wuxian.me.spidersdk.util.ShellUtil;
+import wuxian.me.spidersdk.util.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,7 +31,6 @@ import java.util.jar.JarFile;
  * Created by wuxian on 18/5/2017.
  * <p>
  * 分布式下(且没有身份的)的job manager
- * Todo:关键节点打点
  */
 public class DistributeJobManager implements IJobManager, HeartbeatManager.IHeartBeat {
 
@@ -53,25 +50,45 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
 
     private AtomicBoolean isSwitchingIP = new AtomicBoolean(false);
     private IPProxyTool ipProxyTool = new IPProxyTool();
+    private boolean inited = false;
 
     //位于okHttpClient的缓存池中
     private List<BaseSpider> dispatchedSpiderList = Collections.synchronizedList(new ArrayList<BaseSpider>());
+
+    private ProcessSignalManager signalManager = new ProcessSignalManager();
 
     public void setSpiderChecker(@NotNull ClassHelper.CheckFilter filter) {
         this.checkFilter = filter;
     }
 
     public DistributeJobManager() {
-        init();
     }
 
     private void init() {
+        LogManager.info("Begin To Init JobManager");
 
         ShellUtil.init();
 
+        LogManager.info("Begin To Collect Spiders...");
         checkAndColloectSubSpiders();
 
+        String clazzStr = SpiderMethodManager.getSpiderClassString();
+        if (clazzStr != null) {
+            LogManager.info(clazzStr);
+        }
+
+        LogManager.info("Init RedisJobQueue...");
         queue = new RedisJobQueue();
+
+        signalManager.registerOnSystemKill(new ProcessSignalManager.OnSystemKill() {
+            public void onSystemKilled() {
+
+                //Todo:做些什么？
+                LogManager.error("DistributeJobManager, OnSystemKilled");
+            }
+        });
+
+        LogManager.info("JobManager Inited");
 
     }
 
@@ -90,7 +107,15 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
 
                 }
             } else {
-                throw new MethodCheckException("FileUtil.currentFile is not set!");
+                try {
+                    //取当前jar做检查
+                    File file = new File(FileUtil.class.getProtectionDomain().
+                            getCodeSource().getLocation().toURI().getPath());
+                    JarFile jar = new JarFile(file);
+                    classSet = ClassHelper.getJarFileClasses(jar, null, checkFilter);
+                } catch (Exception e) {
+
+                }
             }
         } else {
             try {           //Fixme:library模式下 这段代码不起作用,应该改成业务的包名
@@ -135,13 +160,13 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
             dispatchedSpiderList.remove(runnable);
 
             if (retry && JobManagerConfig.enableRetrySpider) {
-                IJob next = JobProvider.getJob();//getNextJob(job);
+                IJob next = JobProvider.getJob();
                 next.setRealRunnable(runnable);
                 queue.putJob(next, IJob.STATE_RETRY);
             }
 
             if (blockHelper.isBlocked()) {
-                LogManager.error("WE ARE BLOCKED!");  //Todo:日志打点
+                LogManager.error("WE ARE BLOCKED!");
                 heartbeatManager.stopHeartBeat();
                 dealBlock();
             }
@@ -149,7 +174,11 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
 
     }
 
+    //Fixme:
     public boolean putJob(@NotNull IJob job) {
+        if (!started) {
+            return false;
+        }
         return queue.putJob(job, IJob.STATE_INIT);
     }
 
@@ -163,11 +192,17 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
     }
 
     public void start() {
+        if (!inited) {
+            init();
+            inited = true;
+        }
+
         if (!started) {
             started = true;
             heartbeatManager.addHeartBeatCallback(this);
-            LogManager.info("WorkThread started");
             monitor.recordStartTime();
+
+            LogManager.info("Starting WorkThread...");
             workThread.start();
         }
     }
@@ -188,8 +223,10 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
     //Todo: 重构
     private void doSwitchIp() {
         isSwitchingIP.set(true);
+        LogManager.info("Pausing WorkThread...");
         workThread.pauseWhenSwitchIP();
-        LogManager.info("WorkThread paused");
+
+        LogManager.info("Cancelling Running Request...");
         dispatcher.cancelAll();
 
         while (true) {  //每个ip尝试三次 直到成功或没有proxy
@@ -199,20 +236,21 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
                 if (JobManagerConfig.enableRuntimeInputProxy) {
                     ipProxyTool.openShellAndEnsureProxyInputed();
                     proxy = ipProxyTool.switchNextProxy();
+
                 } else {
-                    throw new RuntimeException("Proxy is not available!");
+                    LogManager.info("Shutting down JobManager...");
+                    break;
                 }
 
             }
-
-            //LogManager.info("We try to switch to Ip: " + proxy.ip + " Port: " + proxy.port);
+            LogManager.info("We Try To Switch To Ip: " + proxy.ip + " Port: " + proxy.port);
             int ensure = 0;
             boolean success = false;
             while (!(success = ipSwitched(proxy)) && ensure < JobManagerConfig.everyProxyTryTime) {  //每个IP尝试三次
                 ensure++;
             }
             if (success) {
-                //LogManager.info("Switch Proxy success");
+                LogManager.info("Success Switch Proxy");
                 break;
             }
         }
@@ -229,7 +267,7 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
 
         blockHelper.reInit();
         monitor.recordStartTime();
-        LogManager.info("WorkThread resumed");
+        LogManager.info("Resuming WorkThread...");
         workThread.resumeNow();
         isSwitchingIP.set(false);
     }
@@ -244,12 +282,12 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
     }
 
     public void onHeartBeat(int time) {
-        LogManager.info("onHeartBeat " + time);
+        LogManager.info("onHeartBeat: " + time);
     }
 
 
     public void onHeartBeatFail() {
-        LogManager.info("onHeartBeatFail");
+        LogManager.info("onHeartBeatFail,Proxy Is Not Working!");
         dealBlock();  //代理失效 --> 等同于被block
     }
 

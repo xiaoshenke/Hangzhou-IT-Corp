@@ -65,4 +65,19 @@ public class SpiderMethodManager {
         return spiderClassMap.keySet();
     }
 
+    public static String getSpiderClassString() {
+        Set<Class> classSet = getSpiderClasses();
+        if (classSet != null && classSet.size() != 0) {
+            StringBuilder clazzStr = new StringBuilder("We Got " + classSet.size() + " Spiders:{");
+            for (Class clazz : classSet) {
+                clazzStr.append(clazz.getName() + ",");
+            }
+            clazzStr.append("}");
+            return clazzStr.toString();
+        } else {
+            return null;
+        }
+
+    }
+
 }

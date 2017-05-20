@@ -48,7 +48,7 @@ public class JobManagerFactory {
     public static IJobManager getJobManager() {
         if(!JobManagerConfig.distributeMode){
             return getPlainJobManager();
-        } else {  //Fixme:master agent
+        } else {
             return getNormalJobManager();
         }
     }

@@ -10,7 +10,7 @@ import java.util.Random;
 /**
  * Created by wuxian on 6/4/2017.
  *
- * 由@JobManager管理
+ * 由@IJobManager管理
  *
  */
 public class WorkThread extends Thread {
@@ -50,14 +50,20 @@ public class WorkThread extends Thread {
     @Override
     public void run() {
         while (true) {
-            while (!jobManager.isEmpty()) {
+            while (!jobManager.isEmpty()) {  //分布式模式下 isEmpty判断会失效
 
                 //不使用任何策略 立即分发job模式
                 if (JobManagerConfig.enableScheduleImmediately) {
                     doIfShouldWait();
                     IJob job = jobManager.getJob();
-                    job.run();
-                    continue;
+
+                    if (job == null) {
+                        break;
+                    } else {
+                        job.run();
+                        continue;
+                    }
+
                 }
                 if (i >= JobManagerConfig.jobNumToSleep) {  //每隔10个任务休息10s
                     try {
@@ -67,8 +73,14 @@ public class WorkThread extends Thread {
                     }
                     doIfShouldWait();
                     IJob job = jobManager.getJob();
-                    job.run();
-                    i = 0;
+                    if (job == null) {
+                        break;
+                    } else {
+                        job.run();
+                        i = 0;
+                        continue;
+                    }
+
                 } else {
                     i++;
                     int min = JobManagerConfig.jobSchedulerTimeMin;
@@ -82,6 +94,9 @@ public class WorkThread extends Thread {
 
                     doIfShouldWait();
                     IJob job = jobManager.getJob();
+                    if (job == null) {
+                        break;
+                    }
                     try {
                         job.run();
                     } catch (IllegalArgumentException e) {

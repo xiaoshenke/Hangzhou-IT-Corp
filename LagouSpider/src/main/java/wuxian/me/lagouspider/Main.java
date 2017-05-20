@@ -48,6 +48,7 @@ import java.util.Set;
 public class Main {
 
     static {
+        LogManager.info("LagouSpider.static_Main");
         if (!JobManagerConfig.jarMode) {  //IDE运行
             File file = new File("");
             FileUtil.setCurrentPath(file.getAbsolutePath());
@@ -61,21 +62,8 @@ public class Main {
 
             }
         }
-        JobManagerFactory.initCheckFilter(new ClassHelper.CheckFilter() {  //Fix 有的jar包里的类无法加载的问题
-            @Override
-            public boolean apply(String s) {
-                boolean ret = true;
-                if(s.contains("org/")){
-                    ret = false;
-                } else if(s.contains("google")){
-                    ret = false;
-                }
 
-                return ret;
-            }
-        });
-
-
+        /*
         LogManager.setRealLogImpl(new ILog() {
             public void debug(String message) {
                 logger().debug(message);
@@ -93,6 +81,24 @@ public class Main {
                 logger().warn(message);
             }
         });
+        */
+
+        JobManagerFactory.initCheckFilter(new ClassHelper.CheckFilter() {  //Fix 有的jar包里的类无法加载的问题
+            @Override
+            public boolean apply(String s) {
+                boolean ret = true;
+                if(s.contains("org/")){
+                    ret = false;
+                } else if(s.contains("google")){
+                    ret = false;
+                }
+
+                return ret;
+            }
+        });
+
+
+
     }
 
     AreaMapper areaMapper = ModuleProvider.areaMapper();
@@ -106,7 +112,9 @@ public class Main {
         }
 
         if (true) {
+
             LogManager.error("hello_world");
+            JobManagerFactory.getJobManager().start();
             return;
         }
 
@@ -228,6 +236,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        LogManager.info("LagouSpider.Main");
         Main main = new Main();
         main.run();
 

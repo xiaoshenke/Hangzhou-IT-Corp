@@ -1,5 +1,6 @@
 package wuxian.me.spidersdk;
 
+import wuxian.me.spidersdk.distribute.ClassHelper;
 import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.log.LogManager;
@@ -18,22 +19,45 @@ public class Main {
         if (JobManagerConfig.jarMode) {
             File file = null;
             try {
-                file = new File(FileUtil.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+                file = new File(FileUtil.class.getProtectionDomain().getCodeSource().
+                        getLocation().toURI().getPath());
                 file = file.getParentFile();
                 FileUtil.setCurrentPath(file.getAbsolutePath());
             } catch (Exception e) {
 
             }
         }
+
+        if (JobManagerConfig.distributeMode) {
+            JobManagerFactory.initCheckFilter(new ClassHelper.CheckFilter() {
+                public boolean apply(String s) {
+                    boolean ret = true;
+                    if (s.contains("org/")) {
+                        ret = false;
+                    } else if (s.contains("google")) {
+                        ret = false;
+                    } else if (s.contains("squareup")) {
+                        ret = false;
+                    }
+                    return ret;
+                }
+            });
+        }
     }
 
     public static void main(String[] args) {
 
+        LogManager.info("Main");
+        JobManagerFactory.getJobManager();
+
+        while (true) {
+
+        }
+        /*
         IJob job = JobProvider.getJob();
         NoneSpider spider = new NoneSpider();
         job.setRealRunnable(spider);
         JobManagerFactory.getJobManager().putJob(job);
-
         try {
             Thread.sleep(1000);
         } catch (Exception e) {
@@ -41,7 +65,7 @@ public class Main {
         }
 
         job = JobManagerFactory.getJobManager().getJob();
-
         LogManager.info("job: " + job);
+        */
     }
 }

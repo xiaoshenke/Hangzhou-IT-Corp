@@ -2,6 +2,7 @@ package wuxian.me.spidersdk;
 
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
+import wuxian.me.spidersdk.log.LogManager;
 import wuxian.me.spidersdk.util.FileUtil;
 import wuxian.me.spidersdk.util.ShellUtil;
 
@@ -76,6 +77,8 @@ public class JobManagerConfig {
     public final static String fulllogPost = ".html";
 
     static {
+        LogManager.info("Current File Path: " + FileUtil.getCurrentPath());
+        LogManager.info("Read Configuration From File:/conf/jobmanager.properties");
         readConfigFromFile();
     }
 
@@ -88,7 +91,8 @@ public class JobManagerConfig {
         FileInputStream in = null;
         boolean success = false;
         try {
-            in = new FileInputStream(FileUtil.getCurrentPath() + "/conf/jobmanager.properties");
+            in = new FileInputStream(FileUtil.getCurrentPath()
+                    + "/conf/jobmanager.properties");
             pro.load(in);
             success = true;
         } catch (FileNotFoundException e) {
@@ -167,6 +171,18 @@ public class JobManagerConfig {
             if(!spiderIdentity.equals("master") && !spiderIdentity.equals("agent")) {
                 spiderIdentity = "none";
             }
+        }
+
+        if (distributeMode) {
+            LogManager.info("Current SpiderMode: distributed");
+        } else {
+            LogManager.info("Current SpiderMode: single");
+        }
+
+        if (jarMode) {
+            LogManager.info("Current RunningMode: jar");
+        } else {
+            LogManager.info("Current RunningMode: ide");
         }
 
     }

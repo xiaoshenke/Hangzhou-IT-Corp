@@ -11,6 +11,8 @@ import wuxian.me.spidersdk.job.IJob;
  * 1 管理WorkThread,JobQueue,JobMonitor
  * 2 负责处理job的成功失败 --> 失败是否重试
  * 3 负责处理ip被屏蔽 --> 是则停止现有job,切换ip,打监控日志,重启workThread等等
+ *
+ * start必须在调用putJob之前
  */
 public interface IJobManager {
 
