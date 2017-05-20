@@ -11,6 +11,11 @@ import wuxian.me.lagouspider.model.boss.BPosition;
 import wuxian.me.lagouspider.util.ModuleProvider;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.SpiderCallback;
+import wuxian.me.spidersdk.log.LogManager;
+
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 import static wuxian.me.lagouspider.util.ModuleProvider.*;
 
 /**
@@ -75,4 +80,26 @@ public class MainTest {
             return "DummySpider" + i;
         }
     }
+
+    private boolean checkDBConnection() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            LogManager.error("no jdbc driver");
+            return false;
+        }
+
+        String url = "jdbc:mysql://127.0.0.1:3306/lagoujob?useUnicode=true&characterEncoding=utf-8";
+        String username = "user1";
+        String password = "123456";
+
+        try {
+            DriverManager.getConnection(url, username, password);
+            return true;
+        } catch (SQLException e) {
+            LogManager.error("db check connection fail");
+        }
+        return false;
+    }
+
 }

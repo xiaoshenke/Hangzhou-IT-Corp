@@ -1,6 +1,7 @@
 package wuxian.me.lagouspider.util;
 
-import org.apache.log4j.Appender;
+import com.sun.istack.internal.NotNull;
+import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.log4j.DailyRollingFileAppender;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -8,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
-import wuxian.me.lagouspider.Main;
+import wuxian.me.lagouspider.LagouMain;
 import wuxian.me.lagouspider.mapper.boss.BCompanyMapper;
 import wuxian.me.lagouspider.mapper.boss.BLocationMapper;
 import wuxian.me.lagouspider.mapper.boss.BPositionMapper;
@@ -16,8 +17,13 @@ import wuxian.me.lagouspider.mapper.lagou.AreaMapper;
 import wuxian.me.lagouspider.mapper.lagou.CompanyMapper;
 import wuxian.me.lagouspider.mapper.lagou.LocationMapper;
 import wuxian.me.lagouspider.mapper.lagou.ProductMapper;
+import wuxian.me.spidersdk.log.LogManager;
+import wuxian.me.spidersdk.util.FileUtil;
 
-import java.util.Enumeration;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
 
 import static wuxian.me.lagouspider.util.Helper.getLog4jPropFilePath;
 import static wuxian.me.lagouspider.util.Helper.getWriteLogFilePath;
@@ -28,11 +34,12 @@ import static wuxian.me.lagouspider.util.Helper.getWriteLogFilePath;
 @Component
 public class ModuleProvider {
 
-    private static Logger logger = Logger.getLogger(Main.class);
+    private static Logger logger = Logger.getLogger(LagouMain.class);
     private static ApplicationContext ctx;
     private static ModuleProvider instance;
 
     static {
+
         ctx = new ClassPathXmlApplicationContext("spider.xml");
         instance = ctx.getBean(ModuleProvider.class);
         PropertyConfigurator.configure(getLog4jPropFilePath());
@@ -42,7 +49,74 @@ public class ModuleProvider {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        LogManager.info("4 ReInit DataSource.");
+        BasicDataSource dataSource = ctx.getBean(BasicDataSource.class);
+        reInitDataSouce(dataSource);
+
     }
+
+    private static void reInitDataSouce(BasicDataSource dataSource) {
+        if (dataSource == null) {
+            return;
+        }
+
+        Properties pro = new Properties();
+        FileInputStream in = null;
+        boolean success = false;
+        try {
+            in = new FileInputStream(FileUtil.getCurrentPath()
+                    + "/conf/dataSource.properties");
+            pro.load(in);
+            success = true;
+        } catch (FileNotFoundException e) {
+
+        } catch (IOException e) {
+            ;
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e1) {
+                    ;
+                }
+
+            }
+        }
+
+        if (!success) {
+            pro = null; //确保一定会初始化
+        }
+
+        String url = parse(pro, "jdbc.url", null);
+        if (url != null) {
+            dataSource.setUrl(url);
+        }
+
+        String userName = parse(pro, "jdbc.username", null);
+        if (userName != null) {
+            dataSource.setUsername(userName);
+        }
+
+        String pwd = parse(pro, "jdbc.password", null);
+        if (pwd != null) {
+            dataSource.setPassword(pwd);
+        }
+    }
+
+    private static String parse(@NotNull Properties pro, String key, String defValue) {
+        if (pro == null) {
+            return defValue;
+        }
+
+        try {
+            return pro.getProperty(
+                    key, defValue);
+        } catch (Exception e) {
+            return defValue;
+        }
+    }
+
 
     private ModuleProvider() {
     }

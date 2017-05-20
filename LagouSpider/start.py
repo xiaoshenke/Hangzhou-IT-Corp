@@ -34,7 +34,7 @@ if __name__=='__main__':
 		lib_path=os.path.join(current_path,"lib")
 		jar = get_jar_argument_under(lib_path)
 		jar = jar+os.path.join(current_path,"lagouspider.jar")
-		args=["java","-cp",jar,"wuxian.me.lagouspider.Main"]
+        args = ["java", "-cp", jar, "wuxian.me.lagouspider.LagouMain"]
 		jar_wrapper(args)
 		#print jar
 

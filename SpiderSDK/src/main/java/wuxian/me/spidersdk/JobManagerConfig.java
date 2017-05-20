@@ -77,7 +77,6 @@ public class JobManagerConfig {
     public final static String fulllogPost = ".html";
 
     static {
-        LogManager.info("Current File Path: " + FileUtil.getCurrentPath());
         LogManager.info("Read Configuration From File:/conf/jobmanager.properties");
         readConfigFromFile();
     }
@@ -86,7 +85,7 @@ public class JobManagerConfig {
         ;
     }
 
-    public static void readConfigFromFile() {
+    private static void readConfigFromFile() {
         Properties pro = new Properties();
         FileInputStream in = null;
         boolean success = false;
