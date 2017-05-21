@@ -124,6 +124,12 @@ public class IPProxyTool {
         if (content != null) {
             String[] proxys = content.split(CUT);
             if (proxys == null) {
+                String[] proxy = content.split(SEPRATE);
+                if (proxy != null && proxy.length == 2) {
+                    if (isVaildIpPort(proxy)) {
+                        ipPortList.add(new Proxy(proxy[0], Integer.parseInt(proxy[1])));
+                    }
+                }
                 return;
             }
             for (int i = 0; i < proxys.length; i++) {
@@ -161,6 +167,7 @@ public class IPProxyTool {
             boolean success = false;
             while (!(success = ipSwitched(proxy)) && ensure < JobManagerConfig.everyProxyTryTime) {  //每个IP尝试三次
                 ensure++;
+                LogManager.info("Switch Proxy Fail Times: " + ensure);
             }
             if (success) {
                 LogManager.info("Success Switch Proxy");
@@ -223,24 +230,32 @@ public class IPProxyTool {
 
                 LogManager.info("Begin OpenTextEdit");
                 openTextEdit();
-                ipPortList.clear();
 
                 boolean b = true;
                 do {
+                    ipPortList.clear();
                     try {
                         sleep(JobManagerConfig.shellCheckProxyFileSleepTime);    //每过10s检测文件是否有新的proxy ip写入,若没有,一直重试直到成功
                     } catch (InterruptedException e) {
                         ;
                     }
                     readProxyFromFile();
-                    b = (ipPortList.size() == 0);
-                    if (b) {
+
+                    if (ipPortList.size() == 0) {
+                        b = false;
+                    } else {
+                        if (currentProxy != null && ipPortList.get(0).equals(currentProxy)) {
+                            b = false;
+                        }
+                    }
+
+                    if (!b) {
                         LogManager.info("Still No Proxy wrote,try open again");
                         if (textEditState() == 1) { //重新打开文件
                             openTextEdit();
                         }
                     }
-                } while (b);
+                } while (!b);
 
                 FileUtil.writeToFile(getProxyFilePath(), "");  //清空文件
                 countDownLatch.countDown();

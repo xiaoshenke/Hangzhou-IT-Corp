@@ -11,6 +11,7 @@ import wuxian.me.lagouspider.model.boss.BPosition;
 import wuxian.me.lagouspider.util.ModuleProvider;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.SpiderCallback;
+import wuxian.me.spidersdk.anti.IPProxyTool;
 import wuxian.me.spidersdk.log.LogManager;
 
 import java.sql.DriverManager;
@@ -22,6 +23,12 @@ import static wuxian.me.lagouspider.util.ModuleProvider.*;
  * Created by wuxian on 9/4/2017.
  */
 public class MainTest {
+
+    @Test
+    public void testProxy(){
+        String[] ipproxy = new String[]{"115.215.51.170","26964"};
+        System.out.println(IPProxyTool.isVaildIpPort(ipproxy));
+    }
 
     @Test
     public void testDBs() {

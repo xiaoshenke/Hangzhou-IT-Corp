@@ -3,6 +3,7 @@ package wuxian.me.spidersdk.util;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import com.sun.istack.internal.Nullable;
+import wuxian.me.spidersdk.log.LogManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -80,6 +81,7 @@ public class FileUtil {
             }
             return content;
         } catch (IOException e) {
+            LogManager.error("FileUtil.readFromFile " + e.getMessage());
             return null;
         }
     }
