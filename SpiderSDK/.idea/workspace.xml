@@ -7,12 +7,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eab34228-edfc-44e7-bc45-cb52fa74264f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/biz/boss/BDisdinctSpider.java" afterPath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/biz/boss/BDisdinctSpider.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/biz/boss/BPositonDetailSpider.java" afterPath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/biz/boss/BPositonDetailSpider.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/HeartbeatManager.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/HeartbeatManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/IPProxyTool.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/IPProxyTool.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/manager/DistributeJobManager.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/manager/DistributeJobManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/ShellUtil.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/ShellUtil.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/Main.java" afterPath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/Main.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/BaseSpider.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/BaseSpider.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/RedisJobQueue.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/RedisJobQueue.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/WorkThread.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/WorkThread.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/HttpUrlNode.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/HttpUrlNode.java" />
     </list>
     <ignored path="SpiderSDK.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -40,32 +40,34 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="IPProxyTool.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/IPProxyTool.java">
+      <file leaf-file-name="WorkThread.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/WorkThread.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="75" column="20" selection-start-line="75" selection-start-column="20" selection-end-line="75" selection-end-column="20" />
+            <state relative-caret-position="106">
+              <caret line="56" column="41" selection-start-line="56" selection-start-column="34" selection-end-line="56" selection-end-column="41" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RedisJobQueue.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/RedisJobQueue.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="106">
+              <caret line="130" column="22" selection-start-line="130" selection-start-column="15" selection-end-line="130" selection-end-column="22" />
               <folding>
-                <element signature="e#1400#1401#0" expanded="true" />
-                <element signature="e#1422#1423#0" expanded="true" />
-                <element signature="e#3054#3055#0" expanded="true" />
-                <element signature="e#3124#3125#0" expanded="true" />
-                <element signature="e#6759#8239#0" expanded="true" />
-                <element signature="e#8238#8239#0" expanded="true" />
+                <element signature="e#943#949#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ShellUtil.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/ShellUtil.java">
+      <file leaf-file-name="JobManagerConfig.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/JobManagerConfig.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1575">
-              <caret line="118" column="13" selection-start-line="118" selection-start-column="13" selection-end-line="118" selection-end-column="13" />
-              <folding>
-                <element signature="e#3081#3082#0" expanded="true" />
-                <element signature="e#3144#3145#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="109">
+              <caret line="141" column="31" selection-start-line="141" selection-start-column="31" selection-end-line="141" selection-end-column="31" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -73,34 +75,57 @@
       <file leaf-file-name="DistributeJobManager.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/manager/DistributeJobManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="244">
-              <caret line="78" column="59" selection-start-line="78" selection-start-column="59" selection-end-line="78" selection-end-column="59" />
-              <folding>
-                <element signature="e#5142#5143#0" expanded="true" />
-                <element signature="e#5203#5204#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HeartbeatManager.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/HeartbeatManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="249">
-              <caret line="68" column="55" selection-start-line="68" selection-start-column="55" selection-end-line="68" selection-end-column="55" />
+            <state relative-caret-position="169">
+              <caret line="42" column="19" selection-start-line="42" selection-start-column="19" selection-end-line="42" selection-end-column="19" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PlainJobManager.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/manager/PlainJobManager.java">
+      <file leaf-file-name="JobQueue.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/JobQueue.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="169">
-              <caret line="262" column="4" selection-start-line="262" selection-start-column="4" selection-end-line="265" selection-end-column="5" />
+            <state relative-caret-position="129">
+              <caret line="57" column="15" selection-start-line="57" selection-start-column="15" selection-end-line="57" selection-end-column="15" />
               <folding>
-                <element signature="e#9062#9063#0" expanded="true" />
-                <element signature="e#9114#9115#0" expanded="true" />
+                <element signature="e#1530#1531#0" expanded="true" />
+                <element signature="e#1581#1582#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BaseSpider.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/BaseSpider.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15">
+              <caret line="38" column="8" selection-start-line="38" selection-start-column="8" selection-end-line="38" selection-end-column="8" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="HttpUrlNode.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/HttpUrlNode.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="114">
+              <caret line="61" column="30" selection-start-line="61" selection-start-column="30" selection-end-line="61" selection-end-column="30" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#276#292#0" expanded="true" />
+                <element signature="e#355#371#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SpiderMethodManager.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/SpiderMethodManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="186">
+              <caret line="32" column="25" selection-start-line="32" selection-start-column="25" selection-end-line="32" selection-end-column="25" />
+              <folding>
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -163,7 +188,6 @@
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/FailHelper.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/JobManagerMonitor.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/BlockHelper.java" />
-        <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/WorkThread.java" />
         <option value="$PROJECT_DIR$/conf/jobmanager.properties" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/SpiderClassChecker.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/manager/PlainJobManager.java" />
@@ -172,18 +196,19 @@
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/IJobManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/ProcessSignalManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/Main.java" />
-        <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/BaseSpider.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/ProcessLifecycle.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/SignalManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/SpiderMethodManager.java" />
-        <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/HttpUrlNode.java" />
-        <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/RedisJobQueue.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/JobManagerConfig.java" />
         <option value="$PROJECT_DIR$/src/test/java/wuxian/me/spidersdk/MainTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/HeartbeatManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/manager/DistributeJobManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/ShellUtil.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/IPProxyTool.java" />
+        <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/HttpUrlNode.java" />
+        <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/BaseSpider.java" />
+        <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/RedisJobQueue.java" />
+        <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/WorkThread.java" />
       </list>
     </option>
   </component>
@@ -209,7 +234,7 @@
     <treeState />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="164" />
+    <option name="x" value="182" />
     <option name="y" value="23" />
     <option name="width" value="974" />
     <option name="height" value="704" />
@@ -239,8 +264,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -279,6 +302,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -1115,7 +1140,8 @@
       <workItem from="1495259789998" duration="1499000" />
       <workItem from="1495264550874" duration="301000" />
       <workItem from="1495271872449" duration="4096000" />
-      <workItem from="1495340745008" duration="7621000" />
+      <workItem from="1495340745008" duration="7797000" />
+      <workItem from="1495351681196" duration="2895000" />
     </task>
     <servers />
   </component>
@@ -1152,10 +1178,10 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="99665000" />
+    <option name="totallyTimeSpent" value="102736000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="164" y="23" width="974" height="704" extended-state="0" />
+    <frame x="182" y="23" width="974" height="704" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1206,12 +1232,6 @@
           <properties />
           <option name="timeStamp" value="36" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/BaseSpider.java</url>
-          <line>36</line>
-          <properties />
-          <option name="timeStamp" value="40" />
-        </line-breakpoint>
       </breakpoints>
       <option name="time" value="44" />
     </breakpoint-manager>
@@ -1222,13 +1242,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/SpiderUserAgentUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-391">
-          <caret line="17" column="12" selection-start-line="17" selection-start-column="12" selection-end-line="17" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/MaybeBlockedException.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
@@ -1391,13 +1404,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/JobQueue.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-183">
-          <caret line="35" column="24" selection-start-line="35" selection-start-column="24" selection-end-line="35" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/MethodCheckException.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
@@ -1433,13 +1439,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/IJobManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="14" column="17" selection-start-line="14" selection-start-column="17" selection-end-line="14" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/manager/JobManagerFactory.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="214">
@@ -1454,26 +1453,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/WorkThread.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-495">
-          <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="570">
           <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/BaseSpider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="49" column="13" selection-start-line="49" selection-start-column="13" selection-end-line="49" selection-end-column="13" />
           <folding />
         </state>
       </provider>
@@ -1511,42 +1494,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/SpiderMethodManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="32" selection-start-line="5" selection-start-column="32" selection-end-line="5" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/HttpUrlNode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="37" column="30" selection-start-line="37" selection-start-column="30" selection-end-line="37" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/wuxian/me/spidersdk/MainTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="303">
           <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/JobManagerConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="259">
-          <caret line="65" column="49" selection-start-line="65" selection-start-column="26" selection-end-line="65" selection-end-column="49" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/RedisJobQueue.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="29" column="61" selection-start-line="29" selection-start-column="61" selection-end-line="29" selection-end-column="61" />
           <folding />
         </state>
       </provider>
@@ -1556,8 +1507,8 @@
         <state relative-caret-position="169">
           <caret line="262" column="4" selection-start-line="262" selection-start-column="4" selection-end-line="265" selection-end-column="5" />
           <folding>
-            <element signature="e#9062#9063#0" expanded="true" />
-            <element signature="e#9114#9115#0" expanded="true" />
+            <element signature="e#9062#9063#0" expanded="false" />
+            <element signature="e#9114#9115#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1570,40 +1521,120 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/manager/DistributeJobManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="244">
-          <caret line="78" column="59" selection-start-line="78" selection-start-column="59" selection-end-line="78" selection-end-column="59" />
-          <folding>
-            <element signature="e#5142#5143#0" expanded="true" />
-            <element signature="e#5203#5204#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/ShellUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1575">
-          <caret line="118" column="13" selection-start-line="118" selection-start-column="13" selection-end-line="118" selection-end-column="13" />
+        <state relative-caret-position="219">
+          <caret line="29" column="18" selection-start-line="29" selection-start-column="18" selection-end-line="29" selection-end-column="18" />
           <folding>
-            <element signature="e#3081#3082#0" expanded="true" />
-            <element signature="e#3144#3145#0" expanded="true" />
+            <element signature="e#3081#3082#0" expanded="false" />
+            <element signature="e#3144#3145#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/IPProxyTool.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="75" column="20" selection-start-line="75" selection-start-column="20" selection-end-line="75" selection-end-column="20" />
+        <state relative-caret-position="150">
+          <caret line="30" column="49" selection-start-line="30" selection-start-column="49" selection-end-line="30" selection-end-column="49" />
           <folding>
-            <element signature="e#1400#1401#0" expanded="true" />
-            <element signature="e#1422#1423#0" expanded="true" />
-            <element signature="e#3054#3055#0" expanded="true" />
-            <element signature="e#3124#3125#0" expanded="true" />
-            <element signature="e#6759#8239#0" expanded="true" />
-            <element signature="e#8238#8239#0" expanded="true" />
+            <element signature="e#1400#1401#0" expanded="false" />
+            <element signature="e#1422#1423#0" expanded="false" />
+            <element signature="e#3054#3055#0" expanded="false" />
+            <element signature="e#3124#3125#0" expanded="false" />
+            <element signature="e#6759#8239#0" expanded="false" />
+            <element signature="e#8238#8239#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/SpiderMethodManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="186">
+          <caret line="32" column="25" selection-start-line="32" selection-start-column="25" selection-end-line="32" selection-end-column="25" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/JobQueue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="129">
+          <caret line="57" column="15" selection-start-line="57" selection-start-column="15" selection-end-line="57" selection-end-column="15" />
+          <folding>
+            <element signature="e#1530#1531#0" expanded="true" />
+            <element signature="e#1581#1582#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/BaseSpider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="38" column="8" selection-start-line="38" selection-start-column="8" selection-end-line="38" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/HttpUrlNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="61" column="30" selection-start-line="61" selection-start-column="30" selection-end-line="61" selection-end-column="30" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#276#292#0" expanded="true" />
+            <element signature="e#355#371#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/JobManagerConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="109">
+          <caret line="141" column="31" selection-start-line="141" selection-start-column="31" selection-end-line="141" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_92.jdk/Contents/Home/src.zip!/java/lang/Thread.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="186">
+          <caret line="695" column="29" selection-start-line="695" selection-start-column="29" selection-end-line="695" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/manager/DistributeJobManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="169">
+          <caret line="42" column="19" selection-start-line="42" selection-start-column="19" selection-end-line="42" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/IJobManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="303">
+          <caret line="26" column="9" selection-start-line="26" selection-start-column="9" selection-end-line="26" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/RedisJobQueue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="106">
+          <caret line="130" column="22" selection-start-line="130" selection-start-column="15" selection-end-line="130" selection-end-column="22" />
+          <folding>
+            <element signature="e#943#949#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/WorkThread.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="106">
+          <caret line="56" column="41" selection-start-line="56" selection-start-column="34" selection-end-line="56" selection-end-column="41" />
+          <folding />
         </state>
       </provider>
     </entry>

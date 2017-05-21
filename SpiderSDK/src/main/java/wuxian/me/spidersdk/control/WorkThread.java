@@ -1,7 +1,7 @@
 package wuxian.me.spidersdk.control;
 
 import wuxian.me.spidersdk.IJobManager;
-import wuxian.me.spidersdk.manager.PlainJobManager;
+import wuxian.me.spidersdk.log.LogManager;
 import wuxian.me.spidersdk.JobManagerConfig;
 import wuxian.me.spidersdk.job.IJob;
 
@@ -50,8 +50,7 @@ public class WorkThread extends Thread {
     @Override
     public void run() {
         while (true) {
-            while (!jobManager.isEmpty()) {  //分布式模式下 isEmpty判断会失效
-
+            while (!(jobManager.isEmpty())) {  //分布式模式下 isEmpty判断会失效
                 //不使用任何策略 立即分发job模式
                 if (JobManagerConfig.enableScheduleImmediately) {
                     doIfShouldWait();

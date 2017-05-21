@@ -5,11 +5,13 @@ import okhttp3.Request;
 import wuxian.me.spidersdk.distribute.HttpUrlNode;
 import wuxian.me.spidersdk.distribute.MethodCheckException;
 import wuxian.me.spidersdk.distribute.SpiderMethodManager;
+import wuxian.me.spidersdk.log.LogManager;
 import wuxian.me.spidersdk.manager.JobManagerFactory;
 import wuxian.me.spidersdk.util.OkhttpProvider;
 import wuxian.me.spidersdk.util.SerializeFullLogHelper;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 
 /**
@@ -43,11 +45,10 @@ public abstract class BaseSpider implements Runnable {
         }
 
         try {
-            return (HttpUrlNode) SpiderMethodManager.getToUrlMethod(getClass()).invoke(null, this);
+            Method method = SpiderMethodManager.getToUrlMethod(getClass());
+            return (HttpUrlNode) method.invoke(null, this);
         } catch (IllegalAccessException e) {
-            ;
         } catch (InvocationTargetException e) {
-            ;
         }
 
         return null;

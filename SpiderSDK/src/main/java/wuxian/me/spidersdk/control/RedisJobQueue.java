@@ -65,19 +65,21 @@ public class RedisJobQueue implements IQueue {
         BaseSpider spider = (BaseSpider) job.getRealRunnable();
         HttpUrlNode urlNode = spider.toUrlNode();
 
+        if (urlNode == null) {
+            return false;
+        }
         LogManager.info("Put Spider: " + spider.name());
 
         if (state == IJob.STATE_INIT) {
             String key = String.valueOf(urlNode.toRedisKey());
-            if (jedis.exists(key)) {
-
+            if (jedis.exists(key) && !JobManagerConfig.enableInsertDuplicateJob) {
                 LogManager.info("Spider is dulpilicate,so abandon");
                 return false;  //重复任务 抛弃
             }
-
             jedis.set(key, "true");
         }
-        jedis.lpush(JOB_QUEUE, gson.toJson(urlNode));  //会存在一点并发的问题 但认为可以接受
+        String json = gson.toJson(urlNode);
+        jedis.lpush(JOB_QUEUE, json);  //会存在一点并发的问题 但认为可以接受
         return true;
     }
 
@@ -92,18 +94,21 @@ public class RedisJobQueue implements IQueue {
 
     public IJob getJob() {
         String spiderStr = jedis.rpop(JOB_QUEUE);
+
         if (spiderStr == null) {
             return null;
         }
 
-        HttpUrlNode node = gson.fromJson(spiderStr, HttpUrlNode.class);
 
+        HttpUrlNode node = gson.fromJson(spiderStr, HttpUrlNode.class);
         long hash = node.toPatternKey();
+
         if (!urlPatternMap.containsKey(hash)) {
+
             if (unResolveList.contains(hash)) {  //避免多次调用getHandleableClassOf
                 LogManager.info("Get Spider, Can't resolve node: " + node.toString() + " ,get another one");
-
                 jedis.lpush(JOB_QUEUE, spiderStr);
+
                 return getJob();
             }
 
@@ -113,6 +118,7 @@ public class RedisJobQueue implements IQueue {
 
                 LogManager.info("Get Spider, Can't resolve node: " + node.toString() + " ,get another one");
                 jedis.lpush(JOB_QUEUE, spiderStr);
+
                 return getJob();  //重新拿一个呗
             } else {
                 urlPatternMap.put(hash, clazz);
@@ -121,10 +127,8 @@ public class RedisJobQueue implements IQueue {
 
         Method fromUrl = SpiderMethodManager.getFromUrlMethod(urlPatternMap.get(hash));
         try {
-            BaseSpider spider = (BaseSpider) fromUrl.invoke(node);
-
+            BaseSpider spider = (BaseSpider) fromUrl.invoke(null, node);
             LogManager.info("Get Spider: " + spider.name());
-
             IJob job = JobProvider.getJob();
             job.setRealRunnable(spider);
 
@@ -140,12 +144,12 @@ public class RedisJobQueue implements IQueue {
 
 
     private Class getHandleableClassOf(HttpUrlNode node) {
+
+
         for (Class clazz : SpiderMethodManager.getSpiderClasses()) {
             Method fromUrl = SpiderMethodManager.getFromUrlMethod(clazz);
-
             try {
-                BaseSpider spider = (BaseSpider) fromUrl.invoke(node);
-
+                BaseSpider spider = (BaseSpider) fromUrl.invoke(null, node);
                 if (spider != null) {
                     return clazz;
                 } else {
@@ -153,7 +157,9 @@ public class RedisJobQueue implements IQueue {
                 }
             } catch (IllegalAccessException e) {
 
+
             } catch (InvocationTargetException e) {
+
 
             }
         }

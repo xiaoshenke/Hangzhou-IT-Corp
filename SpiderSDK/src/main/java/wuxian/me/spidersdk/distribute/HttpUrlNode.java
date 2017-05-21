@@ -1,5 +1,6 @@
 package wuxian.me.spidersdk.distribute;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -11,9 +12,9 @@ public final class HttpUrlNode {
 
     public String baseUrl;
 
-    public Map<String, String> httpGetParam;
+    public Map<String, String> httpGetParam = new HashMap<String, String>();
 
-    public Map<String, String> httpPostParam;
+    public Map<String, String> httpPostParam = new HashMap<String, String>();
 
     @Override
     public String toString() {
