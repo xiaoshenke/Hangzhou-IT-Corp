@@ -21,6 +21,7 @@ public class JobManagerConfig {
     public static String spiderIdentity;  //none,master,agent三种身份
 
     public static boolean newSpideMode;
+    public static boolean enableSeriazeSpider;
 
     public static String redisIp;
     public static long redisPort;
@@ -116,6 +117,8 @@ public class JobManagerConfig {
         if (!success) {
             pro = null; //确保一定会初始化
         }
+
+        enableSeriazeSpider = parse(pro, "enableSeriazeSpider", false);
 
         newSpideMode = parse(pro, "newSpideMode", true);
 

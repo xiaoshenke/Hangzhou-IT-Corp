@@ -25,25 +25,9 @@ public class SpiderMethodManager {
         return spiderClassMap.containsKey(clazz);
     }
 
-    public static boolean contains(@NotNull String name) {
-        if (!classMap.containsKey(name)) {
-            return false;
-        }
-
-        return contains(classMap.get(name));
-    }
-
     public static void put(@NotNull Class clazz, @NotNull SpiderMethodTuple tuple) {
         spiderClassMap.put(clazz, tuple);
         classMap.put(clazz.getName(), clazz);
-    }
-
-    @Nullable
-    public static Method getToUrlMethod(@NotNull String name) {
-        if (!contains(name)) {
-            return null;
-        }
-        return getToUrlMethod(classMap.get(name));
     }
 
     public static Method getToUrlMethod(@NotNull Class clazz) {

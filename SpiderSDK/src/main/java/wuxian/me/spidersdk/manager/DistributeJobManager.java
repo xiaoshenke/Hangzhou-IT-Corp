@@ -90,9 +90,7 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
 
         signalManager.registerOnSystemKill(new SignalManager.OnSystemKill() {
             public void onSystemKilled() {
-
-                //Todo:做些什么？
-                LogManager.error("DistributeJobManager, OnSystemKilled");
+                LogManager.error("DistributeJobManager, OnProcessKilled");
 
                 DistributeJobManager.this.onPause();
             }
@@ -331,6 +329,13 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
     }
 
     public void onPause() {
+
+        if (!JobManagerConfig.enableSeriazeSpider) {
+            workThread.pauseWhenSwitchIP();
+            dispatcher.cancelAll();
+            LogManager.info("onPause Success");
+            return;
+        }
 
         LogManager.info("Try Serialize SpiderList");
         workThread.pauseWhenSwitchIP();

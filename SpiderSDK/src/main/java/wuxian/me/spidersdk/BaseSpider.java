@@ -120,7 +120,7 @@ public abstract class BaseSpider implements Runnable {
     //For Log
     public abstract String name();
 
-    //For hash code
+    //For toPatternKey code
     public abstract String hashString();
 
     //将详细错误码包括Http Request,Response写到本地文件

@@ -24,7 +24,6 @@ import wuxian.me.spidersdk.util.FileUtil;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static wuxian.me.lagouspider.util.Helper.getBossDistinctsFilePath;
 
 /**
  * Created by wuxian on 13/5/2017.

@@ -16,6 +16,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static wuxian.me.spidersdk.util.FileUtil.getCurrentPath;
 import static wuxian.me.spidersdk.util.ShellUtil.*;
@@ -81,12 +83,34 @@ public class IPProxyTool {
         if (JobManagerConfig.enableInitProxyFromFile) {
             ipPortList.clear();
             readProxyFromFile();
+
+            if (ipPortList.isEmpty()) {
+                openShellAndEnsureProxyInputed();
+            }
             FileUtil.writeToFile(getProxyFilePath(), "");  //清空文件
         }
     }
 
     String getProxyFilePath() {
         return getCurrentPath() + JobManagerConfig.ipproxyFile;
+    }
+
+    public static boolean isVaildIpPort(String[] ipport) {
+        if (ipport == null || ipport.length != 2) {
+            return false;
+        }
+
+        String reg1 = "[0-9]+[.][0-9]+[.][0-9]+[.][0-9]+";
+        Pattern pattern = Pattern.compile(reg1);
+        Matcher matcher = pattern.matcher(ipport[0]);
+        if (!matcher.matches()) {
+            return false;
+        }
+
+        String reg2 = "[0-9]+";
+        pattern = Pattern.compile(reg2);
+        matcher = pattern.matcher(ipport[1]);
+        return matcher.matches();
     }
 
     private void readProxyFromFile() {
@@ -99,8 +123,9 @@ public class IPProxyTool {
             for (int i = 0; i < proxys.length; i++) {
                 String[] proxy = proxys[i].split(SEPRATE);
                 if (proxy != null && proxy.length == 2) {
-                    //Todo:正则检查ip和端口
-                    ipPortList.add(new Proxy(proxy[0], Integer.parseInt(proxy[1])));
+                    if (isVaildIpPort(proxy)) {
+                        ipPortList.add(new Proxy(proxy[0], Integer.parseInt(proxy[1])));
+                    }
                 }
             }
         }

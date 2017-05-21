@@ -1,7 +1,5 @@
 package wuxian.me.lagouspider;
 
-import wuxian.me.lagouspider.util.Config;
-import wuxian.me.spidersdk.JobManagerConfig;
 import wuxian.me.spidersdk.distribute.ClassHelper;
 import wuxian.me.spidersdk.log.ILog;
 import wuxian.me.spidersdk.log.LogManager;
@@ -80,6 +78,7 @@ public class Main {
     }
 
     public void run() {
+        JobManagerFactory.getJobManager().start();
         LogManager.info("Run");
     }
 

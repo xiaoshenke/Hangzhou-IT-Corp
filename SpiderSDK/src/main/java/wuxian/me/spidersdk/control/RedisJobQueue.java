@@ -61,9 +61,23 @@ public class RedisJobQueue implements IQueue {
 
     //抛弃state --> 分布式下没法管理一个job的状态:是新开始的任务还是重试的任务
     public boolean putJob(IJob job, int state) {
+
         BaseSpider spider = (BaseSpider) job.getRealRunnable();
         HttpUrlNode urlNode = spider.toUrlNode();
-        jedis.lpush(JOB_QUEUE, gson.toJson(urlNode));
+
+        LogManager.info("Put Spider: " + spider.name());
+
+        if (state == IJob.STATE_INIT) {
+            String key = String.valueOf(urlNode.toRedisKey());
+            if (jedis.exists(key)) {
+
+                LogManager.info("Spider is dulpilicate,so abandon");
+                return false;  //重复任务 抛弃
+            }
+
+            jedis.set(key, "true");
+        }
+        jedis.lpush(JOB_QUEUE, gson.toJson(urlNode));  //会存在一点并发的问题 但认为可以接受
         return true;
     }
 
@@ -84,9 +98,12 @@ public class RedisJobQueue implements IQueue {
 
         HttpUrlNode node = gson.fromJson(spiderStr, HttpUrlNode.class);
 
-        long hash = node.hash();
+        long hash = node.toPatternKey();
         if (!urlPatternMap.containsKey(hash)) {
             if (unResolveList.contains(hash)) {  //避免多次调用getHandleableClassOf
+                LogManager.info("Get Spider, Can't resolve node: " + node.toString() + " ,get another one");
+
+                jedis.lpush(JOB_QUEUE, spiderStr);
                 return getJob();
             }
 
@@ -94,6 +111,7 @@ public class RedisJobQueue implements IQueue {
             if (clazz == null) {
                 unResolveList.add(hash);
 
+                LogManager.info("Get Spider, Can't resolve node: " + node.toString() + " ,get another one");
                 jedis.lpush(JOB_QUEUE, spiderStr);
                 return getJob();  //重新拿一个呗
             } else {
@@ -104,6 +122,8 @@ public class RedisJobQueue implements IQueue {
         Method fromUrl = SpiderMethodManager.getFromUrlMethod(urlPatternMap.get(hash));
         try {
             BaseSpider spider = (BaseSpider) fromUrl.invoke(node);
+
+            LogManager.info("Get Spider: " + spider.name());
 
             IJob job = JobProvider.getJob();
             job.setRealRunnable(spider);

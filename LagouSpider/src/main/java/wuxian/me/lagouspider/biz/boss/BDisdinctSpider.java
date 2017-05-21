@@ -15,10 +15,13 @@ import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.NodeLogUtil;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.anti.MaybeBlockedException;
+import wuxian.me.spidersdk.distribute.HttpUrlNode;
 import wuxian.me.spidersdk.util.FileUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -36,6 +39,30 @@ public class BDisdinctSpider extends BaseBossSpider {
     private static String INDEX_HANGZHOU = CityTransformer.getCityCode(BossConfig.CITY_TO_SPIDER);
 
     private List<String> distinctList = new ArrayList<String>();
+
+    public static BDisdinctSpider fromUrlNode(HttpUrlNode node) {
+        String url = BASE_URL;
+        if (!node.baseUrl.contains(url)) {
+            return null;
+        }
+
+        if (!node.httpGetParam.containsKey("query") || !node.httpGetParam.containsKey("scity")
+                || !node.httpGetParam.containsKey("source")) {
+            return null;
+        }
+        return new BDisdinctSpider();
+    }
+
+    public static HttpUrlNode toUrlNode(BDisdinctSpider spider) {
+        HttpUrlNode node = new HttpUrlNode();
+        String url = BASE_URL;
+
+        node.baseUrl = url;
+        node.httpGetParam.put("scity", INDEX_HANGZHOU);
+        node.httpGetParam.put("query", "java");
+        node.httpGetParam.put("source", "2");
+        return node;
+    }
 
     protected Request buildRequest() {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(BASE_URL).newBuilder();
