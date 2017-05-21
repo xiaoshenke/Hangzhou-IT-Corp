@@ -38,7 +38,7 @@ public class IPProxyTool {
     public static final String SEPRATE = ":";
 
     private static List<Proxy> ipPortList;
-    private Proxy currentProxy = null;
+    public Proxy currentProxy = null;
 
     static {
         ipPortList = new ArrayList<Proxy>();
@@ -80,13 +80,16 @@ public class IPProxyTool {
         };
         switchIPFuture = new FutureTask<String>(callable);
 
+        if (!FileUtil.checkFileExist(getProxyFilePath())) {
+            FileUtil.writeToFile(getProxyFilePath(), "");
+        }
+
         if (JobManagerConfig.enableInitProxyFromFile) {
+            LogManager.info("Using Proxy,Try read from File");
             ipPortList.clear();
             readProxyFromFile();
 
-            if (ipPortList.isEmpty()) {
-                openShellAndEnsureProxyInputed();
-            }
+            currentProxy = forceSwitchProxyTillSuccess();
             FileUtil.writeToFile(getProxyFilePath(), "");  //清空文件
         }
     }
@@ -114,6 +117,9 @@ public class IPProxyTool {
     }
 
     private void readProxyFromFile() {
+        if (!FileUtil.checkFileExist(getProxyFilePath())) {
+            return;
+        }
         String content = FileUtil.readFromFile(getProxyFilePath());
         if (content != null) {
             String[] proxys = content.split(CUT);
@@ -129,6 +135,39 @@ public class IPProxyTool {
                 }
             }
         }
+    }
+
+    public boolean ipSwitched(final IPProxyTool.Proxy proxy) {
+        try {
+            boolean ret = ensureIpSwitched(proxy);
+            return ret;
+        } catch (InterruptedException e1) {
+            return false;
+        } catch (ExecutionException e) {
+            return false;
+        }
+    }
+
+    public Proxy forceSwitchProxyTillSuccess() {
+        while (true) {  //每个ip尝试三次 直到成功或没有proxy
+            IPProxyTool.Proxy proxy = switchNextProxy();
+            if (proxy == null) {
+                LogManager.info("ProxyList is Empty,Open Text");
+                openShellAndEnsureProxyInputed();
+                proxy = switchNextProxy();
+            }
+            LogManager.info("We Try To Switch To Ip: " + proxy.ip + " Port: " + proxy.port);
+            int ensure = 0;
+            boolean success = false;
+            while (!(success = ipSwitched(proxy)) && ensure < JobManagerConfig.everyProxyTryTime) {  //每个IP尝试三次
+                ensure++;
+            }
+            if (success) {
+                LogManager.info("Success Switch Proxy");
+                return proxy;
+            }
+        }
+
     }
 
     public Proxy switchNextProxy() {
@@ -162,15 +201,16 @@ public class IPProxyTool {
 
     //支持运行时手工输入最新的proxy
     public void openShellAndEnsureProxyInputed() {
-        if (countDownLatch.getCount() != 2) {  //init state
+        if (countDownLatch.getCount() != 2) {
             return;
         }
         //logger().info("Begin openShellAndEnsureProxyInputed");
-        countDownLatch.countDown();             //job begin
+        countDownLatch.countDown();
 
         new Thread() {
             @Override
             public void run() {
+                LogManager.info("Check Text State");
                 while (textEditState() != 1) {
                     //没有调用open命令但是TextEdit进程正在运行 睡眠处理
                     try {
@@ -181,6 +221,7 @@ public class IPProxyTool {
                     }
                 }
 
+                LogManager.info("Begin OpenTextEdit");
                 openTextEdit();
                 ipPortList.clear();
 
@@ -194,6 +235,7 @@ public class IPProxyTool {
                     readProxyFromFile();
                     b = (ipPortList.size() == 0);
                     if (b) {
+                        LogManager.info("Still No Proxy wrote,try open again");
                         if (textEditState() == 1) { //重新打开文件
                             openTextEdit();
                         }

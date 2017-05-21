@@ -3,6 +3,7 @@ package wuxian.me.spidersdk.util;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 import wuxian.me.spidersdk.JobManagerConfig;
+import wuxian.me.spidersdk.log.LogManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -77,8 +78,11 @@ public class ShellUtil {
         try {
             return isTextEditRunning() ? 0 : 1;
         } catch (IOException e) {
+
+            //LogManager.error("textEditState e:"+e.getMessage());
             return -1;
         } catch (Exception e) {
+            //LogManager.error("textEditState e:"+e.getMessage());
             return -1;
         }
     }
@@ -94,6 +98,7 @@ public class ShellUtil {
     private static boolean isTextEditRunning() throws IOException {
         Runtime runtime = Runtime.getRuntime();
         String check = getCheckProcessShellPath();
+
         String[] args = new String[]{check, "TextEdit"};
         Process pc = null;
         pc = runtime.exec(args);
@@ -112,11 +117,14 @@ public class ShellUtil {
     public static boolean openTextEdit() {
         Runtime runtime = Runtime.getRuntime();
         try {
-            Process proc = runtime.exec(FileUtil.readFromFile(
-                    getOpenProxyShellPath()));
+            String cmd = FileUtil.readFromFile(
+                    getOpenProxyShellPath());
+            LogManager.info(cmd);
+            Process proc = runtime.exec(cmd);
             int exit = proc.waitFor();
             return true;
         } catch (Exception e) {
+            LogManager.error("openTextEidt e: " + e.getMessage());
             return false;
         }
     }

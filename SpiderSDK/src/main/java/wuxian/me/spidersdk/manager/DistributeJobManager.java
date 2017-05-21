@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.jar.JarFile;
 
@@ -52,7 +53,7 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
     private BlockHelper blockHelper = new BlockHelper();
 
     private AtomicBoolean isSwitchingIP = new AtomicBoolean(false);
-    private IPProxyTool ipProxyTool = new IPProxyTool();
+    private IPProxyTool ipProxyTool;//= new IPProxyTool();
     private boolean inited = false;
 
     //位于okHttpClient的缓存池中
@@ -75,7 +76,12 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
     private void init() {
         LogManager.info("Begin To Init JobManager");
 
-        ShellUtil.init();
+        ShellUtil.init();   //check ipProxy需要用到shell因此要先初始化
+
+        ipProxyTool = new IPProxyTool();
+        if (ipProxyTool.currentProxy != null) {
+            heartbeatManager.beginHeartBeat(ipProxyTool.currentProxy);
+        }
 
         LogManager.info("Begin To Collect Spiders...");
         checkAndColloectSubSpiders();
@@ -145,8 +151,13 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
 
     }
 
-    public boolean ipSwitched(IPProxyTool.Proxy proxy) {
-        return false;
+    public boolean ipSwitched(final IPProxyTool.Proxy proxy) {
+        return ipProxyTool.currentProxy.equals(proxy);
+    }
+
+    private boolean ensureIpSwitched(final IPProxyTool.Proxy proxy)
+            throws InterruptedException, ExecutionException {
+        return ipProxyTool.ensureIpSwitched(proxy);
     }
 
     public void success(Runnable runnable) {
@@ -236,31 +247,9 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
         LogManager.info("Cancelling Running Request...");
         dispatcher.cancelAll();
 
-        while (true) {  //每个ip尝试三次 直到成功或没有proxy
-            IPProxyTool.Proxy proxy = ipProxyTool.switchNextProxy();
-            if (proxy == null) {
-
-                if (JobManagerConfig.enableRuntimeInputProxy) {
-                    ipProxyTool.openShellAndEnsureProxyInputed();
-                    proxy = ipProxyTool.switchNextProxy();
-
-                } else {
-                    LogManager.info("Shutting down JobManager...");
-                    break;
-                }
-
-            }
-            LogManager.info("We Try To Switch To Ip: " + proxy.ip + " Port: " + proxy.port);
-            int ensure = 0;
-            boolean success = false;
-            while (!(success = ipSwitched(proxy)) && ensure < JobManagerConfig.everyProxyTryTime) {  //每个IP尝试三次
-                ensure++;
-            }
-            if (success) {
-                LogManager.info("Success Switch Proxy");
-                break;
-            }
-        }
+        heartbeatManager.stopHeartBeat();
+        IPProxyTool.Proxy proxy = ipProxyTool.forceSwitchProxyTillSuccess();
+        heartbeatManager.beginHeartBeat(proxy);
 
         dispatcher.cancelAll();
         for (BaseSpider spider : dispatchedSpiderList) {

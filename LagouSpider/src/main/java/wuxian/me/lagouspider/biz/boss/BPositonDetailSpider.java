@@ -22,6 +22,7 @@ import wuxian.me.lagouspider.util.NodeLogUtil;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.JobManagerConfig;
 import wuxian.me.spidersdk.anti.MaybeBlockedException;
+import wuxian.me.spidersdk.distribute.HttpUrlNode;
 import wuxian.me.spidersdk.util.FileUtil;
 
 import java.text.SimpleDateFormat;
@@ -32,7 +33,6 @@ import java.util.regex.Pattern;
 
 /**
  * Created by wuxian on 13/5/2017.
- * <p> Fixme:Class.ForName的时候 这个类会抛出未知类型的runtime错误 导致进行不下去...
  */
 public class BPositonDetailSpider extends BaseBossSpider {
 
@@ -42,6 +42,31 @@ public class BPositonDetailSpider extends BaseBossSpider {
 
     private static String BASE_URL = "http://www.zhipin.com/job_detail/";
     private long positionId;
+
+    public static HttpUrlNode toUrlNode(BPositonDetailSpider spider) {
+        HttpUrlNode node = new HttpUrlNode();
+        String url = BASE_URL + spider.positionId + ".html";
+        node.baseUrl = url;
+        return node;
+    }
+
+    public static BPositonDetailSpider fromUrlNode(HttpUrlNode node) {
+        if (!node.baseUrl.contains(BASE_URL)) {
+            return null;
+        }
+
+        String reg = "(?<=job_detail/)[0-9]+(?=.html)";
+
+        Pattern pattern = Pattern.compile(reg);
+        Matcher matcher = pattern.matcher(node.baseUrl);
+        if (!matcher.find()) {
+            return null;
+        }
+
+        BPositonDetailSpider spider = new BPositonDetailSpider(Long.parseLong(matcher.group()));
+        return spider;
+    }
+
 
     protected Request buildRequest() {
 

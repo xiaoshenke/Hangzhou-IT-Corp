@@ -70,7 +70,7 @@ public class HeartbeatManager implements Runnable {
                 heartBeat.onHeartBeat(heartBeatTime);
             }
 
-            proxyLive = JobManagerFactory.getJobManager().ipSwitched(proxy);
+            proxyLive = JobManagerFactory.getJobManager().ipSwitched(proxy);  //检查下当前的proxy是否是正在使用的proxy
             if (!proxyLive) {
                 for (IHeartBeat heartBeat : heartBeatList) {
                     heartBeat.onHeartBeatFail();
