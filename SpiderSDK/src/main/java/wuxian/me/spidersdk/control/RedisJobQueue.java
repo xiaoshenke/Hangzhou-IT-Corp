@@ -3,6 +3,7 @@ package wuxian.me.spidersdk.control;
 import com.google.common.primitives.Ints;
 import com.google.gson.Gson;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.exceptions.JedisConnectionException;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.JobManagerConfig;
 import wuxian.me.spidersdk.distribute.*;
@@ -34,7 +35,7 @@ public class RedisJobQueue implements IQueue {
 
 
     public RedisJobQueue() {
-        init();
+
     }
 
     public void init() {
@@ -55,12 +56,22 @@ public class RedisJobQueue implements IQueue {
         jedis = new Jedis(JobManagerConfig.redisIp,
                 Ints.checkedCast(JobManagerConfig.redisPort));
 
+        try {
+            jedis.exists(JOB_QUEUE);
+        } catch (JedisConnectionException e) {
+            LogManager.error("JedisConnectionException e:" + e.getMessage());
+        }
+
         LogManager.info("RedisJobQueue Inited");
 
     }
 
     //抛弃state --> 分布式下没法管理一个job的状态:是新开始的任务还是重试的任务
     public boolean putJob(IJob job, int state) {
+
+        if (!JobManagerConfig.enablePutSpiderToQueue) {
+            return false;
+        }
 
         BaseSpider spider = (BaseSpider) job.getRealRunnable();
         HttpUrlNode urlNode = spider.toUrlNode();
@@ -93,6 +104,9 @@ public class RedisJobQueue implements IQueue {
     }
 
     public IJob getJob() {
+        if (!JobManagerConfig.enableGetSpiderFromQueue) {
+            return null;
+        }
         String spiderStr = jedis.rpop(JOB_QUEUE);
 
         if (spiderStr == null) {

@@ -1,6 +1,7 @@
 package wuxian.me.lagouspider;
 
 import wuxian.me.lagouspider.biz.boss.BDisdinctSpider;
+import wuxian.me.lagouspider.biz.boss.BPositonDetailSpider;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.spidersdk.distribute.ClassHelper;
 import wuxian.me.spidersdk.log.ILog;
@@ -83,15 +84,15 @@ public class Main {
         JobManagerFactory.getJobManager().start();
 
         BDisdinctSpider disdinctSpider = new BDisdinctSpider();
+        //BPositonDetailSpider positonDetailSpider = new BPositonDetailSpider(1334l);
         while(true) {
-            //Helper.dispatchSpider(disdinctSpider);
+            Helper.dispatchSpider(disdinctSpider);
             try{
-                Thread.sleep(500);
+                Thread.sleep(1000);
             } catch (InterruptedException e){
 
             }
         }
-        //LogManager.info("Run");
     }
 
     public static void main(String[] args) {

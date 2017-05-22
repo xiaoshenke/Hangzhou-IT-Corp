@@ -51,8 +51,11 @@ public class Main {
         LogManager.info("Main");
 
         NoneSpider spider = new NoneSpider();
-        ((DistributeJobManager) JobManagerFactory.getJobManager()).getDispatchedSpiderList().add(spider);
+        IJob job = JobProvider.getJob();
+        job.setRealRunnable(spider);
+        //((DistributeJobManager) JobManagerFactory.getJobManager()).getDispatchedSpiderList().add(spider);
         JobManagerFactory.getJobManager().start();
+        JobManagerFactory.getJobManager().putJob(job);
 
         while (true) {
 

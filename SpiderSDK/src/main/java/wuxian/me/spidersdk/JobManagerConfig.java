@@ -16,6 +16,16 @@ import java.util.Properties;
  */
 public class JobManagerConfig {
 
+    //用于测试putJob,getJob行为
+    //控制是否发送http request
+    public static boolean enableDispatchSpider;
+
+    //同用于测试
+    public static boolean enablePutSpiderToQueue;
+
+    //同用于测试
+    public static boolean enableGetSpiderFromQueue;
+
     public static boolean distributeMode;
 
     public static String spiderIdentity;  //none,master,agent三种身份
@@ -118,6 +128,12 @@ public class JobManagerConfig {
             pro = null; //确保一定会初始化
         }
 
+        enableGetSpiderFromQueue = parse(pro, "enableGetSpiderFromQueue", true);
+
+        enablePutSpiderToQueue = parse(pro, "enablePutSpiderToQueue", true);
+
+        enableDispatchSpider = parse(pro, "enableDispatchSpider", true);
+
         enableSeriazeSpider = parse(pro, "enableSeriazeSpider", false);
 
         newSpideMode = parse(pro, "newSpideMode", true);
@@ -171,12 +187,12 @@ public class JobManagerConfig {
 
         jarMode = parse(pro, "jarMode", true);
 
-        distributeMode = parse(pro,"distributeMode",false);
-        spiderIdentity = parse(pro,"spiderIdentity","none");
+        distributeMode = parse(pro, "distributeMode", false);
+        spiderIdentity = parse(pro, "spiderIdentity", "none");
 
         //只有三种身份
-        if(!spiderIdentity.equals("none")) {
-            if(!spiderIdentity.equals("master") && !spiderIdentity.equals("agent")) {
+        if (!spiderIdentity.equals("none")) {
+            if (!spiderIdentity.equals("master") && !spiderIdentity.equals("agent")) {
                 spiderIdentity = "none";
             }
         }

@@ -74,7 +74,7 @@ public abstract class BaseSpider implements Runnable {
 
     public void run() {
         Request request = getRequest();
-        if (request == null) {
+        if (request == null || !JobManagerConfig.enableDispatchSpider) {
             return;
         }
         JobManagerFactory.getJobManager().onDispatch(this);

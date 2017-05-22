@@ -79,4 +79,8 @@ public class JobQueue implements IQueue {
     public int getJobNum() {
         return queue.size();
     }
+
+    public void init() {
+
+    }
 }

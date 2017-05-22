@@ -7,10 +7,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eab34228-edfc-44e7-bc45-cb52fa74264f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../LagouSpider/src/test/java/wuxian/me/lagouspider/MainTest.java" afterPath="$PROJECT_DIR$/../LagouSpider/src/test/java/wuxian/me/lagouspider/MainTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/Main.java" afterPath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/Main.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/IPProxyTool.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/IPProxyTool.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/FileUtil.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/FileUtil.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/conf/jobmanager.properties" afterPath="$PROJECT_DIR$/conf/jobmanager.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/BaseSpider.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/BaseSpider.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/JobManagerConfig.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/JobManagerConfig.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/Main.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/Main.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/IQueue.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/IQueue.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/JobQueue.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/JobQueue.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/RedisJobQueue.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/RedisJobQueue.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/manager/DistributeJobManager.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/manager/DistributeJobManager.java" />
     </list>
     <ignored path="SpiderSDK.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -37,20 +43,7 @@
     <favorites_list name="SpiderSDK" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="IPProxyTool.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/IPProxyTool.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-551">
-              <caret line="172" column="56" selection-start-line="172" selection-start-column="56" selection-end-line="172" selection-end-column="56" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -89,7 +82,6 @@
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/ClassFileUtil.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/SpiderMethodTuple.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/SpiderChecker.java" />
-        <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/JobQueue.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/RedisServerConnectionException.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/RedisConnectionException.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/ClassHelper.java" />
@@ -106,28 +98,29 @@
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/FailHelper.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/JobManagerMonitor.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/BlockHelper.java" />
-        <option value="$PROJECT_DIR$/conf/jobmanager.properties" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/SpiderClassChecker.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/manager/PlainJobManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/manager/JobManagerFactory.java" />
-        <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/IQueue.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/IJobManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/ProcessSignalManager.java" />
-        <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/Main.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/ProcessLifecycle.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/SignalManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/SpiderMethodManager.java" />
-        <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/JobManagerConfig.java" />
         <option value="$PROJECT_DIR$/src/test/java/wuxian/me/spidersdk/MainTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/HeartbeatManager.java" />
-        <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/manager/DistributeJobManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/ShellUtil.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/HttpUrlNode.java" />
-        <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/BaseSpider.java" />
-        <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/RedisJobQueue.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/WorkThread.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/FileUtil.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/IPProxyTool.java" />
+        <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/BaseSpider.java" />
+        <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/JobManagerConfig.java" />
+        <option value="$PROJECT_DIR$/conf/jobmanager.properties" />
+        <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/Main.java" />
+        <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/IQueue.java" />
+        <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/manager/DistributeJobManager.java" />
+        <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/JobQueue.java" />
+        <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/RedisJobQueue.java" />
       </list>
     </option>
   </component>
@@ -153,10 +146,10 @@
     <treeState />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="306" />
-    <option name="y" value="28" />
-    <option name="width" value="974" />
-    <option name="height" value="704" />
+    <option name="x" value="430" />
+    <option name="y" value="60" />
+    <option name="width" value="879" />
+    <option name="height" value="663" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -183,6 +176,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -223,7 +217,6 @@
       </pane>
       <pane id="Scope" />
       <pane id="PackagesPane" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -261,7 +254,7 @@
       <recent name="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.MainTest.testIpPort">
+  <component name="RunManager" selected="Application.Main">
     <configuration default="false" name="MainTest.testClassFileUtil" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -1000,8 +993,8 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="JUnit.MainTest.testIpPort" />
-        <item index="1" class="java.lang.String" itemvalue="Application.Main" />
+        <item index="0" class="java.lang.String" itemvalue="Application.Main" />
+        <item index="1" class="java.lang.String" itemvalue="JUnit.MainTest.testIpPort" />
         <item index="2" class="java.lang.String" itemvalue="JUnit.MainTest.testRedisJobQueue" />
         <item index="3" class="java.lang.String" itemvalue="JUnit.MainTest.testClass" />
         <item index="4" class="java.lang.String" itemvalue="JUnit.MainTest.testClassFileUtil" />
@@ -1063,12 +1056,13 @@
       <workItem from="1495351681196" duration="2956000" />
       <workItem from="1495355431890" duration="1402000" />
       <workItem from="1495358003573" duration="506000" />
-      <workItem from="1495358991334" duration="266000" />
+      <workItem from="1495358991334" duration="1399000" />
+      <workItem from="1495419616642" duration="3957000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="MainTest_testIpPort - 2017.05.21 at 13h 26m 39s.xml">
+    <history-entry file="MainTest_testIpPort - 2017.05.22 at 11h 08m 26s.xml">
       <configuration name="MainTest.testIpPort" configurationId="JUnit" />
     </history-entry>
     <history-entry file="MainTest_testRedisJobQueue - 2017.05.17 at 19h 24m 37s.xml">
@@ -1100,34 +1094,43 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="104971000" />
+    <option name="totallyTimeSpent" value="110061000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="306" y="28" width="974" height="704" extended-state="6" />
-    <editor active="true" />
+    <frame x="430" y="60" width="879" height="663" extended-state="0" />
+    <editor active="false" />
     <layout>
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21459228" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32844037" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32110092" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3559633" sideWeight="0.5056657" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24868283" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32844037" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.71926606" sideWeight="0.49433428" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32844037" sideWeight="0.49433428" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21385902" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32423207" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4267857" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3225256" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3566553" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1713555" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32423207" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4267857" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -1340,13 +1343,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/IQueue.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="3" selection-start-line="6" selection-start-column="3" selection-end-line="6" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/manager/JobManagerFactory.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="214">
@@ -1361,13 +1357,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/ProcessLifecycle.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
@@ -1379,13 +1368,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
           <caret line="9" column="60" selection-start-line="9" selection-start-column="60" selection-end-line="9" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/conf/jobmanager.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="19" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
         </state>
       </provider>
     </entry>
@@ -1430,47 +1412,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/JobQueue.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="129">
-          <caret line="57" column="15" selection-start-line="57" selection-start-column="15" selection-end-line="57" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/BaseSpider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="38" column="8" selection-start-line="38" selection-start-column="8" selection-end-line="38" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/HttpUrlNode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="61" column="30" selection-start-line="61" selection-start-column="30" selection-end-line="61" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/JobManagerConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="109">
-          <caret line="141" column="31" selection-start-line="141" selection-start-column="31" selection-end-line="141" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_92.jdk/Contents/Home/src.zip!/java/lang/Thread.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="186">
           <caret line="695" column="29" selection-start-line="695" selection-start-column="29" selection-end-line="695" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/manager/DistributeJobManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="169">
-          <caret line="42" column="19" selection-start-line="42" selection-start-column="19" selection-end-line="42" selection-end-column="19" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1479,13 +1424,6 @@
         <state relative-caret-position="303">
           <caret line="26" column="9" selection-start-line="26" selection-start-column="9" selection-end-line="26" selection-end-column="9" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/RedisJobQueue.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="106">
-          <caret line="130" column="22" selection-start-line="130" selection-start-column="15" selection-end-line="130" selection-end-column="22" />
         </state>
       </provider>
     </entry>
@@ -1521,11 +1459,86 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/IPProxyTool.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-551">
-          <caret line="172" column="56" selection-start-line="172" selection-start-column="56" selection-end-line="172" selection-end-column="56" />
+        <state relative-caret-position="79">
+          <caret line="214" column="35" selection-start-line="214" selection-start-column="35" selection-end-line="214" selection-end-column="35" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/BaseSpider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="74" column="23" selection-start-line="74" selection-start-column="23" selection-end-line="74" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/HttpUrlNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="172">
+          <caret line="61" column="16" selection-start-line="61" selection-start-column="16" selection-end-line="61" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/conf/jobmanager.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" column="27" selection-start-line="14" selection-start-column="27" selection-end-line="14" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="277">
+          <caret line="67" column="13" selection-start-line="67" selection-start-column="13" selection-end-line="67" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/JobManagerConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="155">
+          <caret line="183" column="17" selection-start-line="183" selection-start-column="13" selection-end-line="183" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/IQueue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="16" selection-start-line="17" selection-start-column="16" selection-end-line="17" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/manager/DistributeJobManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="95" column="21" selection-start-line="95" selection-start-column="21" selection-end-line="95" selection-end-column="21" />
+          <folding>
+            <element signature="e#3420#3669#0" expanded="true" />
+            <element signature="e#3668#3669#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/JobQueue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="103">
+          <caret line="62" column="30" selection-start-line="62" selection-start-column="30" selection-end-line="62" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/RedisJobQueue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="43" column="13" selection-start-line="43" selection-start-column="13" selection-end-line="43" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>

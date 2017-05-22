@@ -14,4 +14,6 @@ public interface IQueue {
     boolean isEmpty();
 
     int getJobNum();
+
+    void init();
 }

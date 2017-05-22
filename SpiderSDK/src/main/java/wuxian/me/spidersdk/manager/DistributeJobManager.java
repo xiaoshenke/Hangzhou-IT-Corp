@@ -93,14 +93,18 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
 
         LogManager.info("Init RedisJobQueue...");
         queue = new RedisJobQueue();
+        queue.init();
 
-        signalManager.registerOnSystemKill(new SignalManager.OnSystemKill() {
-            public void onSystemKilled() {
-                LogManager.error("DistributeJobManager, OnProcessKilled");
+        //只有需要serializeSpider的时候才截取kill信息
+        if (JobManagerConfig.enableSeriazeSpider) {
+            signalManager.registerOnSystemKill(new SignalManager.OnSystemKill() {
+                public void onSystemKilled() {
+                    LogManager.error("DistributeJobManager, OnProcessKilled");
+                    DistributeJobManager.this.onPause();
+                }
+            });
 
-                DistributeJobManager.this.onPause();
-            }
-        });
+        }
 
         LogManager.info("JobManager Inited");
 
@@ -153,11 +157,6 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
 
     public boolean ipSwitched(final IPProxyTool.Proxy proxy) {
         return ipProxyTool.currentProxy.equals(proxy);
-    }
-
-    private boolean ensureIpSwitched(final IPProxyTool.Proxy proxy)
-            throws InterruptedException, ExecutionException {
-        return ipProxyTool.ensureIpSwitched(proxy);
     }
 
     public void success(Runnable runnable) {
