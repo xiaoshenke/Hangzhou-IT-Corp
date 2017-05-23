@@ -63,7 +63,7 @@ public class JobManagerConfig {
     public static int considerBlockedNeterr;
 
     //从哪个路径下扫描checker 以';'隔开 如果没有这个值那么从跟路径开始扫描
-    public static String redisSpiderCheckerBasePackage;
+    public static String spiderScan;
 
     public static long okhttpClientSocketReadTimeout;
 
@@ -189,6 +189,8 @@ public class JobManagerConfig {
 
         distributeMode = parse(pro, "distributeMode", false);
         spiderIdentity = parse(pro, "spiderIdentity", "none");
+
+        spiderScan = parse(pro, "spiderScan", (String) null);
 
         //只有三种身份
         if (!spiderIdentity.equals("none")) {

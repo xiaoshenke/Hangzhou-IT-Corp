@@ -16,18 +16,28 @@ import java.io.File;
  */
 public class Main {
 
-    static {
-        if (JobManagerConfig.jarMode) {
-            File file = null;
-            try {
-                file = new File(FileUtil.class.getProtectionDomain().getCodeSource().
-                        getLocation().toURI().getPath());
-                file = file.getParentFile();
-                FileUtil.setCurrentPath(file.getAbsolutePath());
-            } catch (Exception e) {
-
+    public static void findCorrectFilePath() {
+        try {
+            File file = new File(Main.class.getProtectionDomain().getCodeSource()
+                    .getLocation().toURI().getPath());
+            if (FileUtil.checkFileExist(file.getParentFile().getAbsolutePath() + "/conf/jobmanager.properties")) {
+                FileUtil.setCurrentFile(file.getAbsolutePath());
+                FileUtil.setCurrentPath(file.getParentFile().getAbsolutePath());
+                return;
             }
+        } catch (Exception e) {
+            ;
         }
+
+        File file = new File("");
+        FileUtil.setCurrentPath(file.getAbsolutePath());
+    }
+
+    static {
+        LogManager.info("Main_static Begin.");
+        LogManager.info("1 Find Current File Path.");
+        findCorrectFilePath();
+        LogManager.info("Current Path." + FileUtil.getCurrentPath());
 
         if (JobManagerConfig.distributeMode) {
             JobManagerFactory.initCheckFilter(new ClassHelper.CheckFilter() {

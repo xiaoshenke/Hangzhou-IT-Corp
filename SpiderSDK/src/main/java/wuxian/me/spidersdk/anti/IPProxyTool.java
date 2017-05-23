@@ -217,6 +217,7 @@ public class IPProxyTool {
         new Thread() {
             @Override
             public void run() {
+                /*
                 LogManager.info("Check Text State");
                 while (textEditState() != 1) {
                     //没有调用open命令但是TextEdit进程正在运行 睡眠处理
@@ -227,7 +228,7 @@ public class IPProxyTool {
                         ;
                     }
                 }
-
+                */
                 LogManager.info("Begin OpenTextEdit");
                 openTextEdit();
 

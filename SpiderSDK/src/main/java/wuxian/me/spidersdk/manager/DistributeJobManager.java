@@ -22,10 +22,7 @@ import wuxian.me.spidersdk.util.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.jar.JarFile;
@@ -95,16 +92,12 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
         queue = new RedisJobQueue();
         queue.init();
 
-        //只有需要serializeSpider的时候才截取kill信息
-        if (JobManagerConfig.enableSeriazeSpider) {
-            signalManager.registerOnSystemKill(new SignalManager.OnSystemKill() {
-                public void onSystemKilled() {
-                    LogManager.error("DistributeJobManager, OnProcessKilled");
-                    DistributeJobManager.this.onPause();
-                }
-            });
-
-        }
+        signalManager.registerOnSystemKill(new SignalManager.OnSystemKill() {
+            public void onSystemKilled() {
+                LogManager.error("DistributeJobManager, OnProcessKilled");
+                DistributeJobManager.this.onPause();
+            }
+        });
 
         LogManager.info("JobManager Inited");
 
@@ -116,33 +109,12 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
      */
     private void checkAndColloectSubSpiders() {
         Set<Class<?>> classSet = null;
-        if (JobManagerConfig.jarMode) {
-            if (FileUtil.currentFile != null) {
-                try {
-                    JarFile jar = new JarFile(FileUtil.currentFile);
-                    classSet = ClassHelper.getJarFileClasses(jar, null, checkFilter);
-
-                } catch (IOException e) {
-
-                }
-            } else {
-                try {
-                    //取当前jar做检查
-                    File file = new File(FileUtil.class.getProtectionDomain().
-                            getCodeSource().getLocation().toURI().getPath());
-                    JarFile jar = new JarFile(file);
-                    classSet = ClassHelper.getJarFileClasses(jar, null, checkFilter);
-                } catch (Exception e) {
-
-                }
-            }
+        if (JobManagerConfig.spiderScan != null) {
+            classSet = ClassHelper.getSpiderFromPackage(JobManagerConfig.spiderScan);
         } else {
-            try {           //Fixme:library模式下 这段代码不起作用,应该改成业务的包名
-                classSet = ClassHelper.getClasses("wuxian.me.spidersdk");
-            } catch (IOException e) {
-                classSet = null;
-            }
+            classSet = ClassHelper.getSpiderFromJar(checkFilter);
         }
+
         if (classSet == null) {
             return;
         }
@@ -317,29 +289,26 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
     }
 
     public void onPause() {
-
-        if (!JobManagerConfig.enableSeriazeSpider) {
-            workThread.pauseWhenSwitchIP();
-            dispatcher.cancelAll();
-            LogManager.info("onPause Success");
-            return;
-        }
-
-        LogManager.info("Try Serialize SpiderList");
         workThread.pauseWhenSwitchIP();
         dispatcher.cancelAll();
-        List<HttpUrlNode> spiderList = new ArrayList<HttpUrlNode>();
-        for (BaseSpider spider : dispatchedSpiderList) {
-            HttpUrlNode str = spider.toUrlNode();
-            if (str != null) {
-                spiderList.add(str);
+
+        if (JobManagerConfig.enableSeriazeSpider) {
+            LogManager.info("Try Serialize SpiderList");
+            List<HttpUrlNode> spiderList = new ArrayList<HttpUrlNode>();
+            for (BaseSpider spider : dispatchedSpiderList) {
+                HttpUrlNode str = spider.toUrlNode();
+                if (str != null) {
+                    spiderList.add(str);
+                }
             }
+            String spiderString = gson.toJson(spiderList);
+            FileUtil.writeToFile(FileUtil.getCurrentPath() + JobManagerConfig.serializedSpiderFile, spiderString);
+
+            LogManager.info("Serialize SpiderList Success");
         }
-        String spiderString = gson.toJson(spiderList);
-        FileUtil.writeToFile(FileUtil.getCurrentPath() + JobManagerConfig.serializedSpiderFile, spiderString);
 
-        LogManager.info("Serialize SpiderList Success");
-        //Todo:把当前进程杀死？ --> 这样子也差不多等于死了...
-
+        LogManager.info("Shutting down whole process...");
+        ShellUtil.killProcessBy(ProcessUtil.getCurrentProcessId());
+        LogManager.error("Kill Process Fail...");
     }
 }

@@ -1,5 +1,6 @@
 package wuxian.me.spidersdk.util;
 
+import com.sun.istack.internal.Nullable;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 import wuxian.me.spidersdk.JobManagerConfig;
@@ -21,6 +22,7 @@ public class ShellUtil {
     private static final String shellOpenProxyFile = "/util/shell/openproxy";
     private static final String shellCheckprocessFile = "/util/shell/processexist";
     private static final String shellCheckRedisRunning = "/util/shell/checkredisrunning";
+    private static final String shellKillprocessFile = "/util/shell/killprocess";
 
     private ShellUtil() {
     }
@@ -38,6 +40,13 @@ public class ShellUtil {
 
             ShellUtil.chmod(path, 0777);
 
+            path = FileUtil.getCurrentPath() + shellKillprocessFile;
+            if (!FileUtil.checkFileExist(path)) {
+                String shell = "kill -9 $1";
+                FileUtil.writeToFile(path, shell);
+            }
+            ShellUtil.chmod(path, 0777);
+
             path = FileUtil.getCurrentPath() + shellCheckprocessFile;
             if (!FileUtil.checkFileExist(path)) {
                 String shell = "ps -ef | grep $1";
@@ -53,6 +62,23 @@ public class ShellUtil {
             ShellUtil.chmod(path, 0777);
         }
 
+    }
+
+    public static boolean killProcessBy(@Nullable String pid) {
+        if (pid == null) {
+            return false;
+        }
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            String kill = getCurrentPath() + shellKillprocessFile;
+            String[] args = new String[]{kill, pid};
+            Process proc = runtime.exec(args);
+            int exit = proc.waitFor();
+            return true;
+        } catch (Exception e) {
+            LogManager.error("openTextEidt e: " + e.getMessage());
+            return false;
+        }
     }
 
     public static boolean isRedisServerRunning() throws IOException {
@@ -78,11 +104,8 @@ public class ShellUtil {
         try {
             return isTextEditRunning() ? 0 : 1;
         } catch (IOException e) {
-
-            //LogManager.error("textEditState e:"+e.getMessage());
             return -1;
         } catch (Exception e) {
-            //LogManager.error("textEditState e:"+e.getMessage());
             return -1;
         }
     }
@@ -119,7 +142,6 @@ public class ShellUtil {
         try {
             String cmd = FileUtil.readFromFile(
                     getOpenProxyShellPath());
-            LogManager.info(cmd);
             Process proc = runtime.exec(cmd);
             int exit = proc.waitFor();
             return true;
