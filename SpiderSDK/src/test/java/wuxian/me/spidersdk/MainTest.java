@@ -23,6 +23,12 @@ public class MainTest {
     }
 
     @Test
+    public void testIpproxyTool() {
+        //new IPProxyTool();
+        JobManagerFactory.getJobManager().start();
+    }
+
+    @Test
     public void testScanPackage() {
         System.out.println("begin to scan");
         Set<Class<?>> classSet = ClassHelper.getSpiderFromPackage(JobManagerConfig.spiderScan);
@@ -94,9 +100,6 @@ public class MainTest {
         job = JobManagerFactory.getJobManager().getJob();
 
         LogManager.info("job: " + job);
-
-        //SpiderClassChecker.performCheckAndCollect(NoneSpider.class);
-
 
     }
 

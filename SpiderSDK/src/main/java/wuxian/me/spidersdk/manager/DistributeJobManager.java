@@ -75,11 +75,6 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
 
         ShellUtil.init();   //check ipProxy需要用到shell因此要先初始化
 
-        ipProxyTool = new IPProxyTool();
-        if (ipProxyTool.currentProxy != null) {
-            heartbeatManager.beginHeartBeat(ipProxyTool.currentProxy);
-        }
-
         LogManager.info("Begin To Collect Spiders...");
         checkAndColloectSubSpiders();
 
@@ -98,6 +93,11 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
                 DistributeJobManager.this.onPause();
             }
         });
+
+        ipProxyTool = new IPProxyTool();
+        if (ipProxyTool.currentProxy != null) {
+            heartbeatManager.beginHeartBeat(ipProxyTool.currentProxy);
+        }
 
         LogManager.info("JobManager Inited");
 

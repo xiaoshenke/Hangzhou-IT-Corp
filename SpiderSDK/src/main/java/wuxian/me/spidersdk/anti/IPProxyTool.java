@@ -121,22 +121,32 @@ public class IPProxyTool {
             return;
         }
         String content = FileUtil.readFromFile(getProxyFilePath());
+        LogManager.info("Content From ProxyFile "+content);
         if (content != null) {
             String[] proxys = content.split(CUT);
-            if (proxys == null) {
+            if (proxys == null || proxys.length == 0) {
                 String[] proxy = content.split(SEPRATE);
                 if (proxy != null && proxy.length == 2) {
+                    //LogManager.info("ip: "+proxy[0]+" port: "+proxy[1]);
                     if (isVaildIpPort(proxy)) {
+                        //LogManager.info("proxy is valid");
                         ipPortList.add(new Proxy(proxy[0], Integer.parseInt(proxy[1])));
+                    } else {
+                        //LogManager.info("proxy isnot valid");
                     }
                 }
                 return;
             }
             for (int i = 0; i < proxys.length; i++) {
                 String[] proxy = proxys[i].split(SEPRATE);
+
                 if (proxy != null && proxy.length == 2) {
+                    //LogManager.info("ip: "+proxy[0]+" port: "+proxy[1]);
                     if (isVaildIpPort(proxy)) {
+                        //LogManager.info("proxy is valid");
                         ipPortList.add(new Proxy(proxy[0], Integer.parseInt(proxy[1])));
+                    } else {
+                        //LogManager.info("proxy isnot valid");
                     }
                 }
             }
@@ -229,8 +239,13 @@ public class IPProxyTool {
                     }
                 }
                 */
-                LogManager.info("Begin OpenTextEdit");
-                openTextEdit();
+
+                if (textEditState() == 1) {
+                    LogManager.info("Begin OpenTextEdit");
+                    openTextEdit();
+                } else {
+                    LogManager.info("TextEdit is open...");
+                }
 
                 boolean b = true;
                 do {
@@ -255,6 +270,8 @@ public class IPProxyTool {
                         if (textEditState() == 1) { //重新打开文件
                             openTextEdit();
                         }
+                    } else {
+                        LogManager.info("Valid Proxy Readed,Try to Switch to it...");
                     }
                 } while (!b);
 
