@@ -69,7 +69,7 @@ public class MainTest {
 
     @Test
     public void testIpPort() {
-        String[] str1 = new String[]{"12.0.0.3", "313"};
+        String[] str1 = new String[]{"49.79.57.145", "49257"};
         System.out.println(IPProxyTool.isVaildIpPort(str1));
 
         String[] str2 = new String[]{"12.0.0.3", "3dfad"};

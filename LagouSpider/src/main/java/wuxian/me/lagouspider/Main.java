@@ -84,7 +84,6 @@ public class Main {
         JobManagerFactory.getJobManager().start();
 
         BDisdinctSpider disdinctSpider = new BDisdinctSpider();
-        //BPositonDetailSpider positonDetailSpider = new BPositonDetailSpider(1334l);
         while(true) {
             Helper.dispatchSpider(disdinctSpider);
             try{

@@ -1,9 +1,6 @@
 package wuxian.me.spidersdk.anti;
 
-import okhttp3.Headers;
-import okhttp3.HttpUrl;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
 import wuxian.me.spidersdk.util.FileUtil;
 import wuxian.me.spidersdk.util.OkhttpProvider;
 import wuxian.me.spidersdk.JobManagerConfig;
@@ -12,10 +9,7 @@ import wuxian.me.spidersdk.log.LogManager;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
+import java.util.concurrent.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,7 +38,7 @@ public class IPProxyTool {
         ipPortList = new ArrayList<Proxy>();
     }
 
-    private FutureTask<String> switchIPFuture;
+    Request request = null;
 
     private boolean inited = false;
 
@@ -63,22 +57,12 @@ public class IPProxyTool {
         HttpUrl.Builder urlBuilder = HttpUrl.parse("http://www.ip138.com/ip2city.asp").newBuilder();
         Headers.Builder builder = new Headers.Builder();
         builder.add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36");
-        final Request request = new Request.Builder()
+        //CacheControl cc = new CacheControl.Builder().noCache().build();
+        request = new Request.Builder()
+                .cacheControl(CacheControl.FORCE_NETWORK)
                 .headers(builder.build())
                 .url(urlBuilder.build().toString())
                 .build();
-
-        Callable<String> callable = new Callable<String>() {
-            public String call() throws Exception {
-                try {
-                    Response response = OkhttpProvider.getClient().newCall(request).execute();
-                    return response.body().string();
-                } catch (IOException e) {
-                    return null;
-                }
-            }
-        };
-        switchIPFuture = new FutureTask<String>(callable);
 
         if (!FileUtil.checkFileExist(getProxyFilePath())) {
             FileUtil.writeToFile(getProxyFilePath(), "");
@@ -92,6 +76,24 @@ public class IPProxyTool {
             currentProxy = forceSwitchProxyTillSuccess();
             FileUtil.writeToFile(getProxyFilePath(), "");  //清空文件
         }
+    }
+
+    private FutureTask<String> getFuture() {
+        return new FutureTask<String>(getCallable());
+    }
+
+    private Callable<String> getCallable() {
+        return new Callable<String>() {
+            public String call() throws Exception {
+                try {
+                    Response response = OkhttpProvider.getClient().newCall(request).execute();
+
+                    return response.body().string();
+                } catch (IOException e) {
+                    return null;
+                }
+            }
+        };
     }
 
     String getProxyFilePath() {
@@ -141,12 +143,12 @@ public class IPProxyTool {
                 String[] proxy = proxys[i].split(SEPRATE);
 
                 if (proxy != null && proxy.length == 2) {
-                    //LogManager.info("ip: "+proxy[0]+" port: "+proxy[1]);
+                    LogManager.info("ip: " + proxy[0] + " port: " + proxy[1]);
                     if (isVaildIpPort(proxy)) {
-                        //LogManager.info("proxy is valid");
+                        LogManager.info("proxy is valid");
                         ipPortList.add(new Proxy(proxy[0], Integer.parseInt(proxy[1])));
                     } else {
-                        //LogManager.info("proxy isnot valid");
+                        LogManager.info("proxy isnot valid");
                     }
                 }
             }
@@ -207,12 +209,13 @@ public class IPProxyTool {
 
     public boolean ensureIpSwitched(final IPProxyTool.Proxy proxy)
             throws InterruptedException, ExecutionException {
-        new Thread(switchIPFuture).start();
-        if (switchIPFuture.get() == null) {
+        FutureTask<String> future = getFuture();
+        new Thread(future).start();
+        if (future.get() == null) {
             return false;
         }
 
-        boolean b = switchIPFuture.get().contains(proxy.ip);
+        boolean b = future.get().contains(proxy.ip);
         return b;
     }
 
@@ -227,19 +230,6 @@ public class IPProxyTool {
         new Thread() {
             @Override
             public void run() {
-                /*
-                LogManager.info("Check Text State");
-                while (textEditState() != 1) {
-                    //没有调用open命令但是TextEdit进程正在运行 睡眠处理
-                    try {
-                        sleep(2000);
-                        LogManager.warn("Try To Open TextEdit.exe For Writting IpProxy,but it's already running,wait...");
-                    } catch (InterruptedException e) {
-                        ;
-                    }
-                }
-                */
-
                 if (textEditState() == 1) {
                     LogManager.info("Begin OpenTextEdit");
                     openTextEdit();
@@ -262,6 +252,8 @@ public class IPProxyTool {
                     } else {
                         if (currentProxy != null && ipPortList.get(0).equals(currentProxy)) {
                             b = false;
+                        } else {
+                            b = true;
                         }
                     }
 
