@@ -1,4 +1,4 @@
-package wuxian.me.spidermaster.netty;
+package wuxian.me.spidermaster.netty.server;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -9,7 +9,7 @@ import wuxian.me.spidermaster.rpc.RpcRequest;
  * <p>
  * Todo: add other handlers
  * <p>
- * Todo: save connections
+ * Todo: manage connections
  */
 public class RpcHandler extends SimpleChannelInboundHandler<RpcRequest> {
 
