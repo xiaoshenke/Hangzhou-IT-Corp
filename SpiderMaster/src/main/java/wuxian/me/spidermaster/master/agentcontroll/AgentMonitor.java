@@ -1,4 +1,4 @@
-package wuxian.me.spidermaster.agentcontroll;
+package wuxian.me.spidermaster.master.agentcontroll;
 
 /**
  * Created by wuxian on 18/5/2017.

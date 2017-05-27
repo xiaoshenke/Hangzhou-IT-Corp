@@ -1,4 +1,4 @@
-package wuxian.me.spidermaster.netty.client;
+package wuxian.me.spidermaster.rpc.client;
 
 import wuxian.me.spidermaster.rpc.RpcRequest;
 import wuxian.me.spidermaster.rpc.RpcResponse;
@@ -6,7 +6,6 @@ import wuxian.me.spidermaster.rpc.RpcResponse;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.UUID;
 
 /**
  * Created by wuxian on 26/5/2017.

@@ -1,4 +1,4 @@
-package wuxian.me.spidermaster.netty;
+package wuxian.me.spidermaster.rpc;
 
 import com.dyuproject.protostuff.LinkedBuffer;
 import com.dyuproject.protostuff.ProtostuffIOUtil;

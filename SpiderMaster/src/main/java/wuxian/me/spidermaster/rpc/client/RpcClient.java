@@ -1,12 +1,12 @@
-package wuxian.me.spidermaster.netty.client;
+package wuxian.me.spidermaster.rpc.client;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import wuxian.me.spidermaster.netty.RpcDecoder;
-import wuxian.me.spidermaster.netty.RpcEncoder;
+import wuxian.me.spidermaster.rpc.RpcDecoder;
+import wuxian.me.spidermaster.rpc.RpcEncoder;
 import wuxian.me.spidermaster.rpc.RpcRequest;
 import wuxian.me.spidermaster.rpc.RpcResponse;
 

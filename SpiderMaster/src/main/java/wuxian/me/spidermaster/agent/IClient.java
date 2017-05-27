@@ -1,4 +1,4 @@
-package wuxian.me.spidermaster;
+package wuxian.me.spidermaster.agent;
 
 import wuxian.me.spidermaster.rpc.IRpcCallback;
 import wuxian.me.spidermaster.rpc.RpcRequest;

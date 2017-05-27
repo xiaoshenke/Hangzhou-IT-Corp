@@ -1,4 +1,4 @@
-package wuxian.me.spidermaster.handler;
+package wuxian.me.spidermaster.master;
 
 /**
  * Created by wuxian on 18/5/2017.

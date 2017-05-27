@@ -1,9 +1,8 @@
-package wuxian.me.spidermaster.netty;
+package wuxian.me.spidermaster.rpc;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
-import wuxian.me.spidermaster.rpc.RpcResponse;
 
 public class RpcEncoder extends MessageToByteEncoder {
 

@@ -1,7 +1,9 @@
-package wuxian.me.spidermaster;
+package wuxian.me.spidermaster.agent;
 
+import io.netty.channel.socket.SocketChannel;
 import wuxian.me.spidermaster.rpc.IRpcCallback;
 import wuxian.me.spidermaster.rpc.RpcRequest;
+import wuxian.me.spidermaster.rpc.client.RpcClient;
 
 /**
  * Created by wuxian on 26/5/2017.
@@ -10,12 +12,36 @@ import wuxian.me.spidermaster.rpc.RpcRequest;
  */
 public class SpiderClient implements IClient {
 
-    public void asyncConnect(String serverIp, int serverPort) {
+    private Thread connectThread;
+    private boolean connected = false;
+    private SocketChannel channel;
+
+    public void asyncConnect(final String serverIp, final int serverPort) {
+        if (connected) {
+            return;
+        }
+
+        Connector connector = new Connector(serverIp, serverPort);
+        connector.register(new Connector.ConnectCallback() {
+            public void onSuccess(SocketChannel channel) {
+                SpiderClient.this.channel = channel;  //save channel
+                connected = true;
+
+                //Todo: heartbeat
+            }
+
+            public void onFail() {
+
+            }
+        });
+        connectThread = new Thread(connector);
+        connectThread.setName("ConnectionThread");
+        connectThread.start();
 
     }
 
     public boolean isConnected() {
-        return false;
+        return connected;
     }
 
     public void disconnectFromServer() {
@@ -37,6 +63,6 @@ public class SpiderClient implements IClient {
     }
 
     public void onDisconnectByServer() {
-
+        connected = false;
     }
 }

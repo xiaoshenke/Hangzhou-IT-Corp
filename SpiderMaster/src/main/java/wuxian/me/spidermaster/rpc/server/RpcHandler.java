@@ -1,4 +1,4 @@
-package wuxian.me.spidermaster.netty.server;
+package wuxian.me.spidermaster.rpc.server;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;

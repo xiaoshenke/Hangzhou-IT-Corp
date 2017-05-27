@@ -6,7 +6,35 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eab34228-edfc-44e7-bc45-cb52fa74264f" name="Default" comment="" />
+    <list default="true" id="eab34228-edfc-44e7-bc45-cb52fa74264f" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../SpiderMaster/conf/spider.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/SpiderAgent.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/SpiderMaster.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/agent/Connector.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/exception/IpPortNotValidException.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/util/FileUtil.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/util/SpiderConfig.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/Agent.java" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/agent/Agent.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/IClient.java" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/agent/IClient.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/MasterServer.java" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/master/MasterServer.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/SpiderClient.java" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/agent/SpiderClient.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/agentcontroll/AgentMonitor.java" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/master/agentcontroll/AgentMonitor.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/agentcontroll/ConnectionManager.java" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/master/agentcontroll/ConnectionManager.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/handler/ConfigHandler.java" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/master/ConfigHandler.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/handler/CookieHandler.java" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/master/CookieHandler.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/handler/IPRoxyHandler.java" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/master/IPRoxyHandler.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/handler/RegisterHandler.java" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/master/RegisterHandler.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/netty/RpcDecoder.java" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/rpc/RpcDecoder.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/netty/RpcEncoder.java" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/rpc/RpcEncoder.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/netty/SerializationUtil.java" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/rpc/SerializationUtil.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/netty/client/RpcClient.java" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/rpc/client/RpcClient.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/netty/client/RpcProxy.java" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/rpc/client/RpcProxy.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/netty/server/RpcHandler.java" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/rpc/server/RpcHandler.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../SpiderMaster/pom.xml" afterPath="$PROJECT_DIR$/../SpiderMaster/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/Main.java" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/Main.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/FileUtil.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/FileUtil.java" />
+    </list>
     <ignored path="SpiderSDK.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -32,7 +60,18 @@
     <favorites_list name="SpiderSDK" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="HeartbeatManager.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/HeartbeatManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="651">
+              <caret line="61" column="22" selection-start-line="61" selection-start-column="22" selection-end-line="61" selection-end-column="22" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -96,7 +135,6 @@
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/HeartbeatManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/HttpUrlNode.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/WorkThread.java" />
-        <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/FileUtil.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/BaseSpider.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/IQueue.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/JobQueue.java" />
@@ -110,6 +148,7 @@
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/Main.java" />
         <option value="$PROJECT_DIR$/src/test/java/wuxian/me/spidersdk/MainTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/IPProxyTool.java" />
+        <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/FileUtil.java" />
       </list>
     </option>
   </component>
@@ -135,9 +174,9 @@
     <treeState />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="276" />
-    <option name="y" value="39" />
-    <option name="width" value="885" />
+    <option name="x" value="142" />
+    <option name="y" value="23" />
+    <option name="width" value="757" />
     <option name="height" value="671" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -165,12 +204,12 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane />
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -1022,6 +1061,8 @@
       <workItem from="1495720779700" duration="88000" />
       <workItem from="1495721692012" duration="3228000" />
       <workItem from="1495783592733" duration="682000" />
+      <workItem from="1495852591645" duration="1135000" />
+      <workItem from="1495855907067" duration="77000" />
     </task>
     <servers />
   </component>
@@ -1058,7 +1099,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="122284000" />
+    <option name="totallyTimeSpent" value="123496000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1070,11 +1111,11 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="276" y="39" width="885" height="671" extended-state="0" />
-    <editor active="false" />
+    <frame x="142" y="23" width="757" height="671" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25622776" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25594404" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32844037" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3559633" sideWeight="0.5056657" order="7" side_tool="true" content_ui="tabs" />
@@ -1320,13 +1361,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/HeartbeatManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="249">
-          <caret line="68" column="55" selection-start-line="68" selection-start-column="55" selection-end-line="68" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/SpiderMethodManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="186">
@@ -1352,13 +1386,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="123">
           <caret line="217" column="31" selection-start-line="217" selection-start-column="31" selection-end-line="217" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/FileUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="945">
-          <caret line="78" column="39" selection-start-line="78" selection-start-column="39" selection-end-line="78" selection-end-column="39" />
         </state>
       </provider>
     </entry>
@@ -1432,33 +1459,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="188">
-          <caret line="65" column="12" selection-start-line="65" selection-start-column="12" selection-end-line="65" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/wuxian/me/spidersdk/MainTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
           <caret line="71" column="54" selection-start-line="71" selection-start-column="54" selection-end-line="71" selection-end-column="54" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/JobManagerConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
-          <caret line="142" column="36" selection-start-line="142" selection-start-column="8" selection-end-line="142" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-189">
-          <caret line="18" column="20" selection-start-line="18" selection-start-column="20" selection-end-line="18" selection-end-column="20" />
         </state>
       </provider>
     </entry>
@@ -1473,9 +1478,44 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="98">
           <caret line="96" column="5" selection-start-line="96" selection-start-column="5" selection-end-line="96" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="21" column="10" selection-start-line="21" selection-start-column="10" selection-end-line="21" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="25" column="23" selection-start-line="25" selection-start-column="23" selection-end-line="25" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/JobManagerConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="81">
+          <caret line="123" column="13" selection-start-line="123" selection-start-column="13" selection-end-line="123" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/FileUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/HeartbeatManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="651">
+          <caret line="61" column="22" selection-start-line="61" selection-start-column="22" selection-end-line="61" selection-end-column="22" />
+          <folding />
         </state>
       </provider>
     </entry>

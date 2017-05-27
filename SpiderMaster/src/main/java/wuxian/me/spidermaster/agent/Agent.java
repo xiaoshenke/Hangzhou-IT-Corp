@@ -1,4 +1,4 @@
-package wuxian.me.spidermaster;
+package wuxian.me.spidermaster.agent;
 
 /**
  * Created by wuxian on 26/5/2017.
