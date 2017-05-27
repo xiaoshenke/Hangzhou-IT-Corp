@@ -33,6 +33,10 @@ public class SpiderClient implements IClient {
             public void onFail() {
 
             }
+
+            public void onException() {
+
+            }
         });
         connectThread = new Thread(connector);
         connectThread.setName("ConnectionThread");
