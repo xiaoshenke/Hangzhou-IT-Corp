@@ -1,9 +1,8 @@
-package wuxian.me.spidermaster;
+package wuxian.me.spidermaster.agent;
 
 import com.sun.istack.internal.NotNull;
-import wuxian.me.spidermaster.agent.SpiderClient;
-import wuxian.me.spidermaster.exception.IpPortNotValidException;
-import wuxian.me.spidermaster.util.Util;
+import wuxian.me.spidermaster.util.exception.IpPortNotValidException;
+import wuxian.me.spidermaster.util.IpPortUtil;
 
 /**
  * Created by wuxian on 27/5/2017.
@@ -21,7 +20,7 @@ public class SpiderAgent {
 
         this.serverPort = serverPort;
 
-        if (!Util.isValidIpPort(serverIp + ":" + serverPort)) {
+        if (!IpPortUtil.isValidIpPort(serverIp + ":" + serverPort)) {
             throw new IpPortNotValidException();
         }
 

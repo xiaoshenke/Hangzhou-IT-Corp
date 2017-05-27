@@ -29,8 +29,8 @@ public class RpcDecoder extends ByteToMessageDecoder {
         }
         in.markReaderIndex();
         int dataLength = in.readInt();
-        if (dataLength < 0) {
-            ctx.close();  //Fixme: 为啥要close
+        if (dataLength < 0) {  //若数据有问题 那么直接close
+            ctx.close();
         }
         if (in.readableBytes() < dataLength) {
             in.resetReaderIndex();

@@ -89,6 +89,7 @@ public class MainTest {
         IJob job = JobProvider.getJob();
         NoneSpider spider = new NoneSpider();
         job.setRealRunnable(spider);
+        JobManagerFactory.getJobManager().start();
         JobManagerFactory.getJobManager().putJob(job);
 
         try {
@@ -100,6 +101,10 @@ public class MainTest {
         job = JobManagerFactory.getJobManager().getJob();
 
         LogManager.info("job: " + job);
+
+        while (true) {
+
+        }
 
     }
 

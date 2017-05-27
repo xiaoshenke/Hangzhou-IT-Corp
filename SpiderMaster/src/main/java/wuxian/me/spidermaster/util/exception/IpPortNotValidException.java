@@ -1,4 +1,4 @@
-package wuxian.me.spidermaster.exception;
+package wuxian.me.spidermaster.util.exception;
 
 /**
  * Created by wuxian on 27/5/2017.

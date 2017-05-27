@@ -173,6 +173,9 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
     }
 
     public IJob getJob() {
+        if(!started) {
+            return null;
+        }
         IJob job = queue.getJob();
         return job;
     }

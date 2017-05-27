@@ -6,9 +6,9 @@ import java.util.regex.Pattern;
 /**
  * Created by wuxian on 26/5/2017.
  */
-public class Util {
+public class IpPortUtil {
 
-    private Util() {
+    private IpPortUtil() {
     }
 
     public static boolean isValidIpPort(String ipport) {
