@@ -1,6 +1,8 @@
 package wuxian.me.spidersdk;
 
+import com.google.common.primitives.Ints;
 import org.junit.Test;
+import redis.clients.jedis.Jedis;
 import wuxian.me.spidersdk.anti.IPProxyTool;
 import wuxian.me.spidersdk.distribute.ClassHelper;
 import wuxian.me.spidersdk.job.IJob;
@@ -106,6 +108,19 @@ public class MainTest {
 
         }
 
+    }
+
+    @Test
+    public void testJedis() {
+        Jedis jedis = new Jedis(JobManagerConfig.redisIp, Ints.checkedCast(JobManagerConfig.redisPort));
+
+
+        jedis.lpush("1", "hello");
+        jedis.lpush("1", "?wolrd");
+        jedis.lpush("1", jedis.rpop("1"));
+
+        String pop = jedis.rpop("1");
+        System.out.println(pop);
     }
 
 }

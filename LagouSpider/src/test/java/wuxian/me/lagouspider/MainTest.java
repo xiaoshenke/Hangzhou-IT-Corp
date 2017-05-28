@@ -2,17 +2,24 @@ package wuxian.me.lagouspider;
 
 import okhttp3.Request;
 import org.junit.Test;
+import redis.clients.jedis.Jedis;
+import wuxian.me.lagouspider.biz.boss.BPositionListSpider;
+import wuxian.me.lagouspider.biz.boss.BPositonDetailSpider;
 import wuxian.me.lagouspider.mapper.boss.BCompanyMapper;
 import wuxian.me.lagouspider.mapper.boss.BLocationMapper;
 import wuxian.me.lagouspider.mapper.boss.BPositionMapper;
 import wuxian.me.lagouspider.model.boss.BCompany;
 import wuxian.me.lagouspider.model.boss.BLocation;
 import wuxian.me.lagouspider.model.boss.BPosition;
+import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.ModuleProvider;
 import wuxian.me.spidersdk.BaseSpider;
+import wuxian.me.spidersdk.JobManagerConfig;
 import wuxian.me.spidersdk.SpiderCallback;
 import wuxian.me.spidersdk.anti.IPProxyTool;
+import wuxian.me.spidersdk.distribute.HttpUrlNode;
 import wuxian.me.spidersdk.log.LogManager;
+import wuxian.me.spidersdk.manager.JobManagerFactory;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -23,6 +30,29 @@ import static wuxian.me.lagouspider.util.ModuleProvider.*;
  * Created by wuxian on 9/4/2017.
  */
 public class MainTest {
+
+    @Test
+    public void testBDetail() {
+        Main.init();
+        JobManagerFactory.getJobManager().start();
+
+        BPositonDetailSpider spider = new BPositonDetailSpider(1334);
+        Helper.dispatchSpider(spider);
+
+        while (true) {
+
+        }
+
+    }
+
+    @Test
+    public void testBPositionList() {
+
+        HttpUrlNode node = BPositionListSpider.toUrlNode(new BPositionListSpider("西湖",1));
+        BPositionListSpider spider = BPositionListSpider.fromUrlNode(node);
+
+        System.out.println(spider);
+    }
 
     @Test
     public void testList() {

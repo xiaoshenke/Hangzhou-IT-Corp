@@ -7,12 +7,10 @@ import okhttp3.Request;
 import org.htmlparser.Node;
 import org.htmlparser.Parser;
 import org.htmlparser.filters.HasAttributeFilter;
-import org.htmlparser.nodes.TextNode;
 import org.htmlparser.tags.Bullet;
 import org.htmlparser.tags.BulletList;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
-import wuxian.me.lagouspider.util.Config;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.NodeLogUtil;
 import wuxian.me.spidersdk.BaseSpider;
@@ -27,39 +25,47 @@ import java.util.regex.Pattern;
 
 /**
  * Created by wuxian on 13/5/2017.
- *
+ * <p>
  * Fixme: 数据有问题！
  */
 public class BPositionListSpider extends BaseBossSpider {
 
     public static BPositionListSpider fromUrlNode(HttpUrlNode node) {
-        String url = BASE_URL + "c" + INDEX_HANGZHOU;
-        if(!node.baseUrl.contains(url)){
+        String url = BASE_URL + "c" + INDEX_HANGZHOU + "-p100101/b_";
+        if (!node.baseUrl.contains(url)) {
             return null;
         }
 
-        if(!node.httpGetParam.containsKey("query") || !node.httpGetParam.containsKey("page")) {
+        if (!node.httpGetParam.containsKey("ka") || !node.httpGetParam.containsKey("page")) {
             return null;
         }
 
-        String reg = "(?<=/b_)*+(?=-h_)";
+        int begin = node.baseUrl.indexOf("b_");
+        if(begin == -1){
+            return null;
+        }
+        String distinc = node.baseUrl.substring(begin+2,node.baseUrl.length()-1);
+        /*
+        String reg = "(?<=/b_)*+(?=/)";
         Pattern pattern = Pattern.compile(reg);
         Matcher matcher = pattern.matcher(node.baseUrl);
-        if(!matcher.find()){
+        if (!matcher.find()) {
             return null;
         }
         String distinc = matcher.group();
+        */
         int page = Integer.parseInt(node.httpGetParam.get("page"));
-        return new BPositionListSpider(distinc,page);
+        return new BPositionListSpider(distinc, page);
     }
 
     public static HttpUrlNode toUrlNode(BPositionListSpider spider) {
         HttpUrlNode node = new HttpUrlNode();
-        String url = BASE_URL + "c" + INDEX_HANGZHOU + "/b_" + spider.distinct + "-h_" + INDEX_HANGZHOU + "/";
+        String url =  BASE_URL + "c" + INDEX_HANGZHOU + "-p100101/b_" + spider.distinct + "/";
 
         node.baseUrl = url;
-        node.httpGetParam.put("query","java");
-        node.httpGetParam.put("page",String.valueOf(spider.page));
+        //node.httpGetParam.put("query","java");
+        node.httpGetParam.put("page", String.valueOf(spider.page));
+        node.httpGetParam.put("ka", "page-" + String.valueOf(spider.page));
         return node;
     }
 
@@ -75,9 +81,9 @@ public class BPositionListSpider extends BaseBossSpider {
     }
 
     protected Request buildRequest() {
-        String url = BASE_URL + "c" + INDEX_HANGZHOU + "/b_" + distinct + "-h_" + INDEX_HANGZHOU + "/";
+        String url = BASE_URL + "c" + INDEX_HANGZHOU + "-p100101/b_" + distinct + "/";
         HttpUrl.Builder urlBuilder = HttpUrl.parse(url).newBuilder();
-        urlBuilder.addQueryParameter("query", "java");
+        urlBuilder.addQueryParameter("ka", "page-"+String.valueOf(page));
         urlBuilder.addQueryParameter("page", String.valueOf(page));
 
         final String referer = "http://www.zhipin.com/";
@@ -106,7 +112,7 @@ public class BPositionListSpider extends BaseBossSpider {
                 Matcher matcher = pattern.matcher(str);
                 if (matcher.find()) {
                     long total = Long.parseLong(matcher.group());
-                    LogManager.info("Current Now,number of total java job in "+distinct+" is "+total);
+                    LogManager.info("Current Now,number of total java job in " + distinct + " is " + total);
                     int num = (int) total / BossConfig.POSITION_NUM_PER_PAGE + 1;
 
                     for (int i = 2; i <= num; i++) {
@@ -143,7 +149,7 @@ public class BPositionListSpider extends BaseBossSpider {
             long positionId = Long.parseLong(matcher.group());
             //LogManager.info("paresed position: "+positionId);
 
-            if(BossConfig.ENABLE_SPIDE_DETAIL) {
+            if (BossConfig.ENABLE_SPIDE_DETAIL) {
                 Helper.dispatchSpider(new BPositonDetailSpider(positionId));
             }
         }
