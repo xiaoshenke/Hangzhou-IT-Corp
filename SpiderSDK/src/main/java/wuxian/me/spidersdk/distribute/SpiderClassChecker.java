@@ -39,17 +39,22 @@ public class SpiderClassChecker {
             clazz.asSubclass(BaseSpider.class);
             Method method1 = clazz.getMethod("toUrlNode", clazz);
             if (!(method1.getDeclaringClass().getSimpleName().equals(clazz.getSimpleName()))) {
-                if (!JobManagerConfig.noMethodCheckingException) {
-                    throw new MethodCheckException();
-                }
+                //if (!JobManagerConfig.noMethodCheckingException) {
+                //    throw new MethodCheckException();
+                //}
 
-                return ret;
+                method1 = null;
             }
             Method method = clazz.getMethod("fromUrlNode", HttpUrlNode.class);
             if (!(method.getDeclaringClass().getSimpleName().equals(clazz.getSimpleName()))) {
-                if (!JobManagerConfig.noMethodCheckingException) {
-                    throw new MethodCheckException();
-                }
+                //if (!JobManagerConfig.noMethodCheckingException) {
+                //    throw new MethodCheckException();
+                //}
+                method = null;
+            }
+
+            //支持其中一个方法为null
+            if(method == null && method1 == null) {
                 return ret;
             }
 

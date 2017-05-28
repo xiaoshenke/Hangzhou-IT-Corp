@@ -27,6 +27,8 @@ import java.util.regex.Pattern;
 
 /**
  * Created by wuxian on 13/5/2017.
+ *
+ * Fixme: 数据有问题！
  */
 public class BPositionListSpider extends BaseBossSpider {
 

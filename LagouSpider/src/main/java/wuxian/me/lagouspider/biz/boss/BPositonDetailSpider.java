@@ -43,7 +43,7 @@ public class BPositonDetailSpider extends BaseBossSpider {
     private static String BASE_URL = "http://www.zhipin.com/job_detail/";
     private long positionId;
 
-    /*
+
     public static HttpUrlNode toUrlNode(BPositonDetailSpider spider) {
         HttpUrlNode node = new HttpUrlNode();
         String url = BASE_URL + spider.positionId + ".html";
@@ -51,6 +51,7 @@ public class BPositonDetailSpider extends BaseBossSpider {
         return node;
     }
 
+    /*
     public static BPositonDetailSpider fromUrlNode(HttpUrlNode node) {
         if (!node.baseUrl.contains(BASE_URL)) {
             return null;

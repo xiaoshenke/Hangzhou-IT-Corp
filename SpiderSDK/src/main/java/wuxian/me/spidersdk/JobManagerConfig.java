@@ -160,7 +160,7 @@ public class JobManagerConfig {
 
         enableScheduleImmediately = parse(pro, "enableScheduleImmediately", false);
 
-        jobQueueEmptySleepTime = parse(pro, "jobQueueEmptySleepTime", (long) 1000 * 10);
+        jobQueueEmptySleepTime = parse(pro, "jobQueueEmptySleepTime", (long) 1000 * 5);
 
         jobNumToSleep = parse(pro, "jobNumToSleep", 10);
 

@@ -13,7 +13,7 @@ public interface BossConfig {
 
     String HOST = "www.zhipin.com";
 
-    boolean ENABLE_SPIDE_DETAIL = false;
+    boolean ENABLE_SPIDE_DETAIL = true;
 
     interface File {
 
