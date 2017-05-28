@@ -101,6 +101,13 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
 
         LogManager.info("JobManager Inited");
 
+        Thread.currentThread().setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            public void uncaughtException(Thread t, Throwable e) {
+                LogManager.error("uncaughtExceptionHandler e:" + e.getMessage());
+                //onUncaughtException(t, e);
+            }
+        });
+
         onResume();
     }
 
@@ -132,6 +139,8 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
     }
 
     public void success(Runnable runnable) {
+
+        LogManager.info("Job Success: " + ((BaseSpider) runnable).name());
         dispatchedSpiderList.remove((BaseSpider) runnable);
         blockHelper.removeFail(runnable);
         failureSpiderList.remove((BaseSpider) runnable);
@@ -267,10 +276,13 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
     }
 
     public void onResume() {
-
         if (JobManagerConfig.newSpideMode) {  //全新抓取模式 返回
             FileUtil.writeToFile(FileUtil.getCurrentPath() + JobManagerConfig.serializedSpiderFile, "");
             return;
+        }
+
+        if (!FileUtil.checkFileExist(FileUtil.getCurrentPath() + JobManagerConfig.serializedSpiderFile)) {
+            FileUtil.writeToFile(FileUtil.getCurrentPath() + JobManagerConfig.serializedSpiderFile, "");
         }
 
         String spiderStr = FileUtil.readFromFile(FileUtil.getCurrentPath() + JobManagerConfig.serializedSpiderFile);

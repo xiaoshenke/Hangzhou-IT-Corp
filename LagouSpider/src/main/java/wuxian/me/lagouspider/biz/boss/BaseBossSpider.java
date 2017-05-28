@@ -21,4 +21,18 @@ public abstract class BaseBossSpider extends BaseSpider {
     public String hashString() {
         return name();
     }
+
+    @Override
+    protected boolean checkBlockAndFailThisSpider(int httpCode) {
+        if(super.checkBlockAndFailThisSpider(httpCode)) {
+            return true;
+        }
+
+        //Boss直聘403
+        if(httpCode == 403 || httpCode == 429) {
+            return true;
+        }
+
+        return false;
+    }
 }

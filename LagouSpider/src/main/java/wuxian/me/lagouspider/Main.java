@@ -1,6 +1,7 @@
 package wuxian.me.lagouspider;
 
 import wuxian.me.lagouspider.biz.boss.BDisdinctSpider;
+import wuxian.me.lagouspider.biz.boss.BPositionListSpider;
 import wuxian.me.lagouspider.biz.boss.BPositonDetailSpider;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.spidersdk.distribute.ClassHelper;
@@ -18,25 +19,7 @@ import static wuxian.me.lagouspider.util.ModuleProvider.logger;
  */
 public class Main {
 
-    //默认jar包运行 检查该路径下是否存在/conf/jobmanager.properties 配置文件,若有,读取配置
-    private static void findCorrectFilePath() {
-        try {
-            File file = new File(Main.class.getProtectionDomain().getCodeSource()
-                    .getLocation().toURI().getPath());
-            if (FileUtil.checkFileExist(file.getParentFile().getAbsolutePath() + "/conf/jobmanager.properties")) {
-                FileUtil.setCurrentFile(file.getAbsolutePath());
-                FileUtil.setCurrentPath(file.getParentFile().getAbsolutePath());
-                return;
-            }
-        } catch (Exception e) {
-            ;
-        }
-
-        File file = new File("");
-        FileUtil.setCurrentPath(file.getAbsolutePath());
-    }
-
-    static {
+    public static void init() {
         LogManager.info("Main_static Begin.");
         LogManager.info("1 Find Current File Path.");
         findCorrectFilePath();
@@ -77,24 +60,35 @@ public class Main {
             }
         });
         LogManager.info("Main_static End.");
+    }
 
+    //默认jar包运行 检查该路径下是否存在/conf/jobmanager.properties 配置文件,若有,读取配置
+    private static void findCorrectFilePath() {
+        try {
+            File file = new File(Main.class.getProtectionDomain().getCodeSource()
+                    .getLocation().toURI().getPath());
+            if (FileUtil.checkFileExist(file.getParentFile().getAbsolutePath() + "/conf/jobmanager.properties")) {
+                FileUtil.setCurrentFile(file.getAbsolutePath());
+                FileUtil.setCurrentPath(file.getParentFile().getAbsolutePath());
+                return;
+            }
+        } catch (Exception e) {
+            ;
+        }
+
+        File file = new File("");
+        FileUtil.setCurrentPath(file.getAbsolutePath());
     }
 
     public void run() {
         JobManagerFactory.getJobManager().start();
 
-        BDisdinctSpider disdinctSpider = new BDisdinctSpider();
-        while(true) {
-            Helper.dispatchSpider(disdinctSpider);
-            try{
-                Thread.sleep(1000);
-            } catch (InterruptedException e){
-
-            }
-        }
+        BPositionListSpider spider = new BPositionListSpider("拱墅区",1);
+        Helper.dispatchSpider(spider);
     }
 
     public static void main(String[] args) {
+        init();
         LogManager.info("Main Begin");
         Main main = new Main();
         main.run();

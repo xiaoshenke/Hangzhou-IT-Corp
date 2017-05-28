@@ -43,6 +43,7 @@ public class BPositonDetailSpider extends BaseBossSpider {
     private static String BASE_URL = "http://www.zhipin.com/job_detail/";
     private long positionId;
 
+    /*
     public static HttpUrlNode toUrlNode(BPositonDetailSpider spider) {
         HttpUrlNode node = new HttpUrlNode();
         String url = BASE_URL + spider.positionId + ".html";
@@ -66,6 +67,7 @@ public class BPositonDetailSpider extends BaseBossSpider {
         BPositonDetailSpider spider = new BPositonDetailSpider(Long.parseLong(matcher.group()));
         return spider;
     }
+    */
 
 
     protected Request buildRequest() {

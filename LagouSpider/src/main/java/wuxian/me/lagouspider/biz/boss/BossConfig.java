@@ -13,6 +13,8 @@ public interface BossConfig {
 
     String HOST = "www.zhipin.com";
 
+    boolean ENABLE_SPIDE_DETAIL = false;
+
     interface File {
 
         String FILE = "/file/boss/";
@@ -25,11 +27,11 @@ public interface BossConfig {
 
     interface TableName {
 
-        String COMPANY = "bcompanies";
+        String COMPANY = "companies";
 
-        String LOCATION = "blocations";
+        String LOCATION = "locations";
 
-        String POSITION = "bpositions";
+        String POSITION = "positions";
     }
 
     interface SaveDBThread {

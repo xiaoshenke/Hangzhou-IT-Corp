@@ -50,6 +50,7 @@ public class BPositionListSpider extends BaseBossSpider {
         int page = Integer.parseInt(node.httpGetParam.get("page"));
         return new BPositionListSpider(distinc,page);
     }
+
     public static HttpUrlNode toUrlNode(BPositionListSpider spider) {
         HttpUrlNode node = new HttpUrlNode();
         String url = BASE_URL + "c" + INDEX_HANGZHOU + "/b_" + spider.distinct + "-h_" + INDEX_HANGZHOU + "/";
@@ -103,6 +104,7 @@ public class BPositionListSpider extends BaseBossSpider {
                 Matcher matcher = pattern.matcher(str);
                 if (matcher.find()) {
                     long total = Long.parseLong(matcher.group());
+                    LogManager.info("Current Now,number of total java job in "+distinct+" is "+total);
                     int num = (int) total / BossConfig.POSITION_NUM_PER_PAGE + 1;
 
                     for (int i = 2; i <= num; i++) {
@@ -117,11 +119,10 @@ public class BPositionListSpider extends BaseBossSpider {
                 if (node instanceof BulletList && node.getText().trim().equals("ul")) {
                     list = node.getChildren();
                     for (int j = 0; j < list.size(); j++) {
-                        Node child = list.elementAt(i);
+                        Node child = list.elementAt(j);
                         if (child instanceof Bullet && child.getText().trim().equals("li")) {
                             //NodeLogUtil.printChildrenOfNode(child);
                             parsePosition(child);
-                            break;
                         }
                     }
                     break;
@@ -131,13 +132,18 @@ public class BPositionListSpider extends BaseBossSpider {
     }
 
     private void parsePosition(Node node) {
-        LogManager.info("ParsePosition");
+        //LogManager.info("ParsePosition");
         String reg = "(?<=job_detail/)[0-9]+(?=.html)";
         Pattern pattern = Pattern.compile(reg);
         String str = node.toString();
         Matcher matcher = pattern.matcher(str);
         if (matcher.find()) {
-            Helper.dispatchSpider(new BPositonDetailSpider(Long.parseLong(matcher.group())));
+            long positionId = Long.parseLong(matcher.group());
+            //LogManager.info("paresed position: "+positionId);
+
+            if(BossConfig.ENABLE_SPIDE_DETAIL) {
+                Helper.dispatchSpider(new BPositonDetailSpider(positionId));
+            }
         }
     }
 

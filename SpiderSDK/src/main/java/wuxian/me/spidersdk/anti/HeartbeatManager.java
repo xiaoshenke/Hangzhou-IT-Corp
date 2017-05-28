@@ -56,6 +56,10 @@ public class HeartbeatManager implements Runnable {
     }
 
     public void run() {
+        if (!JobManagerConfig.enableProxyHeartbeat) {
+            return;
+        }
+
         boolean proxyLive = true;
         while (!Thread.interrupted()) {
             try {

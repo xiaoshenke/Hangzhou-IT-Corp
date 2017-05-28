@@ -25,6 +25,18 @@ import static wuxian.me.lagouspider.util.ModuleProvider.*;
 public class MainTest {
 
     @Test
+    public void testList() {
+        Main.init();
+
+        new Main().run();
+
+        while (true) {
+
+        }
+    }
+
+
+    @Test
     public void testProxy(){
         String[] ipproxy = new String[]{"115.215.51.170","26964"};
         System.out.println(IPProxyTool.isVaildIpPort(ipproxy));

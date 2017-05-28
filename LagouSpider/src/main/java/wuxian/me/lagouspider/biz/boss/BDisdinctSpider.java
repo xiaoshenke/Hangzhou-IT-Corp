@@ -16,6 +16,7 @@ import wuxian.me.lagouspider.util.NodeLogUtil;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.anti.MaybeBlockedException;
 import wuxian.me.spidersdk.distribute.HttpUrlNode;
+import wuxian.me.spidersdk.log.LogManager;
 import wuxian.me.spidersdk.util.FileUtil;
 
 import java.util.ArrayList;
@@ -110,8 +111,18 @@ public class BDisdinctSpider extends BaseBossSpider {
         try {
             parse(s);
         } catch (MaybeBlockedException e) {
+
+            LogManager.info("BDisdinctSpider RET_MAYBE_BLOCK");
+            LogManager.info("-----------------------");
+            LogManager.info(s);
+            LogManager.info("-----------------------");
             return BaseSpider.RET_MAYBE_BLOCK;
         } catch (ParserException e) {
+
+            LogManager.info("BDisdinctSpider RET_PARSING_ERR");
+            LogManager.info("-----------------------");
+            LogManager.info(s);
+            LogManager.info("-----------------------");
             return BaseSpider.RET_PARSING_ERR;
         }
 
@@ -123,6 +134,7 @@ public class BDisdinctSpider extends BaseBossSpider {
             FileUtil.writeToFile(getBossDistinctsFilePath(), content);
         }
 
+        LogManager.info("BDisdinctSpider RET_SUCCESS");
         return BaseSpider.RET_SUCCESS;
     }
 

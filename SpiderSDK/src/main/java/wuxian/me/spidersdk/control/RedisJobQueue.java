@@ -79,8 +79,7 @@ public class RedisJobQueue implements IQueue {
         if (urlNode == null) {
             return false;
         }
-        LogManager.info("Put Spider: " + spider.name());
-
+        LogManager.info("try to Put Spider");
         if (state == IJob.STATE_INIT) {
             String key = String.valueOf(urlNode.toRedisKey());
             if (jedis.exists(key) && !JobManagerConfig.enableInsertDuplicateJob) {
@@ -91,9 +90,13 @@ public class RedisJobQueue implements IQueue {
         }
         String json = gson.toJson(urlNode);
         jedis.lpush(JOB_QUEUE, json);  //会存在一点并发的问题 但认为可以接受
+        LogManager.info("Success Put Spider: " + spider.name());
+        LogManager.info("Current redis job num is "+getJobNum());
         return true;
     }
 
+    //use in @DistributeJobManager.onResume: putting back job to redisjobqueue,
+    //so we will ignore if jedis.exists(key)
     public boolean putJob(HttpUrlNode urlNode) {
         if (urlNode == null) {
             return false;
@@ -107,6 +110,9 @@ public class RedisJobQueue implements IQueue {
         if (!JobManagerConfig.enableGetSpiderFromQueue) {
             return null;
         }
+
+        LogManager.info("try Get Spider ");
+
         String spiderStr = jedis.rpop(JOB_QUEUE);
 
         if (spiderStr == null) {

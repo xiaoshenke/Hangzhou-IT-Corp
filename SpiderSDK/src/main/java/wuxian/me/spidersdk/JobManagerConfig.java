@@ -16,6 +16,8 @@ import java.util.Properties;
  */
 public class JobManagerConfig {
 
+    public static boolean enableProxyHeartbeat;
+
     //用于测试putJob,getJob行为
     //控制是否发送http request
     public static boolean enableDispatchSpider;
@@ -144,7 +146,6 @@ public class JobManagerConfig {
 
         proxyHeartbeatInterval = parse(pro, "proxyHeartbeatInterval", 5 * 1000);
 
-
         enableSwitchProxy = parse(pro, "enableSwitchProxy", true);
 
         enableRuntimeInputProxy = parse(pro, "enableRuntimeInputProxy", true);
@@ -179,7 +180,6 @@ public class JobManagerConfig {
 
         enableRetrySpider = parse(pro, "enableRetrySpider", true);
 
-
         redisIp = parse(pro, "redisIp", "127.0.0.1");
         redisPort = parse(pro, "redisPort", (long) 6379);
 
@@ -191,6 +191,8 @@ public class JobManagerConfig {
         spiderIdentity = parse(pro, "spiderIdentity", "none");
 
         spiderScan = parse(pro, "spiderScan", (String) null);
+
+        enableProxyHeartbeat = parse(pro, "enableProxyHeartbeat", true);
 
         //只有三种身份
         if (!spiderIdentity.equals("none")) {

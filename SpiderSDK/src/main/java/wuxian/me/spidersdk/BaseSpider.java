@@ -73,10 +73,14 @@ public abstract class BaseSpider implements Runnable {
     protected abstract SpiderCallback getCallback();
 
     public void run() {
+        LogManager.info("BaseSpider.run");
         Request request = getRequest();
+
         if (request == null || !JobManagerConfig.enableDispatchSpider) {
             return;
         }
+
+        LogManager.info("Success dispatch");
         JobManagerFactory.getJobManager().onDispatch(this);
         OkhttpProvider.getClient().newCall(request).enqueue(callback);
     }
