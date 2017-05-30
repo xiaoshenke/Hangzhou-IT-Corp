@@ -28,6 +28,8 @@ public interface IJobManager {
 
     boolean putJob(@NotNull IJob job);
 
+    boolean putJob(@NotNull IJob job, boolean forceDispatch);
+
     void onDispatch(@NotNull BaseSpider spider);
 
     void start();

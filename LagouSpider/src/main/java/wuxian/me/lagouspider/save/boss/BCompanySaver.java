@@ -1,6 +1,7 @@
 package wuxian.me.lagouspider.save.boss;
 
 import com.sun.istack.internal.NotNull;
+import wuxian.me.lagouspider.biz.boss.BizConfig;
 import wuxian.me.lagouspider.biz.boss.BossConfig;
 import wuxian.me.lagouspider.mapper.boss.BCompanyMapper;
 import wuxian.me.lagouspider.model.boss.BCompany;
@@ -32,7 +33,7 @@ public class BCompanySaver implements IModelSaver<BCompany> {
 
 
     private BCompanySaver() {
-        thread = new SaveModelThread(companyMap, BossConfig.SaveDBThread.SAVE_COMPANY_INTERVAL, new SaveModelThread.IDatabaseOperator<BCompany>() {
+        thread = new SaveModelThread(companyMap, BizConfig.saveCompanyInternal * 1000, new SaveModelThread.IDatabaseOperator<BCompany>() {
             public void insert(BCompany model) {
                 mapper.insertCompany(model);
             }
@@ -46,7 +47,7 @@ public class BCompanySaver implements IModelSaver<BCompany> {
     }
 
     public boolean saveModel(@NotNull BCompany company) {
-        if (!isModelValid(company)) {  //Fixme
+        if (!isModelValid(company)) {
             return false;
         }
 
@@ -54,6 +55,7 @@ public class BCompanySaver implements IModelSaver<BCompany> {
         return true;
     }
 
+    //format一下model 使得数据可控
     public boolean isModelValid(@NotNull BCompany model) {
 
         if (model.name.length() > 8) {

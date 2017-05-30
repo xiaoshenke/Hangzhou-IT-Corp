@@ -1,5 +1,6 @@
 package wuxian.me.lagouspider;
 
+import com.sun.istack.internal.NotNull;
 import okhttp3.Request;
 import org.junit.Test;
 import redis.clients.jedis.Jedis;
@@ -20,9 +21,12 @@ import wuxian.me.spidersdk.anti.IPProxyTool;
 import wuxian.me.spidersdk.distribute.HttpUrlNode;
 import wuxian.me.spidersdk.log.LogManager;
 import wuxian.me.spidersdk.manager.JobManagerFactory;
+import wuxian.me.spidersdk.util.FileUtil;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static wuxian.me.lagouspider.util.ModuleProvider.*;
 
@@ -32,27 +36,51 @@ import static wuxian.me.lagouspider.util.ModuleProvider.*;
 public class MainTest {
 
     @Test
+    public void testParseDetail() {
+        String content = FileUtil.readFromFile(FileUtil.getCurrentPath() + "/whole_spider.txt");
+
+        String reg = "(?<=positionId: )[0-9]+";
+        Pattern pattern = Pattern.compile(reg);
+        Matcher matcher = pattern.matcher(content);
+
+        int i = 0;
+        while (matcher.find()) {
+            i++;
+            System.out.println(matcher.group());
+        }
+
+        System.out.println();
+        System.out.println(i);
+    }
+
+    @Test
     public void testBDetail() {
         Main.init();
-        JobManagerFactory.getJobManager().start();
-
-        BPositonDetailSpider spider = new BPositonDetailSpider(1334);
-        Helper.dispatchSpider(spider);
-
+        //JobManagerFactory.getJobManager().start();
+        BPositonDetailSpider spider = new BPositonDetailSpider(1411652718);
+        //Helper.dispatchSpider(spider);
+        spider.run();
         while (true) {
 
         }
-
     }
 
     @Test
     public void testBPositionList() {
 
-        HttpUrlNode node = BPositionListSpider.toUrlNode(new BPositionListSpider("西湖",1));
+        HttpUrlNode node = BPositionListSpider.toUrlNode(new BPositionListSpider("西湖", 1));
         BPositionListSpider spider = BPositionListSpider.fromUrlNode(node);
 
         System.out.println(spider);
     }
+
+    @Test
+    public void testBPositionDetail() {
+        HttpUrlNode node = BPositonDetailSpider.toUrlNode(new BPositonDetailSpider(3341));
+        BPositonDetailSpider spider = BPositonDetailSpider.fromUrlNode(node);
+        System.out.println(spider);
+    }
+
 
     @Test
     public void testList() {
@@ -67,8 +95,8 @@ public class MainTest {
 
 
     @Test
-    public void testProxy(){
-        String[] ipproxy = new String[]{"115.215.51.170","26964"};
+    public void testProxy() {
+        String[] ipproxy = new String[]{"115.215.51.170", "26964"};
         System.out.println(IPProxyTool.isVaildIpPort(ipproxy));
     }
 

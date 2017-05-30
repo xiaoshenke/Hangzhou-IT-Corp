@@ -1,6 +1,7 @@
 package wuxian.me.lagouspider.save.boss;
 
 import com.sun.istack.internal.NotNull;
+import wuxian.me.lagouspider.biz.boss.BizConfig;
 import wuxian.me.lagouspider.biz.boss.BossConfig;
 import wuxian.me.lagouspider.mapper.boss.BPositionMapper;
 import wuxian.me.lagouspider.model.boss.BPosition;
@@ -32,7 +33,7 @@ public class BPositionSaver implements IModelSaver<BPosition> {
 
 
     private BPositionSaver() {
-        thread = new SaveModelThread(positionMap, BossConfig.SaveDBThread.SAVE_POSITION_INTERVAL, new SaveModelThread.IDatabaseOperator<BPosition>() {
+        thread = new SaveModelThread(positionMap, BizConfig.savePositionInternal * 1000, new SaveModelThread.IDatabaseOperator<BPosition>() {
             public void insert(BPosition model) {
                 mapper.insertPosition(model);
             }

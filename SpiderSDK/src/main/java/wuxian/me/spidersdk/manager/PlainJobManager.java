@@ -109,6 +109,10 @@ public class PlainJobManager implements HeartbeatManager.IHeartBeat,IJobManager 
         return queue.putJob(job, IJob.STATE_INIT);
     }
 
+    public boolean putJob(@NotNull IJob job, boolean forceDispatch) {
+        return false;
+    }
+
     public IJob getJob() {
         IJob job = queue.getJob();
         return job;

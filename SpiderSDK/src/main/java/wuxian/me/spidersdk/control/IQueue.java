@@ -7,6 +7,8 @@ import wuxian.me.spidersdk.job.IJob;
  */
 public interface IQueue {
 
+    boolean putJob(IJob job, boolean forceDispatch);
+
     boolean putJob(IJob job, int state);
 
     IJob getJob();

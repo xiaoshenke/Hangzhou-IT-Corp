@@ -178,4 +178,11 @@ public class Helper {
         jobManager.putJob(job);
     }
 
+    public static void dispatchSpider(@NotNull BaseSpider spider, boolean force) {
+        IJob job = JobProvider.getJob();
+        job.setRealRunnable(spider);
+
+        jobManager.putJob(job, force);
+    }
+
 }

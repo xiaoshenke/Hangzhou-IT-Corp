@@ -1,6 +1,7 @@
 package wuxian.me.lagouspider.save.boss;
 
 import com.sun.istack.internal.NotNull;
+import wuxian.me.lagouspider.biz.boss.BizConfig;
 import wuxian.me.lagouspider.biz.boss.BossConfig;
 import wuxian.me.lagouspider.mapper.boss.BLocationMapper;
 import wuxian.me.lagouspider.model.boss.BLocation;
@@ -32,7 +33,7 @@ public class BLocationSaver implements IModelSaver<BLocation> {
 
 
     private BLocationSaver() {
-        thread = new SaveModelThread(companyMap, BossConfig.SaveDBThread.SAVE_LOCATION_INTERVAL, new SaveModelThread.IDatabaseOperator<BLocation>() {
+        thread = new SaveModelThread(companyMap, BizConfig.saveLocationInternal * 1000, new SaveModelThread.IDatabaseOperator<BLocation>() {
             public void insert(BLocation model) {
                 mapper.insertLocation(model);
             }

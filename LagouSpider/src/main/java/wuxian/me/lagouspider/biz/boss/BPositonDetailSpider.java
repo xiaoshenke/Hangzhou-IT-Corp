@@ -51,7 +51,6 @@ public class BPositonDetailSpider extends BaseBossSpider {
         return node;
     }
 
-    /*
     public static BPositonDetailSpider fromUrlNode(HttpUrlNode node) {
         if (!node.baseUrl.contains(BASE_URL)) {
             return null;
@@ -68,7 +67,6 @@ public class BPositonDetailSpider extends BaseBossSpider {
         BPositonDetailSpider spider = new BPositonDetailSpider(Long.parseLong(matcher.group()));
         return spider;
     }
-    */
 
 
     protected Request buildRequest() {
@@ -140,7 +138,7 @@ public class BPositonDetailSpider extends BaseBossSpider {
         for (int i = 0; i < list.size(); i++) {
             child = list.elementAt(i);
             if (child instanceof Div && child.getText().trim().contains("job-sec")) {
-                NodeLogUtil.printChildrenOfNode(child);
+                //NodeLogUtil.printChildrenOfNode(child);
                 NodeList list1 = child.getChildren();
                 if (list1 == null || list1.size() == 0) {
                     continue;
@@ -508,7 +506,6 @@ public class BPositonDetailSpider extends BaseBossSpider {
             if (location.locationId < 0) {
                 location.locationId = -(location.locationId + 1);   //Fixme:有没有必要
             }
-
 
             position.companyId = company.companyId;
             position.locationId = location.locationId;

@@ -66,6 +66,27 @@ public class RedisJobQueue implements IQueue {
 
     }
 
+    public boolean putJob(IJob job, boolean forceDispatch) {
+        if (!JobManagerConfig.enablePutSpiderToQueue) {
+            return false;
+        }
+
+        BaseSpider spider = (BaseSpider) job.getRealRunnable();
+        HttpUrlNode urlNode = spider.toUrlNode();
+
+        if (urlNode == null) {
+            return false;
+        }
+
+        String key = String.valueOf(urlNode.toRedisKey());
+        jedis.set(key, "true");
+        String json = gson.toJson(urlNode);
+        jedis.lpush(JOB_QUEUE, json);
+
+        LogManager.info("Success Put Spider: " + spider.name());
+        return true;
+    }
+
     //抛弃state --> 分布式下没法管理一个job的状态:是新开始的任务还是重试的任务
     public boolean putJob(IJob job, int state) {
 
@@ -91,7 +112,7 @@ public class RedisJobQueue implements IQueue {
         String json = gson.toJson(urlNode);
         jedis.lpush(JOB_QUEUE, json);  //会存在一点并发的问题 但认为可以接受
         LogManager.info("Success Put Spider: " + spider.name());
-        LogManager.info("Current redis job num is "+getJobNum());
+        LogManager.info("Current redis job num is " + getJobNum());
         return true;
     }
 
@@ -105,6 +126,8 @@ public class RedisJobQueue implements IQueue {
         jedis.lpush(JOB_QUEUE, gson.toJson(urlNode));
         return true;
     }
+
+    private String lastUnsolvedStr = null;
 
     public IJob getJob() {
         if (!JobManagerConfig.enableGetSpiderFromQueue) {
@@ -127,7 +150,15 @@ public class RedisJobQueue implements IQueue {
             LogManager.info("Get Spider, Can't resolve node: " + node.toString() + " ,get another one");
             jedis.lpush(JOB_QUEUE, spiderStr);//Fixme: stack overflow?
 
-            return getJob();
+            if (lastUnsolvedStr == null) {
+                lastUnsolvedStr = spiderStr;
+                return getJob();
+            } else if (lastUnsolvedStr.equals(spiderStr)) { //走了一个循环了
+                LogManager.info("Seems run into a loop,sleep...");
+                return null;
+            } else {
+                return getJob();
+            }
         }
 
         if (!urlPatternMap.containsKey(hash)) {
@@ -137,23 +168,43 @@ public class RedisJobQueue implements IQueue {
 
                 LogManager.info("Get Spider, Can't resolve node: " + node.toString() + " ,get another one");
                 jedis.lpush(JOB_QUEUE, spiderStr);
-                return getJob();  //重新拿一个呗
+
+                if (lastUnsolvedStr == null) {
+                    lastUnsolvedStr = spiderStr;
+                    return getJob();
+                } else if (lastUnsolvedStr.equals(spiderStr)) { //走了一个循环了
+                    LogManager.info("Seems run into a loop,sleep...");
+                    return null;
+                } else {
+                    return getJob();
+                }
+
             } else {
                 urlPatternMap.put(hash, clazz);
             }
         }
 
         Method fromUrl = SpiderMethodManager.getFromUrlMethod(urlPatternMap.get(hash));
-        if(fromUrl == null) {   //有可能为null
+        if (fromUrl == null) {   //有可能为null
             unResolveList.add(hash);
             LogManager.info("Get Spider, Can't resolve node: " + node.toString() + " ,get another one");
             jedis.lpush(JOB_QUEUE, spiderStr);
-            return getJob();  //重新拿一个呗
+
+            if (lastUnsolvedStr == null) {
+                lastUnsolvedStr = spiderStr;
+                return getJob();
+            } else if (lastUnsolvedStr.equals(spiderStr)) { //走了一个循环了
+                LogManager.info("Seems run into a loop,sleep...");
+                return null;
+            } else {
+                return getJob();
+            }
         }
 
         try {
             BaseSpider spider = (BaseSpider) fromUrl.invoke(null, node);
             LogManager.info("Get Spider: " + spider.name());
+            LogManager.info("Current redis job num is " + getJobNum());
             IJob job = JobProvider.getJob();
             job.setRealRunnable(spider);
 
@@ -173,7 +224,7 @@ public class RedisJobQueue implements IQueue {
 
         for (Class clazz : SpiderMethodManager.getSpiderClasses()) {
             Method fromUrl = SpiderMethodManager.getFromUrlMethod(clazz);
-            if(fromUrl == null) {
+            if (fromUrl == null) {
                 continue;
             }
             try {
