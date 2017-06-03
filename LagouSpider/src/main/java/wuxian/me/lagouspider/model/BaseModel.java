@@ -13,4 +13,6 @@ public abstract class BaseModel {
     public final String toString() {
         return name();
     }
+
+    public abstract long index();
 }

@@ -11,6 +11,7 @@ import wuxian.me.spidersdk.IJobManager;
 import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.manager.JobManagerFactory;
+import wuxian.me.spidersdk.util.CookieManager;
 import wuxian.me.spidersdk.util.FileUtil;
 
 import java.io.File;
@@ -83,8 +84,6 @@ public class Helper {
     private static final String HEADER_REFERER = "Referer";
     private static Headers.Builder builder;
 
-    private static Map<String, String> cookieList = new HashMap<String, String>();
-
     static {
         builder = new Headers.Builder();
         builder.add("Cookie", "");
@@ -95,16 +94,16 @@ public class Helper {
     }
 
     public static Headers getHeaderBySpecifyRef(@NotNull String reference, @NotNull String spiderName) {
-        if (!cookieList.containsKey(spiderName)) {
+        if (!CookieManager.containsKey(spiderName)) {
             if (FileUtil.checkFileExist(getCookieFilePath(spiderName))) {
                 String content = FileUtil.readFromFile(getCookieFilePath(spiderName));
                 if (content != null && content.length() != 0) {
-                    cookieList.put(spiderName, content);
+                    CookieManager.put(spiderName, content);
                 }
             }
         }
 
-        builder.set("Cookie", cookieList.get(spiderName));
+        builder.set("Cookie", CookieManager.get(spiderName));
         builder.set(HEADER_REFERER, reference);
         return builder.build();
     }

@@ -36,7 +36,6 @@ public class BLocation extends BaseModel {
     }
 
     public long index() {
-        return locationId != -1 ? locationId :
-                companyId + hashCode();
+        return locationId;
     }
 }

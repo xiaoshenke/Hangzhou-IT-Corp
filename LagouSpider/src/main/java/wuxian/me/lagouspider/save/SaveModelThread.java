@@ -33,52 +33,61 @@ public class SaveModelThread<T extends BaseModel> extends Thread {
         this.operator = operator;
     }
 
-    @Override
-    public void run() {
-        while (true) {
-            if (!model.isEmpty()) {
-                Map<Long, T> modelMap;
+    private void doSaveAllModels() {
+        if (!model.isEmpty()) {
+            Map<Long, T> modelMap;
 
-                synchronized (model) {
-                    modelMap = new HashMap<Long, T>(model);
-                    model.clear();
+            synchronized (model) {
+                modelMap = new HashMap<Long, T>(model);
+                model.clear();
+            }
+
+            Class claz = null;
+            for (T model : modelMap.values()) {
+                if (claz == null) {
+                    claz = model.getClass();
+                    if (insert) {
+                        LogManager.info(getName() + "-->Insert count: " + modelMap.values().size());
+                    } else {
+                        LogManager.info(getName() + "-->Update count: " + modelMap.values().size());
+                    }
                 }
 
-                Class claz = null;
-                for (T model : modelMap.values()) {
-                    if (claz == null) {
-                        claz = model.getClass();
-                        if (insert) {
-                            LogManager.info(getName() + "-->Insert count: " + modelMap.values().size());
-                        } else {
-                            LogManager.info(getName() + "-->Update count: " + modelMap.values().size());
-                        }
-                    }
-
-                    if (operator != null) {
-                        if (insert) {
-                            try {
-                                operator.insert(model);
-                            } catch (Exception e) {
-                                LogManager.error(getName() + " insertModel: " + model.name() + " error: " + e.getMessage() + " we will ignore");
+                if (operator != null) {
+                    if (insert) {
+                        try {
+                            if (savedModel.contains(model.index())) {
+                                continue;
                             }
-
-                        } else {
-                            try {
-                                operator.update(model);
-                            } catch (Exception e) {
-                                LogManager.error(getName() + " updateModel: " + model.name() + " error: " + e.getMessage() + " we will ignore");
-                            }
-
+                            operator.insert(model);
+                            savedModel.add(model.index());
+                        } catch (Exception e) {
+                            LogManager.error(getName() + " insertModel: " + model.name() + " error: " + e.getMessage() + " we will ignore");
                         }
+
+                    } else {
+                        try {
+                            operator.update(model);
+                        } catch (Exception e) {
+                            LogManager.error(getName() + " updateModel: " + model.name() + " error: " + e.getMessage() + " we will ignore");
+                        }
+
                     }
                 }
             }
+        }
+    }
 
+    @Override
+    public void run() {
+        while (true) {
+            doSaveAllModels();
             try {
                 sleep(interval);
             } catch (InterruptedException e) {
-                ;
+
+                doSaveAllModels();
+                break;
             }
         }
     }

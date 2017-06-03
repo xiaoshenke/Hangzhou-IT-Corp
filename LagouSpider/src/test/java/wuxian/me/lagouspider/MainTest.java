@@ -1,9 +1,6 @@
 package wuxian.me.lagouspider;
 
-import com.sun.istack.internal.NotNull;
-import okhttp3.Request;
 import org.junit.Test;
-import redis.clients.jedis.Jedis;
 import wuxian.me.lagouspider.biz.boss.BPositionListSpider;
 import wuxian.me.lagouspider.biz.boss.BPositonDetailSpider;
 import wuxian.me.lagouspider.mapper.boss.BCompanyMapper;
@@ -12,19 +9,11 @@ import wuxian.me.lagouspider.mapper.boss.BPositionMapper;
 import wuxian.me.lagouspider.model.boss.BCompany;
 import wuxian.me.lagouspider.model.boss.BLocation;
 import wuxian.me.lagouspider.model.boss.BPosition;
-import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.ModuleProvider;
-import wuxian.me.spidersdk.BaseSpider;
-import wuxian.me.spidersdk.JobManagerConfig;
-import wuxian.me.spidersdk.SpiderCallback;
 import wuxian.me.spidersdk.anti.IPProxyTool;
 import wuxian.me.spidersdk.distribute.HttpUrlNode;
-import wuxian.me.spidersdk.log.LogManager;
-import wuxian.me.spidersdk.manager.JobManagerFactory;
 import wuxian.me.spidersdk.util.FileUtil;
 
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -117,66 +106,6 @@ public class MainTest {
         bPositionMapper.createNewTableIfNeed(position);
         bPositionMapper.createIndex(position);
 
-    }
-
-    private class DummySpider extends BaseSpider {
-
-        private int i;
-
-        public DummySpider(int i) {
-            super();
-            this.i = i;
-        }
-
-        @Override
-        public void run() {
-            logger().info("run " + name());
-        }
-
-        protected SpiderCallback getCallback() {
-            return null;
-        }
-
-        protected Request buildRequest() {
-            return null;
-        }
-
-        public int parseRealData(String data) {
-            return 0;
-        }
-
-        protected boolean checkBlockAndFailThisSpider(String html) {
-            return false;
-        }
-
-        public String name() {
-            return "DummySpider" + i;
-        }
-
-        public String hashString() {
-            return "DummySpider" + i;
-        }
-    }
-
-    private boolean checkDBConnection() {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            LogManager.error("no jdbc driver");
-            return false;
-        }
-
-        String url = "jdbc:mysql://127.0.0.1:3306/lagoujob?useUnicode=true&characterEncoding=utf-8";
-        String username = "user1";
-        String password = "123456";
-
-        try {
-            DriverManager.getConnection(url, username, password);
-            return true;
-        } catch (SQLException e) {
-            LogManager.error("db check connection fail");
-        }
-        return false;
     }
 
 }

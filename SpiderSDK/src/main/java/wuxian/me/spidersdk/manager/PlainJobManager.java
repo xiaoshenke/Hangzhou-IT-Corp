@@ -14,7 +14,7 @@ import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.log.LogManager;
 import wuxian.me.spidersdk.util.OkhttpProvider;
-import wuxian.me.spidersdk.util.SignalManager;
+import wuxian.me.spidersdk.util.ProcessManager;
 import wuxian.me.spidersdk.util.ShellUtil;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class PlainJobManager implements HeartbeatManager.IHeartBeat,IJobManager {
 
-    private SignalManager signalManager = new SignalManager();
+    private ProcessManager processManager = new ProcessManager();
 
     private JobMonitor monitor = new JobMonitor();
     private IQueue queue;
@@ -58,12 +58,12 @@ public class PlainJobManager implements HeartbeatManager.IHeartBeat,IJobManager 
     private boolean started = false;
 
     public PlainJobManager() {
-        signalManager.registerOnSystemKill(new SignalManager.OnSystemKill() {
+        processManager.registerOnSystemKill(new ProcessManager.OnSystemKill() {
             public void onSystemKilled() {
                 onPause();
             }
         });
-        signalManager.init();
+        processManager.init();
 
         ShellUtil.init();
         queue = new JobQueue(monitor);

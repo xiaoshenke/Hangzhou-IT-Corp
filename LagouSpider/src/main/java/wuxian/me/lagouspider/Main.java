@@ -4,12 +4,16 @@ import wuxian.me.lagouspider.biz.boss.BDisdinctSpider;
 import wuxian.me.lagouspider.biz.boss.BPositionListSpider;
 import wuxian.me.lagouspider.biz.boss.BPositonDetailSpider;
 import wuxian.me.lagouspider.biz.boss.BizConfig;
+import wuxian.me.lagouspider.save.boss.BCompanySaver;
+import wuxian.me.lagouspider.save.boss.BLocationSaver;
+import wuxian.me.lagouspider.save.boss.BPositionSaver;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.spidersdk.distribute.ClassHelper;
 import wuxian.me.spidersdk.log.ILog;
 import wuxian.me.spidersdk.log.LogManager;
 import wuxian.me.spidersdk.manager.JobManagerFactory;
 import wuxian.me.spidersdk.util.FileUtil;
+import wuxian.me.spidersdk.util.ProcessManager;
 
 import java.io.File;
 import java.util.regex.Matcher;
@@ -87,7 +91,11 @@ public class Main {
 
     public void run() {
         JobManagerFactory.getJobManager().start();
+        ProcessManager.registerOnSystemKill(BPositionSaver.getInstance());
+        ProcessManager.registerOnSystemKill(BCompanySaver.getInstance());
+        ProcessManager.registerOnSystemKill(BLocationSaver.getInstance());
 
+        /*
         String content = FileUtil.readFromFile(FileUtil.getCurrentPath() + "/whole_spider.txt");
 
         String reg = "(?<=positionId: )[0-9]+";
@@ -99,6 +107,7 @@ public class Main {
             BPositonDetailSpider spider = new BPositonDetailSpider(Long.parseLong(matcher.group()));
             Helper.dispatchSpider(spider);
         }
+        */
 
         /*  //这两页的数据是有问题的 但现在不管了
         BPositionListSpider spider = new BPositionListSpider("拱墅区",21);

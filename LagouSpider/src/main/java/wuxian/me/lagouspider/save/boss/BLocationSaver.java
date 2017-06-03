@@ -5,6 +5,7 @@ import wuxian.me.lagouspider.biz.boss.BizConfig;
 import wuxian.me.lagouspider.biz.boss.BossConfig;
 import wuxian.me.lagouspider.mapper.boss.BLocationMapper;
 import wuxian.me.lagouspider.model.boss.BLocation;
+import wuxian.me.lagouspider.save.BaseSaver;
 import wuxian.me.lagouspider.save.IModelSaver;
 import wuxian.me.lagouspider.save.SaveModelThread;
 import wuxian.me.lagouspider.util.ModuleProvider;
@@ -16,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by wuxian on 17/4/2017.
  * <p>
  */
-public class BLocationSaver implements IModelSaver<BLocation> {
+public class BLocationSaver extends BaseSaver<BLocation> {
 
     private static BLocationSaver instance = null;
     private Map<Long, BLocation> companyMap = new ConcurrentHashMap<Long, BLocation>();
@@ -60,5 +61,10 @@ public class BLocationSaver implements IModelSaver<BLocation> {
             return false;
         }
         return true;
+    }
+
+    @Override
+    protected Thread getSaverThread() {
+        return thread;
     }
 }

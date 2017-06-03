@@ -20,12 +20,8 @@ import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.log.LogManager;
 import wuxian.me.spidersdk.util.*;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.jar.JarFile;
 
 /**
  * Created by wuxian on 18/5/2017.
@@ -56,7 +52,7 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
     //位于okHttpClient的缓存池中
     private List<BaseSpider> dispatchedSpiderList = Collections.synchronizedList(new ArrayList<BaseSpider>());
 
-    private SignalManager signalManager = new SignalManager();
+    private ProcessManager processManager = new ProcessManager();
 
     public List<BaseSpider> getDispatchedSpiderList() {
         return dispatchedSpiderList;
@@ -87,7 +83,7 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
         queue = new RedisJobQueue();
         queue.init();
 
-        signalManager.registerOnSystemKill(new SignalManager.OnSystemKill() {
+        processManager.registerOnSystemKill(new ProcessManager.OnSystemKill() {
             public void onSystemKilled() {
                 LogManager.error("DistributeJobManager, OnProcessKilled");
                 DistributeJobManager.this.onPause();
@@ -239,6 +235,15 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
 
         heartbeatManager.stopHeartBeat();
         IPProxyTool.Proxy proxy = ipProxyTool.forceSwitchProxyTillSuccess();
+
+        if(JobManagerConfig.reInitConfigAfterSwitchProxy) {
+            JobManagerConfig.readConfigFromFile();  //Fixme: 这里修改的有些值是不能改的 比如说redis client
+        }
+
+        if(JobManagerConfig.reReadCookieAfterSwitchProxy) {
+            CookieManager.clear();
+        }
+
         heartbeatManager.beginHeartBeat(proxy);
 
         dispatcher.cancelAll();
@@ -328,9 +333,5 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
 
             LogManager.info("Serialize SpiderList Success");
         }
-
-        LogManager.info("Shutting down whole process...");
-        ShellUtil.killProcessBy(ProcessUtil.getCurrentProcessId());
-        LogManager.error("Kill Process Fail...");
     }
 }

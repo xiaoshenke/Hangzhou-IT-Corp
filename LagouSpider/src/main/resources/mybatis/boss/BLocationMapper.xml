@@ -9,7 +9,7 @@
 
     <update id="createNewTableIfNeed" parameterType="wuxian.me.lagouspider.model.boss.BLocation">
         create table if not exists ${tableName} (location_id INTEGER ,company_id INTEGER,
-        location VARCHAR(25),longitude varchar(10),lantitude varchar(10),
+        location VARCHAR(36),longitude varchar(10),lantitude varchar(10),
         PRIMARY KEY (location_id))
         DEFAULT CHARSET = utf8,
         ENGINE = InnoDB;

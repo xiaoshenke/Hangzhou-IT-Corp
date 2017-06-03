@@ -71,4 +71,9 @@ public class Company extends BaseModel {
         }
     }
 
+    @Override
+    public long index() {
+        return company_id;
+    }
+
 }

@@ -16,6 +16,12 @@ import java.util.Properties;
  */
 public class JobManagerConfig {
 
+    //Fixme:agent?
+
+    public static boolean reReadCookieAfterSwitchProxy;
+
+    public static boolean reInitConfigAfterSwitchProxy;
+
     public static boolean enableProxyHeartbeat;
 
     //用于测试putJob,getJob行为
@@ -102,7 +108,7 @@ public class JobManagerConfig {
         ;
     }
 
-    private static void readConfigFromFile() {
+    public static void readConfigFromFile() {
         Properties pro = new Properties();
         FileInputStream in = null;
         boolean success = false;
@@ -129,6 +135,10 @@ public class JobManagerConfig {
         if (!success) {
             pro = null; //确保一定会初始化
         }
+
+        reReadCookieAfterSwitchProxy = parse(pro,"reReadCookieAfterSwitchProxy",true);
+
+        reInitConfigAfterSwitchProxy = parse(pro,"reInitConfigAfterSwitchProxy",true);
 
         enableGetSpiderFromQueue = parse(pro, "enableGetSpiderFromQueue", true);
 

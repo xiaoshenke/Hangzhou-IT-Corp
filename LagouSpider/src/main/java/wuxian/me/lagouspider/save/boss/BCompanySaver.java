@@ -5,6 +5,7 @@ import wuxian.me.lagouspider.biz.boss.BizConfig;
 import wuxian.me.lagouspider.biz.boss.BossConfig;
 import wuxian.me.lagouspider.mapper.boss.BCompanyMapper;
 import wuxian.me.lagouspider.model.boss.BCompany;
+import wuxian.me.lagouspider.save.BaseSaver;
 import wuxian.me.lagouspider.save.IModelSaver;
 import wuxian.me.lagouspider.save.SaveModelThread;
 import wuxian.me.lagouspider.util.ModuleProvider;
@@ -16,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by wuxian on 17/4/2017.
  * <p>
  */
-public class BCompanySaver implements IModelSaver<BCompany> {
+public class BCompanySaver extends BaseSaver<BCompany> {
 
     private static BCompanySaver instance = null;
     private Map<Long, BCompany> companyMap = new ConcurrentHashMap<Long, BCompany>();
@@ -78,4 +79,8 @@ public class BCompanySaver implements IModelSaver<BCompany> {
     }
 
 
+    @Override
+    protected Thread getSaverThread() {
+        return thread;
+    }
 }

@@ -44,4 +44,9 @@ public class BPosition extends BaseModel {
     public String name() {
         return "BossPosition: " + positionId;
     }
+
+    @Override
+    public long index() {
+        return positionId;
+    }
 }

@@ -9,7 +9,7 @@
 
     <update id="createNewTableIfNeed" parameterType="wuxian.me.lagouspider.model.boss.BCompany">
         create table if not exists ${tableName} (company_id INTEGER,company_shortname VARCHAR(8),
-        company_fullname VARCHAR(16),finance_stage VARCHAR(5),industry_field VARCHAR(8),
+        company_fullname VARCHAR(16),finance_stage VARCHAR(12),industry_field VARCHAR(8),
         size_min SMALLINT,size_max SMALLINT,company_logo VARCHAR(125),
         PRIMARY KEY (company_id))
         DEFAULT CHARSET = utf8,

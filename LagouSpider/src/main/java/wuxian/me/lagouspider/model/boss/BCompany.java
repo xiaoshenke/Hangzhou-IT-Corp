@@ -32,4 +32,9 @@ public class BCompany extends BaseModel {
         return "BossCompany: name:" + name + " fullName:" + fullName + " companyId:" + companyId
                 + " finaceStage:" + financeStage + " field:" + field + " sizeMin:" + sizeMin + " sizeMax:" + sizeMax;
     }
+
+    @Override
+    public long index() {
+        return companyId;
+    }
 }
