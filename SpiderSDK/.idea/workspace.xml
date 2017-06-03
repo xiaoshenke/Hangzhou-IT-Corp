@@ -7,27 +7,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eab34228-edfc-44e7-bc45-cb52fa74264f" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/save/BaseSaver.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/Main.java" afterPath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/model/BaseModel.java" afterPath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/model/BaseModel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/model/boss/BCompany.java" afterPath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/model/boss/BCompany.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/model/boss/BLocation.java" afterPath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/model/boss/BLocation.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/model/boss/BPosition.java" afterPath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/model/boss/BPosition.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/model/lagou/Company.java" afterPath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/model/lagou/Company.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/biz/boss/BPositionListSpider.java" afterPath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/biz/boss/BPositionListSpider.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/biz/boss/BaseBossSpider.java" afterPath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/biz/boss/BaseBossSpider.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/save/SaveModelThread.java" afterPath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/save/SaveModelThread.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/save/boss/BCompanySaver.java" afterPath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/save/boss/BCompanySaver.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/save/boss/BLocationSaver.java" afterPath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/save/boss/BLocationSaver.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/save/boss/BPositionSaver.java" afterPath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/save/boss/BPositionSaver.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/util/Helper.java" afterPath="$PROJECT_DIR$/../LagouSpider/src/main/java/wuxian/me/lagouspider/util/Helper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../LagouSpider/src/main/resources/mybatis/boss/BComanyMapper.xml" afterPath="$PROJECT_DIR$/../LagouSpider/src/main/resources/mybatis/boss/BComanyMapper.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../LagouSpider/src/main/resources/mybatis/boss/BLocationMapper.xml" afterPath="$PROJECT_DIR$/../LagouSpider/src/main/resources/mybatis/boss/BLocationMapper.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../LagouSpider/src/test/java/wuxian/me/lagouspider/MainTest.java" afterPath="$PROJECT_DIR$/../LagouSpider/src/test/java/wuxian/me/lagouspider/MainTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/BaseSpider.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/BaseSpider.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/JobManagerConfig.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/JobManagerConfig.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/manager/DistributeJobManager.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/manager/DistributeJobManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/manager/PlainJobManager.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/manager/PlainJobManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/wuxian/me/spidersdk/MainTest.java" afterPath="$PROJECT_DIR$/src/test/java/wuxian/me/spidersdk/MainTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/IPProxyTool.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/IPProxyTool.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/ShellUtil.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/ShellUtil.java" />
     </list>
     <ignored path="SpiderSDK.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -54,7 +42,21 @@
     <favorites_list name="SpiderSDK" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="IPProxyTool.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/IPProxyTool.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="300">
+              <caret line="34" column="37" selection-start-line="34" selection-start-column="37" selection-end-line="34" selection-end-column="37" />
+              <folding>
+                <element signature="e#3013#3014#0" expanded="true" />
+                <element signature="e#3064#3065#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -112,7 +114,6 @@
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/HttpUrlNode.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/WorkThread.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/ProcessUtil.java" />
-        <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/ShellUtil.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/ClassHelper.java" />
         <option value="$PROJECT_DIR$/conf/jobmanager.properties" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/Main.java" />
@@ -123,15 +124,16 @@
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/manager/PlainJobManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/IQueue.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/JobQueue.java" />
-        <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/IPProxyTool.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/RedisJobQueue.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/BaseSpider.java" />
         <option value="$PROJECT_DIR$/src/test/java/wuxian/me/spidersdk/MainTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/SignalManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/ProcessManager.java" />
-        <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/JobManagerConfig.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/manager/DistributeJobManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/CookieManager.java" />
+        <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/IPProxyTool.java" />
+        <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/ShellUtil.java" />
+        <option value="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/JobManagerConfig.java" />
       </list>
     </option>
   </component>
@@ -157,7 +159,7 @@
     <treeState />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="334" />
+    <option name="x" value="359" />
     <option name="y" value="23" />
     <option name="width" value="921" />
     <option name="height" value="671" />
@@ -173,7 +175,7 @@
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1">
+    <navigator proportions="" version="1">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -186,14 +188,7 @@
       <manualOrder />
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes>
-      <pane id="Scratches" />
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
-      <pane id="ProjectPane">
-        <subPane />
-      </pane>
-    </panes>
+    <panes />
   </component>
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
@@ -1068,6 +1063,10 @@
       <workItem from="1496386796094" duration="11000" />
       <workItem from="1496420091942" duration="1006000" />
       <workItem from="1496459009842" duration="2935000" />
+      <workItem from="1496463057966" duration="65000" />
+      <workItem from="1496463250385" duration="77000" />
+      <workItem from="1496463752455" duration="301000" />
+      <workItem from="1496464332980" duration="676000" />
     </task>
     <servers />
   </component>
@@ -1104,7 +1103,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="150686000" />
+    <option name="totallyTimeSpent" value="151805000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1116,31 +1115,31 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="334" y="23" width="921" height="671" extended-state="0" />
-    <editor active="false" />
+    <frame x="359" y="23" width="921" height="671" extended-state="1" />
+    <editor active="true" />
     <layout>
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20705347" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32844037" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.318264" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3559633" sideWeight="0.5056657" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24868283" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32844037" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34719712" sideWeight="0.49433428" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32844037" sideWeight="0.49433428" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20705347" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5334539" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32844037" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32844037" sideWeight="0.49433428" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4267857" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.318264" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34719712" sideWeight="0.49433428" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1713555" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5334539" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4267857" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -1351,13 +1350,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/ShellUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="111">
-          <caret line="66" column="34" selection-start-line="66" selection-start-column="34" selection-end-line="66" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/ProcessUtil.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
@@ -1376,13 +1368,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="12" column="22" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/BlockHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="218">
-          <caret line="62" column="0" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -1477,13 +1462,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/IPProxyTool.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/BaseSpider.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
@@ -1495,14 +1473,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="261">
           <caret line="65" column="31" selection-start-line="65" selection-start-column="31" selection-end-line="65" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/JobManagerConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="20" column="55" selection-start-line="20" selection-start-column="55" selection-end-line="20" selection-end-column="55" />
           <folding />
         </state>
       </provider>
@@ -1519,11 +1489,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
           <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#888#889#0" expanded="true" />
-            <element signature="e#922#923#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1531,7 +1496,43 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="25" column="31" selection-start-line="25" selection-start-column="31" selection-end-line="25" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/BlockHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="95" column="62" selection-start-line="95" selection-start-column="62" selection-end-line="95" selection-end-column="62" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/ShellUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="121">
+          <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/JobManagerConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="113">
+          <caret line="135" column="34" selection-start-line="135" selection-start-column="34" selection-end-line="135" selection-end-column="34" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/IPProxyTool.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="34" column="37" selection-start-line="34" selection-start-column="37" selection-end-line="34" selection-end-column="37" />
+          <folding>
+            <element signature="e#3013#3014#0" expanded="true" />
+            <element signature="e#3064#3065#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

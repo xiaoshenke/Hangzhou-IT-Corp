@@ -95,29 +95,9 @@ public class Main {
         ProcessManager.registerOnSystemKill(BCompanySaver.getInstance());
         ProcessManager.registerOnSystemKill(BLocationSaver.getInstance());
 
-        /*
-        String content = FileUtil.readFromFile(FileUtil.getCurrentPath() + "/whole_spider.txt");
 
-        String reg = "(?<=positionId: )[0-9]+";
-        Pattern pattern = Pattern.compile(reg);
-        Matcher matcher = pattern.matcher(content);
-
-
-        while (matcher.find()) {
-            BPositonDetailSpider spider = new BPositonDetailSpider(Long.parseLong(matcher.group()));
-            Helper.dispatchSpider(spider);
-        }
-        */
-
-        /*  //这两页的数据是有问题的 但现在不管了
-        BPositionListSpider spider = new BPositionListSpider("拱墅区",21);
-        Helper.dispatchSpider(spider,true);
-        spider = new BPositionListSpider("拱墅区",14);
-        Helper.dispatchSpider(spider,true);
-        */
-
-        //BPositonDetailSpider spider = new BPositonDetailSpider(1410512880);
-        //Helper.dispatchSpider(spider,true);
+        //如果想开启抓一个新的区域 那么只需填入下面的xxx即可
+        //BPositionListSpider spider = new BPositionListSpider(area_xxx,1);
     }
 
     public static void main(String[] args) {

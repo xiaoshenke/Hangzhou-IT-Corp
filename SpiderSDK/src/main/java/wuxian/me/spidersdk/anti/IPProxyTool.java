@@ -97,7 +97,7 @@ public class IPProxyTool {
     }
 
     String getProxyFilePath() {
-        return getCurrentPath() + JobManagerConfig.ipproxyFile;
+        return JobManagerConfig.ipproxyFile;
     }
 
     public static boolean isVaildIpPort(String[] ipport) {

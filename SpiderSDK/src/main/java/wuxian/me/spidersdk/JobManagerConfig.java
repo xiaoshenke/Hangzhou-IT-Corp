@@ -91,7 +91,7 @@ public class JobManagerConfig {
 
     public static long jobQueueEmptySleepTime;
 
-    public final static String ipproxyFile = "/util/ipproxy.txt";
+    public static String ipproxyFile;
 
     public final static String fulllogFile = "/logs/htmls/";
 
@@ -135,6 +135,8 @@ public class JobManagerConfig {
         if (!success) {
             pro = null; //确保一定会初始化
         }
+
+        ipproxyFile = parse(pro,"ipproxyFile",FileUtil.getCurrentPath()+"/util/ipproxy.txt");
 
         reReadCookieAfterSwitchProxy = parse(pro,"reReadCookieAfterSwitchProxy",true);
 
@@ -186,7 +188,7 @@ public class JobManagerConfig {
 
         considerBlockedMayblockNum = parse(pro, "considerBlockedMayblockNum", 3);
 
-        considerBlockedNeterr = parse(pro, "considerBlockedNeterr", 10);
+        considerBlockedNeterr = parse(pro, "considerBlockedNeterr", 20);
 
         enableRetrySpider = parse(pro, "enableRetrySpider", true);
 

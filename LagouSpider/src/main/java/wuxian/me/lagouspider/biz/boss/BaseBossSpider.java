@@ -6,7 +6,6 @@ import wuxian.me.spidersdk.SpiderCallback;
 
 /**
  * Created by wuxian on 6/5/2017.
- * 注意搞个岗位的model
  */
 public abstract class BaseBossSpider extends BaseSpider {
 
@@ -15,7 +14,7 @@ public abstract class BaseBossSpider extends BaseSpider {
     }
 
     protected boolean checkBlockAndFailThisSpider(String s) {
-        return false;
+        return doCheckBlockAndFailThisSpider(s);
     }
 
     public String hashString() {
@@ -27,12 +26,16 @@ public abstract class BaseBossSpider extends BaseSpider {
         if(super.checkBlockAndFailThisSpider(httpCode)) {
             return true;
         }
-
         //Boss直聘403
         if(httpCode == 403 || httpCode == 429) {
             return true;
         }
 
         return false;
+    }
+
+    public static boolean doCheckBlockAndFailThisSpider(String s) {
+        String reg = "<form action=\"/captcha/verifyCaptcha?";
+        return s.contains(reg);
     }
 }

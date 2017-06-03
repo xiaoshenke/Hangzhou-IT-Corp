@@ -1,0 +1,107 @@
+ <!DOCTYPE html>
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>BOSS直聘验证码</title>
+<style>
+* { margin:0; padding:0;}
+body,input,button { font-family:arial,helvetica,Microsoft Yahei; line-height:1.5; font-size:14px;}
+body { background-color:#F7F9FC;}
+.capcha-box { width:300px; margin:0 auto; padding:30px 50px; margin-top:100px; border-radius:5px; background-color:#fff;}
+.capcha-box .logo { text-align:center;}
+.capcha-box .logo img { width:50px; height:50px; margin:0 auto;}
+.capcha-box .tips { color:#999; padding: 20px 0;}
+.ipt { padding: 8px 10px; line-height: 24px; min-height: 22px; width: 140px; border: 1px #ddd solid; border-radius: 3px; outline:none;}
+.ipt:focus { border-color:#59CAC2;}
+.ipt:focus,.btn:hover { -webkit-transition: all linear .2s; -moz-transition: all linear .2s; -o-transition: all linear .2s; transition: all linear .2s;}
+.btn { background: #59CAC2; color: #fff; line-height: 40px; text-align: center; width: 300px; border: 0; outline:none; border-radius: 3px; cursor: pointer; font-size: 15px;}
+.btn:hover { background: #4AD4CC;}
+.code { width: 100px; height: 42px; vertical-align: top; margin: 0 10px;}
+.btns { margin-top:20px;}
+</style>
+</head>
+
+<body>
+<div id="wrap">
+	<div class="capcha-box">
+    	<h1 class="logo"><img src="/v2/bosszhipin_home/images/home/v2/logo-small.png" width="54" /></h1>
+        <div class="tips">为了您的账号安全，我们需要在执行操作之前验证您的身份，请输入验证码。</div>
+        <form action="/captcha/verifyCaptcha?redirect=https://www.zhipin.com/job_detail/1410485406.html" method="post">
+			<input type="hidden" name="randomKey" value="Q0AlzaXDyOLKzUaCxL1aLwQ60cD1spJx"/>
+			<p><input name="captcha" id="captcha" class="ipt" type="text" placeholder="验证码" /><img src="/captcha?randomKey=Q0AlzaXDyOLKzUaCxL1aLwQ60cD1spJx" alt="" class="code" title="看不清？点击换一张"/></p>
+			<div class="btns"><button type="submit" class="btn">提 交</button></div>
+		</form>
+    </div>
+</div>
+<script src="https://img.bosszhipin.com/js/jquery-1.11.0.min.js"></script>
+<script>
+$(function() {
+	$('.code').on('click', function() {
+		var time = (new Date).getTime();
+		$("input[name=randomKey]").val("" + time);
+		$(".code").attr("src","/captcha?randomKey="+ time);
+	})
+	$('.capcha-box form').on('submit', function(e) {
+		if ($('#captcha').val() == '') {
+			$('#captcha').focus();
+			return false;
+		}
+	})
+});
+</script>
+
+
+<script src="https://img.bosszhipin.com/js/analytics.min.js"></script>
+<script src="https://img.bosszhipin.com/js/utils/ka.js?v=1.0"></script>
+<script>
+	function get_share_datas_from_html_inapp(){
+		var shid = "shdefault";
+		var urlShid = getQueryString('shid');
+		var urlSid = getQueryString('sid');
+		if(urlShid){
+			shid = urlShid;
+		}else if(urlSid){
+			shid = urlSid;
+		}
+		var pk = "pkdefault";
+		var pp = "ppdefault";
+		var pkn = document.getElementById("page_key_name");
+		if(pkn){
+			var pknVal = pkn.value;
+			if(pknVal){
+				var pkArray = pknVal.split("|")
+				if(pkArray.length==1){
+					pk = pkArray[0];
+				}else if(pkArray.length>=2){
+					pk = pkArray[0];
+					pp = pkArray[1];
+				}
+			}
+		}
+		var ret = new Array();
+		ret['shid'] = shid;
+		ret['pk'] = pk;
+		ret['pp'] = pp;
+		return ret;
+	}
+	function getQueryString(name)
+	{
+		var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+		var r = window.location.search.substr(1).match(reg);
+		if(r!=null)return  unescape(r[2]); return null;
+	}
+</script>
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?194df3105ad7148dcf2b98a91b5e727a";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+</body>
+</html>

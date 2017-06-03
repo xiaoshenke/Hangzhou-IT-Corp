@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public class SaveModelThread<T extends BaseModel> extends Thread {
 
-    private Set<Long> savedModel = new HashSet<Long>();  //解决插入重复的值 Fixme:如何防止二次插入？？
+    private Set<Long> savedModel = new HashSet<Long>();
     private Map<Long, T> model;
     private int interval;
     private boolean insert;
@@ -56,7 +56,7 @@ public class SaveModelThread<T extends BaseModel> extends Thread {
                 if (operator != null) {
                     if (insert) {
                         try {
-                            if (savedModel.contains(model.index())) {
+                            if (savedModel.contains(model.index())) {  //Not Working??
                                 continue;
                             }
                             operator.insert(model);
@@ -86,7 +86,9 @@ public class SaveModelThread<T extends BaseModel> extends Thread {
                 sleep(interval);
             } catch (InterruptedException e) {
 
+                LogManager.info(getName() + " is interrupted,do save AllModels...");
                 doSaveAllModels();
+                LogManager.info("finish save AllModels");
                 break;
             }
         }

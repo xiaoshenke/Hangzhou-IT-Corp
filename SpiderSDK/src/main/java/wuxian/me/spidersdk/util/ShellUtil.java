@@ -34,7 +34,7 @@ public class ShellUtil {
 
             String path = FileUtil.getCurrentPath() + shellOpenProxyFile;  //写shell文件
             if (!FileUtil.checkFileExist(path)) {
-                String shell = "open -t " + FileUtil.getCurrentPath() + ipproxyFile;
+                String shell = "open -t " + ipproxyFile;
                 FileUtil.writeToFile(path, shell);
             }
 

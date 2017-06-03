@@ -3,6 +3,7 @@ package wuxian.me.lagouspider;
 import org.junit.Test;
 import wuxian.me.lagouspider.biz.boss.BPositionListSpider;
 import wuxian.me.lagouspider.biz.boss.BPositonDetailSpider;
+import wuxian.me.lagouspider.biz.boss.BaseBossSpider;
 import wuxian.me.lagouspider.mapper.boss.BCompanyMapper;
 import wuxian.me.lagouspider.mapper.boss.BLocationMapper;
 import wuxian.me.lagouspider.mapper.boss.BPositionMapper;
@@ -23,6 +24,13 @@ import static wuxian.me.lagouspider.util.ModuleProvider.*;
  * Created by wuxian on 9/4/2017.
  */
 public class MainTest {
+
+    @Test
+    public void testAnti() {
+        Main.init();
+        String s = FileUtil.readFromFile(FileUtil.getCurrentPath() + "/anti-spider.html");
+        System.out.println(BaseBossSpider.doCheckBlockAndFailThisSpider(s));
+    }
 
     @Test
     public void testParseDetail() {
