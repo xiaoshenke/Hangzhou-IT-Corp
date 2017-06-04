@@ -16,7 +16,7 @@ import java.util.Properties;
  */
 public class JobManagerConfig {
 
-    //Fixme:agent?
+    public static boolean switchAgentAfterSwitchProxy;
 
     public static boolean reReadCookieAfterSwitchProxy;
 
@@ -135,6 +135,8 @@ public class JobManagerConfig {
         if (!success) {
             pro = null; //确保一定会初始化
         }
+
+        switchAgentAfterSwitchProxy = parse(pro, "switchAgentAfterSwitchProxy", true);
 
         ipproxyFile = parse(pro,"ipproxyFile",FileUtil.getCurrentPath()+"/util/ipproxy.txt");
 

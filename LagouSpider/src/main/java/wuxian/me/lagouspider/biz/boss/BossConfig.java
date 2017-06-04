@@ -9,6 +9,8 @@ public interface BossConfig {
 
     String CITY_TO_SPIDER = "杭州";
 
+    String POSITION_TO_SPIDER = "android";
+
     String SPIDER_NAME = "BossSpider";
 
     String HOST = "www.zhipin.com";
@@ -22,25 +24,16 @@ public interface BossConfig {
         //存储区域的文件
         String DISTINTC = "distinct.txt";
 
-        String POSITON_DES_PATH = "/downloaded/boss/job_java/";
+        String POSITON_DES_PATH = "/downloaded/boss/job_"+POSITION_TO_SPIDER+"/";
     }
 
     interface TableName {
 
-        String COMPANY = "companies";
+        String COMPANY = "companies" + "_" + POSITION_TO_SPIDER;
 
-        String LOCATION = "locations";
+        String LOCATION = "locations" + "_" + POSITION_TO_SPIDER;
 
-        String POSITION = "positions";
-    }
-
-    interface SaveDBThread {
-
-        int SAVE_COMPANY_INTERVAL = 1000 * 1 * 1;
-
-        int SAVE_POSITION_INTERVAL = 1000 * 1 * 1;
-
-        int SAVE_LOCATION_INTERVAL = 1000 * 1 * 1;
+        String POSITION = "positions" + "_" + POSITION_TO_SPIDER;
     }
 
     interface EnableSaveDB {

@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
 import static wuxian.me.spidersdk.util.FileUtil.getCurrentPath;
 import static wuxian.me.spidersdk.util.ShellUtil.*;
 
-
 /**
  * Created by wuxian on 9/4/2017.
  * http://www.xdaili.cn/freeproxy.html   --> 还行
@@ -129,12 +128,8 @@ public class IPProxyTool {
             if (proxys == null || proxys.length == 0) {
                 String[] proxy = content.split(SEPRATE);
                 if (proxy != null && proxy.length == 2) {
-                    //LogManager.info("ip: "+proxy[0]+" port: "+proxy[1]);
                     if (isVaildIpPort(proxy)) {
-                        //LogManager.info("proxy is valid");
                         ipPortList.add(new Proxy(proxy[0], Integer.parseInt(proxy[1])));
-                    } else {
-                        //LogManager.info("proxy isnot valid");
                     }
                 }
                 return;
@@ -147,8 +142,6 @@ public class IPProxyTool {
                     if (isVaildIpPort(proxy)) {
                         LogManager.info("proxy is valid");
                         ipPortList.add(new Proxy(proxy[0], Integer.parseInt(proxy[1])));
-                    } else {
-                        LogManager.info("proxy isnot valid");
                     }
                 }
             }
@@ -263,7 +256,7 @@ public class IPProxyTool {
                             openTextEdit();
                         }
                     } else {
-                        LogManager.info("Valid Proxy Readed,Try to Switch to it...");
+                        LogManager.info("Valid Proxy Readed,Try to Switch to it... clear proxy file...");
                     }
                 } while (!b);
 

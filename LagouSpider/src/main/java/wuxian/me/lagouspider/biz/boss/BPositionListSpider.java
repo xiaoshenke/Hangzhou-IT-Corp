@@ -12,12 +12,10 @@ import org.htmlparser.tags.BulletList;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import wuxian.me.lagouspider.util.Helper;
-import wuxian.me.lagouspider.util.NodeLogUtil;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.anti.MaybeBlockedException;
 import wuxian.me.spidersdk.distribute.HttpUrlNode;
 import wuxian.me.spidersdk.log.LogManager;
-import wuxian.me.spidersdk.util.FileUtil;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,7 +27,7 @@ import java.util.regex.Pattern;
 public class BPositionListSpider extends BaseBossSpider {
 
     public static BPositionListSpider fromUrlNode(HttpUrlNode node) {
-        String url = BASE_URL + "c" + INDEX_HANGZHOU + "-p100101/b_";
+        String url = BASE_URL + "c" + INDEX_HANGZHOU + "-p" + INDEX_POSITION + "/b_";
         if (!node.baseUrl.contains(url)) {
             return null;
         }
@@ -39,10 +37,10 @@ public class BPositionListSpider extends BaseBossSpider {
         }
 
         int begin = node.baseUrl.indexOf("b_");
-        if(begin == -1){
+        if (begin == -1) {
             return null;
         }
-        String distinc = node.baseUrl.substring(begin+2,node.baseUrl.length()-1);
+        String distinc = node.baseUrl.substring(begin + 2, node.baseUrl.length() - 1);
         /*
         String reg = "(?<=/b_)*+(?=/)";
         Pattern pattern = Pattern.compile(reg);
@@ -58,18 +56,22 @@ public class BPositionListSpider extends BaseBossSpider {
 
     public static HttpUrlNode toUrlNode(BPositionListSpider spider) {
         HttpUrlNode node = new HttpUrlNode();
-        String url =  BASE_URL + "c" + INDEX_HANGZHOU + "-p100101/b_" + spider.distinct + "/";
+        String url = buildNodeUrlFrom(spider);
 
         node.baseUrl = url;
-        //node.httpGetParam.put("query","java");
         node.httpGetParam.put("page", String.valueOf(spider.page));
         node.httpGetParam.put("ka", "page-" + String.valueOf(spider.page));
         return node;
     }
 
+    private static String buildNodeUrlFrom(BPositionListSpider spider) {
+        return BASE_URL + "c" + INDEX_HANGZHOU + "-p" + INDEX_POSITION + "/b_" + spider.distinct + "/";
+    }
+
     private static String BASE_URL = "http://www.zhipin.com/";
 
-    private static String INDEX_HANGZHOU = CityTransformer.getCityCode(BossConfig.CITY_TO_SPIDER);
+    public static String INDEX_HANGZHOU = CityTransformer.getCityCode(BossConfig.CITY_TO_SPIDER);
+    public static String INDEX_POSITION = PositionTransformer.getPositionCode(BossConfig.POSITION_TO_SPIDER);
     private String distinct;
     private int page;
 
@@ -79,9 +81,9 @@ public class BPositionListSpider extends BaseBossSpider {
     }
 
     protected Request buildRequest() {
-        String url = BASE_URL + "c" + INDEX_HANGZHOU + "-p100101/b_" + distinct + "/";
+        String url = buildNodeUrlFrom(this);
         HttpUrl.Builder urlBuilder = HttpUrl.parse(url).newBuilder();
-        urlBuilder.addQueryParameter("ka", "page-"+String.valueOf(page));
+        urlBuilder.addQueryParameter("ka", "page-" + String.valueOf(page));
         urlBuilder.addQueryParameter("page", String.valueOf(page));
 
         final String referer = "http://www.zhipin.com/";

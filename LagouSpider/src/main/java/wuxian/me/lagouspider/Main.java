@@ -95,9 +95,9 @@ public class Main {
         ProcessManager.registerOnSystemKill(BCompanySaver.getInstance());
         ProcessManager.registerOnSystemKill(BLocationSaver.getInstance());
 
-
         //如果想开启抓一个新的区域 那么只需填入下面的xxx即可
-        //BPositionListSpider spider = new BPositionListSpider(area_xxx,1);
+        BPositionListSpider spider = new BPositionListSpider("西湖区",1);
+        Helper.dispatchSpider(spider);
     }
 
     public static void main(String[] args) {

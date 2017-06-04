@@ -7,10 +7,7 @@ import okhttp3.Dispatcher;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.IJobManager;
 import wuxian.me.spidersdk.JobManagerConfig;
-import wuxian.me.spidersdk.anti.BlockHelper;
-import wuxian.me.spidersdk.anti.Fail;
-import wuxian.me.spidersdk.anti.HeartbeatManager;
-import wuxian.me.spidersdk.anti.IPProxyTool;
+import wuxian.me.spidersdk.anti.*;
 import wuxian.me.spidersdk.control.IQueue;
 import wuxian.me.spidersdk.control.RedisJobQueue;
 import wuxian.me.spidersdk.control.WorkThread;
@@ -242,6 +239,10 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
 
         if(JobManagerConfig.reReadCookieAfterSwitchProxy) {
             CookieManager.clear();
+        }
+
+        if (JobManagerConfig.switchAgentAfterSwitchProxy) {
+            UserAgentManager.switchIndex();
         }
 
         heartbeatManager.beginHeartBeat(proxy);

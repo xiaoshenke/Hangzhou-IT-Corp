@@ -2,11 +2,12 @@ package wuxian.me.spidersdk.anti;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by wuxian on 24/4/2017.
  */
-public class SpiderUserAgentUtil {
+public class UserAgentManager {
 
     private static List<String> browserAgentList = new ArrayList<String>();
 
@@ -38,7 +39,7 @@ public class SpiderUserAgentUtil {
         spiderAgentList.add("msnbot/1.0 (+http://search.msn.com/msnbot.htm)");
     }
 
-    private SpiderUserAgentUtil() {
+    private UserAgentManager() {
     }
 
     private static int spiderIndex = -1;
@@ -69,5 +70,22 @@ public class SpiderUserAgentUtil {
         }
 
         return mobileAgentList.get((++mobIndex) % mobileAgentList.size());
+    }
+
+    static Random random = new Random();
+
+    public static void switchIndex() {
+        currentIndex = random.nextInt(browserAgentList.size() + mobileAgentList.size());
+    }
+
+    private static int currentIndex = 0;
+
+    public static String getAgent() {
+        if (currentIndex <= browserAgentList.size() - 1) {
+            return browserAgentList.get(currentIndex);
+        } else {
+            return mobileAgentList.get(currentIndex - browserAgentList.size());
+        }
+
     }
 }

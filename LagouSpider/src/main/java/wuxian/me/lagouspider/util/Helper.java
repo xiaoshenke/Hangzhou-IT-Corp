@@ -8,6 +8,7 @@ import wuxian.me.lagouspider.biz.tianyancha.TianyanConfig;
 import wuxian.me.lagouspider.biz.zhishu.ZhishuConfig;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.IJobManager;
+import wuxian.me.spidersdk.anti.UserAgentManager;
 import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.manager.JobManagerFactory;
@@ -90,7 +91,7 @@ public class Helper {
         builder.add("Connection", "keep_alive");
         builder.add("Host", "www.lagou.com");
         builder.add(HEADER_REFERER, "abd");
-        builder.add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36");
+        builder.add("User-Agent", "ab");
     }
 
     public static Headers getHeaderBySpecifyRef(@NotNull String reference, @NotNull String spiderName) {
@@ -105,6 +106,7 @@ public class Helper {
 
         builder.set("Cookie", CookieManager.get(spiderName));
         builder.set(HEADER_REFERER, reference);
+        builder.set("User-Agent", UserAgentManager.getAgent());
         return builder.build();
     }
 
