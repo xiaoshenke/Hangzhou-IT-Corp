@@ -2,6 +2,7 @@ package wuxian.me.spidersdk.util;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
+import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 import wuxian.me.spidersdk.log.LogManager;
 
@@ -19,6 +20,23 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * http://outofmemory.cn/java/guava/IO/Files-operation
  */
 public class FileUtil {
+
+    public static void initWithClass(@NotNull Class clazz) {
+        try {
+            File file = new File(clazz.getProtectionDomain().getCodeSource()
+                    .getLocation().toURI().getPath());
+            if (FileUtil.checkFileExist(file.getParentFile().getAbsolutePath() + "/conf/jobmanager.properties")) {
+                FileUtil.setCurrentFile(file.getAbsolutePath());
+                FileUtil.setCurrentPath(file.getParentFile().getAbsolutePath());
+                return;
+            }
+        } catch (Exception e) {
+            ;
+        }
+
+        File file = new File("");
+        FileUtil.setCurrentPath(file.getAbsolutePath());
+    }
 
     private FileUtil() {
     }

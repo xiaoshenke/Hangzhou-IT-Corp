@@ -30,6 +30,8 @@ import static wuxian.me.lagouspider.util.Helper.getWriteLogFilePath;
 
 /**
  * Created by wuxian on 8/4/2017.
+ *
+ * Todo:move to spring lifecycle
  */
 @Component
 public class ModuleProvider {

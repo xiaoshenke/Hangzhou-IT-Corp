@@ -64,7 +64,10 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
     }
 
     private void init() {
+
         LogManager.info("Begin To Init JobManager");
+
+        processManager.init();
 
         ShellUtil.init();   //check ipProxy需要用到shell因此要先初始化
 
@@ -88,6 +91,7 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
         });
 
         ipProxyTool = new IPProxyTool();
+        ipProxyTool.init();
         if (ipProxyTool.currentProxy != null) {
             heartbeatManager.beginHeartBeat(ipProxyTool.currentProxy);
         }

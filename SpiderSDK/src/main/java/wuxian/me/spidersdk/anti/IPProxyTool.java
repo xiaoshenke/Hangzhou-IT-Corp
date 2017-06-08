@@ -13,7 +13,6 @@ import java.util.concurrent.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static wuxian.me.spidersdk.util.FileUtil.getCurrentPath;
 import static wuxian.me.spidersdk.util.ShellUtil.*;
 
 /**
@@ -42,10 +41,10 @@ public class IPProxyTool {
     private boolean inited = false;
 
     public IPProxyTool() {
-        init();
+
     }
 
-    private void init() {
+    public void init() {
         if (inited) {
             return;
         }

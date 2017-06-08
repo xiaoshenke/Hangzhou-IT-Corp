@@ -135,20 +135,17 @@ public class RedisJobQueue implements IQueue {
         }
 
         LogManager.info("try Get Spider ");
-
         String spiderStr = jedis.rpop(JOB_QUEUE);
-
         if (spiderStr == null) {
             return null;
         }
-
 
         HttpUrlNode node = gson.fromJson(spiderStr, HttpUrlNode.class);
         long hash = node.toPatternKey();
 
         if (unResolveList.contains(hash)) {  //避免多次调用getHandleableClassOf
             LogManager.info("Get Spider, Can't resolve node: " + node.toString() + " ,get another one");
-            jedis.lpush(JOB_QUEUE, spiderStr);//Fixme: stack overflow?
+            jedis.lpush(JOB_QUEUE, spiderStr);
 
             if (lastUnsolvedStr == null) {
                 lastUnsolvedStr = spiderStr;

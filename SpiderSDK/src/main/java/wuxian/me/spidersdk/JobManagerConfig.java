@@ -99,13 +99,12 @@ public class JobManagerConfig {
 
     public final static String serializedSpiderFile = "/file/spiders.txt";
 
-    static {
-        LogManager.info("Read Configuration From File:/conf/jobmanager.properties");
-        readConfigFromFile();
-    }
-
     private JobManagerConfig() {
         ;
+    }
+
+    public static void init() {
+        readConfigFromFile();
     }
 
     public static void readConfigFromFile() {
