@@ -6,6 +6,8 @@ import wuxian.me.spidermaster.util.IpPortUtil;
 
 /**
  * Created by wuxian on 27/5/2017.
+ *
+ * Todo:这个类的api设计？
  */
 public class SpiderAgent {
 
@@ -28,6 +30,6 @@ public class SpiderAgent {
     }
 
     public void start() {
-        spiderClient.asyncConnect(serverIp, serverPort);  //Todo: login success callback
+        spiderClient.asyncConnect(serverIp, serverPort);
     }
 }

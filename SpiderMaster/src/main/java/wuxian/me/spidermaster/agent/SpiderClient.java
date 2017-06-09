@@ -3,12 +3,13 @@ package wuxian.me.spidermaster.agent;
 import io.netty.channel.socket.SocketChannel;
 import wuxian.me.spidermaster.rpc.IRpcCallback;
 import wuxian.me.spidermaster.rpc.RpcRequest;
-import wuxian.me.spidermaster.rpc.client.RpcClient;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by wuxian on 26/5/2017.
  * <p>
- * Todo:
  */
 public class SpiderClient implements IClient {
 
@@ -21,13 +22,11 @@ public class SpiderClient implements IClient {
             return;
         }
 
-        Connector connector = new Connector(serverIp, serverPort);
-        connector.register(new Connector.ConnectCallback() {
+        SpiderConnector connector = new SpiderConnector(
+                serverIp, serverPort, this, new SpiderConnector.IConnectCallback() {
             public void onSuccess(SocketChannel channel) {
                 SpiderClient.this.channel = channel;  //save channel
                 connected = true;
-
-                //Todo: heartbeat
             }
 
             public void onFail() {
@@ -38,6 +37,7 @@ public class SpiderClient implements IClient {
 
             }
         });
+
         connectThread = new Thread(connector);
         connectThread.setName("ConnectionThread");
         connectThread.start();
@@ -58,15 +58,46 @@ public class SpiderClient implements IClient {
     //这样的设计不知道有没有坑...
     public void onMessage(RpcRequest request) {
 
+        if (request == null) {
+            return;
+        }
+
+        if (!requestMap.containsKey(request)) {
+            return;
+        }
+
+        requestMap.get(request).onRpcRequest(request);
     }
 
     //内部一定是将这个任务(RpcRequest)丢到子线程去发这个请求
     //注意这里的callback在子线程执行
+    //Todo:实现request线程
     public void asyncSendMessage(RpcRequest request, IRpcCallback callback) {
 
     }
 
     public void onDisconnectByServer() {
         connected = false;
+    }
+
+    private static Map<RpcRequest, OnRpcRequest> requestMap = new HashMap<RpcRequest, OnRpcRequest>();
+
+
+    //业务层只需实现OnRpcRequest接口并注册即可
+    public static void registerMessageNotify(RpcRequest request, OnRpcRequest onRpcRequest) {
+        if (request == null || onRpcRequest == null) {
+            return;
+        }
+
+        if (requestMap.containsKey(request)) {
+            return;
+        }
+
+        requestMap.put(request, onRpcRequest);
+    }
+
+    //处理spider master的命令
+    public interface OnRpcRequest {
+        void onRpcRequest(RpcRequest request);
     }
 }
