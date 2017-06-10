@@ -3,6 +3,8 @@ package wuxian.me.spidermaster.agent;
 import io.netty.channel.socket.SocketChannel;
 import wuxian.me.spidermaster.rpc.IRpcCallback;
 import wuxian.me.spidermaster.rpc.RpcRequest;
+import wuxian.me.spidermaster.rpc.RpcResponse;
+import wuxian.me.spidermaster.util.log.LogManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +18,15 @@ public class SpiderClient implements IClient {
     private Thread connectThread;
     private boolean connected = false;
     private SocketChannel channel;
+    private RequestSender sender = new RequestSender(this);
+
+    public void init() {
+        sender.init();
+    }
+
+    public SocketChannel channel() {
+        return channel;
+    }
 
     public void asyncConnect(final String serverIp, final int serverPort) {
         if (connected) {
@@ -23,7 +34,7 @@ public class SpiderClient implements IClient {
         }
 
         SpiderConnector connector = new SpiderConnector(
-                serverIp, serverPort, this, new SpiderConnector.IConnectCallback() {
+                serverIp, serverPort, this, new IConnectCallback() {
             public void onSuccess(SocketChannel channel) {
                 SpiderClient.this.channel = channel;  //save channel
                 connected = true;
@@ -37,7 +48,6 @@ public class SpiderClient implements IClient {
 
             }
         });
-
         connectThread = new Thread(connector);
         connectThread.setName("ConnectionThread");
         connectThread.start();
@@ -56,7 +66,9 @@ public class SpiderClient implements IClient {
     //目前的设计 这个响应的实现是子线程自动返回一个成功码
     //因为不应该由主线程 也就是业务线程去发这个成功码
     //这样的设计不知道有没有坑...
+    //运行在"ConnectionThread"线程 --> 业务处理时间过长会阻塞io线程
     public void onMessage(RpcRequest request) {
+        LogManager.info("onMessage: " + Thread.currentThread().getName());
 
         if (request == null) {
             return;
@@ -65,15 +77,20 @@ public class SpiderClient implements IClient {
         if (!requestMap.containsKey(request)) {
             return;
         }
-
         requestMap.get(request).onRpcRequest(request);
+    }
+
+    //Todo:根据reponse.requestId找到IRpcCallback
+    //这个response应该运行在@"ConnectionThread"
+    public void onRpcResponse(RpcResponse response) {
+
+
     }
 
     //内部一定是将这个任务(RpcRequest)丢到子线程去发这个请求
     //注意这里的callback在子线程执行
-    //Todo:实现request线程
     public void asyncSendMessage(RpcRequest request, IRpcCallback callback) {
-
+        sender.put(request, callback);
     }
 
     public void onDisconnectByServer() {
@@ -81,7 +98,6 @@ public class SpiderClient implements IClient {
     }
 
     private static Map<RpcRequest, OnRpcRequest> requestMap = new HashMap<RpcRequest, OnRpcRequest>();
-
 
     //业务层只需实现OnRpcRequest接口并注册即可
     public static void registerMessageNotify(RpcRequest request, OnRpcRequest onRpcRequest) {
@@ -96,8 +112,4 @@ public class SpiderClient implements IClient {
         requestMap.put(request, onRpcRequest);
     }
 
-    //处理spider master的命令
-    public interface OnRpcRequest {
-        void onRpcRequest(RpcRequest request);
-    }
 }

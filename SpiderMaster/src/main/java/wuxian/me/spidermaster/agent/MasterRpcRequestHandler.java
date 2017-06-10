@@ -22,7 +22,7 @@ public class MasterRpcRequestHandler extends SimpleChannelInboundHandler<RpcRequ
         this.client = client;
     }
 
-    //
+    //Todo:是否需要返回一个默认的response
     protected void channelRead0(ChannelHandlerContext channelHandlerContext
             , RpcRequest request) throws Exception {
         this.client.onMessage(request);  //

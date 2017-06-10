@@ -12,9 +12,6 @@ import wuxian.me.spidermaster.rpc.RpcResponse;
  */
 public class AgentRpcResponseHandler extends SimpleChannelInboundHandler<RpcResponse> {
 
-    private RpcResponse response;
-    private final Object obj = new Object();
-    private SocketChannel socketChannel;
     private IClient client;
 
     public AgentRpcResponseHandler(@Nullable IClient client) {
@@ -23,11 +20,10 @@ public class AgentRpcResponseHandler extends SimpleChannelInboundHandler<RpcResp
 
     protected void channelRead0(ChannelHandlerContext channelHandlerContext,
                                 RpcResponse rpcResponse) throws Exception {
-        /*
-        if(client != null) {
-            client.onMessage();
+        if (client == null) {
+            return;
         }
-        */
+        client.onRpcResponse(rpcResponse);
     }
 
 }

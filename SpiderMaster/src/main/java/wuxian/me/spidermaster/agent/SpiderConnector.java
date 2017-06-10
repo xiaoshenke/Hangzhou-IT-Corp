@@ -37,7 +37,7 @@ public class SpiderConnector implements Runnable {
     }
 
     public void connectTo(String host, int port) {
-        EventLoopGroup group = new NioEventLoopGroup();
+        EventLoopGroup group = new NioEventLoopGroup();  //应该在是当前线程 也就是"ConnectionThread"
         Bootstrap bootstrap = new Bootstrap();
 
         bootstrap.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10 * 1000);
@@ -90,15 +90,6 @@ public class SpiderConnector implements Runnable {
 
     public void run() {
         connectTo(host, port);
-    }
-
-    public interface IConnectCallback {
-
-        void onSuccess(SocketChannel channel);
-
-        void onFail();
-
-        void onException();
     }
 
 }
