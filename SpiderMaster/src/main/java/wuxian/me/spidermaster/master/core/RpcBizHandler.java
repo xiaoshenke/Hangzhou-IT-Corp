@@ -1,4 +1,4 @@
-package wuxian.me.spidermaster.master;
+package wuxian.me.spidermaster.master.core;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

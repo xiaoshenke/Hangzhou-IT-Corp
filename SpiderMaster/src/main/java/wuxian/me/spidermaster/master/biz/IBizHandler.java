@@ -9,4 +9,6 @@ import wuxian.me.spidermaster.rpc.RpcRequest;
 public interface IBizHandler {
 
     void handleRequest(RpcRequest request, SocketChannel channel);
+
+    String getMethodName();
 }

@@ -1,7 +1,7 @@
 package wuxian.me.spidermaster.master.biz;
 
 import io.netty.channel.socket.SocketChannel;
-import wuxian.me.spidermaster.master.RpcBizHandler;
+import wuxian.me.spidermaster.master.core.RpcBizHandler;
 import wuxian.me.spidermaster.rpc.RpcRequest;
 
 /**
@@ -11,7 +11,7 @@ import wuxian.me.spidermaster.rpc.RpcRequest;
  */
 
 @RpcBizHandler(methodName = "register")
-public class RegisterHandler implements IBizHandler {
+public class RegisterHandler extends BaseBizHandler {
 
     public void handleRequest(RpcRequest request, SocketChannel channel) {
 

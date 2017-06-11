@@ -2,6 +2,7 @@ package wuxian.me.spidermaster.master;
 
 import com.sun.istack.internal.NotNull;
 import wuxian.me.spidermaster.master.biz.RegisterHandler;
+import wuxian.me.spidermaster.master.core.BizHandlerRegister;
 import wuxian.me.spidermaster.util.exception.IpPortNotValidException;
 import wuxian.me.spidermaster.util.IpPortUtil;
 

@@ -1,4 +1,4 @@
-package wuxian.me.spidermaster.master;
+package wuxian.me.spidermaster.master.core;
 
 import com.sun.istack.internal.Nullable;
 import wuxian.me.spidermaster.master.biz.IBizHandler;
