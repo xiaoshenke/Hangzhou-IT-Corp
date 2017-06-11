@@ -9,7 +9,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import wuxian.me.spidermaster.rpc.server.SpiderBizHandler;
+import wuxian.me.spidermaster.rpc.RpcDecoder;
+import wuxian.me.spidermaster.rpc.RpcEncoder;
 import wuxian.me.spidermaster.util.log.LogManager;
 
 /**
@@ -45,10 +46,9 @@ public class MasterServer {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             socketChannel.pipeline()
-                                    .addLast(new SpiderBizHandler())
-                            //.addLast(new RpcDecoder())
-                            //.addLast(new RpcEncoder())
-                            ;
+                                    .addLast(new RpcDecoder())
+                                    .addLast(new RpcEncoder())
+                                    .addLast(new AgentRpcRequestHandler(socketChannel));
                         }
                     })
                     .option(ChannelOption.SO_BACKLOG, 128)
