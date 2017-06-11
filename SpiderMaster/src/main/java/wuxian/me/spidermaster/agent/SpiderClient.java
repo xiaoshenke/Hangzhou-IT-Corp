@@ -1,6 +1,13 @@
 package wuxian.me.spidermaster.agent;
 
 import io.netty.channel.socket.SocketChannel;
+import wuxian.me.spidermaster.agent.biz.HeartbeatRequestProducer;
+import wuxian.me.spidermaster.agent.biz.RegisterRequestProducer;
+import wuxian.me.spidermaster.agent.biz.ReportStatusRequestProducer;
+import wuxian.me.spidermaster.agent.connector.IConnectCallback;
+import wuxian.me.spidermaster.agent.connector.SpiderConnector;
+import wuxian.me.spidermaster.agent.rpccore.OnRpcRequest;
+import wuxian.me.spidermaster.agent.rpccore.RequestSender;
 import wuxian.me.spidermaster.rpc.IRpcCallback;
 import wuxian.me.spidermaster.rpc.RpcRequest;
 import wuxian.me.spidermaster.rpc.RpcResponse;
@@ -19,6 +26,12 @@ public class SpiderClient implements IClient {
     private boolean connected = false;
     private SocketChannel channel;
     private RequestSender sender = new RequestSender(this);
+
+    private HeartbeatRequestProducer heartbeatProducer = new HeartbeatRequestProducer();
+
+    private RegisterRequestProducer registerProducer = new RegisterRequestProducer();
+
+    private ReportStatusRequestProducer reportStatusProducer = new ReportStatusRequestProducer();
 
     public void init() {
         sender.init();
@@ -58,14 +71,11 @@ public class SpiderClient implements IClient {
         return connected;
     }
 
+    //Todo:
     public void disconnectFromServer() {
 
     }
 
-    //子线程收到RpcRequest 于是主线程"看见"了这个RpcRequest(应该说是指令 比如暂停pause指令),并做出相应的应对
-    //目前的设计 这个响应的实现是子线程自动返回一个成功码
-    //因为不应该由主线程 也就是业务线程去发这个成功码
-    //这样的设计不知道有没有坑...
     //运行在"ConnectionThread"线程 --> 业务处理时间过长会阻塞io线程
     public void onMessage(RpcRequest request) {
         LogManager.info("onMessage: " + Thread.currentThread().getName());

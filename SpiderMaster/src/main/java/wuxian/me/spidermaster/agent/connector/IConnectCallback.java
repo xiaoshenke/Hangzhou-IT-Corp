@@ -1,4 +1,4 @@
-package wuxian.me.spidermaster.agent;
+package wuxian.me.spidermaster.agent.connector;
 
 import io.netty.channel.socket.SocketChannel;
 

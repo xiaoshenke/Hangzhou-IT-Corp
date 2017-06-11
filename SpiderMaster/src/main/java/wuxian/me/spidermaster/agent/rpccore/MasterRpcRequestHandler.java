@@ -1,8 +1,9 @@
-package wuxian.me.spidermaster.agent;
+package wuxian.me.spidermaster.agent.rpccore;
 
 import com.sun.istack.internal.NotNull;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import wuxian.me.spidermaster.agent.IClient;
 import wuxian.me.spidermaster.rpc.RpcRequest;
 import wuxian.me.spidermaster.rpc.RpcResponse;
 

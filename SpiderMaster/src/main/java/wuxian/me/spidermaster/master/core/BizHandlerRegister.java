@@ -2,6 +2,7 @@ package wuxian.me.spidermaster.master.core;
 
 import com.sun.istack.internal.Nullable;
 import wuxian.me.spidermaster.master.biz.IBizHandler;
+import wuxian.me.spidermaster.util.RpcBizName;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +23,7 @@ public class BizHandlerRegister {
         if (handler == null) {
             return;
         }
-        RpcBizHandler annotation = (handler.getClass().getAnnotation(RpcBizHandler.class));
+        RpcBizName annotation = (handler.getClass().getAnnotation(RpcBizName.class));
         if (annotation == null) {
             return;
         }
