@@ -1,14 +1,15 @@
-package wuxian.me.spidermaster.util;
+package wuxian.me.spidercommon.util;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
+import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
+import wuxian.me.spidercommon.log.LogManager;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.*;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -18,21 +19,39 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class FileUtil {
 
-    static {
-        try {
-            File file = new File(FileUtil.class.getProtectionDomain().getCodeSource()
-                    .getLocation().toURI().getPath());
-            if (FileUtil.checkFileExist(file.getParentFile().getAbsolutePath() + SpiderConfig.DEFAULT_PATH)) {
-                FileUtil.setCurrentFile(file.getAbsolutePath());
-                FileUtil.setCurrentPath(file.getParentFile().getAbsolutePath());
+    public static void initWithClass(@NotNull Class clazz) {
 
-            } else {
-                file = new File("");
-                FileUtil.setCurrentPath(file.getAbsolutePath());
+        //initWith(clazz,"/conf/jobmanager.properties"); //Todo
+        initWith(clazz,null);
+    }
+
+    public static void initWith(Class clazz,String path) {
+
+        if(clazz != null) {
+            try {
+                File file = new File(clazz.getProtectionDomain().getCodeSource()
+                        .getLocation().toURI().getPath());
+
+                if(path != null) {
+                    if (FileUtil.checkFileExist(file.getParentFile().getAbsolutePath() + path)) {
+                        FileUtil.setCurrentFile(file.getAbsolutePath());
+                        FileUtil.setCurrentPath(file.getParentFile().getAbsolutePath());
+                        return;
+                    }
+                } else {
+                    FileUtil.setCurrentFile(file.getAbsolutePath());
+                    FileUtil.setCurrentPath(file.getParentFile().getAbsolutePath());
+                    return;
+                }
+
+            } catch (Exception e) {
+                ;
             }
-        } catch (Exception e) {
-            ;
         }
+
+
+        File file = new File("");
+        FileUtil.setCurrentPath(file.getAbsolutePath());
     }
 
     private FileUtil() {
@@ -46,7 +65,7 @@ public class FileUtil {
         currentFile = path;
     }
 
-
+    //Todo:业务层记得要调用一下
     //ide运行和java -jar运行的时候是不同的值
     public static void setCurrentPath(String path) {
         currentPath = path;
@@ -96,6 +115,7 @@ public class FileUtil {
             }
             return content;
         } catch (IOException e) {
+            LogManager.error("FileUtil.readFromFile " + e.getMessage());
             return null;
         }
     }

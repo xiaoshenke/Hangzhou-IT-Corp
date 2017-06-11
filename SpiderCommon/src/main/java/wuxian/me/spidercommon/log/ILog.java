@@ -1,4 +1,4 @@
-package wuxian.me.spidersdk.log;
+package wuxian.me.spidercommon.log;
 
 /**
  * Created by wuxian on 30/4/2017.

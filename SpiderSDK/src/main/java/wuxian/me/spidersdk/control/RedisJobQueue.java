@@ -4,12 +4,12 @@ import com.google.common.primitives.Ints;
 import com.google.gson.Gson;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.exceptions.JedisConnectionException;
+import wuxian.me.spidercommon.log.LogManager;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.JobManagerConfig;
 import wuxian.me.spidersdk.distribute.*;
 import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
-import wuxian.me.spidersdk.log.LogManager;
 import wuxian.me.spidersdk.util.ShellUtil;
 
 import java.io.IOException;

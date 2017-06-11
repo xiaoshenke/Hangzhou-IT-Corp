@@ -3,8 +3,8 @@ package wuxian.me.spidermaster.rpc.server;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.SimpleChannelInboundHandler;
+import wuxian.me.spidercommon.log.LogManager;
 import wuxian.me.spidermaster.rpc.RpcRequest;
-import wuxian.me.spidermaster.util.log.LogManager;
 
 /**
  * Created by wuxian on 26/5/2017.

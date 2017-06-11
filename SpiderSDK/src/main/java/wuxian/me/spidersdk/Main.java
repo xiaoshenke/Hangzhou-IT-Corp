@@ -1,15 +1,11 @@
 package wuxian.me.spidersdk;
 
+import wuxian.me.spidercommon.log.LogManager;
+import wuxian.me.spidercommon.util.FileUtil;
 import wuxian.me.spidersdk.distribute.ClassHelper;
 import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
-import wuxian.me.spidersdk.log.LogManager;
-import wuxian.me.spidersdk.manager.DistributeJobManager;
 import wuxian.me.spidersdk.manager.JobManagerFactory;
-import wuxian.me.spidersdk.manager.PlainJobManager;
-import wuxian.me.spidersdk.util.FileUtil;
-
-import java.io.File;
 
 /**
  * Created by wuxian on 12/5/2017.
@@ -25,7 +21,7 @@ public class Main {
         LogManager.info("Main_static Begin.");
         LogManager.info("1 Find Current File Path.");
 
-        FileUtil.initWithClass(Main.class);
+        FileUtil.initWith(Main.class,"/conf/jobmanager.properties");
         LogManager.info("Current Path." + FileUtil.getCurrentPath());
 
         JobManagerConfig.init();

@@ -1,16 +1,12 @@
 package wuxian.me.spidersdk;
 
-import com.google.common.primitives.Ints;
 import org.junit.Test;
-import redis.clients.jedis.Jedis;
-import wuxian.me.spidersdk.anti.IPProxyTool;
+import wuxian.me.spidercommon.log.LogManager;
+import wuxian.me.spidercommon.util.ProcessUtil;
 import wuxian.me.spidersdk.distribute.ClassHelper;
 import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
-import wuxian.me.spidersdk.log.LogManager;
 import wuxian.me.spidersdk.manager.JobManagerFactory;
-import wuxian.me.spidersdk.manager.PlainJobManager;
-import wuxian.me.spidersdk.util.ProcessUtil;
 import wuxian.me.spidersdk.util.ShellUtil;
 
 import java.util.Set;
@@ -19,10 +15,6 @@ import java.util.Set;
  * Created by wuxian on 12/5/2017.
  */
 public class MainTest {
-
-    static {
-        Main.findCorrectFilePath();
-    }
 
     @Test
     public void testIpproxyTool() {

@@ -1,9 +1,9 @@
-package wuxian.me.spidermaster.util;
+package wuxian.me.spidercommon.util;
 
 import java.lang.management.ManagementFactory;
 
 /**
- * Created by wuxian on 27/5/2017.
+ * Created by wuxian on 11/6/2017.
  */
 public class ProcessUtil {
 

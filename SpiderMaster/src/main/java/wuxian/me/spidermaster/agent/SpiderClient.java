@@ -1,6 +1,7 @@
 package wuxian.me.spidermaster.agent;
 
 import io.netty.channel.socket.SocketChannel;
+import wuxian.me.spidercommon.log.LogManager;
 import wuxian.me.spidermaster.agent.biz.HeartbeatRequestProducer;
 import wuxian.me.spidermaster.agent.biz.RegisterRequestProducer;
 import wuxian.me.spidermaster.agent.biz.ReportStatusRequestProducer;
@@ -11,7 +12,6 @@ import wuxian.me.spidermaster.agent.rpccore.RequestSender;
 import wuxian.me.spidermaster.rpc.IRpcCallback;
 import wuxian.me.spidermaster.rpc.RpcRequest;
 import wuxian.me.spidermaster.rpc.RpcResponse;
-import wuxian.me.spidermaster.util.log.LogManager;
 
 import java.util.HashMap;
 import java.util.Map;

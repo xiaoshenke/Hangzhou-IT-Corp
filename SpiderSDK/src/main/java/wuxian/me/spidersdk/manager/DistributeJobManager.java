@@ -4,6 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sun.istack.internal.NotNull;
 import okhttp3.Dispatcher;
+import wuxian.me.spidercommon.log.LogManager;
+import wuxian.me.spidercommon.util.FileUtil;
+import wuxian.me.spidercommon.util.SignalManager;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.IJobManager;
 import wuxian.me.spidersdk.JobManagerConfig;
@@ -14,7 +17,6 @@ import wuxian.me.spidersdk.control.WorkThread;
 import wuxian.me.spidersdk.distribute.*;
 import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
-import wuxian.me.spidersdk.log.LogManager;
 import wuxian.me.spidersdk.util.*;
 
 import java.util.*;
@@ -49,7 +51,7 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
     //位于okHttpClient的缓存池中
     private List<BaseSpider> dispatchedSpiderList = Collections.synchronizedList(new ArrayList<BaseSpider>());
 
-    private ProcessManager processManager = new ProcessManager();
+    private SignalManager processManager = new SignalManager();
 
     public List<BaseSpider> getDispatchedSpiderList() {
         return dispatchedSpiderList;
@@ -83,7 +85,7 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
         queue = new RedisJobQueue();
         queue.init();
 
-        processManager.registerOnSystemKill(new ProcessManager.OnSystemKill() {
+        processManager.registerOnSystemKill(new SignalManager.OnSystemKill() {
             public void onSystemKilled() {
                 LogManager.error("DistributeJobManager, OnProcessKilled");
                 DistributeJobManager.this.onPause();

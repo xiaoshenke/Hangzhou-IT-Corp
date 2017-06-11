@@ -2,10 +2,10 @@ package wuxian.me.spidersdk;
 
 import com.sun.istack.internal.NotNull;
 import okhttp3.Request;
+import wuxian.me.spidercommon.log.LogManager;
 import wuxian.me.spidersdk.distribute.HttpUrlNode;
 import wuxian.me.spidersdk.distribute.MethodCheckException;
 import wuxian.me.spidersdk.distribute.SpiderMethodManager;
-import wuxian.me.spidersdk.log.LogManager;
 import wuxian.me.spidersdk.manager.JobManagerFactory;
 import wuxian.me.spidersdk.util.OkhttpProvider;
 import wuxian.me.spidersdk.util.SerializeFullLogHelper;

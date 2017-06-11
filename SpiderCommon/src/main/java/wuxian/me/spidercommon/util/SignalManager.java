@@ -1,16 +1,15 @@
-package wuxian.me.spidermaster.util;
-
+package wuxian.me.spidercommon.util;
 
 import com.sun.istack.internal.NotNull;
 import sun.misc.Signal;
 import sun.misc.SignalHandler;
-import wuxian.me.spidermaster.util.log.LogManager;
+import wuxian.me.spidercommon.log.LogManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by wuxian on 15/5/2017.
+ * Created by wuxian on 11/6/2017.
  */
 public class SignalManager implements SignalHandler {
 
@@ -54,4 +53,5 @@ public class SignalManager implements SignalHandler {
         void onSystemKilled();
     }
 }
+
 

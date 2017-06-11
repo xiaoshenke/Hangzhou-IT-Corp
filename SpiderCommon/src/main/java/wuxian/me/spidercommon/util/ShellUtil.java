@@ -1,22 +1,16 @@
-package wuxian.me.spidersdk.util;
+package wuxian.me.spidercommon.util;
 
 import com.sun.istack.internal.Nullable;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 import wuxian.me.spidercommon.log.LogManager;
-import wuxian.me.spidercommon.util.FileUtil;
-import wuxian.me.spidersdk.JobManagerConfig;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import static wuxian.me.spidercommon.util.FileUtil.getCurrentPath;
-import static wuxian.me.spidersdk.JobManagerConfig.*;
-import static wuxian.me.spidersdk.JobManagerConfig.redisPort;
-
 /**
- * Created by wuxian on 3/5/2017.
+ * Created by wuxian on 11/6/2017.
  */
 public class ShellUtil {
 
@@ -33,34 +27,37 @@ public class ShellUtil {
         if(!init){
             init = true;
 
-            String path = getCurrentPath() + shellOpenProxyFile;  //写shell文件
+            String path = FileUtil.getCurrentPath() + shellOpenProxyFile;  //写shell文件
+            /*
             if (!FileUtil.checkFileExist(path)) {
                 String shell = "open -t " + ipproxyFile;
                 FileUtil.writeToFile(path, shell);
             }
-
             ShellUtil.chmod(path, 0777);
+            */
 
-            path = getCurrentPath() + shellKillprocessFile;
+            path = FileUtil.getCurrentPath() + shellKillprocessFile;
             if (!FileUtil.checkFileExist(path)) {
                 String shell = "kill -9 $1";
                 FileUtil.writeToFile(path, shell);
             }
             ShellUtil.chmod(path, 0777);
 
-            path = getCurrentPath() + shellCheckprocessFile;
+            path = FileUtil.getCurrentPath() + shellCheckprocessFile;
             if (!FileUtil.checkFileExist(path)) {
                 String shell = "ps -ef | grep $1";
                 FileUtil.writeToFile(path, shell);
             }
             ShellUtil.chmod(path, 0777);
 
+            /*
             path = getCurrentPath() + shellCheckRedisRunning;
             if (!FileUtil.checkFileExist(path)) {
                 String shell = "redis-cli -h " + redisIp + " -p " + redisPort + " ping";
                 FileUtil.writeToFile(path, shell);
             }
             ShellUtil.chmod(path, 0777);
+            */
         }
 
     }
@@ -71,7 +68,7 @@ public class ShellUtil {
         }
         Runtime runtime = Runtime.getRuntime();
         try {
-            String kill = getCurrentPath() + shellKillprocessFile;
+            String kill = FileUtil.getCurrentPath() + shellKillprocessFile;
             String[] args = new String[]{kill, pid};
             Process proc = runtime.exec(args);
             int exit = proc.waitFor();
@@ -112,11 +109,11 @@ public class ShellUtil {
     }
 
     private static String getCheckRedisServerRunningPath() {
-        return getCurrentPath() + shellCheckRedisRunning;
+        return FileUtil.getCurrentPath() + shellCheckRedisRunning;
     }
 
     private static String getCheckProcessShellPath() {
-        return getCurrentPath() + shellCheckprocessFile;
+        return FileUtil.getCurrentPath() + shellCheckprocessFile;
     }
 
     private static boolean isTextEditRunning() throws IOException {
@@ -158,7 +155,7 @@ public class ShellUtil {
 
 
     public static String getOpenProxyShellPath() {
-        return getCurrentPath() + shellOpenProxyFile;
+        return FileUtil.getCurrentPath() + shellOpenProxyFile;
     }
 
     //http://stackoverflow.com/questions/664432/how-do-i-programmatically-change-file-permissions
@@ -168,3 +165,4 @@ public class ShellUtil {
         int chmod(String path, int mode);
     }
 }
+

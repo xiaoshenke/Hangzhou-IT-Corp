@@ -2,8 +2,8 @@ package wuxian.me.spidersdk.distribute;
 
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
+import wuxian.me.spidercommon.util.FileUtil;
 import wuxian.me.spidersdk.JobManagerConfig;
-import wuxian.me.spidersdk.util.FileUtil;
 
 import java.io.File;
 import java.io.FileFilter;

@@ -1,10 +1,10 @@
 package wuxian.me.spidersdk.anti;
 
 import okhttp3.*;
-import wuxian.me.spidersdk.util.FileUtil;
+import wuxian.me.spidercommon.log.LogManager;
+import wuxian.me.spidercommon.util.FileUtil;
 import wuxian.me.spidersdk.util.OkhttpProvider;
 import wuxian.me.spidersdk.JobManagerConfig;
-import wuxian.me.spidersdk.log.LogManager;
 
 import java.io.IOException;
 import java.util.ArrayList;

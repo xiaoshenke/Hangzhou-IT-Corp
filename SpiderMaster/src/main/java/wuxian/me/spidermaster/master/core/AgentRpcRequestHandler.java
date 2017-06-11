@@ -3,9 +3,9 @@ package wuxian.me.spidermaster.master.core;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.SocketChannel;
+import wuxian.me.spidercommon.log.LogManager;
 import wuxian.me.spidermaster.master.biz.IBizHandler;
 import wuxian.me.spidermaster.rpc.RpcRequest;
-import wuxian.me.spidermaster.util.log.LogManager;
 
 /**
  * Created by wuxian on 11/6/2017.

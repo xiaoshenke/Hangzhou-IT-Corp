@@ -10,12 +10,12 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import wuxian.me.spidercommon.log.LogManager;
 import wuxian.me.spidermaster.agent.rpccore.AgentRpcResponseHandler;
 import wuxian.me.spidermaster.agent.IClient;
 import wuxian.me.spidermaster.agent.rpccore.MasterRpcRequestHandler;
 import wuxian.me.spidermaster.rpc.RpcDecoder;
 import wuxian.me.spidermaster.rpc.RpcEncoder;
-import wuxian.me.spidermaster.util.log.LogManager;
 
 
 /**

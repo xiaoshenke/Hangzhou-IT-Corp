@@ -1,8 +1,8 @@
 package wuxian.me.spidermaster.agent;
 
 import com.sun.istack.internal.NotNull;
+import wuxian.me.spidercommon.util.IpPortUtil;
 import wuxian.me.spidermaster.util.exception.IpPortNotValidException;
-import wuxian.me.spidermaster.util.IpPortUtil;
 
 /**
  * Created by wuxian on 27/5/2017.

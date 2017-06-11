@@ -2,6 +2,8 @@ package wuxian.me.spidersdk.manager;
 
 import com.sun.istack.internal.NotNull;
 import okhttp3.*;
+import wuxian.me.spidercommon.log.LogManager;
+import wuxian.me.spidercommon.util.SignalManager;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.IJobManager;
 import wuxian.me.spidersdk.JobManagerConfig;
@@ -12,9 +14,7 @@ import wuxian.me.spidersdk.anti.IPProxyTool;
 import wuxian.me.spidersdk.control.*;
 import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
-import wuxian.me.spidersdk.log.LogManager;
 import wuxian.me.spidersdk.util.OkhttpProvider;
-import wuxian.me.spidersdk.util.ProcessManager;
 import wuxian.me.spidersdk.util.ShellUtil;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class PlainJobManager implements HeartbeatManager.IHeartBeat,IJobManager {
 
-    private ProcessManager processManager = new ProcessManager();
+    private SignalManager processManager = new SignalManager();
 
     private JobMonitor monitor = new JobMonitor();
     private IQueue queue;
@@ -58,7 +58,7 @@ public class PlainJobManager implements HeartbeatManager.IHeartBeat,IJobManager 
     private boolean started = false;
 
     public PlainJobManager() {
-        processManager.registerOnSystemKill(new ProcessManager.OnSystemKill() {
+        processManager.registerOnSystemKill(new SignalManager.OnSystemKill() {
             public void onSystemKilled() {
                 onPause();
             }

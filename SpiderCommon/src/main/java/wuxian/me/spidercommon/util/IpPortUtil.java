@@ -1,10 +1,10 @@
-package wuxian.me.spidermaster.util;
+package wuxian.me.spidercommon.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by wuxian on 26/5/2017.
+ * Created by wuxian on 11/6/2017.
  */
 public class IpPortUtil {
 
@@ -37,3 +37,4 @@ public class IpPortUtil {
         return matcher.matches();
     }
 }
+

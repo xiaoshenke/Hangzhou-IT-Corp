@@ -4,8 +4,8 @@ import com.sun.istack.internal.NotNull;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+import wuxian.me.spidercommon.log.LogManager;
 import wuxian.me.spidersdk.anti.Fail;
-import wuxian.me.spidersdk.log.LogManager;
 import wuxian.me.spidersdk.manager.JobManagerFactory;
 import wuxian.me.spidersdk.manager.PlainJobManager;
 

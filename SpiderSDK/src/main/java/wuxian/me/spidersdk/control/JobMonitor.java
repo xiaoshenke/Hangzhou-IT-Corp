@@ -1,9 +1,9 @@
 package wuxian.me.spidersdk.control;
 
 import com.sun.istack.internal.NotNull;
+import wuxian.me.spidercommon.log.LogManager;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.job.IJob;
-import wuxian.me.spidersdk.log.LogManager;
 
 import java.util.HashMap;
 import java.util.Map;

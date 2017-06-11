@@ -7,11 +7,7 @@ public class RpcRequest {
 
     public String requestId;
 
-    public String className;
-
     public String methodName;
 
-    public Class<?>[] parameterTypes;
-
-    public Object[] parameters;
+    public Byte[] datas;
 }

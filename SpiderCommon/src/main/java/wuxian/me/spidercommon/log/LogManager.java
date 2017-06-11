@@ -1,4 +1,4 @@
-package wuxian.me.spidersdk.log;
+package wuxian.me.spidercommon.log;
 
 import com.sun.istack.internal.NotNull;
 
