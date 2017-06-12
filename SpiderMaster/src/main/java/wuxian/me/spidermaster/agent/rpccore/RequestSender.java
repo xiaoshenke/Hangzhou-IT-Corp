@@ -40,7 +40,11 @@ public class RequestSender {
 
                             LogManager.info("before send rpc request... "+rpcRequest.toString());
 
-                            client.channel().write(rpcRequest);
+                            try {
+                                client.channel().writeAndFlush(rpcRequest).sync();
+                            } catch (InterruptedException e) {
+                                ;
+                            }
                         }
 
                         try {

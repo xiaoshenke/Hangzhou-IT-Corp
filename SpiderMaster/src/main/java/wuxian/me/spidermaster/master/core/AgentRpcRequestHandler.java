@@ -29,4 +29,9 @@ public class AgentRpcRequestHandler extends SimpleChannelInboundHandler<RpcReque
             handler.handleRequest(request, channel);
         }
     }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        super.exceptionCaught(ctx, cause);
+    }
 }

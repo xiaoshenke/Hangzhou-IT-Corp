@@ -16,6 +16,8 @@ import wuxian.me.spidermaster.agent.IClient;
 import wuxian.me.spidermaster.agent.rpccore.MasterRpcRequestHandler;
 import wuxian.me.spidermaster.rpc.RpcDecoder;
 import wuxian.me.spidermaster.rpc.RpcEncoder;
+import wuxian.me.spidermaster.rpc.RpcRequest;
+import wuxian.me.spidermaster.rpc.RpcResponse;
 
 
 /**
@@ -50,8 +52,8 @@ public class SpiderConnector implements Runnable {
                     public void initChannel(SocketChannel channel) throws Exception {
                         socketChannel = channel;
                         channel.pipeline()
-                                .addLast(new RpcEncoder())
-                                .addLast(new RpcDecoder())
+                                .addLast(new RpcEncoder(RpcRequest.class))
+                                .addLast(new RpcDecoder(RpcResponse.class))
                                 .addLast(new AgentRpcResponseHandler(client))
                                 .addLast(new MasterRpcRequestHandler(client))
                         ;
@@ -78,10 +80,13 @@ public class SpiderConnector implements Runnable {
             LogManager.info("cause: " + future.cause().toString());
             return;
         }
+
         connectCallback.onSuccess(socketChannel);
+
         try {
             //https://netty.io/4.0/api/io/netty/channel/Channel.html
             //Returns the ChannelFuture which will be notified when this channel is closed.
+
             future.channel().closeFuture().sync();
 
         } catch (InterruptedException e) {

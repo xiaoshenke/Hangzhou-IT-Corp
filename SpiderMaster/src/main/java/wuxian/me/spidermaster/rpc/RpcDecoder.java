@@ -18,8 +18,8 @@ public class RpcDecoder extends ByteToMessageDecoder {
 
     private Class<?> genericClass;
 
-    public RpcDecoder() {
-        genericClass = RpcRequest.class;
+    public RpcDecoder(Class<?> clazz) {
+        genericClass = clazz;
     }
 
     protected void decode(ChannelHandlerContext ctx,

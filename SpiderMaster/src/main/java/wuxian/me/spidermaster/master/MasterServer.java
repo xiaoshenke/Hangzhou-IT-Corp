@@ -11,8 +11,11 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import wuxian.me.spidercommon.log.LogManager;
 import wuxian.me.spidermaster.master.core.AgentRpcRequestHandler;
+import wuxian.me.spidermaster.master.core.DummyInboundHandler;
 import wuxian.me.spidermaster.rpc.RpcDecoder;
 import wuxian.me.spidermaster.rpc.RpcEncoder;
+import wuxian.me.spidermaster.rpc.RpcRequest;
+import wuxian.me.spidermaster.rpc.RpcResponse;
 
 /**
  * Created by wuxian on 18/5/2017.
@@ -47,12 +50,15 @@ public class MasterServer {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             socketChannel.pipeline()
-                                    .addLast(new RpcDecoder())
-                                    .addLast(new RpcEncoder())
-                                    .addLast(new AgentRpcRequestHandler(socketChannel));
+                                    //.addLast(new DummyInboundHandler())
+                                    .addLast(new RpcDecoder(RpcRequest.class))
+                                    .addLast(new RpcEncoder(RpcResponse.class))
+                                    .addLast(new AgentRpcRequestHandler(socketChannel))
+                            ;
                         }
                     })
                     .option(ChannelOption.SO_BACKLOG, 128)
+                    .option(ChannelOption.AUTO_READ, false)
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
 
 
@@ -60,8 +66,11 @@ public class MasterServer {
             ChannelFuture future = bootstrap.bind(host, port).sync();
             LogManager.info("Bind success");
 
+            future.channel().read();
+
             future.channel().closeFuture().sync();
 
+            LogManager.info("MasterServer Socket closed");
         } catch (InterruptedException e) {
 
         } finally {
