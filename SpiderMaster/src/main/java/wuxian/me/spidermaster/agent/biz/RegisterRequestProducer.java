@@ -20,7 +20,7 @@ public class RegisterRequestProducer extends BaseRequestProducer {
 
     public List<String> urlPatternList = null;
 
-    public RegisterRequestProducer(List<String> classList,List<String> urlPatternList) {
+    public RegisterRequestProducer(List<String> classList, List<String> urlPatternList) {
 
         this.classList = classList;
         this.urlPatternList = urlPatternList;
@@ -29,13 +29,13 @@ public class RegisterRequestProducer extends BaseRequestProducer {
     public RpcRequest produce() {
         int len = 0;
 
-        if(classList == null || urlPatternList == null) {
+        if (classList == null || urlPatternList == null) {
             len = 0;
         } else {
             int a = classList.size();
             int b = urlPatternList.size();
 
-            len = a<=b?a:b;
+            len = a <= b ? a : b;
         }
 
 
@@ -45,8 +45,8 @@ public class RegisterRequestProducer extends BaseRequestProducer {
 
         List<SpiderFeature> featureList = new ArrayList<SpiderFeature>();
 
-        if(len > 0) {
-            for(int i=0;i<len;i++) {
+        if (len > 0) {
+            for (int i = 0; i < len; i++) {
                 SpiderFeature feature = new SpiderFeature();
 
                 feature.className = classList.get(i);

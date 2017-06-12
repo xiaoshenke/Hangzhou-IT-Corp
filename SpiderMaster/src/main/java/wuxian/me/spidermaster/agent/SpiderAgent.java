@@ -29,7 +29,7 @@ public class SpiderAgent {
     }
 
     public SpiderAgent() {
-        this(SpiderConfig.masterIp,SpiderConfig.masterPort);
+        this(SpiderConfig.masterIp, SpiderConfig.masterPort);
     }
 
     public SpiderAgent(@NotNull String serverIp, int serverPort) {
@@ -49,24 +49,24 @@ public class SpiderAgent {
         spiderClient.asyncConnect(serverIp, serverPort);
     }
 
-    public void registerToMaster(@Nullable List<Class<?>> classList,@Nullable List<HttpUrlNode> nodeList) {
-        if(classList == null ) {
+    public void registerToMaster(@Nullable List<Class<?>> classList, @Nullable List<HttpUrlNode> nodeList) {
+        if (classList == null) {
 
             classList = new ArrayList<Class<?>>();
         }
 
-        if(nodeList == null) {
-            nodeList  = new ArrayList<HttpUrlNode>();
+        if (nodeList == null) {
+            nodeList = new ArrayList<HttpUrlNode>();
         }
 
 
         List<String> clazList = new ArrayList<String>();
-        for(Class<?> clazz:classList) {
+        for (Class<?> clazz : classList) {
             clazList.add(clazz.getName());
         }
 
         List<String> patternList = new ArrayList<String>();
-        for(HttpUrlNode node:nodeList) {
+        for (HttpUrlNode node : nodeList) {
             patternList.add(node.baseUrl);
         }
 
@@ -84,7 +84,7 @@ public class SpiderAgent {
                         LogManager.info("register rpc fail");
                     }
                 });
-        
+
     }
 
     //Todo:

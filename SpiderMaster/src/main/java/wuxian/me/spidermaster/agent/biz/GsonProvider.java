@@ -9,12 +9,13 @@ public class GsonProvider {
 
     private static Gson gson;
 
-    private GsonProvider(){}
+    private GsonProvider() {
+    }
 
     public static Gson gson() {
-        if(gson == null) {
+        if (gson == null) {
             synchronized (GsonProvider.class) {
-                if(gson == null) {
+                if (gson == null) {
                     gson = new Gson();
                 }
             }

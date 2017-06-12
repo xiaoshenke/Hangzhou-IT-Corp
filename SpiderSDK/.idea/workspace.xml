@@ -7,34 +7,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eab34228-edfc-44e7-bc45-cb52fa74264f" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../SpiderCommon/src/main/java/wuxian/me/spidercommon/model/Proxy.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../SpiderCommon/src/main/java/wuxian/me/spidercommon/model/SpiderFeature.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/agent/biz/GsonProvider.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/master/agentcontroll/Proxy.java" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/HttpUrlNode.java" afterPath="$PROJECT_DIR$/../SpiderCommon/src/main/java/wuxian/me/spidercommon/model/HttpUrlNode.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/manager/JobMangerAgent.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/manager/AgentJobManger.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../SpiderMaster/pom.xml" afterPath="$PROJECT_DIR$/../SpiderMaster/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/Main.java" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/Main.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/agent/SpiderAgent.java" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/agent/SpiderAgent.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/agent/SpiderClient.java" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/agent/SpiderClient.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/agent/biz/GsonProvider.java" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/agent/biz/GsonProvider.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/agent/biz/RegisterRequestProducer.java" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/agent/biz/RegisterRequestProducer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/agent/rpccore/RequestSender.java" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/agent/rpccore/RequestSender.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/master/agentcontroll/Agent.java" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/master/agentcontroll/Agent.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/master/agentcontroll/Spider.java" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/master/agentcontroll/Spider.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/rpc/RpcRequest.java" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/rpc/RpcRequest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/util/SpiderConfig.java" afterPath="$PROJECT_DIR$/../SpiderMaster/src/main/java/wuxian/me/spidermaster/util/SpiderConfig.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/BaseSpider.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/BaseSpider.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/IJobManager.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/IJobManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/NoneSpider.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/NoneSpider.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/HeartbeatManager.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/HeartbeatManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/IPProxyTool.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/anti/IPProxyTool.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/RedisJobQueue.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/RedisJobQueue.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/WorkThread.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/control/WorkThread.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/SpiderClassChecker.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/distribute/SpiderClassChecker.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/manager/DistributeJobManager.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/manager/DistributeJobManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/manager/PlainJobManager.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/manager/PlainJobManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/SerializeFullLogHelper.java" afterPath="$PROJECT_DIR$/src/main/java/wuxian/me/spidersdk/util/SerializeFullLogHelper.java" />
     </list>
     <ignored path="SpiderSDK.iws" />
     <ignored path=".idea/workspace.xml" />
