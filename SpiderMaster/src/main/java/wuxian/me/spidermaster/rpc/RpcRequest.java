@@ -9,5 +9,5 @@ public class RpcRequest {
 
     public String methodName;
 
-    public Byte[] datas;
+    public String datas;
 }

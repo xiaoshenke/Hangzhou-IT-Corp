@@ -5,6 +5,8 @@ import com.google.gson.reflect.TypeToken;
 import com.sun.istack.internal.NotNull;
 import okhttp3.Dispatcher;
 import wuxian.me.spidercommon.log.LogManager;
+import wuxian.me.spidercommon.model.HttpUrlNode;
+import wuxian.me.spidercommon.model.Proxy;
 import wuxian.me.spidercommon.util.FileUtil;
 import wuxian.me.spidercommon.util.SignalManager;
 import wuxian.me.spidersdk.BaseSpider;
@@ -133,7 +135,7 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
 
     }
 
-    public boolean ipSwitched(final IPProxyTool.Proxy proxy) {
+    public boolean ipSwitched(final Proxy proxy) {
         return ipProxyTool.currentProxy.equals(proxy);
     }
 
@@ -237,7 +239,7 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
         dispatcher.cancelAll();
 
         heartbeatManager.stopHeartBeat();
-        IPProxyTool.Proxy proxy = ipProxyTool.forceSwitchProxyTillSuccess();
+        Proxy proxy = ipProxyTool.forceSwitchProxyTillSuccess();
 
         if(JobManagerConfig.reInitConfigAfterSwitchProxy) {
             JobManagerConfig.readConfigFromFile();  //Fixme: 这里修改的有些值是不能改的 比如说redis client

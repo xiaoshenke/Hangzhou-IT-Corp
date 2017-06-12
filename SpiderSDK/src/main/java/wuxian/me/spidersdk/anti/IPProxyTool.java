@@ -2,6 +2,7 @@ package wuxian.me.spidersdk.anti;
 
 import okhttp3.*;
 import wuxian.me.spidercommon.log.LogManager;
+import wuxian.me.spidercommon.model.Proxy;
 import wuxian.me.spidercommon.util.FileUtil;
 import wuxian.me.spidersdk.util.OkhttpProvider;
 import wuxian.me.spidersdk.JobManagerConfig;
@@ -147,7 +148,7 @@ public class IPProxyTool {
         }
     }
 
-    public boolean ipSwitched(final IPProxyTool.Proxy proxy) {
+    public boolean ipSwitched(final Proxy proxy) {
         try {
             boolean ret = ensureIpSwitched(proxy);
             return ret;
@@ -160,7 +161,7 @@ public class IPProxyTool {
 
     public Proxy forceSwitchProxyTillSuccess() {
         while (true) {  //每个ip尝试三次 直到成功或没有proxy
-            IPProxyTool.Proxy proxy = switchNextProxy();
+            Proxy proxy = switchNextProxy();
             if (proxy == null) {
                 LogManager.info("ProxyList is Empty,Open Text");
                 openShellAndEnsureProxyInputed();
@@ -199,7 +200,7 @@ public class IPProxyTool {
         return proxy;
     }
 
-    public boolean ensureIpSwitched(final IPProxyTool.Proxy proxy)
+    public boolean ensureIpSwitched(final Proxy proxy)
             throws InterruptedException, ExecutionException {
         FutureTask<String> future = getFuture();
         new Thread(future).start();
@@ -274,33 +275,4 @@ public class IPProxyTool {
         countDownLatch = new CountDownLatch(2);
     }
 
-    public static class Proxy {
-        public String ip;
-        public int port;
-
-        public Proxy(String ip, int port) {
-            this.ip = ip;
-            this.port = port;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            Proxy proxy = (Proxy) o;
-
-            if (port != proxy.port) return false;
-            return ip != null ? ip.equals(proxy.ip) : proxy.ip == null;
-
-        }
-
-        //标准hashcode的实现
-        @Override
-        public int hashCode() {
-            int result = ip != null ? ip.hashCode() : 0;
-            result = 31 * result + port;
-            return result;
-        }
-    }
 }

@@ -28,8 +28,7 @@ public class SpiderClient implements IClient {
     private RequestSender sender = new RequestSender(this);
 
     private HeartbeatRequestProducer heartbeatProducer = new HeartbeatRequestProducer();
-
-    private RegisterRequestProducer registerProducer = new RegisterRequestProducer();
+    //private RegisterRequestProducer registerProducer = new RegisterRequestProducer();
 
     private ReportStatusRequestProducer reportStatusProducer = new ReportStatusRequestProducer();
 

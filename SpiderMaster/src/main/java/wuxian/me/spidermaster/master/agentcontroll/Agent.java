@@ -1,6 +1,7 @@
 package wuxian.me.spidermaster.master.agentcontroll;
 
 import io.netty.channel.socket.SocketChannel;
+import wuxian.me.spidercommon.model.Proxy;
 
 import java.util.ArrayList;
 import java.util.List;

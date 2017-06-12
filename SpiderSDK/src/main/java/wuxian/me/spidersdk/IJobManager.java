@@ -1,6 +1,7 @@
 package wuxian.me.spidersdk;
 
 import com.sun.istack.internal.NotNull;
+import wuxian.me.spidercommon.model.Proxy;
 import wuxian.me.spidersdk.anti.Fail;
 import wuxian.me.spidersdk.anti.IPProxyTool;
 import wuxian.me.spidersdk.job.IJob;
@@ -16,7 +17,7 @@ import wuxian.me.spidersdk.job.IJob;
  */
 public interface IJobManager {
 
-    boolean ipSwitched(final IPProxyTool.Proxy proxy);
+    boolean ipSwitched(final Proxy proxy);
 
     void success(Runnable runnable);
 

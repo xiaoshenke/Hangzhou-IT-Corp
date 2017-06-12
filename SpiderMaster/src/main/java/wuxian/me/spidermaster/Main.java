@@ -35,7 +35,6 @@ public class Main {
         }
     }
 
-
     private void startAgent() {
         LogManager.info("startAgent...");
         new SpiderAgent(SpiderConfig.masterIp, SpiderConfig.masterPort)

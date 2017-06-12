@@ -2,6 +2,7 @@ package wuxian.me.spidermaster.util;
 
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
+import wuxian.me.spidercommon.util.FileUtil;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -34,7 +35,7 @@ public class SpiderConfig {
         boolean success = false;
         try {
             in = new FileInputStream(FileUtil.getCurrentPath()
-                    + DEFAULT_PATH);
+                    + path);
             pro.load(in);
             success = true;
         } catch (FileNotFoundException e) {

@@ -2,13 +2,15 @@ package wuxian.me.spidersdk.util;
 
 import okhttp3.Request;
 import okhttp3.Response;
+import wuxian.me.spidercommon.util.FileUtil;
 import wuxian.me.spidersdk.JobManagerConfig;
 import wuxian.me.spidersdk.SpiderCallback;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static wuxian.me.spidersdk.util.FileUtil.getCurrentPath;
+import static wuxian.me.spidercommon.util.FileUtil.getCurrentPath;
+
 
 /**
  * Created by wuxian on 15/5/2017.

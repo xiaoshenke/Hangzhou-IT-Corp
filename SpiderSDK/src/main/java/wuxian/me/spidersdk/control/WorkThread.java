@@ -1,7 +1,6 @@
 package wuxian.me.spidersdk.control;
 
 import wuxian.me.spidersdk.IJobManager;
-import wuxian.me.spidersdk.log.LogManager;
 import wuxian.me.spidersdk.JobManagerConfig;
 import wuxian.me.spidersdk.job.IJob;
 

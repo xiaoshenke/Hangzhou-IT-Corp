@@ -1,5 +1,7 @@
 package wuxian.me.spidermaster.master.agentcontroll;
 
+import wuxian.me.spidercommon.model.SpiderFeature;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,20 +16,13 @@ import java.util.List;
  */
 public class Spider {
 
-    private List<Feature> featureList = new ArrayList<Feature>();
+    private List<SpiderFeature> featureList = new ArrayList<SpiderFeature>();
 
-    public void addFeature(Feature feature) {
+    public void addFeature(SpiderFeature feature) {
         if (feature == null) {
             return;
         }
 
         featureList.add(feature);
-    }
-
-    public static class Feature {
-
-        public String className;
-
-        public String urlPattern;
     }
 }

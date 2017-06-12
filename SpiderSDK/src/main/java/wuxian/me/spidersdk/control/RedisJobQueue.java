@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 import wuxian.me.spidercommon.log.LogManager;
+import wuxian.me.spidercommon.model.HttpUrlNode;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.JobManagerConfig;
 import wuxian.me.spidersdk.distribute.*;

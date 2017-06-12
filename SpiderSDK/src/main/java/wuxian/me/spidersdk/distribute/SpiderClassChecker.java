@@ -1,5 +1,6 @@
 package wuxian.me.spidersdk.distribute;
 
+import wuxian.me.spidercommon.model.HttpUrlNode;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.JobManagerConfig;
 

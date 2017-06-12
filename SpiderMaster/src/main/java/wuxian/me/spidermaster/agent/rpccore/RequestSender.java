@@ -30,11 +30,10 @@ public class RequestSender {
         dispatchThread = new Thread() {
             @Override
             public void run() {
-
                 while (true) {
                     while (true) {
 
-                        if (!requestQueue.isEmpty()) {
+                        if (client != null && !requestQueue.isEmpty()) {
                             client.channel().write(requestQueue.poll());
                         }
 

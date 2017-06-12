@@ -1,4 +1,4 @@
-package wuxian.me.spidersdk.distribute;
+package wuxian.me.spidercommon.model;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,6 +7,8 @@ import java.util.Map;
  * Created by wuxian on 12/5/2017.
  * <p>
  * 目前仅支持GET,POST
+ *
+ * Fixme:对Restful的api支持不友好
  */
 public final class HttpUrlNode {
 

@@ -7,7 +7,7 @@ import wuxian.me.spidermaster.util.RpcBizName;
  */
 public abstract class BaseRequestProducer implements IRequestProducer {
 
-    protected final String getBizName() {
+    protected final String getRpcBizName() {
         RpcBizName annotation = (getClass().getAnnotation(RpcBizName.class));
         if (annotation == null) {
             return "";

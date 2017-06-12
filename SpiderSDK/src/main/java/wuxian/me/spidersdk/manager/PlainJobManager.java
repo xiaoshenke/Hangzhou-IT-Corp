@@ -3,6 +3,7 @@ package wuxian.me.spidersdk.manager;
 import com.sun.istack.internal.NotNull;
 import okhttp3.*;
 import wuxian.me.spidercommon.log.LogManager;
+import wuxian.me.spidercommon.model.Proxy;
 import wuxian.me.spidercommon.util.SignalManager;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.IJobManager;
@@ -219,7 +220,7 @@ public class PlainJobManager implements HeartbeatManager.IHeartBeat,IJobManager 
         monitor.printAllJobStatus();  //监控用
 
         while (true) {  //每个ip尝试三次 直到成功或没有proxy
-            IPProxyTool.Proxy proxy = ipProxyTool.switchNextProxy();
+            Proxy proxy = ipProxyTool.switchNextProxy();
             if (proxy == null) {
 
                 if (JobManagerConfig.enableRuntimeInputProxy) {
@@ -260,21 +261,21 @@ public class PlainJobManager implements HeartbeatManager.IHeartBeat,IJobManager 
         isSwitchingIP.set(false);
     }
 
-    public IPProxyTool.Proxy switchProxy() {
+    public Proxy switchProxy() {
         return ipProxyTool.switchNextProxy();
     }
 
-    private boolean ensureIpSwitched(final IPProxyTool.Proxy proxy)
+    private boolean ensureIpSwitched(final Proxy proxy)
             throws InterruptedException, ExecutionException {
         return ipProxyTool.ensureIpSwitched(proxy);
     }
 
     //外部统一调这个...
-    public boolean ipSwitched(final IPProxyTool.Proxy proxy) {
+    public boolean ipSwitched(final Proxy proxy) {
         return this.ipSwitched(proxy, false);
     }
 
-    public boolean ipSwitched(final IPProxyTool.Proxy proxy, boolean beginHeartBeat) {
+    public boolean ipSwitched(final Proxy proxy, boolean beginHeartBeat) {
         try {
             boolean ret = ensureIpSwitched(proxy);
             if (ret && beginHeartBeat) {

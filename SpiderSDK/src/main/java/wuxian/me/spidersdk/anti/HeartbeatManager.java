@@ -1,6 +1,7 @@
 package wuxian.me.spidersdk.anti;
 
 import com.sun.istack.internal.NotNull;
+import wuxian.me.spidercommon.model.Proxy;
 import wuxian.me.spidersdk.manager.JobManagerFactory;
 import wuxian.me.spidersdk.manager.PlainJobManager;
 import wuxian.me.spidersdk.JobManagerConfig;
@@ -19,7 +20,7 @@ public class HeartbeatManager implements Runnable {
 
     private Thread heartbeatThread = null;
     private int heartBeatTime = 0;
-    private IPProxyTool.Proxy proxy;
+    private Proxy proxy;
 
     public HeartbeatManager() {
         frequency = JobManagerConfig.proxyHeartbeatInterval;
@@ -30,7 +31,7 @@ public class HeartbeatManager implements Runnable {
         this.frequency = frequency;
     }
 
-    public void beginHeartBeat(IPProxyTool.Proxy proxy) {
+    public void beginHeartBeat(Proxy proxy) {
         this.proxy = proxy;
 
         for (IHeartBeat heartBeat : heartBeatList) {

@@ -1,7 +1,7 @@
 package wuxian.me.spidersdk;
 
 import okhttp3.Request;
-import wuxian.me.spidersdk.distribute.HttpUrlNode;
+import wuxian.me.spidercommon.model.HttpUrlNode;
 
 /**
  * Created by wuxian on 16/5/2017.
