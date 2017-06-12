@@ -18,9 +18,21 @@ public class JobManagerFactory {
 
     private static PlainJobManager plainJobManager;
     private static DistributeJobManager normalJobManager;
+    private static AgentJobManger agentJobManger;
 
     private JobManagerFactory() {
 
+    }
+
+    public static IJobManager getAgentJobManager() {
+        if (agentJobManger == null) {
+            synchronized (JobManagerFactory.class) {
+                if (agentJobManger == null) {
+                    agentJobManger = new AgentJobManger();
+                }
+            }
+        }
+        return agentJobManger;
     }
 
     public static IJobManager getPlainJobManager() {
@@ -49,7 +61,16 @@ public class JobManagerFactory {
         if(!JobManagerConfig.distributeMode){
             return getPlainJobManager();
         } else {
+
+            if (JobManagerConfig.isAgent) {
+                return getAgentJobManager();
+
+            } else if (JobManagerConfig.isMaster) {
+
+            }
+
             return getNormalJobManager();
+
         }
     }
 

@@ -2,6 +2,7 @@ package wuxian.me.spidermaster.agent.rpccore;
 
 
 import com.sun.istack.internal.NotNull;
+import wuxian.me.spidercommon.log.LogManager;
 import wuxian.me.spidermaster.agent.IClient;
 import wuxian.me.spidermaster.rpc.IRpcCallback;
 import wuxian.me.spidermaster.rpc.RpcRequest;
@@ -32,12 +33,19 @@ public class RequestSender {
             public void run() {
                 while (true) {
                     while (true) {
+                        LogManager.info("dispatchThread.run");
 
-                        if (client != null && !requestQueue.isEmpty()) {
-                            client.channel().write(requestQueue.poll());
+                        if (client != null && client.channel() != null && !requestQueue.isEmpty()) {
+                            RpcRequest rpcRequest = requestQueue.poll();
+
+                            LogManager.info("before send rpc request... "+rpcRequest.toString());
+
+                            client.channel().write(rpcRequest);
                         }
 
                         try {
+                            LogManager.info("requestQueue.size: "+requestQueue.size());
+                            LogManager.info("request queue empty,sleep...");
                             sleep(2000);
                         } catch (InterruptedException e) {
 
@@ -56,10 +64,11 @@ public class RequestSender {
         if (request == null) {
             return;
         }
-
+        /*
         if (requestMap.containsKey(request.requestId)) {
             return;
         }
+        */
 
         requestMap.put(request.requestId, onRpcReques);
         requestQueue.add(request);

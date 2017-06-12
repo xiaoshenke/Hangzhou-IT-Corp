@@ -21,5 +21,6 @@
     <orderEntry type="library" name="Maven: net.java.dev.jna:jna:4.2.2" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.8.0" level="project" />
     <orderEntry type="library" name="SpiderCommon" level="project" />
+    <orderEntry type="library" name="SpiderMaster" level="project" />
   </component>
 </module>

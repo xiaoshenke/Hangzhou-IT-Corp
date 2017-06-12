@@ -20,6 +20,7 @@ public class AgentRpcRequestHandler extends SimpleChannelInboundHandler<RpcReque
 
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, RpcRequest request) throws Exception {
 
+        LogManager.info("AgentRpcRequestHandler channelRead0");
         IBizHandler handler = BizHandlerRegister.getHandlerBy(request.methodName);
         if (handler != null) {
 

@@ -67,7 +67,7 @@ public class DistributeJobManager implements IJobManager, HeartbeatManager.IHear
 
     }
 
-    private void init() {
+    protected void init() {
 
         LogManager.info("Begin To Init JobManager");
 

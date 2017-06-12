@@ -1,12 +1,16 @@
 package wuxian.me.spidermaster;
 
 import wuxian.me.spidercommon.log.LogManager;
+import wuxian.me.spidercommon.model.HttpUrlNode;
 import wuxian.me.spidercommon.util.ProcessUtil;
 import wuxian.me.spidercommon.util.ShellUtil;
 import wuxian.me.spidercommon.util.SignalManager;
 import wuxian.me.spidermaster.agent.SpiderAgent;
 import wuxian.me.spidermaster.master.SpiderMaster;
 import wuxian.me.spidermaster.util.SpiderConfig;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by wuxian on 18/5/2017.
@@ -37,8 +41,21 @@ public class Main {
 
     private void startAgent() {
         LogManager.info("startAgent...");
-        new SpiderAgent(SpiderConfig.masterIp, SpiderConfig.masterPort)
-                .start();
+
+        SpiderAgent.init();
+
+        SpiderAgent agent = new SpiderAgent();
+        agent.start();
+
+        List<Class<?>> classList = new ArrayList<Class<?>>(1);
+        classList.add(Main.class);
+
+        List<HttpUrlNode> httpUrlNodeList = new ArrayList<HttpUrlNode>(1);
+        HttpUrlNode node = new HttpUrlNode();
+        node.baseUrl="hello_world";
+        httpUrlNodeList.add(node);
+
+        agent.registerToMaster(classList,httpUrlNodeList);
     }
 
     private void startMaster() {

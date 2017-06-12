@@ -3,6 +3,7 @@ package wuxian.me.spidermaster.rpc;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
+import wuxian.me.spidercommon.log.LogManager;
 
 import java.util.List;
 
@@ -23,6 +24,8 @@ public class RpcDecoder extends ByteToMessageDecoder {
 
     protected void decode(ChannelHandlerContext ctx,
                           ByteBuf in, List<Object> out) throws Exception {
+
+        LogManager.info("RpcDecoder.decode");
 
         if (in.readableBytes() < 4) {
             return;

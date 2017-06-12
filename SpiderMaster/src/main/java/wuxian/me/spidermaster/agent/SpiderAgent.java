@@ -7,6 +7,7 @@ import wuxian.me.spidercommon.model.HttpUrlNode;
 import wuxian.me.spidercommon.util.IpPortUtil;
 import wuxian.me.spidermaster.agent.biz.RegisterRequestProducer;
 import wuxian.me.spidermaster.rpc.IRpcCallback;
+import wuxian.me.spidermaster.rpc.RpcRequest;
 import wuxian.me.spidermaster.util.SpiderConfig;
 import wuxian.me.spidermaster.util.exception.IpPortNotValidException;
 
@@ -43,9 +44,11 @@ public class SpiderAgent {
         }
 
         spiderClient = new SpiderClient();
+
     }
 
     public void start() {
+        spiderClient.init();
         spiderClient.asyncConnect(serverIp, serverPort);
     }
 
@@ -70,7 +73,10 @@ public class SpiderAgent {
             patternList.add(node.baseUrl);
         }
 
-        spiderClient.asyncSendMessage(new RegisterRequestProducer(clazList, patternList).produce()
+        RpcRequest rpcRequest = new RegisterRequestProducer(clazList, patternList).produce();
+
+        LogManager.info("registerToMaster,rpc: "+rpcRequest);
+        spiderClient.asyncSendMessage(rpcRequest
                 , new IRpcCallback() {
                     public void onSent() {
 

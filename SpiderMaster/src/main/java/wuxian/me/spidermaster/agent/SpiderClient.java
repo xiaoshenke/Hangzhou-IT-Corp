@@ -50,9 +50,13 @@ public class SpiderClient implements IClient {
             public void onSuccess(SocketChannel channel) {
                 SpiderClient.this.channel = channel;  //save channel
                 connected = true;
+
+                LogManager.info("connect success,channel "+channel);
+                //sender.init();
             }
 
             public void onFail() {
+                LogManager.info("connect fail");
 
             }
 
