@@ -19,6 +19,9 @@ import wuxian.me.spidermaster.rpc.RpcEncoder;
 import wuxian.me.spidermaster.rpc.RpcRequest;
 import wuxian.me.spidermaster.rpc.RpcResponse;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Created by wuxian on 9/6/2017.
@@ -51,9 +54,13 @@ public class SpiderConnector implements Runnable {
                     @Override
                     public void initChannel(SocketChannel channel) throws Exception {
                         socketChannel = channel;
+
+                        List<Class<?>> classList = new ArrayList<Class<?>>();
+                        classList.add(RpcResponse.class);
+                        classList.add(RpcRequest.class);
                         channel.pipeline()
-                                .addLast(new RpcEncoder(RpcRequest.class))
-                                .addLast(new RpcDecoder(RpcResponse.class))
+                                .addLast(new RpcEncoder(classList))
+                                .addLast(new RpcDecoder(classList))
                                 .addLast(new AgentRpcResponseHandler(client))
                                 .addLast(new MasterRpcRequestHandler(client))
                         ;

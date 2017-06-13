@@ -17,6 +17,9 @@ import wuxian.me.spidermaster.rpc.RpcEncoder;
 import wuxian.me.spidermaster.rpc.RpcRequest;
 import wuxian.me.spidermaster.rpc.RpcResponse;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by wuxian on 18/5/2017.
  */
@@ -49,10 +52,15 @@ public class MasterServer {
             bootstrap.group(boss, worker).channel(NioServerSocketChannel.class)
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
+
+                            List<Class<?>> classList = new ArrayList<Class<?>>();
+                            classList.add(RpcResponse.class);
+                            classList.add(RpcRequest.class);
+
                             socketChannel.pipeline()
                                     //.addLast(new DummyInboundHandler())
-                                    .addLast(new RpcDecoder(RpcRequest.class))
-                                    .addLast(new RpcEncoder(RpcResponse.class))
+                                    .addLast(new RpcDecoder(classList))
+                                    .addLast(new RpcEncoder(classList))
                                     .addLast(new AgentRpcRequestHandler(socketChannel))
                             ;
                         }
