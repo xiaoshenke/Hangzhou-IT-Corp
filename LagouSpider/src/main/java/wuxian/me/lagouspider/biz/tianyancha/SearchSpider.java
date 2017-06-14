@@ -5,8 +5,8 @@ import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import wuxian.me.lagouspider.util.Helper;
+import wuxian.me.spidercommon.log.LogManager;
 import wuxian.me.spidersdk.BaseSpider;
-import wuxian.me.spidersdk.log.LogManager;
 
 /**
  * Created by wuxian on 7/5/2017.

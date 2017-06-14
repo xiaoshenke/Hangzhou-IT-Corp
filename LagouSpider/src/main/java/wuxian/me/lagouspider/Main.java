@@ -1,23 +1,19 @@
 package wuxian.me.lagouspider;
 
-import wuxian.me.lagouspider.biz.boss.BDisdinctSpider;
 import wuxian.me.lagouspider.biz.boss.BPositionListSpider;
-import wuxian.me.lagouspider.biz.boss.BPositonDetailSpider;
 import wuxian.me.lagouspider.biz.boss.BizConfig;
 import wuxian.me.lagouspider.save.boss.BCompanySaver;
 import wuxian.me.lagouspider.save.boss.BLocationSaver;
 import wuxian.me.lagouspider.save.boss.BPositionSaver;
 import wuxian.me.lagouspider.util.Helper;
+import wuxian.me.spidercommon.log.ILog;
+import wuxian.me.spidercommon.log.LogManager;
+import wuxian.me.spidercommon.util.FileUtil;
+import wuxian.me.spidercommon.util.SignalManager;
 import wuxian.me.spidersdk.distribute.ClassHelper;
-import wuxian.me.spidersdk.log.ILog;
-import wuxian.me.spidersdk.log.LogManager;
 import wuxian.me.spidersdk.manager.JobManagerFactory;
-import wuxian.me.spidersdk.util.FileUtil;
-import wuxian.me.spidersdk.util.ProcessManager;
 
 import java.io.File;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
@@ -91,9 +87,10 @@ public class Main {
 
     public void run() {
         JobManagerFactory.getJobManager().start();
-        ProcessManager.registerOnSystemKill(BPositionSaver.getInstance());
-        ProcessManager.registerOnSystemKill(BCompanySaver.getInstance());
-        ProcessManager.registerOnSystemKill(BLocationSaver.getInstance());
+        //Todo
+        //SignalManager.registerOnSystemKill(BPositionSaver.getInstance());
+        //SignalManager.registerOnSystemKill(BCompanySaver.getInstance());
+        //SignalManager.registerOnSystemKill(BLocationSaver.getInstance());
 
         //如果想开启抓一个新的区域 那么只需填入下面的xxx即可
         BPositionListSpider spider = new BPositionListSpider("西湖区",1);

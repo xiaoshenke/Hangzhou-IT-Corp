@@ -3,7 +3,7 @@ package wuxian.me.lagouspider.util;
 import com.sun.istack.internal.NotNull;
 import org.htmlparser.Node;
 import org.htmlparser.util.NodeList;
-import wuxian.me.spidersdk.log.LogManager;
+import wuxian.me.spidercommon.log.LogManager;
 
 /**
  * Created by wuxian on 15/4/2017.

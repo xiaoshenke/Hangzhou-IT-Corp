@@ -17,21 +17,21 @@ import static wuxian.me.lagouspider.util.Helper.dispatchSpider;
 import static wuxian.me.lagouspider.util.Helper.getLagouAreaFilePath;
 import static wuxian.me.lagouspider.util.Helper.getLagouDistinctsFilePath;
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
-import static wuxian.me.spidersdk.util.FileUtil.readFromFile;
+import static wuxian.me.spidercommon.util.FileUtil.readFromFile;
 
 import wuxian.me.lagouspider.model.lagou.Company;
 import wuxian.me.lagouspider.model.lagou.Location;
 import wuxian.me.lagouspider.model.lagou.Product;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.ModuleProvider;
+import wuxian.me.spidercommon.log.ILog;
+import wuxian.me.spidercommon.log.LogManager;
+import wuxian.me.spidercommon.util.FileUtil;
 import wuxian.me.spidersdk.JobManagerConfig;
 import wuxian.me.spidersdk.distribute.ClassHelper;
 import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
-import wuxian.me.spidersdk.log.ILog;
-import wuxian.me.spidersdk.log.LogManager;
 import wuxian.me.spidersdk.manager.JobManagerFactory;
-import wuxian.me.spidersdk.util.FileUtil;
 
 import java.io.File;
 import java.util.ArrayList;

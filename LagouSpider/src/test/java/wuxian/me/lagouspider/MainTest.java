@@ -1,5 +1,6 @@
 package wuxian.me.lagouspider;
 
+/*
 import org.junit.Test;
 import wuxian.me.lagouspider.biz.boss.BPositionListSpider;
 import wuxian.me.lagouspider.biz.boss.BPositonDetailSpider;
@@ -19,11 +20,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static wuxian.me.lagouspider.util.ModuleProvider.*;
+*/
 
 /**
  * Created by wuxian on 9/4/2017.
  */
 public class MainTest {
+    /*
 
     @Test
     public void testAnti() {
@@ -115,5 +118,6 @@ public class MainTest {
         bPositionMapper.createIndex(position);
 
     }
+    */
 
 }

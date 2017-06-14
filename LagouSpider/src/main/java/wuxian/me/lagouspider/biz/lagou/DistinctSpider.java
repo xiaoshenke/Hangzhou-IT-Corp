@@ -18,8 +18,8 @@ import org.htmlparser.tags.LinkTag;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import wuxian.me.lagouspider.util.Helper;
+import wuxian.me.spidercommon.util.FileUtil;
 import wuxian.me.spidersdk.BaseSpider;
-import wuxian.me.spidersdk.util.FileUtil;
 
 /**
  * Created by wuxian on 30/3/2017.

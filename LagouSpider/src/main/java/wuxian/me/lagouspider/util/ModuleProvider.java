@@ -17,8 +17,8 @@ import wuxian.me.lagouspider.mapper.lagou.AreaMapper;
 import wuxian.me.lagouspider.mapper.lagou.CompanyMapper;
 import wuxian.me.lagouspider.mapper.lagou.LocationMapper;
 import wuxian.me.lagouspider.mapper.lagou.ProductMapper;
-import wuxian.me.spidersdk.log.LogManager;
-import wuxian.me.spidersdk.util.FileUtil;
+import wuxian.me.spidercommon.log.LogManager;
+import wuxian.me.spidercommon.util.FileUtil;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

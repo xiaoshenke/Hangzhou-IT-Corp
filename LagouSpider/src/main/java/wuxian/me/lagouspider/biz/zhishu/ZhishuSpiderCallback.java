@@ -2,10 +2,10 @@ package wuxian.me.lagouspider.biz.zhishu;
 
 import com.sun.istack.internal.NotNull;
 import okhttp3.Call;
+import wuxian.me.spidercommon.log.LogManager;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.SpiderCallback;
 import wuxian.me.spidersdk.anti.Fail;
-import wuxian.me.spidersdk.log.LogManager;
 import wuxian.me.spidersdk.manager.JobManagerFactory;
 
 import java.io.IOException;

@@ -6,6 +6,7 @@ import wuxian.me.lagouspider.biz.boss.BossConfig;
 import wuxian.me.lagouspider.biz.lagou.LagouConfig;
 import wuxian.me.lagouspider.biz.tianyancha.TianyanConfig;
 import wuxian.me.lagouspider.biz.zhishu.ZhishuConfig;
+import wuxian.me.spidercommon.util.FileUtil;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.IJobManager;
 import wuxian.me.spidersdk.anti.UserAgentManager;
@@ -13,7 +14,6 @@ import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.manager.JobManagerFactory;
 import wuxian.me.spidersdk.util.CookieManager;
-import wuxian.me.spidersdk.util.FileUtil;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -24,7 +24,7 @@ import static wuxian.me.lagouspider.biz.lagou.LagouConfig.File.CONF;
 import static wuxian.me.lagouspider.biz.lagou.LagouConfig.Grab.CONF_LASTGRAB;
 import static wuxian.me.lagouspider.biz.lagou.LagouConfig.Grab.GRAB_INTERNAL;
 import static wuxian.me.lagouspider.biz.lagou.LagouConfig.TableName.*;
-import static wuxian.me.spidersdk.util.FileUtil.getCurrentPath;
+import static wuxian.me.spidercommon.util.FileUtil.getCurrentPath;
 
 /**
  * Created by wuxian on 1/4/2017.

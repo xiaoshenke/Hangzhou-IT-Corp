@@ -2,7 +2,7 @@ package wuxian.me.lagouspider.save;
 
 import com.sun.istack.internal.NotNull;
 import wuxian.me.lagouspider.model.BaseModel;
-import wuxian.me.spidersdk.log.LogManager;
+import wuxian.me.spidercommon.log.LogManager;
 
 import java.util.HashMap;
 import java.util.HashSet;

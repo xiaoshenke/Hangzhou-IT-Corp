@@ -19,11 +19,11 @@ import wuxian.me.lagouspider.save.boss.BLocationSaver;
 import wuxian.me.lagouspider.save.boss.BPositionSaver;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.NodeLogUtil;
+import wuxian.me.spidercommon.model.HttpUrlNode;
+import wuxian.me.spidercommon.util.FileUtil;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.JobManagerConfig;
 import wuxian.me.spidersdk.anti.MaybeBlockedException;
-import wuxian.me.spidersdk.distribute.HttpUrlNode;
-import wuxian.me.spidersdk.util.FileUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

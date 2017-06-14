@@ -7,9 +7,9 @@
     <groupId>wuxian.me</groupId>
     <artifactId>lagouspider</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
     <properties>
         <commons-lang3.version>3.3.2</commons-lang3.version>
-
     </properties>
 
     <dependencies>
@@ -92,6 +92,7 @@
         </dependency>
     </dependencies>
 
+    <!--
     <build>
         <plugins>
             <plugin>
@@ -107,6 +108,38 @@
                     <fork>true</fork>
                 </configuration>
             </plugin>
+        </plugins>
+    </build>
+    -->
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.5.5</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>wuxian.me.lagouspider.Main</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 </project>

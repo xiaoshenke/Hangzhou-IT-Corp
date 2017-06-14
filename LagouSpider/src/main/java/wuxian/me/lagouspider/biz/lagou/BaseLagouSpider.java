@@ -4,10 +4,10 @@ import org.htmlparser.Parser;
 import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
+import wuxian.me.spidercommon.log.LogManager;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.SpiderCallback;
 import wuxian.me.spidersdk.anti.Fail;
-import wuxian.me.spidersdk.log.LogManager;
 import wuxian.me.spidersdk.manager.JobManagerFactory;
 
 /**

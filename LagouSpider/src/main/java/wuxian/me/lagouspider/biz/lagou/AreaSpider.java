@@ -10,11 +10,9 @@ import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import wuxian.me.lagouspider.model.lagou.Area;
 import wuxian.me.lagouspider.util.Helper;
+import wuxian.me.spidercommon.log.LogManager;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.anti.MaybeBlockedException;
-import wuxian.me.spidersdk.job.IJob;
-import wuxian.me.spidersdk.job.JobProvider;
-import wuxian.me.spidersdk.log.LogManager;
 
 import static wuxian.me.lagouspider.biz.lagou.LagouConfig.Spider.ENABLE_SPIDER_AREAPAGE;
 import static wuxian.me.lagouspider.biz.lagou.LagouConfig.SpiderUrl.URL_LAGOU_JAVA;

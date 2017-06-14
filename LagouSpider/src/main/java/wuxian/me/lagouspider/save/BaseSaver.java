@@ -1,12 +1,12 @@
 package wuxian.me.lagouspider.save;
 
 import com.sun.istack.internal.NotNull;
-import wuxian.me.spidersdk.util.ProcessManager;
+import wuxian.me.spidercommon.util.SignalManager;
 
 /**
  * Created by wuxian on 3/6/2017.
  */
-public abstract class BaseSaver<T> implements IModelSaver<T>, ProcessManager.OnSystemKill {
+public abstract class BaseSaver<T> implements IModelSaver<T>, SignalManager.OnSystemKill {
 
     @NotNull
     protected abstract Thread getSaverThread();

@@ -13,11 +13,11 @@ import org.htmlparser.util.ParserException;
 import wuxian.me.lagouspider.util.Config;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.lagouspider.util.NodeLogUtil;
+import wuxian.me.spidercommon.log.LogManager;
+import wuxian.me.spidercommon.model.HttpUrlNode;
+import wuxian.me.spidercommon.util.FileUtil;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.anti.MaybeBlockedException;
-import wuxian.me.spidersdk.distribute.HttpUrlNode;
-import wuxian.me.spidersdk.log.LogManager;
-import wuxian.me.spidersdk.util.FileUtil;
 
 import java.util.ArrayList;
 import java.util.List;

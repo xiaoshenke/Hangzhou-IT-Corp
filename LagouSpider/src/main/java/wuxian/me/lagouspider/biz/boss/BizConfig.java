@@ -2,7 +2,7 @@ package wuxian.me.lagouspider.biz.boss;
 
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
-import wuxian.me.spidersdk.util.FileUtil;
+import wuxian.me.spidercommon.util.FileUtil;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
