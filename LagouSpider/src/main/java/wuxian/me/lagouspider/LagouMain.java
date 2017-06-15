@@ -44,19 +44,6 @@ public class LagouMain {
 
     static {
         LogManager.info("LagouSpider.static_Main");
-        if (!JobManagerConfig.jarMode) {  //IDE运行
-            File file = new File("");
-            FileUtil.setCurrentPath(file.getAbsolutePath());
-        } else {   //JAR包运行
-            try {
-                File file = new File(LagouMain.class.getProtectionDomain().getCodeSource()
-                        .getLocation().toURI().getPath());
-                FileUtil.setCurrentFile(file.getAbsolutePath());
-                FileUtil.setCurrentPath(file.getParentFile().getAbsolutePath());
-            } catch (Exception e) {
-
-            }
-        }
 
         LogManager.setRealLogImpl(new ILog() {
             public void debug(String message) {
@@ -78,7 +65,7 @@ public class LagouMain {
 
 
         JobManagerFactory.initCheckFilter(new ClassHelper.CheckFilter() {  //Fix 有的jar包里的类无法加载的问题
-            @Override
+
             public boolean apply(String s) {
                 boolean ret = true;
                 if (s.contains("org/")) {

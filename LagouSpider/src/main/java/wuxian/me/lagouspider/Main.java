@@ -10,10 +10,9 @@ import wuxian.me.spidercommon.log.ILog;
 import wuxian.me.spidercommon.log.LogManager;
 import wuxian.me.spidercommon.util.FileUtil;
 import wuxian.me.spidercommon.util.SignalManager;
+import wuxian.me.spidersdk.JobManagerConfig;
 import wuxian.me.spidersdk.distribute.ClassHelper;
 import wuxian.me.spidersdk.manager.JobManagerFactory;
-
-import java.io.File;
 
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
 
@@ -24,9 +23,10 @@ public class Main {
 
     public static void init() {
         LogManager.info("Main_static Begin.");
-        LogManager.info("1 Find Current File Path.");
-        findCorrectFilePath();
-        LogManager.info("Current Path." + FileUtil.getCurrentPath());
+
+        JobManagerConfig.init();
+
+        LogManager.info("Current Path: "+ FileUtil.getCurrentPath());
 
         LogManager.info("2 Init LogManager.");
         LogManager.info("3 Init ModuleProvider.");
@@ -67,30 +67,12 @@ public class Main {
         BizConfig.init();
     }
 
-    //默认jar包运行 检查该路径下是否存在/conf/jobmanager.properties 配置文件,若有,读取配置
-    private static void findCorrectFilePath() {
-        try {
-            File file = new File(Main.class.getProtectionDomain().getCodeSource()
-                    .getLocation().toURI().getPath());
-            if (FileUtil.checkFileExist(file.getParentFile().getAbsolutePath() + "/conf/jobmanager.properties")) {
-                FileUtil.setCurrentFile(file.getAbsolutePath());
-                FileUtil.setCurrentPath(file.getParentFile().getAbsolutePath());
-                return;
-            }
-        } catch (Exception e) {
-            ;
-        }
-
-        File file = new File("");
-        FileUtil.setCurrentPath(file.getAbsolutePath());
-    }
-
     public void run() {
         JobManagerFactory.getJobManager().start();
-        //Todo
-        //SignalManager.registerOnSystemKill(BPositionSaver.getInstance());
-        //SignalManager.registerOnSystemKill(BCompanySaver.getInstance());
-        //SignalManager.registerOnSystemKill(BLocationSaver.getInstance());
+
+        SignalManager.registerOnSystemKill(BPositionSaver.getInstance());
+        SignalManager.registerOnSystemKill(BCompanySaver.getInstance());
+        SignalManager.registerOnSystemKill(BLocationSaver.getInstance());
 
         //如果想开启抓一个新的区域 那么只需填入下面的xxx即可
         BPositionListSpider spider = new BPositionListSpider("西湖区",1);
