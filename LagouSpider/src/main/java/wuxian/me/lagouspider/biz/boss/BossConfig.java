@@ -46,8 +46,6 @@ public interface BossConfig {
 
         boolean ENABLE_SAVE_COMPANY_DES = true;
 
-        //Todo
-        boolean ENABLE_SAVE_TEAM_DES = true;
     }
 
 }

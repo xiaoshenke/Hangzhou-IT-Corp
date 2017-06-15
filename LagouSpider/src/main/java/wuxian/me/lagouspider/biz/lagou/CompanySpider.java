@@ -33,7 +33,6 @@ import static wuxian.me.lagouspider.biz.lagou.LagouConfig.SpiderUrl.URL_LAGOU_CO
 
 /**
  * Created by wuxian on 30/3/2017.
- * <p> Todo: 有些信息没什么用 就不解析了
  */
 public class CompanySpider extends BaseLagouSpider {
     private NodeList trees = null;
@@ -102,10 +101,6 @@ public class CompanySpider extends BaseLagouSpider {
 
             if (ENABLE_SAVE_LOCATION_DB) {
                 saveLocation();
-            }
-
-            if (ENABLE_SPIDER_ITCHENGZI_SEARCH) {
-                beginITJuziSearchSpider();
             }
 
         } catch (ParserException e) {
@@ -316,11 +311,6 @@ public class CompanySpider extends BaseLagouSpider {
         CompanySaver.getInstance().saveModel(company);
     }
 
-    //Todo:判断是A轮以上 那么进行IT桔子搜索
-    private void beginITJuziSearchSpider() {
-        ;
-    }
-
     public String name() {
         StringBuilder str = new StringBuilder("");
         for (String location : locationList) {
@@ -330,88 +320,9 @@ public class CompanySpider extends BaseLagouSpider {
                 + positionNum + " 面试评分: " + score + "}";
     }
 
-
     @Override
     public String hashString() {
         return "CompanySpider: " + company_id;
     }
 
-    //Fixme: Not Used anymore
-    private void parseProductList() throws ParserException {
-        HasAttributeFilter f1 = new HasAttributeFilter("id", "company_products");
-        NodeList list = trees.extractAllNodesThatMatch(f1, true);//parser.extractAllNodesThatMatch(f1);
-        if (list == null || list.size() == 0) {
-            return;
-        }
-
-        Node product = list.elementAt(0);
-        HasAttributeFilter f2 = new HasAttributeFilter("class", "item_content");
-        NodeList ret = product.getChildren().extractAllNodesThatMatch(f2, true);
-        if (ret != null && ret.size() != 0) {
-            product = ret.elementAt(0);  //item_content的子节点就是product节点
-            ret = product.getChildren();
-            if (ret != null && ret.size() != 0) {
-                for (int i = 0; i < ret.size(); i++) {
-                    //parseProduct(ret.elementAt(i)); //解析每一个item 存入到类变量
-                }
-            }
-        }
-    }
-
-    private void parseProduct(final Node node) throws ParserException {
-        Product product = new Product(company_id);
-        NodeList list = node.getChildren();
-        if (list == null) {
-            return;
-        }
-        for (int i = 0; i < list.size(); i++) {
-            Node child = list.elementAt(i);
-            if ((child instanceof ImageTag)) {
-                product.imgUrl = ((ImageTag) child).getImageURL(); //产品logo --> success
-                break;
-            }
-        }
-
-        Node child = null;
-        HasAttributeFilter f1 = new HasAttributeFilter("class", "product_url");
-        NodeList ret = list.extractAllNodesThatMatch(f1, true);
-        if (ret != null && ret.size() != 0) {
-            child = ret.elementAt(0);  //这是product_url node
-            ret = child.getChildren();
-            for (int i = 0; i < ret.size(); i++) {
-                child = ret.elementAt(i);
-                if (child instanceof LinkTag) {
-                    product.url = ((LinkTag) child).getLink();
-                    product.product_name = child.toPlainTextString().trim();
-                    break;
-                }
-            }
-        }
-
-        HasAttributeFilter f2 = new HasAttributeFilter("class", "clearfix");
-        ret = list.extractAllNodesThatMatch(f2, true);  //product type
-        if (ret != null && ret.size() != 0) {
-            child = ret.elementAt(0);
-            ret = child.getChildren();
-            if (ret != null) {
-                for (int i = 0; i < ret.size(); i++) {
-                    Node child2 = ret.elementAt(i);
-                    if (child2 instanceof Bullet) {
-                        String productType = child2.toPlainTextString().trim();
-                        product.addLabel(productType);
-                    }
-                }
-            }
-        }
-
-
-        HasAttributeFilter f3 = new HasAttributeFilter("class", "product_profile");
-        ret = list.extractAllNodesThatMatch(f3, true);
-        if (ret != null && ret.size() != 0) {
-            child = ret.elementAt(0);
-            product.description = child.toPlainTextString().trim();
-        }
-
-        productList.add(product);
-    }
 }

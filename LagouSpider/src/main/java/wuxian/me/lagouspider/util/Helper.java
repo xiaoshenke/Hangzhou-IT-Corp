@@ -4,8 +4,6 @@ import com.sun.istack.internal.NotNull;
 import okhttp3.Headers;
 import wuxian.me.lagouspider.biz.boss.BossConfig;
 import wuxian.me.lagouspider.biz.lagou.LagouConfig;
-import wuxian.me.lagouspider.biz.tianyancha.TianyanConfig;
-import wuxian.me.lagouspider.biz.zhishu.ZhishuConfig;
 import wuxian.me.spidercommon.util.FileUtil;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.IJobManager;
@@ -15,8 +13,6 @@ import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.manager.JobManagerFactory;
 import wuxian.me.spidersdk.util.CookieManager;
 
-import java.io.File;
-import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -30,8 +26,6 @@ import static wuxian.me.spidercommon.util.FileUtil.getCurrentPath;
  * Created by wuxian on 1/4/2017.
  */
 public class Helper {
-
-    private static String currentPath = null;
 
     public static String getBossDistinctsFilePath() {
         return getCurrentPath() + BossConfig.File.FILE + BossConfig.CITY_TO_SPIDER + BossConfig.File.DISTINTC;
@@ -120,24 +114,6 @@ public class Helper {
         return getHeaderBySpecifyRef(reference, spiderName);
     }
 
-    public static Headers getTianyanHeader(@NotNull String reference, @NotNull String spiderName) {
-        builder.set("Host", TianyanConfig.HOST);
-        return getHeaderBySpecifyRef("", spiderName);
-    }
-
-    public static Headers getZhishuHeader(@NotNull String reference, @NotNull String spiderName) {
-        builder.set("Host", ZhishuConfig.HOST);
-        return getHeaderBySpecifyRef(reference, spiderName);
-    }
-
-
-    /**
-     * 用于数据库"根据不同时间"分表:分表的目的用于后续研究公司变迁的数据：比如说某块区域的公司迁移数据 某个公司的招聘岗位的变化等
-     * <p>
-     * 找到数据库后缀
-     * 数据库每过1周会全新抓取一次拉勾数据 因此要做分表操作
-     * 表的名字像这样 company_2017_0303,company_2017_0403
-     */
     private static String getDatabasePost() {
         if (post != null) {
             return post;

@@ -31,6 +31,7 @@ public class Main {
         LogManager.info("2 Init LogManager.");
         LogManager.info("3 Init ModuleProvider.");
         LogManager.setRealLogImpl(new ILog() {
+
             public void debug(String message) {
                 logger().debug(message);
             }
@@ -50,7 +51,6 @@ public class Main {
 
         LogManager.info("5 Init SpiderClassChecker.");
         JobManagerFactory.initCheckFilter(new ClassHelper.CheckFilter() {  //Fix 有的jar包里的类无法加载的问题
-            @Override
             public boolean apply(String s) {
                 boolean ret = true;
                 if(s.contains("org/")){
