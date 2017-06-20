@@ -63,22 +63,6 @@ public class LagouMain {
             }
         });
 
-
-        JobManagerFactory.initCheckFilter(new ClassHelper.CheckFilter() {  //Fix 有的jar包里的类无法加载的问题
-
-            public boolean apply(String s) {
-                boolean ret = true;
-                if (s.contains("org/")) {
-                    ret = false;
-                } else if (s.contains("google")) {
-                    ret = false;
-                }
-
-                return ret;
-            }
-        });
-
-
     }
 
     AreaMapper areaMapper = ModuleProvider.areaMapper();

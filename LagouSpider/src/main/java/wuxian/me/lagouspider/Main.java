@@ -11,7 +11,6 @@ import wuxian.me.spidercommon.log.LogManager;
 import wuxian.me.spidercommon.util.FileUtil;
 import wuxian.me.spidercommon.util.SignalManager;
 import wuxian.me.spidersdk.JobManagerConfig;
-import wuxian.me.spidersdk.distribute.ClassHelper;
 import wuxian.me.spidersdk.manager.JobManagerFactory;
 
 import static wuxian.me.lagouspider.util.ModuleProvider.logger;
@@ -49,19 +48,7 @@ public class Main {
             }
         });
 
-        LogManager.info("5 Init SpiderClassChecker.");
-        JobManagerFactory.initCheckFilter(new ClassHelper.CheckFilter() {  //Fix 有的jar包里的类无法加载的问题
-            public boolean apply(String s) {
-                boolean ret = true;
-                if(s.contains("org/")){
-                    ret = false;
-                } else if(s.contains("google")){
-                    ret = false;
-                }
 
-                return ret;
-            }
-        });
         LogManager.info("Main_static End.");
 
         BizConfig.init();
