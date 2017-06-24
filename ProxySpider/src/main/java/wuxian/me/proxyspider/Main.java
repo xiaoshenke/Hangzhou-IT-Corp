@@ -21,6 +21,6 @@ public class Main {
 
         IJob job = JobProvider.getJob();
         job.setRealRunnable(new XunProxySpider());
-        jobManager.putJob(job);
+        //jobManager.putJob(job);
     }
 }
