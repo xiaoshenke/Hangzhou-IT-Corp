@@ -27,13 +27,10 @@ import wuxian.me.lagouspider.util.ModuleProvider;
 import wuxian.me.spidercommon.log.ILog;
 import wuxian.me.spidercommon.log.LogManager;
 import wuxian.me.spidercommon.util.FileUtil;
-import wuxian.me.spidersdk.JobManagerConfig;
-import wuxian.me.spidersdk.distribute.ClassHelper;
 import wuxian.me.spidersdk.job.IJob;
 import wuxian.me.spidersdk.job.JobProvider;
 import wuxian.me.spidersdk.manager.JobManagerFactory;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 

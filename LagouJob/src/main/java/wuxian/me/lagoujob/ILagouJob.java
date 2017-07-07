@@ -20,12 +20,4 @@ public interface ILagouJob {
     //没有date默认为最近一次的全数据
     List<Company> loadAllCompanies();
 
-    //Todo:根据地区来,根据街道来
-    List<Company> loadCompanies();
-
-    //Todo:
-    List<Company> searchCompany();
-
-    //Todo: 提供类似统计分析之类的api？API设计？--> 调研一下api设计
-
 }

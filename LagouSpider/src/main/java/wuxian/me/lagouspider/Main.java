@@ -2,6 +2,7 @@ package wuxian.me.lagouspider;
 
 import wuxian.me.lagouspider.biz.boss.BPositionListSpider;
 import wuxian.me.lagouspider.biz.boss.BizConfig;
+import wuxian.me.lagouspider.biz.lagou.PositionSpider;
 import wuxian.me.lagouspider.save.boss.BCompanySaver;
 import wuxian.me.lagouspider.save.boss.BLocationSaver;
 import wuxian.me.lagouspider.save.boss.BPositionSaver;
@@ -62,7 +63,9 @@ public class Main {
         SignalManager.registerOnSystemKill(BLocationSaver.getInstance());
 
         //如果想开启抓一个新的区域 那么只需填入下面的xxx即可
-        BPositionListSpider spider = new BPositionListSpider("西湖区",1);
+        //BPositionListSpider spider = new BPositionListSpider("西湖区",1);
+
+        PositionSpider spider = new PositionSpider("西湖区",1);
         Helper.dispatchSpider(spider);
     }
 
