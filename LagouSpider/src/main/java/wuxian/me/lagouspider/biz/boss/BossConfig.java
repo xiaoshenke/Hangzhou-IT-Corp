@@ -9,7 +9,7 @@ public interface BossConfig {
 
     String CITY_TO_SPIDER = "杭州";
 
-    String POSITION_TO_SPIDER = "android";
+    String POSITION_TO_SPIDER = "Java";
 
     String SPIDER_NAME = "BossSpider";
 

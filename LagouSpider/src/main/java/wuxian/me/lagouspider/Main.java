@@ -1,12 +1,11 @@
 package wuxian.me.lagouspider;
 
-import wuxian.me.lagouspider.biz.boss.BPositionListSpider;
 import wuxian.me.lagouspider.biz.boss.BizConfig;
 import wuxian.me.lagouspider.biz.lagou.PositionSpider;
-import wuxian.me.lagouspider.save.boss.BCompanySaver;
-import wuxian.me.lagouspider.save.boss.BLocationSaver;
-import wuxian.me.lagouspider.save.boss.BPositionSaver;
+import wuxian.me.lagouspider.model.lagou.Position;
+import wuxian.me.lagouspider.save.lagou.PositionSaver;
 import wuxian.me.lagouspider.util.Helper;
+import wuxian.me.lagouspider.util.ModuleProvider;
 import wuxian.me.spidercommon.log.ILog;
 import wuxian.me.spidercommon.log.LogManager;
 import wuxian.me.spidercommon.util.FileUtil;
@@ -30,6 +29,8 @@ public class Main {
 
         LogManager.info("2 Init LogManager.");
         LogManager.info("3 Init ModuleProvider.");
+
+
         LogManager.setRealLogImpl(new ILog() {
 
             public void debug(String message) {
@@ -56,20 +57,22 @@ public class Main {
     }
 
     public void run() {
+
+        ModuleProvider.positionMapper().createNewTableIfNeed(new Position());
+
         JobManagerFactory.getJobManager().start();
 
-        SignalManager.registerOnSystemKill(BPositionSaver.getInstance());
-        SignalManager.registerOnSystemKill(BCompanySaver.getInstance());
-        SignalManager.registerOnSystemKill(BLocationSaver.getInstance());
+        SignalManager.registerOnSystemKill(PositionSaver.getInstance());
 
-        //如果想开启抓一个新的区域 那么只需填入下面的xxx即可
-        //BPositionListSpider spider = new BPositionListSpider("西湖区",1);
+        try {
+            Thread.sleep(10000);  //Fixme:spidersdk的bug 需要sleep一段时间
+        } catch (InterruptedException e) {
 
-        for (int i = 3; i < 5; i++) {
-            PositionSpider spider = new PositionSpider("西湖区", i);
-            Helper.dispatchSpider(spider);
-            //break;
         }
+
+        LogManager.info("begin to dispatch spider");
+        PositionSpider spider = new PositionSpider("西湖区", 1);  //Todo: toUrlNode..
+        Helper.dispatchSpider(spider);
     }
 
     public static void main(String[] args) {

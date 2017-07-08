@@ -39,6 +39,11 @@
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
 
+    <bean id="positionMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="wuxian.me.lagouspider.mapper.lagou.PositionMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
     <bean id="locationMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="mapperInterface" value="wuxian.me.lagouspider.mapper.lagou.LocationMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>

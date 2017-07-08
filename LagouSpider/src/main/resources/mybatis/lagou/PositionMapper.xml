@@ -2,4 +2,40 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="wuxian.me.lagouspider.mapper.lagou.PositionMapper">
+
+    <delete id="deleteTable" parameterType="wuxian.me.lagouspider.model.lagou.Position">
+        drop table if exists ${tableName}
+    </delete>
+
+    <update id="createNewTableIfNeed" parameterType="wuxian.me.lagouspider.model.lagou.Position">
+        create table if not exists ${tableName} (position_id INTEGER,position_name VARCHAR(16),district VARCHAR(8),
+        post_time CHAR(10),lables VARCHAR(24), salary_min SMALLINT ,salary_max SMALLINT ,experience_min SMALLINT
+        ,experience_max SMALLINT,
+        education VARCHAR(8),fullTime TINYINT,company_id INTEGER,company_name VARCHAR(16),industry VARCHAR(16),finance
+        TINYINT,
+        size_min SMALLINT ,size_max SMALLINT ,
+        PRIMARY KEY (position_id))
+        DEFAULT CHARSET = utf8,
+        ENGINE = InnoDB;
+
+    </update>
+
+    <update id="createIndex" parameterType="wuxian.me.lagouspider.model.lagou.Position">
+        CREATE INDEX idx_company_id ON ${tableName} (company_id);
+    </update>
+
+    <insert id="insertPosition" parameterType="wuxian.me.lagouspider.model.lagou.Position">
+        insert into ${tableName} (position_id,position_name,district,post_time,lables,
+        salary_min,salary_max,experience_min,experience_max,education,fullTime,company_id,company_name,industry,finance,
+        size_min,size_max)
+        values (#{positionId},#{positionName},#{district},#{postTime},#{positionLables},
+        #{salaryMin},#{salaryMax},#{experienceMin},#{experienceMax},#{education},#{fullTime},#{companyId},#{companyShortName},
+        #{industryField},#{financeStage},
+        #{sizeMin},#{sizeMax});
+    </insert>
+
+    <resultMap id="allPosition" type="wuxian.me.lagouspider.model.lagou.Position"/>
+    <select id="loadAll" resultMap="allPosition" useCache="false">
+        select * from ${tableName}
+    </select>
 </mapper>

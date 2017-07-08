@@ -10,6 +10,7 @@ import okhttp3.Request;
 import org.htmlparser.util.ParserException;
 import wuxian.me.lagouspider.model.lagou.LPosition;
 import wuxian.me.lagouspider.model.lagou.Position;
+import wuxian.me.lagouspider.save.lagou.PositionSaver;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.spidercommon.log.LogManager;
 import wuxian.me.spidermaster.framework.common.GsonProvider;
@@ -108,6 +109,7 @@ public class PositionSpider extends BaseLagouSpider {
                 if(position != null) {
                     Position p = Position.fromLPosition(position);
 
+                    LogManager.info(p.toString());
                     if (!p.outOfDate()) {
                         savePosition(p);
                     }
@@ -123,9 +125,9 @@ public class PositionSpider extends BaseLagouSpider {
         }
     }
 
-    //Todo
+
     private void savePosition(Position position) {
-        ;
+        PositionSaver.getInstance().saveModel(position);
     }
 
     private LPosition parsePosition(@NotNull JsonObject object) throws MaybeBlockedException {

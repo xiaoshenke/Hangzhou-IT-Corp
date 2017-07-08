@@ -1,6 +1,7 @@
 package wuxian.me.lagouspider.model.lagou;
 
 import wuxian.me.lagouspider.biz.boss.BossConfig;
+import wuxian.me.lagouspider.biz.lagou.FinanceEnum;
 import wuxian.me.lagouspider.model.BaseModel;
 
 import java.text.ParseException;
@@ -18,6 +19,17 @@ public class Position extends BaseModel {
 
     public static String tableName = BossConfig.TableName.POSITION;
 
+    public Long positionId;
+
+    public String positionName;
+
+    public String district;
+
+    //发布时间
+    public String postTime;
+
+    public String positionLables;
+
     public Integer salaryMin;
 
     public Integer salaryMax;
@@ -26,33 +38,23 @@ public class Position extends BaseModel {
 
     public Integer experienceMax;
 
-    public Integer sizeMin;
+    public String education;
 
-    public Integer sizeMax;
-
-    //发布时间
-    public String postTime;
+    //是否是全职
+    public Integer fullTime;
 
     public Long companyId;
 
     public String companyShortName;
 
-    public String district;
-
-    public String education;
-
-    public Long positionId;
-
-    public String positionName;
-
     public String industryField;
 
-    //是否是全职
-    public Boolean fullTime;
+    public Integer financeStage;
 
-    public String financeStage;
+    public Integer sizeMin;
 
-    public String positionLables;
+    public Integer sizeMax;
+
 
     private static String dateformat = "yyyy-MM-dd";
     private static SimpleDateFormat sdf = new SimpleDateFormat(dateformat);
@@ -85,7 +87,7 @@ public class Position extends BaseModel {
                 ", positionName='" + positionName + '\'' +
                 ", industryField='" + industryField + '\'' +
                 ", fullTime=" + fullTime +
-                ", financeStage='" + financeStage + '\'' +
+                ", financeStage=" + financeStage +
                 ", positionLables='" + positionLables + '\'' +
                 '}';
     }
@@ -134,9 +136,26 @@ public class Position extends BaseModel {
 
         position.industryField = lPosition.industryField;
 
-        position.fullTime = lPosition.jobNature.equals("全职");
+        position.fullTime = lPosition.jobNature.equals("全职") ? 1 : 0;
 
-        position.financeStage = lPosition.financeStage;
+        if (lPosition.financeStage.contains("天使")) {
+            position.financeStage = FinanceEnum.TIANSHI.stage();
+
+        } else if (lPosition.financeStage.contains("A") || lPosition.financeStage.contains("a")) {
+            position.financeStage = FinanceEnum.A.stage();
+        } else if (lPosition.financeStage.contains("B") || lPosition.financeStage.contains("b")) {
+            position.financeStage = FinanceEnum.B.stage();
+        } else if (lPosition.financeStage.contains("C") || lPosition.financeStage.contains("c")) {
+            position.financeStage = FinanceEnum.C.stage();
+        } else if (lPosition.financeStage.contains("D") || lPosition.financeStage.contains("d")) {
+            position.financeStage = FinanceEnum.D.stage();
+        } else if (lPosition.financeStage.contains("上市")) {
+            position.financeStage = FinanceEnum.SHANGSHI.stage();
+        } else if (lPosition.financeStage.contains("未")) {
+            position.financeStage = FinanceEnum.WEI_RONGZI.stage();
+        } else if (lPosition.financeStage.contains("不需要")) {
+            position.financeStage = FinanceEnum.NO_NEED.stage();
+        }
 
         if (lPosition.positionLables == null || lPosition.positionLables.size() == 0) {
             position.positionLables = null;

@@ -5,18 +5,17 @@ import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.log4j.DailyRollingFileAppender;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 import wuxian.me.lagouspider.LagouMain;
+import wuxian.me.lagouspider.Main;
 import wuxian.me.lagouspider.mapper.boss.BCompanyMapper;
 import wuxian.me.lagouspider.mapper.boss.BLocationMapper;
 import wuxian.me.lagouspider.mapper.boss.BPositionMapper;
-import wuxian.me.lagouspider.mapper.lagou.AreaMapper;
-import wuxian.me.lagouspider.mapper.lagou.CompanyMapper;
-import wuxian.me.lagouspider.mapper.lagou.LocationMapper;
-import wuxian.me.lagouspider.mapper.lagou.ProductMapper;
+import wuxian.me.lagouspider.mapper.lagou.*;
 import wuxian.me.spidercommon.log.LogManager;
 import wuxian.me.spidercommon.util.FileUtil;
 
@@ -29,20 +28,22 @@ import static wuxian.me.lagouspider.util.Helper.getLog4jPropFilePath;
 import static wuxian.me.lagouspider.util.Helper.getWriteLogFilePath;
 
 /**
- * Created by wuxian on 8/4/2017.
- *
- * Todo:move to spring lifecycle
+ * Created by wuxian on 8/4/2017
  */
 @Component
 public class ModuleProvider {
 
-    private static Logger logger = Logger.getLogger(LagouMain.class);
+    private static Logger logger = Logger.getLogger(Main.class);
     private static ApplicationContext ctx;
     private static ModuleProvider instance;
 
     static {
+        try {
+            ctx = new ClassPathXmlApplicationContext("spider.xml");
+        } catch (BeansException e) {
+            LogManager.error("BeansException: " + e.getMessage());
+        }
 
-        ctx = new ClassPathXmlApplicationContext("spider.xml");
         instance = ctx.getBean(ModuleProvider.class);
         PropertyConfigurator.configure(getLog4jPropFilePath());
         try {
@@ -52,7 +53,6 @@ public class ModuleProvider {
             e.printStackTrace();
         }
 
-        LogManager.info("4 ReInit DataSource.");
         BasicDataSource dataSource = ctx.getBean(BasicDataSource.class);
         reInitDataSouce(dataSource);
 
@@ -154,6 +154,13 @@ public class ModuleProvider {
     public static BLocationMapper bLocationMapper() {
         return instance.blocationMapper;
     }
+
+    public static PositionMapper positionMapper() {
+        return instance.positionMapper;
+    }
+
+    @Autowired
+    PositionMapper positionMapper;
 
     @Autowired
     LocationMapper locationMapper;
