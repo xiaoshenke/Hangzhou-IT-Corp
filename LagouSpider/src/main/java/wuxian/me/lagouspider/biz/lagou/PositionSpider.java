@@ -1,6 +1,5 @@
 package wuxian.me.lagouspider.biz.lagou;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -9,10 +8,11 @@ import okhttp3.FormBody;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import org.htmlparser.util.ParserException;
-import wuxian.me.lagouspider.model.lagou.Company;
 import wuxian.me.lagouspider.model.lagou.LPosition;
+import wuxian.me.lagouspider.model.lagou.Position;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.spidercommon.log.LogManager;
+import wuxian.me.spidermaster.framework.common.GsonProvider;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.anti.MaybeBlockedException;
 
@@ -82,6 +82,19 @@ public class PositionSpider extends BaseLagouSpider {
         }
         obj = obj.getAsJsonObject("positionResult");
 
+        if (pageNum == 1) {
+            if (obj.get("totalCount").isJsonNull()) {
+                throw new MaybeBlockedException();
+            }
+
+            int total = obj.get("totalCount").getAsInt();
+            int pageTotal = (total % 15 == 0) ? total / 15 : (total / 15) + 1;
+
+            for (int i = 2; i < pageTotal; i++) {
+                Helper.dispatchSpider(new PositionSpider(distinc, i));
+            }
+        }
+
         if (obj.get("result").isJsonNull()) {
             throw new MaybeBlockedException();
         }
@@ -93,7 +106,11 @@ public class PositionSpider extends BaseLagouSpider {
                 LPosition position = parsePosition((JsonObject) array.get(i));
 
                 if(position != null) {
-                    LogManager.info(position.toString());
+                    Position p = Position.fromLPosition(position);
+
+                    if (!p.outOfDate()) {
+                        savePosition(p);
+                    }
                 }
             } catch (MaybeBlockedException e) {
                 mayBlockNum++;
@@ -106,12 +123,13 @@ public class PositionSpider extends BaseLagouSpider {
         }
     }
 
+    //Todo
+    private void savePosition(Position position) {
+        ;
+    }
+
     private LPosition parsePosition(@NotNull JsonObject object) throws MaybeBlockedException {
-
-        Gson gson = new Gson();
-
-        return gson.fromJson(object, LPosition.class);
-
+        return GsonProvider.gson().fromJson(object, LPosition.class);
     }
 
 

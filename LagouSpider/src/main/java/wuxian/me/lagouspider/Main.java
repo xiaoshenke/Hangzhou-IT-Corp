@@ -65,8 +65,11 @@ public class Main {
         //如果想开启抓一个新的区域 那么只需填入下面的xxx即可
         //BPositionListSpider spider = new BPositionListSpider("西湖区",1);
 
-        PositionSpider spider = new PositionSpider("西湖区",1);
-        Helper.dispatchSpider(spider);
+        for (int i = 3; i < 5; i++) {
+            PositionSpider spider = new PositionSpider("西湖区", i);
+            Helper.dispatchSpider(spider);
+            //break;
+        }
     }
 
     public static void main(String[] args) {

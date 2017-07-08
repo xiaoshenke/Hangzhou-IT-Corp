@@ -16,7 +16,7 @@ public class LPosition {
 
     public String education;
 
-    public String formatCreateTime;
+    public String createTime;
 
     public Long positionId;
 
@@ -30,6 +30,12 @@ public class LPosition {
 
     public String jobNature;
 
+    public String financeStage;
+
+    public String companySize;
+
+    public List<String> positionLables = new ArrayList<String>();
+
     @Override
     public String toString() {
         return "LPosition{" +
@@ -37,7 +43,7 @@ public class LPosition {
                 ", companyShortName='" + companyShortName + '\'' +
                 ", district='" + district + '\'' +
                 ", education='" + education + '\'' +
-                ", formatCreateTime='" + formatCreateTime + '\'' +
+                ", createTime='" + createTime + '\'' +
                 ", positionId=" + positionId +
                 ", positionName='" + positionName + '\'' +
                 ", salary='" + salary + '\'' +
@@ -45,12 +51,8 @@ public class LPosition {
                 ", industryField='" + industryField + '\'' +
                 ", jobNature='" + jobNature + '\'' +
                 ", financeStage='" + financeStage + '\'' +
+                ", companySize='" + companySize + '\'' +
                 ", positionLables=" + positionLables +
                 '}';
     }
-
-    public String financeStage;
-
-    public List<String> positionLables = new ArrayList<String>();
-
 }
