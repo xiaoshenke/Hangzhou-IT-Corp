@@ -71,7 +71,7 @@ public class Main {
         }
 
         LogManager.info("begin to dispatch spider");
-        PositionSpider spider = new PositionSpider("西湖区", 1);  //Todo: toUrlNode..
+        PositionSpider spider = new PositionSpider("西湖区", 1);
         Helper.dispatchSpider(spider);
     }
 

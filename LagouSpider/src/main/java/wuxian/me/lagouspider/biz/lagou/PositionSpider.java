@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.sun.istack.internal.NotNull;
+import com.sun.istack.internal.Nullable;
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
@@ -13,6 +14,7 @@ import wuxian.me.lagouspider.model.lagou.Position;
 import wuxian.me.lagouspider.save.lagou.PositionSaver;
 import wuxian.me.lagouspider.util.Helper;
 import wuxian.me.spidercommon.log.LogManager;
+import wuxian.me.spidercommon.model.HttpUrlNode;
 import wuxian.me.spidermaster.framework.common.GsonProvider;
 import wuxian.me.spidersdk.BaseSpider;
 import wuxian.me.spidersdk.anti.MaybeBlockedException;
@@ -30,9 +32,38 @@ public class PositionSpider extends BaseLagouSpider {
 
     private static final String CITY = "杭州";
 
-    private String area;
     private String distinc;
     private int pageNum;
+
+    @Nullable
+    public static HttpUrlNode toUrlNode(PositionSpider spider) {
+
+        HttpUrlNode node = new HttpUrlNode();
+        node.baseUrl = "https://www.lagou.com/jobs/positionAjax.json";
+        node.httpGetParam.put("px", "default");
+        node.httpGetParam.put("city", CITY);
+        node.httpGetParam.put("district", spider.distinc);
+        node.httpGetParam.put("needAddtionalResult", "false");
+
+        if (spider.pageNum == 1) {
+            node.httpPostParam.put("first", "true");
+        } else {
+            node.httpPostParam.put("first", "false");
+        }
+        node.httpPostParam.put("pn", String.valueOf(spider.pageNum));
+        node.httpPostParam.put("kd", POSITION_TYPE);
+        return node;
+    }
+
+    @Nullable
+    public static PositionSpider fromUrlNode(HttpUrlNode node) {
+
+        if (!node.baseUrl.contains("https://www.lagou.com/jobs/positionAjax.json")) {
+            return null;
+        }
+
+        return new PositionSpider(node.httpGetParam.get("district"), Integer.parseInt(node.httpPostParam.get("pn")));
+    }
 
     public PositionSpider(String distinct, int pageNum) {
         this.distinc = distinct;
@@ -109,7 +140,6 @@ public class PositionSpider extends BaseLagouSpider {
                 if(position != null) {
                     Position p = Position.fromLPosition(position);
 
-                    LogManager.info(p.toString());
                     if (!p.outOfDate()) {
                         savePosition(p);
                     }

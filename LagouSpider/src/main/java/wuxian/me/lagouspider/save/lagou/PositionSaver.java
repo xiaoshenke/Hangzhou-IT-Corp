@@ -43,7 +43,7 @@ public class PositionSaver extends BaseSaver<Position> {
                 //
             }
         });
-        thread.setName("SaveBossPositionThread");
+        thread.setName("PositionThread");
         thread.start();
     }
 

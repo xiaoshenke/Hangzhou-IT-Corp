@@ -8,7 +8,7 @@
     </delete>
 
     <update id="createNewTableIfNeed" parameterType="wuxian.me.lagouspider.model.lagou.Position">
-        create table if not exists ${tableName} (position_id INTEGER,position_name VARCHAR(16),district VARCHAR(8),
+        create table if not exists ${tableName} (position_id INTEGER,position_name VARCHAR(24),district VARCHAR(8),
         post_time CHAR(10),lables VARCHAR(24), salary_min SMALLINT ,salary_max SMALLINT ,experience_min SMALLINT
         ,experience_max SMALLINT,
         education VARCHAR(8),fullTime TINYINT,company_id INTEGER,company_name VARCHAR(16),industry VARCHAR(16),finance
