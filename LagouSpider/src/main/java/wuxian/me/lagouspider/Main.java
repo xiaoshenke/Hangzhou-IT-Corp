@@ -1,6 +1,7 @@
 package wuxian.me.lagouspider;
 
 import wuxian.me.lagouspider.biz.boss.BizConfig;
+import wuxian.me.lagouspider.biz.lagou.HangzhouDistrict;
 import wuxian.me.lagouspider.biz.lagou.PositionSpider;
 import wuxian.me.lagouspider.model.lagou.Position;
 import wuxian.me.lagouspider.save.lagou.PositionSaver;
@@ -71,8 +72,16 @@ public class Main {
         }
 
         LogManager.info("begin to dispatch spider");
-        PositionSpider spider = new PositionSpider("西湖区", 1);
-        Helper.dispatchSpider(spider);
+
+        PositionSpider.POSITION_TYPE = "Java";
+        PositionSpider.CITY = "杭州";
+        HangzhouDistrict[] districts = HangzhouDistrict.values();
+
+        for (int i = 0; i < districts.length; i++) {
+            PositionSpider spider = new PositionSpider(districts[i].district(), 1);
+            Helper.dispatchSpider(spider);
+        }
+
     }
 
     public static void main(String[] args) {

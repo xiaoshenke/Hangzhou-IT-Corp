@@ -50,12 +50,6 @@ public class CompanySpider extends BaseLagouSpider {
     String positionNum;                     //招聘岗位个数
     String score;                            //面试评价评分
 
-    //String resumeRate;                       //简历处理及时率
-    //String interviewNum;                    //面试评价个数
-    //String accordSore;                       //描述是否相符 //这仨不用了
-    //String interviewerScore;                //面试官评分
-    //String environmentScore;                 //环境评分
-
     private List<Product> productList = new ArrayList<Product>();  //这个存入product database
     private List<String> locationList = new ArrayList<String>();  //如果是multi 存入locationDB
 
@@ -87,9 +81,6 @@ public class CompanySpider extends BaseLagouSpider {
             trees = parser.parse(null);
             parseBaseInfo();
             parseLocation();
-
-            //parseProductList();  //没什么用
-
             Company company = buildCompany();
             if (ENABLE_SAVE_COMPANY_DB) {
                 saveCompany(company);
@@ -178,12 +169,6 @@ public class CompanySpider extends BaseLagouSpider {
                                     positionNum = pre.getText().trim();
                                     break;
                                 }
-                                //else if (i == 1) {
-                                //    resumeRate = pre.getText().trim();
-                                //} else if (i == 3) {
-                                //    interviewNum = pre.getText().trim();
-                                //}
-
                             }
                         }
                         real = real.getPreviousSibling();
@@ -230,13 +215,6 @@ public class CompanySpider extends BaseLagouSpider {
                             score = ((Span) list.elementAt(i)).getStringText().trim();  //面试得分
                             break;
                         }
-                        //else if (i == 1) {
-                        //    accordSore = ((Span) list.elementAt(i)).getStringText().trim();
-                        //} else if (i == 2) {
-                        //    interviewerScore = ((Span) list.elementAt(i)).getStringText().trim();
-                        //} else if (i == 3) {
-                        //    environmentScore = ((Span) list.elementAt(i)).getStringText().trim();
-                        //}
                     }
                 }
             }
@@ -290,12 +268,6 @@ public class CompanySpider extends BaseLagouSpider {
         company.financeStage = financeStage;
         company.positionNum = positionNum;
         company.score = score;
-
-        //company.resumeRate = resumeRate;
-        //company.interviewNum = interviewNum;
-        //company.accordSore = accordSore;
-        //company.interviewerScore = interviewerScore;
-        //company.environmentScore = environmentScore;
 
         if (locationList.size() == 0) {
             company.detail_location = LOCATION_NONE;

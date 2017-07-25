@@ -28,9 +28,9 @@ public class PositionSpider extends BaseLagouSpider {
 
     private static final String URL = "https://www.lagou.com/jobs/positionAjax.json?px=default";
 
-    private static final String POSITION_TYPE = "Java";
+    public static String POSITION_TYPE = "Java";
 
-    private static final String CITY = "杭州";
+    public static String CITY = "杭州";
 
     private String distinc;
     private int pageNum;
@@ -167,8 +167,6 @@ public class PositionSpider extends BaseLagouSpider {
 
     public int parseRealData(String data) {
         String body = data;
-        LogManager.info(data);
-
         try {
             parsePositionlist(body);
         } catch (ParserException e) {
